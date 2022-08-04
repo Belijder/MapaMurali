@@ -33,8 +33,5 @@ class MapViewController: UIViewController {
             
         ])
     }
-    
-
-
 }
 
