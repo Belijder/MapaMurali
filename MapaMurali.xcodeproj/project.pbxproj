@@ -26,6 +26,10 @@
 		42867B80289C4CC600E5159F /* SingUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42867B7F289C4CC600E5159F /* SingUpViewController.swift */; };
 		429A021228CFA1CE00CD6862 /* MMTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429A021128CFA1CE00CD6862 /* MMTextField.swift */; };
 		429A021528CFADD200CD6862 /* UITextField+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429A021428CFADD200CD6862 /* UITextField+Ext.swift */; };
+		429A021928CFB52B00CD6862 /* MMTintedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429A021828CFB52B00CD6862 /* MMTintedButton.swift */; };
+		429A021B28CFCC7100CD6862 /* MMPlainButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429A021A28CFCC7100CD6862 /* MMPlainButton.swift */; };
+		429A021D28CFCF4600CD6862 /* UIView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429A021C28CFCF4600CD6862 /* UIView+Ext.swift */; };
+		429A022028CFD0E000CD6862 /* MMBodyLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429A021F28CFD0E000CD6862 /* MMBodyLabel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +49,10 @@
 		42867B7F289C4CC600E5159F /* SingUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingUpViewController.swift; sourceTree = "<group>"; };
 		429A021128CFA1CE00CD6862 /* MMTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMTextField.swift; sourceTree = "<group>"; };
 		429A021428CFADD200CD6862 /* UITextField+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Ext.swift"; sourceTree = "<group>"; };
+		429A021828CFB52B00CD6862 /* MMTintedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMTintedButton.swift; sourceTree = "<group>"; };
+		429A021A28CFCC7100CD6862 /* MMPlainButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMPlainButton.swift; sourceTree = "<group>"; };
+		429A021C28CFCF4600CD6862 /* UIView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Ext.swift"; sourceTree = "<group>"; };
+		429A021F28CFD0E000CD6862 /* MMBodyLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMBodyLabel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +129,8 @@
 		429A020F28CFA15E00CD6862 /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
+				429A021E28CFD0AD00CD6862 /* Labels */,
+				429A021728CFB4F500CD6862 /* Buttons */,
 				429A021028CFA17C00CD6862 /* TextFields */,
 			);
 			path = CustomViews;
@@ -138,6 +148,7 @@
 			isa = PBXGroup;
 			children = (
 				429A021428CFADD200CD6862 /* UITextField+Ext.swift */,
+				429A021C28CFCF4600CD6862 /* UIView+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -147,6 +158,23 @@
 			children = (
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		429A021728CFB4F500CD6862 /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				429A021828CFB52B00CD6862 /* MMTintedButton.swift */,
+				429A021A28CFCC7100CD6862 /* MMPlainButton.swift */,
+			);
+			path = Buttons;
+			sourceTree = "<group>";
+		};
+		429A021E28CFD0AD00CD6862 /* Labels */ = {
+			isa = PBXGroup;
+			children = (
+				429A021F28CFD0E000CD6862 /* MMBodyLabel.swift */,
+			);
+			path = Labels;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -234,10 +262,14 @@
 				42867B6B28959CE400E5159F /* SingInViewController.swift in Sources */,
 				42867B80289C4CC600E5159F /* SingUpViewController.swift in Sources */,
 				42867B702896FC8100E5159F /* LoginManager.swift in Sources */,
+				429A022028CFD0E000CD6862 /* MMBodyLabel.swift in Sources */,
 				42867B672895901000E5159F /* AddNewViewController.swift in Sources */,
+				429A021D28CFCF4600CD6862 /* UIView+Ext.swift in Sources */,
 				42867B6428958F5B00E5159F /* MainTabViewController.swift in Sources */,
+				429A021B28CFCC7100CD6862 /* MMPlainButton.swift in Sources */,
 				426E4A0328931180009C8E99 /* MapViewController.swift in Sources */,
 				429A021528CFADD200CD6862 /* UITextField+Ext.swift in Sources */,
+				429A021928CFB52B00CD6862 /* MMTintedButton.swift in Sources */,
 				426E49FF28931180009C8E99 /* AppDelegate.swift in Sources */,
 				426E4A0128931180009C8E99 /* SceneDelegate.swift in Sources */,
 				429A021228CFA1CE00CD6862 /* MMTextField.swift in Sources */,

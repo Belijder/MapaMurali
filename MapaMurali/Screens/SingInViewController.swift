@@ -18,48 +18,23 @@ class SingInViewController: UIViewController {
     
     private let nameTextField = MMTextField(placeholder: "e-mail", type: .email)
     private let passwordTextField = MMTextField(placeholder: "hasło", type: .password)
+    private let singInButton = MMTintedButton(color: .systemGreen, title: "Zaloguj")
     
-    private let singInButton: UIButton = {
-        let button = UIButton(configuration: .tinted(), primaryAction: nil)
-        button.setTitle("Zaloguj", for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
+    private let registerLabel = MMBodyLabel(textAlignment: .center)
     
-    private let registerLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Nie masz konta?"
-        label.textColor = .secondaryLabel
-        label.font = .systemFont(ofSize: 15, weight: .regular)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-        
-    }()
-    
-    private let registerButton: UIButton = {
-        let button = UIButton(configuration: .plain())
-        button.setTitle("Zarejestruj się", for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
+    private let registerButton = MMPlainButton(color: .systemGreen, title: "Zarejestruj się")
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        view.addSubview(nameTextField)
-        view.addSubview(passwordTextField)
-        view.addSubview(singInButton)
-        singInButton.addTarget(self, action: #selector(tryToSingIn), for: .touchUpInside)
-        view.addSubview(registerLabel)
-        view.addSubview(registerButton)
-        registerButton.addTarget(self, action: #selector(singUpButtonPressed), for: .touchUpInside)
-        addContraints()
-        addSingInObserver()
+        view.addSubViews(nameTextField, passwordTextField, singInButton, registerLabel, registerButton)
         
-        let bottomLine = CALayer()
-        bottomLine.frame = CGRect(x: 0, y: nameTextField.frame.height - 2, width: nameTextField.frame.width, height: 2)
-        bottomLine.borderColor = UIColor.init(red: 48/255, green: 173/255, blue: 99/255, alpha: 1).cgColor
-        nameTextField.layer.addSublayer(bottomLine)
+        registerLabel.text = "Nie masz konta?"
+        singInButton.addTarget(self, action: #selector(tryToSingIn), for: .touchUpInside)
+        registerButton.addTarget(self, action: #selector(singUpButtonPressed), for: .touchUpInside)
+        
+        layoutUI()
+        addSingInObserver()
     }
     
     override func viewDidLayoutSubviews() {
@@ -92,27 +67,38 @@ class SingInViewController: UIViewController {
             })
             .disposed(by: bag)
     }
+    
+    
+    func layoutUI() {
+        
+        let padding: CGFloat = 20
 
-    func addContraints() {
         NSLayoutConstraint.activate([
-            nameTextField.bottomAnchor.constraint(equalTo: passwordTextField.topAnchor, constant: -20),
-            nameTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            nameTextField.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -40),
+            nameTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
+            nameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
+            nameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
             nameTextField.heightAnchor.constraint(equalToConstant: 50),
-            
-            passwordTextField.bottomAnchor.constraint(equalTo: singInButton.topAnchor, constant: -20),
-            passwordTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            passwordTextField.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -40),
+
+            passwordTextField.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: padding),
+            passwordTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
+            passwordTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
             passwordTextField.heightAnchor.constraint(equalToConstant: 50),
+
+            singInButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: padding),
+            singInButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
+            singInButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
+            singInButton.heightAnchor.constraint(equalToConstant: 50),
             
-            singInButton.centerXAnchor.constraint(equalTo: view.layoutMarginsGuide.centerXAnchor),
-            singInButton.centerYAnchor.constraint(equalTo: view.layoutMarginsGuide.centerYAnchor),
+            registerLabel.topAnchor.constraint(equalTo: singInButton.bottomAnchor, constant: padding),
+            registerLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
+            registerLabel.trailingAnchor.constraint(equalTo: view.centerXAnchor),
+            registerLabel.heightAnchor.constraint(equalToConstant: 20),
             
-            registerLabel.centerXAnchor.constraint(equalTo: view.layoutMarginsGuide.centerXAnchor),
-            registerLabel.topAnchor.constraint(equalTo: singInButton.bottomAnchor, constant: 20),
+            registerButton.centerYAnchor.constraint(equalTo: registerLabel.centerYAnchor),
+            registerButton.leadingAnchor.constraint(equalTo: view.centerXAnchor),
+            registerButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            registerButton.heightAnchor.constraint(equalToConstant: 20),
             
-            registerButton.centerXAnchor.constraint(equalTo: view.layoutMarginsGuide.centerXAnchor),
-            registerButton.topAnchor.constraint(equalTo: registerLabel.bottomAnchor)
         ])
     }
 }
