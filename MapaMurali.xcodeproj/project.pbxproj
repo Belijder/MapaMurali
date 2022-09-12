@@ -24,7 +24,8 @@
 		42867B7C2899C42900E5159F /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 42867B7B2899C42900E5159F /* RxCocoa */; };
 		42867B7E2899C42900E5159F /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 42867B7D2899C42900E5159F /* RxSwift */; };
 		42867B80289C4CC600E5159F /* SingUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42867B7F289C4CC600E5159F /* SingUpViewController.swift */; };
-		42867B83289C4EDB00E5159F /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42867B82289C4EDB00E5159F /* Utilities.swift */; };
+		429A021228CFA1CE00CD6862 /* MMTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429A021128CFA1CE00CD6862 /* MMTextField.swift */; };
+		429A021528CFADD200CD6862 /* UITextField+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429A021428CFADD200CD6862 /* UITextField+Ext.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,7 +43,8 @@
 		42867B6F2896FC8100E5159F /* LoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginManager.swift; sourceTree = "<group>"; };
 		42867B7128998A3200E5159F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		42867B7F289C4CC600E5159F /* SingUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingUpViewController.swift; sourceTree = "<group>"; };
-		42867B82289C4EDB00E5159F /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		429A021128CFA1CE00CD6862 /* MMTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMTextField.swift; sourceTree = "<group>"; };
+		429A021428CFADD200CD6862 /* UITextField+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Ext.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,9 +84,11 @@
 			children = (
 				426E49FE28931180009C8E99 /* AppDelegate.swift */,
 				426E4A0028931180009C8E99 /* SceneDelegate.swift */,
-				42867B81289C4E9600E5159F /* Helpers */,
+				429A021628CFAF5C00CD6862 /* Utilities */,
+				429A021328CFAD7100CD6862 /* Extensions */,
 				42867B6C2896FBB400E5159F /* Managers */,
-				42867B6528958FDC00E5159F /* Controllers */,
+				429A020F28CFA15E00CD6862 /* CustomViews */,
+				42867B6528958FDC00E5159F /* Screens */,
 				42867B7128998A3200E5159F /* GoogleService-Info.plist */,
 				426E4A0728931184009C8E99 /* Assets.xcassets */,
 				426E4A0928931184009C8E99 /* LaunchScreen.storyboard */,
@@ -93,7 +97,7 @@
 			path = MapaMurali;
 			sourceTree = "<group>";
 		};
-		42867B6528958FDC00E5159F /* Controllers */ = {
+		42867B6528958FDC00E5159F /* Screens */ = {
 			isa = PBXGroup;
 			children = (
 				42867B6A28959CE400E5159F /* SingInViewController.swift */,
@@ -103,7 +107,7 @@
 				42867B662895901000E5159F /* AddNewViewController.swift */,
 				42867B68289590BD00E5159F /* UserAccountViewController.swift */,
 			);
-			path = Controllers;
+			path = Screens;
 			sourceTree = "<group>";
 		};
 		42867B6C2896FBB400E5159F /* Managers */ = {
@@ -114,12 +118,35 @@
 			path = Managers;
 			sourceTree = "<group>";
 		};
-		42867B81289C4E9600E5159F /* Helpers */ = {
+		429A020F28CFA15E00CD6862 /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
-				42867B82289C4EDB00E5159F /* Utilities.swift */,
+				429A021028CFA17C00CD6862 /* TextFields */,
 			);
-			path = Helpers;
+			path = CustomViews;
+			sourceTree = "<group>";
+		};
+		429A021028CFA17C00CD6862 /* TextFields */ = {
+			isa = PBXGroup;
+			children = (
+				429A021128CFA1CE00CD6862 /* MMTextField.swift */,
+			);
+			path = TextFields;
+			sourceTree = "<group>";
+		};
+		429A021328CFAD7100CD6862 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				429A021428CFADD200CD6862 /* UITextField+Ext.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		429A021628CFAF5C00CD6862 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -205,14 +232,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				42867B6B28959CE400E5159F /* SingInViewController.swift in Sources */,
-				42867B83289C4EDB00E5159F /* Utilities.swift in Sources */,
 				42867B80289C4CC600E5159F /* SingUpViewController.swift in Sources */,
 				42867B702896FC8100E5159F /* LoginManager.swift in Sources */,
 				42867B672895901000E5159F /* AddNewViewController.swift in Sources */,
 				42867B6428958F5B00E5159F /* MainTabViewController.swift in Sources */,
 				426E4A0328931180009C8E99 /* MapViewController.swift in Sources */,
+				429A021528CFADD200CD6862 /* UITextField+Ext.swift in Sources */,
 				426E49FF28931180009C8E99 /* AppDelegate.swift in Sources */,
 				426E4A0128931180009C8E99 /* SceneDelegate.swift in Sources */,
+				429A021228CFA1CE00CD6862 /* MMTextField.swift in Sources */,
 				42867B69289590BD00E5159F /* UserAccountViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

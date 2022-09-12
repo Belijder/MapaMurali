@@ -16,24 +16,8 @@ class SingInViewController: UIViewController {
     var bag = DisposeBag()
     
     
-    private let nameTextField: UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "e-mail"
-        textField.keyboardType = .emailAddress
-        textField.autocapitalizationType = .none
-        textField.autocorrectionType = .no
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        return textField
-    }()
-    
-    private let passwordTextField: UITextField = {
-        let textField = UITextField()
-        textField.isSecureTextEntry = true
-        textField.placeholder = "hasło"
-        textField.keyboardType = .default
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        return textField
-    }()
+    private let nameTextField = MMTextField(placeholder: "e-mail", type: .email)
+    private let passwordTextField = MMTextField(placeholder: "hasło", type: .password)
     
     private let singInButton: UIButton = {
         let button = UIButton(configuration: .tinted(), primaryAction: nil)
@@ -79,8 +63,8 @@ class SingInViewController: UIViewController {
     }
     
     override func viewDidLayoutSubviews() {
-        Utilities.styleTextField(nameTextField)
-        Utilities.styleTextField(passwordTextField)
+        nameTextField.styleTextFieldWithBottomBorder(color: .systemGreen)
+        passwordTextField.styleTextFieldWithBottomBorder(color: .systemGreen)
     }
     
     

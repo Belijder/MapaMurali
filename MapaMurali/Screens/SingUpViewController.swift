@@ -11,32 +11,9 @@ class SingUpViewController: UIViewController {
     
     let loginManager: LoginManager
     
-    private let nickNameTextField: UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "nazwa użytkownika"
-        textField.keyboardType = .default
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        return textField
-    }()
-
-    private let nameTextField: UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "e-mail"
-        textField.keyboardType = .emailAddress
-        textField.autocapitalizationType = .none
-        textField.autocorrectionType = .no
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        return textField
-    }()
-    
-    private let passwordTextField: UITextField = {
-        let textField = UITextField()
-        textField.isSecureTextEntry = true
-        textField.placeholder = "hasło"
-        textField.keyboardType = .default
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        return textField
-    }()
+    private let nickNameTextField = MMTextField(placeholder: "nazwa użytkownika", type: .custom)
+    private let emailTextField = MMTextField(placeholder: "e-mail", type: .email)
+    private let passwordTextField = MMTextField(placeholder: "hasło", type: .password)
     
     private let singUpButton: UIButton = {
         let button = UIButton(configuration: .tinted(), primaryAction: nil)
@@ -66,7 +43,7 @@ class SingUpViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         view.addSubview(nickNameTextField)
-        view.addSubview(nameTextField)
+        view.addSubview(emailTextField)
         view.addSubview(passwordTextField)
         view.addSubview(singUpButton)
         
@@ -78,9 +55,9 @@ class SingUpViewController: UIViewController {
     }
     
     override func viewDidLayoutSubviews() {
-        Utilities.styleTextField(nameTextField)
-        Utilities.styleTextField(passwordTextField)
-        Utilities.styleTextField(nickNameTextField)
+        emailTextField.styleTextFieldWithBottomBorder(color: .systemGreen)
+        passwordTextField.styleTextFieldWithBottomBorder(color: .systemGreen)
+        nickNameTextField.styleTextFieldWithBottomBorder(color: .systemGreen)
     }
     
     @objc func returnToSingInView(sender: UIButton!) {
@@ -90,15 +67,15 @@ class SingUpViewController: UIViewController {
     
     func addContraints() {
         NSLayoutConstraint.activate([
-            nickNameTextField.bottomAnchor.constraint(equalTo: nameTextField.topAnchor, constant: -20),
+            nickNameTextField.bottomAnchor.constraint(equalTo: emailTextField.topAnchor, constant: -20),
             nickNameTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             nickNameTextField.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -40),
             nickNameTextField.heightAnchor.constraint(equalToConstant: 50),
             
-            nameTextField.bottomAnchor.constraint(equalTo: passwordTextField.topAnchor, constant: -20),
-            nameTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            nameTextField.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -40),
-            nameTextField.heightAnchor.constraint(equalToConstant: 50),
+            emailTextField.bottomAnchor.constraint(equalTo: passwordTextField.topAnchor, constant: -20),
+            emailTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emailTextField.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -40),
+            emailTextField.heightAnchor.constraint(equalToConstant: 50),
             
             passwordTextField.bottomAnchor.constraint(equalTo: singUpButton.topAnchor, constant: -20),
             passwordTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -107,7 +84,7 @@ class SingUpViewController: UIViewController {
             
             singUpButton.centerXAnchor.constraint(equalTo: view.layoutMarginsGuide.centerXAnchor),
             singUpButton.centerYAnchor.constraint(equalTo: view.layoutMarginsGuide.centerYAnchor),
-            
+ 
             singInLabel.centerXAnchor.constraint(equalTo: view.layoutMarginsGuide.centerXAnchor),
             singInLabel.topAnchor.constraint(equalTo: singUpButton.bottomAnchor, constant: 20),
             
