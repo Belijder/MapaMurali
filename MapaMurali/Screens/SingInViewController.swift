@@ -35,6 +35,16 @@ class SingInViewController: UIViewController {
         
         layoutUI()
         addSingInObserver()
+        logintestowy()
+        
+        
+    }
+    
+    //TESTOWA DO LOGOWANIA
+    private func logintestowy() {
+        let login = "test@t.com"
+        let password = "asd123"
+        loginManager.singIn(email: login, password: password)
     }
     
     override func viewDidLayoutSubviews() {

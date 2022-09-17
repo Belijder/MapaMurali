@@ -7,31 +7,75 @@
 
 import UIKit
 import MapKit
+import CoreLocation
 
 class MapViewController: UIViewController {
     
-    let mapView: MKMapView = {
-        let map = MKMapView()
-        return map
-    }()
+    let map = MKMapView()
+    let locationManager = CLLocationManager()
+    var userLocation: CLLocationCoordinate2D?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         setMapConstraints()
+        configureLocationManager()
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        locationManager.requestLocation()
+    }
+    
+    func configureLocationManager() {
+        locationManager.delegate = self
+        locationManager.requestAlwaysAuthorization()
+    }
+    
+    func configureMapView() {
+        map.delegate = self
+    }
+    
+    
+    func setMapRegion(with coordinate: CLLocationCoordinate2D) {
+        map.region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: coordinate.latitude,
+                                                                       longitude: coordinate.longitude),
+                                                                       span: MKCoordinateSpan(latitudeDelta: 0.025, longitudeDelta: 0.025))
+    }
+    
     func setMapConstraints() {
-        view.addSubview(mapView)
-        mapView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(map)
+        map.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
-            mapView.topAnchor.constraint(equalTo: self.view.topAnchor),
-            mapView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-            mapView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            mapView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
+            map.topAnchor.constraint(equalTo: self.view.topAnchor),
+            map.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+            map.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            map.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
             
         ])
     }
+}
+
+extension MapViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        
+        guard let location = locations.last else { return }
+        setMapRegion(with: location.coordinate)
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error)
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if status == .authorizedAlways {
+            locationManager.requestLocation()
+        }
+    }
+}
+
+extension MapViewController: MKMapViewDelegate {
+    
 }
 

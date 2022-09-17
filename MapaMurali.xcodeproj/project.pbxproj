@@ -12,6 +12,9 @@
 		426E4A0328931180009C8E99 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426E4A0228931180009C8E99 /* MapViewController.swift */; };
 		426E4A0828931184009C8E99 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 426E4A0728931184009C8E99 /* Assets.xcassets */; };
 		426E4A0B28931184009C8E99 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 426E4A0928931184009C8E99 /* LaunchScreen.storyboard */; };
+		4283BAB028D5E24A00A54F0F /* MMMuralImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4283BAAF28D5E24A00A54F0F /* MMMuralImageView.swift */; };
+		4283BAB228D5E45800A54F0F /* MMMuralPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4283BAB128D5E45800A54F0F /* MMMuralPlaceholderView.swift */; };
+		4283BAB428D606B100A54F0F /* MMCircleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4283BAB328D606B100A54F0F /* MMCircleButton.swift */; };
 		42867B6428958F5B00E5159F /* MainTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42867B6328958F5B00E5159F /* MainTabViewController.swift */; };
 		42867B672895901000E5159F /* AddNewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42867B662895901000E5159F /* AddNewViewController.swift */; };
 		42867B69289590BD00E5159F /* UserAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42867B68289590BD00E5159F /* UserAccountViewController.swift */; };
@@ -40,6 +43,9 @@
 		426E4A0728931184009C8E99 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		426E4A0A28931184009C8E99 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		426E4A0C28931184009C8E99 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4283BAAF28D5E24A00A54F0F /* MMMuralImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMMuralImageView.swift; sourceTree = "<group>"; };
+		4283BAB128D5E45800A54F0F /* MMMuralPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMMuralPlaceholderView.swift; sourceTree = "<group>"; };
+		4283BAB328D606B100A54F0F /* MMCircleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMCircleButton.swift; sourceTree = "<group>"; };
 		42867B6328958F5B00E5159F /* MainTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabViewController.swift; sourceTree = "<group>"; };
 		42867B662895901000E5159F /* AddNewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewViewController.swift; sourceTree = "<group>"; };
 		42867B68289590BD00E5159F /* UserAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAccountViewController.swift; sourceTree = "<group>"; };
@@ -105,6 +111,15 @@
 			path = MapaMurali;
 			sourceTree = "<group>";
 		};
+		4283BAAE28D5E20800A54F0F /* ImageViews */ = {
+			isa = PBXGroup;
+			children = (
+				4283BAAF28D5E24A00A54F0F /* MMMuralImageView.swift */,
+				4283BAB128D5E45800A54F0F /* MMMuralPlaceholderView.swift */,
+			);
+			path = ImageViews;
+			sourceTree = "<group>";
+		};
 		42867B6528958FDC00E5159F /* Screens */ = {
 			isa = PBXGroup;
 			children = (
@@ -129,6 +144,7 @@
 		429A020F28CFA15E00CD6862 /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
+				4283BAAE28D5E20800A54F0F /* ImageViews */,
 				429A021E28CFD0AD00CD6862 /* Labels */,
 				429A021728CFB4F500CD6862 /* Buttons */,
 				429A021028CFA17C00CD6862 /* TextFields */,
@@ -165,6 +181,7 @@
 			children = (
 				429A021828CFB52B00CD6862 /* MMTintedButton.swift */,
 				429A021A28CFCC7100CD6862 /* MMPlainButton.swift */,
+				4283BAB328D606B100A54F0F /* MMCircleButton.swift */,
 			);
 			path = Buttons;
 			sourceTree = "<group>";
@@ -266,9 +283,12 @@
 				42867B672895901000E5159F /* AddNewViewController.swift in Sources */,
 				429A021D28CFCF4600CD6862 /* UIView+Ext.swift in Sources */,
 				42867B6428958F5B00E5159F /* MainTabViewController.swift in Sources */,
+				4283BAB428D606B100A54F0F /* MMCircleButton.swift in Sources */,
 				429A021B28CFCC7100CD6862 /* MMPlainButton.swift in Sources */,
 				426E4A0328931180009C8E99 /* MapViewController.swift in Sources */,
 				429A021528CFADD200CD6862 /* UITextField+Ext.swift in Sources */,
+				4283BAB028D5E24A00A54F0F /* MMMuralImageView.swift in Sources */,
+				4283BAB228D5E45800A54F0F /* MMMuralPlaceholderView.swift in Sources */,
 				429A021928CFB52B00CD6862 /* MMTintedButton.swift in Sources */,
 				426E49FF28931180009C8E99 /* AppDelegate.swift in Sources */,
 				426E4A0128931180009C8E99 /* SceneDelegate.swift in Sources */,
@@ -410,11 +430,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3FACLSXXJM;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MapaMurali/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Musisz wyrazić zgodę na wykorzystanie aparatu, aby móc dodać zdjęcie.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Musimy mieć dostęp do Twojej lokalizacji, aby móc pokazywać Ci wspaniałe murale w Twojej okolicy!";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Musimy mieć dostęp do Twojej lokalizacji, aby móc pokazywać Ci wspaniałe murale w Twojej okolicy!";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -427,6 +451,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jakubzajda.MapaMurali;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -438,11 +463,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3FACLSXXJM;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MapaMurali/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Musisz wyrazić zgodę na wykorzystanie aparatu, aby móc dodać zdjęcie.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Musimy mieć dostęp do Twojej lokalizacji, aby móc pokazywać Ci wspaniałe murale w Twojej okolicy!";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Musimy mieć dostęp do Twojej lokalizacji, aby móc pokazywać Ci wspaniałe murale w Twojej okolicy!";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -455,6 +484,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jakubzajda.MapaMurali;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;

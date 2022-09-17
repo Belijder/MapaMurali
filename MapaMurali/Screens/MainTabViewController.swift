@@ -15,7 +15,7 @@ class MainTabViewController: UITabBarController {
         super.viewDidLoad()
         
         let vc1 = UINavigationController(rootViewController: MapViewController())
-        let vc2 = UINavigationController(rootViewController: AddNewViewController())
+        let vc2 = UINavigationController(rootViewController: AddNewItemViewController())
         let vc3 = UINavigationController(rootViewController: UserAccountViewController(loginManager: loginManager))
         
         vc1.tabBarItem.image = UIImage(systemName: "map")
