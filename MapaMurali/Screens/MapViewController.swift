@@ -62,6 +62,7 @@ extension MapViewController: CLLocationManagerDelegate {
         
         guard let location = locations.last else { return }
         setMapRegion(with: location.coordinate)
+
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {

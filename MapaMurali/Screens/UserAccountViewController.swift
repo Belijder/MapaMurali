@@ -11,6 +11,7 @@ class UserAccountViewController: UIViewController {
     
     var loginManager: LoginManager
     
+    
     private let logOutButton: UIButton = {
         let button = UIButton(configuration: .tinted(), primaryAction: nil)
         button.setTitle("Logout", for: .normal)

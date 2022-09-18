@@ -15,13 +15,11 @@ class SingInViewController: UIViewController {
     var loginManager = LoginManager()
     var bag = DisposeBag()
     
-    
     private let nameTextField = MMTextField(placeholder: "e-mail", type: .email)
     private let passwordTextField = MMTextField(placeholder: "hasło", type: .password)
     private let singInButton = MMTintedButton(color: .systemGreen, title: "Zaloguj")
     
     private let registerLabel = MMBodyLabel(textAlignment: .center)
-    
     private let registerButton = MMPlainButton(color: .systemGreen, title: "Zarejestruj się")
 
     override func viewDidLoad() {
