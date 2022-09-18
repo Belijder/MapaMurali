@@ -10,7 +10,6 @@ import UIKit
 class MMMuralImageView: UIImageView {
     
     let placeholderView = MMMuralPlaceholderView()
-//    let removeImageButton = MMCircleButton(color: .label, systemImageName: "xmark")
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -20,12 +19,7 @@ class MMMuralImageView: UIImageView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-//    private func configureRemoveImageButton() {
-//        removeImageButton.alpha = 0.0
-//        removeImageButton.addTarget(self, action: #selector(removeImage), for: .touchUpInside)
-//    }
-    
+
     private func configure() {
         addSubViews(placeholderView)
         

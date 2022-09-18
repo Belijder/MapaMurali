@@ -9,7 +9,7 @@ import UIKit
 import AVFoundation
 import CoreLocation
 
-class AddNewItemViewController: UIViewController {
+class AddNewItemViewController: MMDataLoadingVC {
     
     let locationManager = CLLocationManager()
     var currentLocation: CLLocation?
@@ -78,6 +78,7 @@ class AddNewItemViewController: UIViewController {
     
     @objc func localizationButtonTapped() {
         locationManager.requestLocation()
+        showLoadingView()
     }
     
     func createDissmisKeyboardTapGesture() {
@@ -151,10 +152,15 @@ extension AddNewItemViewController: CLLocationManagerDelegate {
         let geoCoder = CLGeocoder()
         guard let location = currentLocation else { return }
         geoCoder.reverseGeocodeLocation(location) { placemarks, error in
-            guard let placeMark = placemarks?.first else { return }
-            guard let streetName = placeMark.thoroughfare else { return }
-            guard let streetNumber = placeMark.subThoroughfare else { return }
+            guard let placeMark = placemarks?.first,
+                  let streetName = placeMark.thoroughfare,
+                  let streetNumber = placeMark.subThoroughfare else {
+                self.dismissLoadingView()
+                return
+            }
+            
             self.adressTextField.text = "\(streetName) \(streetNumber)"
+            self.dismissLoadingView()
             
         }
     }
