@@ -33,6 +33,7 @@ class MMTextField: UITextField {
     private func configure() {
         translatesAutoresizingMaskIntoConstraints = false
         autocorrectionType = .no
+        spellCheckingType = .no
         borderStyle = .none
         clearButtonMode = .whileEditing
         
