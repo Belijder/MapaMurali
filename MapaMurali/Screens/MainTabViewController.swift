@@ -31,7 +31,7 @@ class MainTabViewController: UITabBarController {
         blurView.frame = self.view.bounds
         
         tabBar.addSubview(blurView)
-        tabBar.tintColor = .red
+        tabBar.tintColor = .systemGreen
         
         setViewControllers([vc1, vc2, vc3], animated: true)
     }

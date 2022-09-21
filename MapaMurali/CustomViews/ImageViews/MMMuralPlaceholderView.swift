@@ -30,7 +30,8 @@ class MMMuralPlaceholderView: UIView {
         config = config.applying(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 80.0)))
         cameraImage.preferredSymbolConfiguration = config
         
-        label.text = "Stuknij, aby dodać zdjęcie."
+        label.numberOfLines = 2
+        label.text = "Stuknij, aby \ndodać zdjęcie."
         
         NSLayoutConstraint.activate([
             cameraImage.centerXAnchor.constraint(equalTo: self.centerXAnchor),
@@ -38,7 +39,7 @@ class MMMuralPlaceholderView: UIView {
             
             label.topAnchor.constraint(equalTo: cameraImage.bottomAnchor, constant: 10),
             label.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            label.heightAnchor.constraint(equalToConstant: 20)
+            label.heightAnchor.constraint(equalToConstant: 60)
         
         ])
     }

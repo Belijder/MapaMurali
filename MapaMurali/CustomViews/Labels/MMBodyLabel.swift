@@ -25,7 +25,8 @@ class MMBodyLabel: UILabel {
     
     private func configure() {
         textColor = .secondaryLabel
-        font = UIFont.preferredFont(forTextStyle: .body)
+        //font = UIFont.preferredFont(forTextStyle: .body)
+        font = UIFont.systemFont(ofSize: 15)
         adjustsFontForContentSizeCategory = true
         adjustsFontSizeToFitWidth = true
         minimumScaleFactor = 0.75

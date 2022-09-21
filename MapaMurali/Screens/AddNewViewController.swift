@@ -22,7 +22,10 @@ class AddNewItemViewController: MMDataLoadingVC {
     let authorTextField = MMTextField(placeholder: "Jeśli znasz, podaj autorów.", type: .custom)
     let callToActionBatton = MMTintedButton(color: .systemGreen, title: "Dodaj mural")
     
-    var selectedImageViewTopConstraint: NSLayoutConstraint!
+    var selectedImageViewWidthConstraint: NSLayoutConstraint!
+    var selectedImageViewHeightConstraint: NSLayoutConstraint!
+    var removeImageButtonHeightConstraint: NSLayoutConstraint!
+    var removeImageButtonWidthConstraint: NSLayoutConstraint!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,23 +49,46 @@ class AddNewItemViewController: MMDataLoadingVC {
     }
     
     @objc func keyboardWillShow(notification: Notification) {
-        self.keyboardControl(notification, isShowing: true)
+        self.keyboardAnimationControl(notification, keyboardIsShowing: true)
     }
     
     @objc func keyboardWillHide(notification: Notification) {
-        self.keyboardControl(notification, isShowing: false)
+        self.keyboardAnimationControl(notification, keyboardIsShowing: false)
     }
     
-    private func keyboardControl(_ notification: Notification, isShowing: Bool) {
+    private func keyboardAnimationControl(_ notification: Notification, keyboardIsShowing: Bool) {
         let userInfo = notification.userInfo!
         let curve = (userInfo[UIResponder.keyboardAnimationCurveUserInfoKey]! as AnyObject).uint32Value
         let options = UIView.AnimationOptions(rawValue: UInt(curve!) << 16 | UIView.AnimationOptions.beginFromCurrentState.rawValue)
         let duration = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey]! as AnyObject).doubleValue
 
-        if isShowing {
-            self.selectedImageViewTopConstraint.constant = -50
+        if keyboardIsShowing {
+            self.selectedImageViewWidthConstraint.constant = 180
+            self.selectedImageViewHeightConstraint.constant = 245
+            
+            self.removeImageButtonWidthConstraint.constant = 22
+            self.removeImageButtonHeightConstraint.constant = 22
+            
+            let removeButtonConfig = UIImage.SymbolConfiguration(pointSize: 10)
+            self.removeImageButton.configuration?.preferredSymbolConfigurationForImage = removeButtonConfig
+            
+            var cameraImageConfig = UIImage.SymbolConfiguration(paletteColors: [.secondaryLabel])
+            cameraImageConfig = cameraImageConfig.applying(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 40.0)))
+            self.selectedImageView.placeholderView.cameraImage.preferredSymbolConfiguration = cameraImageConfig
+            
         } else {
-            self.selectedImageViewTopConstraint.constant = 100
+            self.selectedImageViewWidthConstraint.constant = 300
+            self.selectedImageViewHeightConstraint.constant = 400
+            
+            self.removeImageButtonWidthConstraint.constant = 44
+            self.removeImageButtonHeightConstraint.constant = 44
+            
+            let symbolConfiguration = UIImage.SymbolConfiguration(pointSize: 15)
+            self.removeImageButton.configuration?.preferredSymbolConfigurationForImage = symbolConfiguration
+            
+            var cameraImageConfig = UIImage.SymbolConfiguration(paletteColors: [.secondaryLabel])
+            cameraImageConfig = cameraImageConfig.applying(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 80.0)))
+            self.selectedImageView.placeholderView.cameraImage.preferredSymbolConfiguration = cameraImageConfig
         }
         
         UIView.animate(
@@ -80,6 +106,8 @@ class AddNewItemViewController: MMDataLoadingVC {
     }
     
     private func configureRemoveImageButton() {
+        let symbolConfiguration = UIImage.SymbolConfiguration(pointSize: 15)
+        removeImageButton.configuration?.preferredSymbolConfigurationForImage = symbolConfiguration
         removeImageButton.alpha = 0.0
         removeImageButton.addTarget(self, action: #selector(removeImageButtonTapped), for: .touchUpInside)
     }
@@ -141,22 +169,28 @@ class AddNewItemViewController: MMDataLoadingVC {
         
         let horizontalPadding: CGFloat = 20
         let verticalPadding: CGFloat = 15
-        let height: CGFloat = 40
+        let height: CGFloat = 45
         
-        selectedImageViewTopConstraint = selectedImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 100)
-        selectedImageViewTopConstraint.isActive = true
+        selectedImageViewWidthConstraint = selectedImageView.widthAnchor.constraint(equalToConstant: 300)
+        selectedImageViewWidthConstraint.isActive = true
+        
+        selectedImageViewHeightConstraint = selectedImageView.heightAnchor.constraint(equalToConstant: 400)
+        selectedImageViewHeightConstraint.isActive = true
+        
+        removeImageButtonWidthConstraint = removeImageButton.heightAnchor.constraint(equalToConstant: 40)
+        removeImageButtonWidthConstraint.isActive = true
+        removeImageButtonHeightConstraint = removeImageButton.widthAnchor.constraint(equalToConstant: 40)
+        removeImageButtonHeightConstraint.isActive = true
+        
         
         NSLayoutConstraint.activate([
             selectedImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            selectedImageView.heightAnchor.constraint(equalToConstant: 400),
-            selectedImageView.widthAnchor.constraint(equalToConstant: 300),
+            selectedImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 80),
             
             removeImageButton.topAnchor.constraint(equalTo: selectedImageView.topAnchor, constant: 10),
             removeImageButton.trailingAnchor.constraint(equalTo: selectedImageView.trailingAnchor, constant: -10),
-            removeImageButton.heightAnchor.constraint(equalToConstant: 44),
-            removeImageButton.widthAnchor.constraint(equalToConstant: 44),
             
-            adressTextField.topAnchor.constraint(equalTo: selectedImageView.bottomAnchor, constant: verticalPadding),
+            adressTextField.topAnchor.constraint(equalTo: selectedImageView.bottomAnchor, constant: verticalPadding + 10),
             adressTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: horizontalPadding),
             adressTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -horizontalPadding),
             adressTextField.heightAnchor.constraint(equalToConstant: height),
@@ -211,12 +245,14 @@ extension AddNewItemViewController: CLLocationManagerDelegate {
         self.geoCoder.reverseGeocodeLocation(location) { placemarks, error in
             guard let placeMark = placemarks?.first,
                   let streetName = placeMark.thoroughfare,
-                  let streetNumber = placeMark.subThoroughfare else {
+                  let streetNumber = placeMark.subThoroughfare,
+                  let cityName = placeMark.locality else {
                 self.dismissLoadingView()
                 return
             }
             
             self.adressTextField.text = "\(streetName) \(streetNumber)"
+            self.cityTextField.text = "\(cityName)"
             self.dismissLoadingView()
         }
     }
