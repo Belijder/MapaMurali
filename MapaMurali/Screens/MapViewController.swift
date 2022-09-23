@@ -40,7 +40,7 @@ class MapViewController: UIViewController {
     func setMapRegion(with coordinate: CLLocationCoordinate2D) {
         map.region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: coordinate.latitude,
                                                                        longitude: coordinate.longitude),
-                                                                       span: MKCoordinateSpan(latitudeDelta: 0.025, longitudeDelta: 0.025))
+                                                                       span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
     }
     
     func setMapConstraints() {

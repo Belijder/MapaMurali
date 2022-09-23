@@ -30,7 +30,7 @@ class AddNewItemViewController: MMDataLoadingVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        view.addSubViews(selectedImageView, removeImageButton, adressTextField, cityTextField, authorTextField, callToActionBatton)
+        view.addSubviews(selectedImageView, removeImageButton, adressTextField, cityTextField, authorTextField, callToActionBatton)
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -154,8 +154,13 @@ class AddNewItemViewController: MMDataLoadingVC {
     @objc func callToActionButtonTapped() {
         geoCoder.geocodeAddressString(adressTextField.text!) { placemark, error in
             
-            guard error == nil, let coordinates = placemark![0].location?.coordinate else { return }
+            guard error == nil, let coordinates = placemark![0].location?.coordinate else {
+                self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: MMError.locationRetrivalFaild.rawValue, buttonTitle: "Ok")
+                return
+            }
             print(coordinates)
+            
+//            self.presentMMAlert(title: "Udało się!", message: "Twój mural został dodany! Dzięki!", buttonTitle: "Ok")
         }
     }
     
@@ -217,9 +222,17 @@ extension AddNewItemViewController: UIImagePickerControllerDelegate, UINavigatio
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
-        let compressedImage = image?.jpegData(compressionQuality: 0.1)
+        let compressedImage = image?.jpegData(compressionQuality: 0.3)
         
         selectedImageView.image = UIImage(data: compressedImage!)
+        
+        print("Compressed image: \(compressedImage)")
+        
+        let resizedImage = image?.aspectFittedToHeight(70)
+        let thumbnailData = resizedImage?.jpegData(compressionQuality: 0.1)
+        print("Resized image: \(thumbnailData)")
+        
+        
         selectedImageView.didSelectedImage()
         removeImageButton.alpha = 1.0
         
@@ -238,16 +251,25 @@ extension AddNewItemViewController: UITextFieldDelegate {
 extension AddNewItemViewController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let lastLocation = locations.last?.coordinate else { return }
+        guard let lastLocation = locations.last?.coordinate else {
+            self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: MMError.locationRetrivalFaild.rawValue, buttonTitle: "Ok")
+            return
+        }
+        
         self.currentLocation = CLLocation(latitude: lastLocation.latitude, longitude: lastLocation.longitude)
         
-        guard let location = currentLocation else { return }
+        guard let location = currentLocation else {
+            self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: MMError.locationRetrivalFaild.rawValue, buttonTitle: "Ok")
+            return
+        }
+        
         self.geoCoder.reverseGeocodeLocation(location) { placemarks, error in
             guard let placeMark = placemarks?.first,
                   let streetName = placeMark.thoroughfare,
                   let streetNumber = placeMark.subThoroughfare,
                   let cityName = placeMark.locality else {
                 self.dismissLoadingView()
+                self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: MMError.locationRetrivalFaild.rawValue, buttonTitle: "Ok")
                 return
             }
             

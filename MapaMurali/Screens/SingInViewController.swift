@@ -25,7 +25,7 @@ class SingInViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        view.addSubViews(nameTextField, passwordTextField, singInButton, registerLabel, registerButton)
+        view.addSubviews(nameTextField, passwordTextField, singInButton, registerLabel, registerButton)
         
         registerLabel.text = "Nie masz konta?"
         singInButton.addTarget(self, action: #selector(tryToSingIn), for: .touchUpInside)

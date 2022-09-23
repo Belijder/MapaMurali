@@ -21,7 +21,7 @@ class MMMuralImageView: UIImageView {
     }
 
     private func configure() {
-        addSubViews(placeholderView)
+        addSubviews(placeholderView)
         
         placeholderView.translatesAutoresizingMaskIntoConstraints = false
         

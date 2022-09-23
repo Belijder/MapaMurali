@@ -27,6 +27,11 @@
 		42867B7C2899C42900E5159F /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 42867B7B2899C42900E5159F /* RxCocoa */; };
 		42867B7E2899C42900E5159F /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 42867B7D2899C42900E5159F /* RxSwift */; };
 		42867B80289C4CC600E5159F /* SingUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42867B7F289C4CC600E5159F /* SingUpViewController.swift */; };
+		428BD65E28DE30B0000B8D69 /* MMTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428BD65D28DE30B0000B8D69 /* MMTitleLabel.swift */; };
+		428BD66128DE322A000B8D69 /* MMAlertContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428BD66028DE322A000B8D69 /* MMAlertContainerView.swift */; };
+		428BD66328DE353B000B8D69 /* MMAlertVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428BD66228DE353B000B8D69 /* MMAlertVC.swift */; };
+		428BD66528DE3B7B000B8D69 /* UIViewController+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428BD66428DE3B7B000B8D69 /* UIViewController+Ext.swift */; };
+		428BD66728DE3FDC000B8D69 /* MMError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428BD66628DE3FDC000B8D69 /* MMError.swift */; };
 		429A021228CFA1CE00CD6862 /* MMTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429A021128CFA1CE00CD6862 /* MMTextField.swift */; };
 		429A021528CFADD200CD6862 /* UITextField+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429A021428CFADD200CD6862 /* UITextField+Ext.swift */; };
 		429A021928CFB52B00CD6862 /* MMTintedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429A021828CFB52B00CD6862 /* MMTintedButton.swift */; };
@@ -34,6 +39,7 @@
 		429A021D28CFCF4600CD6862 /* UIView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429A021C28CFCF4600CD6862 /* UIView+Ext.swift */; };
 		429A022028CFD0E000CD6862 /* MMBodyLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429A021F28CFD0E000CD6862 /* MMBodyLabel.swift */; };
 		42E18CB728D7A8FE0068414E /* MMDataLoadingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E18CB628D7A8FE0068414E /* MMDataLoadingVC.swift */; };
+		42E18CB928DB98EA0068414E /* UIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E18CB828DB98EA0068414E /* UIImage+Ext.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +60,11 @@
 		42867B6F2896FC8100E5159F /* LoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginManager.swift; sourceTree = "<group>"; };
 		42867B7128998A3200E5159F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		42867B7F289C4CC600E5159F /* SingUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingUpViewController.swift; sourceTree = "<group>"; };
+		428BD65D28DE30B0000B8D69 /* MMTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMTitleLabel.swift; sourceTree = "<group>"; };
+		428BD66028DE322A000B8D69 /* MMAlertContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMAlertContainerView.swift; sourceTree = "<group>"; };
+		428BD66228DE353B000B8D69 /* MMAlertVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMAlertVC.swift; sourceTree = "<group>"; };
+		428BD66428DE3B7B000B8D69 /* UIViewController+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Ext.swift"; sourceTree = "<group>"; };
+		428BD66628DE3FDC000B8D69 /* MMError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMError.swift; sourceTree = "<group>"; };
 		429A021128CFA1CE00CD6862 /* MMTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMTextField.swift; sourceTree = "<group>"; };
 		429A021428CFADD200CD6862 /* UITextField+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Ext.swift"; sourceTree = "<group>"; };
 		429A021828CFB52B00CD6862 /* MMTintedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMTintedButton.swift; sourceTree = "<group>"; };
@@ -61,6 +72,7 @@
 		429A021C28CFCF4600CD6862 /* UIView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Ext.swift"; sourceTree = "<group>"; };
 		429A021F28CFD0E000CD6862 /* MMBodyLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMBodyLabel.swift; sourceTree = "<group>"; };
 		42E18CB628D7A8FE0068414E /* MMDataLoadingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMDataLoadingVC.swift; sourceTree = "<group>"; };
+		42E18CB828DB98EA0068414E /* UIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ext.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,9 +155,18 @@
 			path = Managers;
 			sourceTree = "<group>";
 		};
+		428BD65F28DE31FC000B8D69 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				428BD66028DE322A000B8D69 /* MMAlertContainerView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		429A020F28CFA15E00CD6862 /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
+				428BD65F28DE31FC000B8D69 /* Views */,
 				42E18CB528D7A8C00068414E /* ViewControllers */,
 				4283BAAE28D5E20800A54F0F /* ImageViews */,
 				429A021E28CFD0AD00CD6862 /* Labels */,
@@ -168,6 +189,8 @@
 			children = (
 				429A021428CFADD200CD6862 /* UITextField+Ext.swift */,
 				429A021C28CFCF4600CD6862 /* UIView+Ext.swift */,
+				42E18CB828DB98EA0068414E /* UIImage+Ext.swift */,
+				428BD66428DE3B7B000B8D69 /* UIViewController+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -175,6 +198,7 @@
 		429A021628CFAF5C00CD6862 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				428BD66628DE3FDC000B8D69 /* MMError.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -193,6 +217,7 @@
 			isa = PBXGroup;
 			children = (
 				429A021F28CFD0E000CD6862 /* MMBodyLabel.swift */,
+				428BD65D28DE30B0000B8D69 /* MMTitleLabel.swift */,
 			);
 			path = Labels;
 			sourceTree = "<group>";
@@ -201,6 +226,7 @@
 			isa = PBXGroup;
 			children = (
 				42E18CB628D7A8FE0068414E /* MMDataLoadingVC.swift */,
+				428BD66228DE353B000B8D69 /* MMAlertVC.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -287,21 +313,27 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				428BD66328DE353B000B8D69 /* MMAlertVC.swift in Sources */,
 				42E18CB728D7A8FE0068414E /* MMDataLoadingVC.swift in Sources */,
 				42867B6B28959CE400E5159F /* SingInViewController.swift in Sources */,
 				42867B80289C4CC600E5159F /* SingUpViewController.swift in Sources */,
 				42867B702896FC8100E5159F /* LoginManager.swift in Sources */,
 				429A022028CFD0E000CD6862 /* MMBodyLabel.swift in Sources */,
+				428BD66728DE3FDC000B8D69 /* MMError.swift in Sources */,
+				42E18CB928DB98EA0068414E /* UIImage+Ext.swift in Sources */,
 				42867B672895901000E5159F /* AddNewViewController.swift in Sources */,
 				429A021D28CFCF4600CD6862 /* UIView+Ext.swift in Sources */,
 				42867B6428958F5B00E5159F /* MainTabViewController.swift in Sources */,
 				4283BAB428D606B100A54F0F /* MMCircleButton.swift in Sources */,
 				429A021B28CFCC7100CD6862 /* MMPlainButton.swift in Sources */,
+				428BD65E28DE30B0000B8D69 /* MMTitleLabel.swift in Sources */,
 				426E4A0328931180009C8E99 /* MapViewController.swift in Sources */,
+				428BD66528DE3B7B000B8D69 /* UIViewController+Ext.swift in Sources */,
 				429A021528CFADD200CD6862 /* UITextField+Ext.swift in Sources */,
 				4283BAB028D5E24A00A54F0F /* MMMuralImageView.swift in Sources */,
 				4283BAB228D5E45800A54F0F /* MMMuralPlaceholderView.swift in Sources */,
 				429A021928CFB52B00CD6862 /* MMTintedButton.swift in Sources */,
+				428BD66128DE322A000B8D69 /* MMAlertContainerView.swift in Sources */,
 				426E49FF28931180009C8E99 /* AppDelegate.swift in Sources */,
 				426E4A0128931180009C8E99 /* SceneDelegate.swift in Sources */,
 				429A021228CFA1CE00CD6862 /* MMTextField.swift in Sources */,

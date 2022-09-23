@@ -14,7 +14,7 @@ class MMMuralPlaceholderView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addSubViews(cameraImage, label)
+        addSubviews(cameraImage, label)
         configure()
         
     }
