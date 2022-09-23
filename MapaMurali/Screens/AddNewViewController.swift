@@ -125,6 +125,14 @@ class AddNewItemViewController: MMDataLoadingVC {
     }
     
     @objc func cameraImageViewTapped() {
+        let ac = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        ac.addAction(UIAlertAction(title: "Zrób zdjęcie", style: .default) { _ in self.actionSheetCameraButtonTapped() })
+        ac.addAction(UIAlertAction(title: "Wybierz z galerii", style: .default) { _ in self.actionSheetLibraryButtonTapped() })
+        ac.addAction(UIAlertAction(title: "Wróć", style: .cancel))
+        present(ac, animated: true)
+    }
+    
+    func actionSheetCameraButtonTapped() {
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
             let imagePickerController = UIImagePickerController()
             imagePickerController.delegate = self
@@ -132,6 +140,16 @@ class AddNewItemViewController: MMDataLoadingVC {
             self.present(imagePickerController, animated: true)
         }
     }
+    
+    func actionSheetLibraryButtonTapped() {
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+            let imagePickerController = UIImagePickerController()
+            imagePickerController.delegate = self
+            imagePickerController.sourceType = .photoLibrary
+            self.present(imagePickerController, animated: true)
+        }
+    }
+    
     
     func configureAdressTextField() {
         let localizationButton = MMCircleButton(color: .systemGreen, systemImageName: "location.circle.fill")
