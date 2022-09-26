@@ -34,7 +34,7 @@ class MMDataLoadingVC: UIViewController {
     
     func dismissLoadingView() {
         self.containerView.removeFromSuperview()
-        self.containerView = nil
+        //self.containerView = nil
     }
 
 

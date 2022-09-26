@@ -10,10 +10,13 @@ import AVFoundation
 import CoreLocation
 
 class AddNewItemViewController: MMDataLoadingVC {
-    
     let locationManager = CLLocationManager()
     let geoCoder = CLGeocoder()
     var currentLocation: CLLocation?
+    var databaseManager: DatabaseManager
+    
+    var fullSizeImageData: Data?
+    var thumbnailImageData: Data?
     
     let selectedImageView = MMMuralImageView(frame: .zero)
     let removeImageButton = MMCircleButton(color: .label, systemImageName: "xmark")
@@ -42,6 +45,9 @@ class AddNewItemViewController: MMDataLoadingVC {
         cityTextField.delegate = self
         authorTextField.delegate = self
         locationManager.delegate = self
+        
+        databaseManager.delegate = self
+        
         layoutUI()
         configureAdressTextField()
         createDissmisKeyboardTapGesture()
@@ -178,7 +184,14 @@ class AddNewItemViewController: MMDataLoadingVC {
             }
             print(coordinates)
             
-//            self.presentMMAlert(title: "Udało się!", message: "Twój mural został dodany! Dzięki!", buttonTitle: "Ok")
+            
+            guard let fullSizeImageData = self.fullSizeImageData, let thumbnailImageData = self.thumbnailImageData else {
+                self.presentMMAlert(title: "Nie można załadować zdjęcia.", message: "Wybierz lub zrób inne zdjęcie i spróbuj ponownie.", buttonTitle: "Ok")
+                return
+            }
+
+            self.databaseManager.addNewItemToDatabase(itemData: [:], fullSizeImageData: fullSizeImageData, thumbnailData: thumbnailImageData)
+            self.showLoadingView()
         }
     }
     
@@ -234,6 +247,15 @@ class AddNewItemViewController: MMDataLoadingVC {
             callToActionBatton.heightAnchor.constraint(equalToConstant: height)
         ])
     }
+    
+    init(databaseManager: DatabaseManager) {
+        self.databaseManager = databaseManager
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
 
 extension AddNewItemViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -244,11 +266,13 @@ extension AddNewItemViewController: UIImagePickerControllerDelegate, UINavigatio
         
         selectedImageView.image = UIImage(data: compressedImage!)
         
-        print("Compressed image: \(compressedImage)")
+        self.fullSizeImageData = compressedImage
+//        print("Compressed image: \(compressedImage)")
         
         let resizedImage = image?.aspectFittedToHeight(70)
         let thumbnailData = resizedImage?.jpegData(compressionQuality: 0.1)
-        print("Resized image: \(thumbnailData)")
+        self.thumbnailImageData = thumbnailData
+//        print("Resized image: \(thumbnailData)")
         
         
         selectedImageView.didSelectedImage()
@@ -300,4 +324,18 @@ extension AddNewItemViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print(error)
     }
+}
+
+extension AddNewItemViewController: DatabaseManagerDelegate {
+    func successToAddNewItem() {
+        dismissLoadingView()
+        self.presentMMAlert(title: "Udało się!", message: "Twój mural został dodany! Dzięki za pomoc w tworzeniu naszej mapy!", buttonTitle: "Ok")
+
+    }
+    
+    func failedToAddNewItem(errortitle: String, errorMessage: String) {
+        dismissLoadingView()
+        self.presentMMAlert(title: errortitle, message: errorMessage, buttonTitle: "Ok")
+    }
+
 }

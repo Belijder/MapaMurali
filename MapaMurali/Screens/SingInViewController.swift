@@ -13,6 +13,8 @@ import RxCocoa
 class SingInViewController: UIViewController {
     
     var loginManager = LoginManager()
+    var databaseManager = DatabaseManager()
+    
     var bag = DisposeBag()
     
     private let nameTextField = MMTextField(placeholder: "e-mail", type: .email)
@@ -68,7 +70,7 @@ class SingInViewController: UIViewController {
         loginManager.userIsLoggedIn
             .subscribe(onNext: { value in
                 if value == true {
-                    let vc = MainTabViewController(loginManager: self.loginManager)
+                    let vc = MainTabBarViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
                     vc.modalPresentationStyle = .fullScreen
                     self.present(vc, animated: true, completion: nil)
                 }

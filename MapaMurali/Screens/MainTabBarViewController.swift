@@ -7,15 +7,16 @@
 
 import UIKit
 
-class MainTabViewController: UITabBarController {
+class MainTabBarViewController: UITabBarController {
     
     var loginManager: LoginManager
+    var databaseManager: DatabaseManager
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let vc1 = UINavigationController(rootViewController: MapViewController())
-        let vc2 = UINavigationController(rootViewController: AddNewItemViewController())
+        let vc2 = UINavigationController(rootViewController: AddNewItemViewController(databaseManager: databaseManager))
         let vc3 = UINavigationController(rootViewController: UserAccountViewController(loginManager: loginManager))
         
         vc1.tabBarItem.image = UIImage(systemName: "map")
@@ -36,8 +37,9 @@ class MainTabViewController: UITabBarController {
         setViewControllers([vc1, vc2, vc3], animated: true)
     }
     
-    init(loginManager: LoginManager) {
+    init(loginManager: LoginManager, databaseManager: DatabaseManager) {
         self.loginManager = loginManager
+        self.databaseManager = databaseManager
         super.init(nibName: nil, bundle: nil)
     }
     
