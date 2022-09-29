@@ -13,6 +13,7 @@ struct Mural: Codable {
     let adress: String
     let author: String?
     let addedBy: String
+    let addedDate: Date
     let imagePath: String?
     let thumbnailPath: String?
 }

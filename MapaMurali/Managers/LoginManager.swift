@@ -27,7 +27,7 @@ class LoginManager {
         let user = Auth.auth().currentUser
         if user != nil {
             userIsLoggedIn.onNext(true)
-            print("\(user?.uid ?? "Msm")")
+            print("\(user?.uid ?? "Unknown")")
         } else {
             print("🔴 User is not logged.")
         }

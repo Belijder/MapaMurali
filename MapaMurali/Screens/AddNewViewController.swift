@@ -10,13 +10,12 @@ import AVFoundation
 import CoreLocation
 
 class AddNewItemViewController: MMDataLoadingVC {
+    
     let locationManager = CLLocationManager()
     let geoCoder = CLGeocoder()
-    var currentLocation: CLLocation?
+    let vm = AddNewViewModel()
+
     var databaseManager: DatabaseManager
-    
-    var fullSizeImageData: Data?
-    var thumbnailImageData: Data?
     
     let selectedImageView = MMMuralImageView(frame: .zero)
     let removeImageButton = MMCircleButton(color: .label, systemImageName: "xmark")
@@ -179,19 +178,24 @@ class AddNewItemViewController: MMDataLoadingVC {
         geoCoder.geocodeAddressString(adressTextField.text!) { placemark, error in
             
             guard error == nil, let coordinates = placemark![0].location?.coordinate else {
-                self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: MMError.locationRetrivalFaild.rawValue, buttonTitle: "Ok")
+                self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: MMError.failedToAddToDB.rawValue, buttonTitle: "Ok")
                 return
             }
             print(coordinates)
             
             
-            guard let fullSizeImageData = self.fullSizeImageData, let thumbnailImageData = self.thumbnailImageData else {
+            guard let fullSizeImageData = self.vm.fullSizeImageData, let thumbnailImageData = self.vm.thumbnailImageData else {
                 self.presentMMAlert(title: "Nie można załadować zdjęcia.", message: "Wybierz lub zrób inne zdjęcie i spróbuj ponownie.", buttonTitle: "Ok")
                 return
             }
 
-            self.databaseManager.addNewItemToDatabase(itemData: [:], fullSizeImageData: fullSizeImageData, thumbnailData: thumbnailImageData)
-            self.showLoadingView()
+            do {
+                let data = try self.vm.createDataforDatabase(author: self.authorTextField.text)
+                self.databaseManager.addNewItemToDatabase(itemData: data, fullSizeImageData: fullSizeImageData, thumbnailData: thumbnailImageData)
+                self.showLoadingView()
+            } catch let error {
+                self.presentMMAlert(title: "Mural nie został dodany", message: error.localizedDescription, buttonTitle: "Ok")
+            }
         }
     }
     
@@ -266,15 +270,12 @@ extension AddNewItemViewController: UIImagePickerControllerDelegate, UINavigatio
         
         selectedImageView.image = UIImage(data: compressedImage!)
         
-        self.fullSizeImageData = compressedImage
-//        print("Compressed image: \(compressedImage)")
+        self.vm.fullSizeImageData = compressedImage
         
         let resizedImage = image?.aspectFittedToHeight(70)
         let thumbnailData = resizedImage?.jpegData(compressionQuality: 0.1)
-        self.thumbnailImageData = thumbnailData
-//        print("Resized image: \(thumbnailData)")
-        
-        
+        self.vm.thumbnailImageData = thumbnailData
+
         selectedImageView.didSelectedImage()
         removeImageButton.alpha = 1.0
         
@@ -298,9 +299,9 @@ extension AddNewItemViewController: CLLocationManagerDelegate {
             return
         }
         
-        self.currentLocation = CLLocation(latitude: lastLocation.latitude, longitude: lastLocation.longitude)
+        self.vm.currentLocation = CLLocation(latitude: lastLocation.latitude, longitude: lastLocation.longitude)
         
-        guard let location = currentLocation else {
+        guard let location = vm.currentLocation else {
             self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: MMError.locationRetrivalFaild.rawValue, buttonTitle: "Ok")
             return
         }
@@ -317,6 +318,7 @@ extension AddNewItemViewController: CLLocationManagerDelegate {
             
             self.adressTextField.text = "\(streetName) \(streetNumber)"
             self.cityTextField.text = "\(cityName)"
+            self.vm.adress = "\(streetName) \(streetNumber), \(cityName)"
             self.dismissLoadingView()
         }
     }
