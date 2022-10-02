@@ -14,6 +14,6 @@ struct Mural: Codable {
     let author: String?
     let addedBy: String
     let addedDate: Date
-    let imagePath: String?
-    let thumbnailPath: String?
+    let imageURL: String
+    let thumbnailURL: String
 }

@@ -12,6 +12,7 @@ import CoreLocation
 class MapViewController: UIViewController {
     
     let map = MKMapView()
+    var databaseManager: DatabaseManager
     let locationManager = CLLocationManager()
     var userLocation: CLLocationCoordinate2D?
     
@@ -54,6 +55,16 @@ class MapViewController: UIViewController {
             map.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
             
         ])
+    }
+    
+    init(databaseManager: DatabaseManager) {
+        self.databaseManager = databaseManager
+        databaseManager.fetchMuralItemsFromDatabase()
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 

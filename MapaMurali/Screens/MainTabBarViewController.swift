@@ -15,7 +15,7 @@ class MainTabBarViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let vc1 = UINavigationController(rootViewController: MapViewController())
+        let vc1 = UINavigationController(rootViewController: MapViewController(databaseManager: databaseManager))
         let vc2 = UINavigationController(rootViewController: AddNewItemViewController(databaseManager: databaseManager))
         let vc3 = UINavigationController(rootViewController: UserAccountViewController(loginManager: loginManager))
         
