@@ -9,6 +9,8 @@ import UIKit
 import FirebaseStorage
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+import RxSwift
+import RxCocoa
 
 protocol DatabaseManagerDelegate: AnyObject {
     func successToAddNewItem()
@@ -24,11 +26,7 @@ class DatabaseManager {
     let storageRef = Storage.storage().reference()
     let db = Firestore.firestore()
     
-    var muralItems: [Mural] = [] {
-        didSet {
-            print("murals sets")
-        }
-    }
+    var muralItems = BehaviorSubject<[Mural]>(value: [])
     
     weak var delegate: DatabaseManagerDelegate?
     
@@ -75,12 +73,12 @@ class DatabaseManager {
             if let error = error {
                 print("NIE UDAŁO SIĘ POBRAĆ MURALI Z BAZY DANYCH. ERROR: \(error.localizedDescription)")
             } else {
-                for document in querySnapshot!.documents {
+                for document in querySnapshot!.documents { 
                     let docRef = self.db.collection("murals").document(document.documentID)
                     docRef.getDocument(as: Mural.self) { result in
                         switch result {
                         case .success(let mural):
-                            self.muralItems.append(mural)
+                            self.muralItems.onNext([mural])
                             print(self.muralItems)
                         case .failure(_):
                             print("FAILED TO GET DOCUMENT: \(document.documentID)")
@@ -90,4 +88,5 @@ class DatabaseManager {
             }
         }
     }
+    
 }

@@ -8,6 +8,8 @@
 import UIKit
 import MapKit
 import CoreLocation
+import RxSwift
+import QuartzCore
 
 class MapViewController: UIViewController {
     
@@ -16,11 +18,16 @@ class MapViewController: UIViewController {
     let locationManager = CLLocationManager()
     var userLocation: CLLocationCoordinate2D?
     
+    private var bag = DisposeBag()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        addMuralsItemsObserver()
         setMapConstraints()
+        configureMapView()
         configureLocationManager()
-        
+        databaseManager.fetchMuralItemsFromDatabase()
+    
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -35,6 +42,7 @@ class MapViewController: UIViewController {
     
     func configureMapView() {
         map.delegate = self
+        //map.register(MMAnnotationView.self, forAnnotationViewWithReuseIdentifier: MMAnnotationView.reuseIdentifier)
     }
     
     
@@ -43,6 +51,22 @@ class MapViewController: UIViewController {
                                                                        longitude: coordinate.longitude),
                                                                        span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
     }
+    
+    func addMuralsItemsObserver() {
+        databaseManager.muralItems
+            .subscribe(onNext: { murals in
+                for mural in murals {
+                    let pin = MKPointAnnotation()
+                    pin.title = mural.adress
+                    pin.subtitle = mural.thumbnailURL
+                    pin.coordinate = CLLocationCoordinate2D(latitude: mural.latitude, longitude: mural.longitude)
+                    self.map.addAnnotation(pin)
+                    print("Dodano mural")
+                }
+            })
+            .disposed(by: bag)
+    }
+    
     
     func setMapConstraints() {
         view.addSubview(map)
@@ -59,7 +83,6 @@ class MapViewController: UIViewController {
     
     init(databaseManager: DatabaseManager) {
         self.databaseManager = databaseManager
-        databaseManager.fetchMuralItemsFromDatabase()
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -88,6 +111,22 @@ extension MapViewController: CLLocationManagerDelegate {
 }
 
 extension MapViewController: MKMapViewDelegate {
-    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        if annotation is MKUserLocation {
+            //Here is annotation for userlogaction. To manage later...
+            return nil
+        }
+        
+        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: MMAnnotationView.reuseIdentifier)
+        
+        if annotationView == nil {
+            annotationView = MMAnnotationView(annotation: annotation, reuseIdentifier: MMAnnotationView.reuseIdentifier)
+        } else {
+            annotationView?.annotation = annotation
+        }
+        
+        
+        return annotationView
+    }
 }
 

@@ -19,4 +19,34 @@ extension UIImage {
             self.draw(in: CGRect(origin: .zero, size: newSize))
         }
     }
+    
+    func cropImageToCircle() -> UIImage {
+        let sourceImage = self
+        
+        let sideLenght = min(sourceImage.size.width, sourceImage.size.height)
+        let sourceSize = sourceImage.size
+        let xOffset = (sourceSize.width - sideLenght) / 2.0
+        let yOffset = (sourceSize.height - sideLenght) / 2.0
+        
+        let cropRect = CGRect(x: xOffset, y: yOffset, width: sideLenght, height: sideLenght).integral
+
+        let imageRendererFormat = sourceImage.imageRendererFormat
+        imageRendererFormat.opaque = false
+        
+        let circleCroppedImage = UIGraphicsImageRenderer(
+            size: cropRect.size,
+            format: imageRendererFormat).image { context in
+                let drawRect = CGRect(origin: .zero, size: cropRect.size)
+                UIBezierPath(ovalIn: drawRect).addClip()
+                let drawImageRect = CGRect(
+                    origin: CGPoint(x: -xOffset, y: -yOffset),
+                    size: sourceImage.size)
+                sourceImage.draw(in: drawImageRect)
+            }
+        
+        return circleCroppedImage
+        
+    
+        
+    }
 }

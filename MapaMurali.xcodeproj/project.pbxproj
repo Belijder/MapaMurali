@@ -7,12 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4200210D28E9B0E000394299 /* MMAnnotationPinImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4200210C28E9B0E000394299 /* MMAnnotationPinImageView.swift */; };
 		426E49FF28931180009C8E99 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426E49FE28931180009C8E99 /* AppDelegate.swift */; };
 		426E4A0128931180009C8E99 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426E4A0028931180009C8E99 /* SceneDelegate.swift */; };
 		426E4A0328931180009C8E99 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426E4A0228931180009C8E99 /* MapViewController.swift */; };
 		426E4A0828931184009C8E99 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 426E4A0728931184009C8E99 /* Assets.xcassets */; };
 		426E4A0B28931184009C8E99 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 426E4A0928931184009C8E99 /* LaunchScreen.storyboard */; };
 		427CAB5528E60D3200DA7247 /* AddNewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427CAB5428E60D3200DA7247 /* AddNewViewModel.swift */; };
+		427CAB5828E9A83400DA7247 /* MMAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427CAB5728E9A83300DA7247 /* MMAnnotationView.swift */; };
 		4283BAB028D5E24A00A54F0F /* MMMuralImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4283BAAF28D5E24A00A54F0F /* MMMuralImageView.swift */; };
 		4283BAB228D5E45800A54F0F /* MMMuralPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4283BAB128D5E45800A54F0F /* MMMuralPlaceholderView.swift */; };
 		4283BAB428D606B100A54F0F /* MMCircleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4283BAB328D606B100A54F0F /* MMCircleButton.swift */; };
@@ -48,6 +50,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4200210C28E9B0E000394299 /* MMAnnotationPinImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMAnnotationPinImageView.swift; sourceTree = "<group>"; };
 		426E49FB28931180009C8E99 /* MapaMurali.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MapaMurali.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		426E49FE28931180009C8E99 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		426E4A0028931180009C8E99 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -56,6 +59,7 @@
 		426E4A0A28931184009C8E99 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		426E4A0C28931184009C8E99 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		427CAB5428E60D3200DA7247 /* AddNewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewViewModel.swift; sourceTree = "<group>"; };
+		427CAB5728E9A83300DA7247 /* MMAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMAnnotationView.swift; sourceTree = "<group>"; };
 		4283BAAF28D5E24A00A54F0F /* MMMuralImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMMuralImageView.swift; sourceTree = "<group>"; };
 		4283BAB128D5E45800A54F0F /* MMMuralPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMMuralPlaceholderView.swift; sourceTree = "<group>"; };
 		4283BAB328D606B100A54F0F /* MMCircleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMCircleButton.swift; sourceTree = "<group>"; };
@@ -145,11 +149,20 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
+		427CAB5628E9A7EB00DA7247 /* AnnotationsViews */ = {
+			isa = PBXGroup;
+			children = (
+				427CAB5728E9A83300DA7247 /* MMAnnotationView.swift */,
+			);
+			path = AnnotationsViews;
+			sourceTree = "<group>";
+		};
 		4283BAAE28D5E20800A54F0F /* ImageViews */ = {
 			isa = PBXGroup;
 			children = (
 				4283BAAF28D5E24A00A54F0F /* MMMuralImageView.swift */,
 				4283BAB128D5E45800A54F0F /* MMMuralPlaceholderView.swift */,
+				4200210C28E9B0E000394299 /* MMAnnotationPinImageView.swift */,
 			);
 			path = ImageViews;
 			sourceTree = "<group>";
@@ -195,6 +208,7 @@
 		429A020F28CFA15E00CD6862 /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
+				427CAB5628E9A7EB00DA7247 /* AnnotationsViews */,
 				428BD65F28DE31FC000B8D69 /* Views */,
 				42E18CB528D7A8C00068414E /* ViewControllers */,
 				4283BAAE28D5E20800A54F0F /* ImageViews */,
@@ -348,11 +362,13 @@
 				428BD66328DE353B000B8D69 /* MMAlertVC.swift in Sources */,
 				42E18CB728D7A8FE0068414E /* MMDataLoadingVC.swift in Sources */,
 				4289AEC828E216C200C3FFF5 /* Mural.swift in Sources */,
+				4200210D28E9B0E000394299 /* MMAnnotationPinImageView.swift in Sources */,
 				4289AEC028E2110500C3FFF5 /* DatabaseManager.swift in Sources */,
 				42867B6B28959CE400E5159F /* SingInViewController.swift in Sources */,
 				42867B80289C4CC600E5159F /* SingUpViewController.swift in Sources */,
 				42867B702896FC8100E5159F /* LoginManager.swift in Sources */,
 				429A022028CFD0E000CD6862 /* MMBodyLabel.swift in Sources */,
+				427CAB5828E9A83400DA7247 /* MMAnnotationView.swift in Sources */,
 				428BD66728DE3FDC000B8D69 /* MMError.swift in Sources */,
 				42E18CB928DB98EA0068414E /* UIImage+Ext.swift in Sources */,
 				42867B672895901000E5159F /* AddNewViewController.swift in Sources */,
