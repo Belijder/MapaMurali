@@ -17,6 +17,7 @@ class MapViewController: UIViewController {
     var databaseManager: DatabaseManager
     let locationManager = CLLocationManager()
     var userLocation: CLLocationCoordinate2D?
+    var mapIsLocatingUser = true
     
     private var bag = DisposeBag()
     
@@ -25,6 +26,7 @@ class MapViewController: UIViewController {
         addMuralsItemsObserver()
         setMapConstraints()
         configureMapView()
+        setupUserTrackingButton()
         configureLocationManager()
         databaseManager.fetchMuralItemsFromDatabase()
     
@@ -42,14 +44,16 @@ class MapViewController: UIViewController {
     
     func configureMapView() {
         map.delegate = self
-        //map.register(MMAnnotationView.self, forAnnotationViewWithReuseIdentifier: MMAnnotationView.reuseIdentifier)
+        map.showsUserLocation = true
+        map.userTrackingMode = .followWithHeading
+        setMapRegion(with: map.userLocation.coordinate)
     }
     
-    
     func setMapRegion(with coordinate: CLLocationCoordinate2D) {
-        map.region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: coordinate.latitude,
+        let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: coordinate.latitude,
                                                                        longitude: coordinate.longitude),
                                                                        span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+        map.setRegion(region, animated: true)
     }
     
     func addMuralsItemsObserver() {
@@ -81,6 +85,22 @@ class MapViewController: UIViewController {
         ])
     }
     
+    func setupUserTrackingButton() {
+
+        let button = MKUserTrackingButton(mapView: map)
+    
+        button.layer.backgroundColor = UIColor(white: 1, alpha: 0.8).cgColor
+        button.layer.borderColor = UIColor.white.cgColor
+        button.layer.borderWidth = 1
+        button.layer.cornerRadius = 5
+        button.translatesAutoresizingMaskIntoConstraints = false
+        map.addSubview(button)
+
+        NSLayoutConstraint.activate([button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
+                                     button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10)
+        ])
+    }
+    
     init(databaseManager: DatabaseManager) {
         self.databaseManager = databaseManager
         super.init(nibName: nil, bundle: nil)
@@ -93,16 +113,13 @@ class MapViewController: UIViewController {
 
 extension MapViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        
-        guard let location = locations.last else { return }
-        setMapRegion(with: location.coordinate)
 
     }
-    
+
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print(error)
     }
-    
+
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if status == .authorizedAlways {
             locationManager.requestLocation()
@@ -112,21 +129,35 @@ extension MapViewController: CLLocationManagerDelegate {
 
 extension MapViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        if annotation is MKUserLocation {
-            //Here is annotation for userlogaction. To manage later...
+        
+        if let item = annotation as? MKPointAnnotation {
+            let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: MMAnnotationView.reuseIdentifier)
+                ?? MMAnnotationView(annotation: annotation, reuseIdentifier: MMAnnotationView.reuseIdentifier)
+            
+            annotationView.annotation = item
+            annotationView.clusteringIdentifier = "muralItemClustered"
+            
+            return annotationView
+            
+        } else if let cluster = annotation as? MKClusterAnnotation {
+            
+            let clusterView = mapView.dequeueReusableAnnotationView(withIdentifier: MMAnnotationClusterView.reuseIdentifier)
+                ?? MMAnnotationClusterView(annotation: annotation, reuseIdentifier: MMAnnotationClusterView.reuseIdentifier)
+            
+            clusterView.annotation = cluster
+            
+            return clusterView
+        } else {
             return nil
         }
-        
-        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: MMAnnotationView.reuseIdentifier)
-        
-        if annotationView == nil {
-            annotationView = MMAnnotationView(annotation: annotation, reuseIdentifier: MMAnnotationView.reuseIdentifier)
-        } else {
-            annotationView?.annotation = annotation
-        }
-        
-        
-        return annotationView
+    }
+    
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        print("Tapnięto \(view)")
+    }
+    
+    func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
+        print("Odtapnięto \(view)")
     }
 }
 

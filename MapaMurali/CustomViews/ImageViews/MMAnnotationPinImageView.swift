@@ -31,7 +31,6 @@ class MMAnnotationPinImageView: UIImageView {
     
     private func configure() {
         clipsToBounds = true
-        image = UIImage(systemName: "camera.viewfinder")
         translatesAutoresizingMaskIntoConstraints = false
     }
     
