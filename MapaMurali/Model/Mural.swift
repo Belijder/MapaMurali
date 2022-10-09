@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Mural: Codable {
+struct Mural: Codable, Hashable {
     let docRef: String
     let longitude: Double
     let latitude: Double

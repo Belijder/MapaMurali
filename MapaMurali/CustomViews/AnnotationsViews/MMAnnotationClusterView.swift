@@ -26,7 +26,7 @@ final class MMAnnotationClusterView: MKAnnotationView {
                     UIBezierPath(ovalIn: CGRect(x: 0, y: 0, width: 40, height: 40)).fill()
                     
                     let attributes = [
-                        NSAttributedString.Key.foregroundColor: MMColors.secondary,
+                        NSAttributedString.Key.foregroundColor: UIColor.white,
                         NSAttributedString.Key.font: UIFont.systemFont(ofSize: 20, weight: .medium)]
                     
                     let text = "\(count)"

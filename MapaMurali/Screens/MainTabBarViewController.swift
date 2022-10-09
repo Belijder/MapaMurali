@@ -18,14 +18,17 @@ class MainTabBarViewController: UITabBarController {
         let vc1 = UINavigationController(rootViewController: MapViewController(databaseManager: databaseManager))
         let vc2 = UINavigationController(rootViewController: AddNewItemViewController(databaseManager: databaseManager))
         let vc3 = UINavigationController(rootViewController: UserAccountViewController(loginManager: loginManager))
+        let vc4 = UINavigationController(rootViewController: MuralsCollectionViewController(databaseManager: databaseManager))
         
         vc1.tabBarItem.image = UIImage(systemName: "map")
         vc2.tabBarItem.image = UIImage(systemName: "plus")
         vc3.tabBarItem.image = UIImage(systemName: "person")
+        vc4.tabBarItem.image = UIImage(systemName: "photo.on.rectangle.angled")
         
-        vc1.title = "Mapa murali"
-        vc2.title = "Dodaj mural"
+        vc1.title = "Mapa"
+        vc2.title = "Dodaj"
         vc3.title = "Moje konto"
+        vc4.title = "Murale"
         
         let blur = UIBlurEffect(style: .systemThinMaterial)
         let blurView = UIVisualEffectView(effect: blur)
@@ -34,7 +37,7 @@ class MainTabBarViewController: UITabBarController {
         tabBar.addSubview(blurView)
         tabBar.tintColor = MMColors.primary
         
-        setViewControllers([vc1, vc2, vc3], animated: true)
+        setViewControllers([vc1, vc4, vc2, vc3], animated: true)
     }
     
     init(loginManager: LoginManager, databaseManager: DatabaseManager) {
