@@ -154,16 +154,19 @@ extension MapViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         print("Tapnięto \(view)")
         guard let annotation = view.annotation else { return }
-        guard let docRef = annotation.title else { return }
-        guard let index = databaseManager.murals.firstIndex(where: { $0.docRef == docRef }) else { return }
-        let muralItem = databaseManager.murals[index]
-        let vc = MuralDetailsViewController(muralItem: muralItem)
-        vc.title = muralItem.adress
-        let nc = UINavigationController(rootViewController: vc)
         
-        nc.modalPresentationStyle = .fullScreen
-        self.present(nc, animated: true) {
-            self.map.deselectAnnotation(view.annotation, animated: true)
+        if let annotation = annotation as? MKPointAnnotation {
+            guard let docRef = annotation.title else { return }
+            guard let index = databaseManager.murals.firstIndex(where: { $0.docRef == docRef }) else { return }
+            let muralItem = databaseManager.murals[index]
+            let vc = MuralDetailsViewController(muralItem: muralItem)
+            vc.title = muralItem.adress
+            let nc = UINavigationController(rootViewController: vc)
+            
+            nc.modalPresentationStyle = .fullScreen
+            self.present(nc, animated: true) {
+                self.map.deselectAnnotation(view.annotation, animated: true)
+            }
         }
     }
     
