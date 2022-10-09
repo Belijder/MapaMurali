@@ -20,7 +20,6 @@ final class MMAnnotationView: MKAnnotationView {
         frame = CGRect(x: 0, y: 0, width: 50, height: 50)
         centerOffset = CGPoint(x: 0, y: -frame.size.height / 2)
         canShowCallout = false
-        layer.cornerRadius = 25
         
         setupUI()
     }

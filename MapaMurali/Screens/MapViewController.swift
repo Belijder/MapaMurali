@@ -61,7 +61,7 @@ class MapViewController: UIViewController {
             .subscribe(onNext: { murals in
                 for mural in murals {
                     let pin = MKPointAnnotation()
-                    pin.title = mural.adress
+                    pin.title = mural.docRef
                     pin.subtitle = mural.thumbnailURL
                     pin.coordinate = CLLocationCoordinate2D(latitude: mural.latitude, longitude: mural.longitude)
                     self.map.addAnnotation(pin)
@@ -86,7 +86,6 @@ class MapViewController: UIViewController {
     }
     
     func setupUserTrackingButton() {
-
         let button = MKUserTrackingButton(mapView: map)
     
         button.layer.backgroundColor = UIColor(white: 1, alpha: 0.8).cgColor
@@ -154,6 +153,18 @@ extension MapViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         print("Tapnięto \(view)")
+        guard let annotation = view.annotation else { return }
+        guard let docRef = annotation.title else { return }
+        guard let index = databaseManager.murals.firstIndex(where: { $0.docRef == docRef }) else { return }
+        let muralItem = databaseManager.murals[index]
+        let vc = MuralDetailsViewController(muralItem: muralItem)
+        vc.title = muralItem.adress
+        let nc = UINavigationController(rootViewController: vc)
+        
+        nc.modalPresentationStyle = .fullScreen
+        self.present(nc, animated: true) {
+            self.map.deselectAnnotation(view.annotation, animated: true)
+        }
     }
     
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {

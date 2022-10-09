@@ -27,6 +27,7 @@ class DatabaseManager {
     let db = Firestore.firestore()
     
     var muralItems = BehaviorSubject<[Mural]>(value: [])
+    var murals = [Mural]()
     
     weak var delegate: DatabaseManagerDelegate?
     
@@ -36,6 +37,7 @@ class DatabaseManager {
             if let error = error {
                 print("Error writing document: \(error)")
             } else {
+                newItemRef.updateData(["docRef" : newItemRef.documentID])
                 self.addImageToStorage(docRef: newItemRef, imageData: thumbnailData, imageType: .thumbnail)
                 self.addImageToStorage(docRef: newItemRef, imageData: fullSizeImageData, imageType: .fullSize)
             }
@@ -78,6 +80,7 @@ class DatabaseManager {
                     docRef.getDocument(as: Mural.self) { result in
                         switch result {
                         case .success(let mural):
+                            self.murals.append(mural)
                             self.muralItems.onNext([mural])
                             print(self.muralItems)
                         case .failure(_):
