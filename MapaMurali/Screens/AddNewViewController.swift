@@ -22,7 +22,7 @@ class AddNewItemViewController: MMDataLoadingVC {
     let adressTextField = MMTextField(placeholder: "Wpisz adres muralu", type: .custom)
     let cityTextField = MMTextField(placeholder: "Miasto", type: .custom)
     let authorTextField = MMTextField(placeholder: "Jeśli znasz, podaj autorów.", type: .custom)
-    let callToActionBatton = MMTintedButton(color: .systemGreen, title: "Dodaj mural")
+    let callToActionBatton = MMTintedButton(color: MMColors.primary, title: "Dodaj mural")
     
     var selectedImageViewWidthConstraint: NSLayoutConstraint!
     var selectedImageViewHeightConstraint: NSLayoutConstraint!
@@ -105,9 +105,9 @@ class AddNewItemViewController: MMDataLoadingVC {
     }
  
     override func viewDidLayoutSubviews() {
-        adressTextField.styleTextFieldWithBottomBorder(color: .systemGreen)
-        cityTextField.styleTextFieldWithBottomBorder(color: .systemGreen)
-        authorTextField.styleTextFieldWithBottomBorder(color: .systemGreen)
+        adressTextField.styleTextFieldWithBottomBorder(color: MMColors.primary)
+        cityTextField.styleTextFieldWithBottomBorder(color: MMColors.primary)
+        authorTextField.styleTextFieldWithBottomBorder(color: MMColors.primary)
     }
     
     private func configureRemoveImageButton() {
@@ -157,7 +157,7 @@ class AddNewItemViewController: MMDataLoadingVC {
     
     
     func configureAdressTextField() {
-        let localizationButton = MMCircleButton(color: .systemGreen, systemImageName: "location.circle.fill")
+        let localizationButton = MMCircleButton(color: MMColors.primary, systemImageName: "location.circle.fill")
         localizationButton.frame = CGRect(x: adressTextField.frame.size.width - 25, y: 25, width: 25, height: 25)
         adressTextField.rightView = localizationButton
         adressTextField.rightViewMode = .always

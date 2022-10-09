@@ -35,7 +35,7 @@ final class MMAnnotationClusterView: MKAnnotationView {
     }
     
     private func setupUI() {
-        backgroundColor = .systemBlue
+        backgroundColor = MMColors.primary
         addSubviews(countLabel)
         countLabel.pinToEdges(of: self)
     }

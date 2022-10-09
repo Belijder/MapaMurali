@@ -55,9 +55,9 @@ class SingUpViewController: UIViewController {
     }
     
     override func viewDidLayoutSubviews() {
-        emailTextField.styleTextFieldWithBottomBorder(color: .systemGreen)
-        passwordTextField.styleTextFieldWithBottomBorder(color: .systemGreen)
-        nickNameTextField.styleTextFieldWithBottomBorder(color: .systemGreen)
+        emailTextField.styleTextFieldWithBottomBorder(color: MMColors.primary)
+        passwordTextField.styleTextFieldWithBottomBorder(color: MMColors.primary)
+        nickNameTextField.styleTextFieldWithBottomBorder(color: MMColors.primary)
     }
     
     @objc func returnToSingInView(sender: UIButton!) {

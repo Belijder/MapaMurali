@@ -22,7 +22,7 @@ class MMAlertContainerView: UIView {
         backgroundColor = .systemBackground
         layer.cornerRadius = 16
         layer.borderWidth = 2
-        layer.borderColor = UIColor.systemGreen.cgColor
+        layer.borderColor = MMColors.primary.cgColor
         translatesAutoresizingMaskIntoConstraints = false
     }
 }

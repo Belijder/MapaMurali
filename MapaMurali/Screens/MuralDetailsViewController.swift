@@ -40,7 +40,7 @@ class MuralDetailsViewController: UIViewController {
     func configureViewController() {
         view.backgroundColor = .systemBackground
         navigationController?.isToolbarHidden = false
-        navigationController?.navigationBar.tintColor = .systemGreen
+        navigationController?.navigationBar.tintColor = MMColors.primary
         
         let closeButton = UIBarButtonItem(image: UIImage(systemName: "arrow.backward"), style: .plain, target: self, action: #selector(dismissVC))
         navigationItem.leftBarButtonItem = closeButton

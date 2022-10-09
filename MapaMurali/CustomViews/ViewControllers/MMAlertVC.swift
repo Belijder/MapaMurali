@@ -12,7 +12,7 @@ class MMAlertVC: UIViewController {
     let containerView = MMAlertContainerView()
     let titleLabel = MMTitleLabel(textAlignment: .center, fontSize: 20)
     let messageLabel = MMBodyLabel(textAlignment: .center)
-    let actionButton = MMTintedButton(color: .systemGreen, title: "Ok")
+    let actionButton = MMTintedButton(color: MMColors.primary, title: "Ok")
     
     var alertTitle: String?
     var alertMessage: String?

@@ -19,10 +19,10 @@ class SingInViewController: UIViewController {
     
     private let nameTextField = MMTextField(placeholder: "e-mail", type: .email)
     private let passwordTextField = MMTextField(placeholder: "hasło", type: .password)
-    private let singInButton = MMTintedButton(color: .systemGreen, title: "Zaloguj")
+    private let singInButton = MMTintedButton(color: MMColors.primary, title: "Zaloguj")
     
     private let registerLabel = MMBodyLabel(textAlignment: .center)
-    private let registerButton = MMPlainButton(color: .systemGreen, title: "Zarejestruj się")
+    private let registerButton = MMPlainButton(color: MMColors.primary, title: "Zarejestruj się")
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,8 +48,8 @@ class SingInViewController: UIViewController {
     }
     
     override func viewDidLayoutSubviews() {
-        nameTextField.styleTextFieldWithBottomBorder(color: .systemGreen)
-        passwordTextField.styleTextFieldWithBottomBorder(color: .systemGreen)
+        nameTextField.styleTextFieldWithBottomBorder(color: MMColors.primary)
+        passwordTextField.styleTextFieldWithBottomBorder(color: MMColors.primary)
     }
     
     

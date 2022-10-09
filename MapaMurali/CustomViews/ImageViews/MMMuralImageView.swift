@@ -39,7 +39,7 @@ class MMMuralImageView: UIImageView {
     
     func didSelectedImage() {
         placeholderView.alpha = 0.0
-        layer.borderColor = UIColor.systemGreen.cgColor
+        layer.borderColor = MMColors.primary.cgColor
     }
     
     func removeImage() {
