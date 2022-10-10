@@ -17,6 +17,8 @@ class MuralsCollectionViewController: UIViewController {
     var dataSource: UICollectionViewDiffableDataSource<Section, Mural>!
     var databaseManager: DatabaseManager
     
+    var filteredMurals = [Mural]()
+    
     init(databaseManager: DatabaseManager) {
         self.databaseManager = databaseManager
         super.init(nibName: nil, bundle: nil)
@@ -31,6 +33,7 @@ class MuralsCollectionViewController: UIViewController {
         view.backgroundColor = .systemBackground
         configureCollectionView()
         configureDataSource()
+        configureSearchController()
         updateData(on: databaseManager.murals)
         
     }
@@ -53,6 +56,13 @@ class MuralsCollectionViewController: UIViewController {
         })
     }
     
+    func configureSearchController() {
+        let searchController = UISearchController()
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.placeholder = "Szukaj"
+        navigationItem.searchController = searchController
+    }
+    
     func updateData(on murals: [Mural]) {
         var snapshot = NSDiffableDataSourceSnapshot<Section, Mural>()
         snapshot.appendSections([.main])
@@ -67,4 +77,22 @@ class MuralsCollectionViewController: UIViewController {
 
 extension MuralsCollectionViewController: UICollectionViewDelegate {
     
+}
+
+
+extension MuralsCollectionViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let filter = searchController.searchBar.text, !filter.isEmpty else {
+            filteredMurals.removeAll()
+            updateData(on: databaseManager.murals)
+            return
+        }
+        
+        filteredMurals = databaseManager.murals.filter {
+            $0.adress.lowercased().contains(filter.lowercased()) ||
+            $0.author!.lowercased().contains(filter.lowercased()) ||
+            $0.addedBy.lowercased().contains(filter.lowercased())
+        }
+        updateData(on: filteredMurals)
+    }
 }
