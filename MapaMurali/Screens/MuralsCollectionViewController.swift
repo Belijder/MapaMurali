@@ -17,7 +17,9 @@ class MuralsCollectionViewController: UIViewController {
     var dataSource: UICollectionViewDiffableDataSource<Section, Mural>!
     var databaseManager: DatabaseManager
     
-    var filteredMurals = [Mural]()
+    var murals: [Mural] = []
+    var filteredMurals: [Mural] = []
+    var isSearching = false
     
     init(databaseManager: DatabaseManager) {
         self.databaseManager = databaseManager
@@ -34,7 +36,8 @@ class MuralsCollectionViewController: UIViewController {
         configureCollectionView()
         configureDataSource()
         configureSearchController()
-        updateData(on: databaseManager.murals)
+        murals = databaseManager.murals
+        updateData(on: murals)
         
     }
     
@@ -76,7 +79,14 @@ class MuralsCollectionViewController: UIViewController {
 
 
 extension MuralsCollectionViewController: UICollectionViewDelegate {
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let muralItem = isSearching ? filteredMurals[indexPath.item] : murals[indexPath.item]
+        let destVC = MuralDetailsViewController(muralItem: muralItem)
+        destVC.title = muralItem.adress
+        let navControler = UINavigationController(rootViewController: destVC)
+        navControler.modalPresentationStyle = .fullScreen
+        self.present(navControler, animated: true)
+    }
 }
 
 
@@ -84,15 +94,18 @@ extension MuralsCollectionViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let filter = searchController.searchBar.text, !filter.isEmpty else {
             filteredMurals.removeAll()
-            updateData(on: databaseManager.murals)
+            updateData(on: murals)
+            isSearching = false
             return
         }
         
+        isSearching = true
         filteredMurals = databaseManager.murals.filter {
             $0.adress.lowercased().contains(filter.lowercased()) ||
             $0.author!.lowercased().contains(filter.lowercased()) ||
             $0.addedBy.lowercased().contains(filter.lowercased())
         }
+        
         updateData(on: filteredMurals)
     }
 }
