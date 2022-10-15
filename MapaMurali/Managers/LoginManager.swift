@@ -19,17 +19,16 @@ class LoginManager {
             if result != nil {
                 self.checkIfUserIsLogged()
             }
-            
         }
     }
     
-    private func checkIfUserIsLogged() {
-        let user = Auth.auth().currentUser
-        if user != nil {
-            userIsLoggedIn.onNext(true)
-            print("\(user?.uid ?? "Unknown")")
-        } else {
+    func checkIfUserIsLogged() {
+        if FirebaseAuth.Auth.auth().currentUser == nil {
+            userIsLoggedIn.onNext(false)
             print("🔴 User is not logged.")
+        } else {
+            userIsLoggedIn.onNext(true)
+            print("\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "Unknown")")
         }
     }
     

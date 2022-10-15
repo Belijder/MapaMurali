@@ -6,15 +6,18 @@
 //
 
 import UIKit
+import RxSwift
+import FirebaseAuth
 
 class MainTabBarViewController: UITabBarController {
     
-    var loginManager: LoginManager
-    var databaseManager: DatabaseManager
+    var loginManager = LoginManager()
+    var databaseManager = DatabaseManager()
+    var bag = DisposeBag()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         let vc1 = UINavigationController(rootViewController: MapViewController(databaseManager: databaseManager))
         let vc2 = UINavigationController(rootViewController: AddNewItemViewController(databaseManager: databaseManager))
         let vc3 = UINavigationController(rootViewController: UserAccountViewController(loginManager: loginManager))
@@ -40,14 +43,18 @@ class MainTabBarViewController: UITabBarController {
         setViewControllers([vc1, vc4, vc2, vc3], animated: true)
     }
     
-    init(loginManager: LoginManager, databaseManager: DatabaseManager) {
-        self.loginManager = loginManager
-        self.databaseManager = databaseManager
-        super.init(nibName: nil, bundle: nil)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        validateAuth()
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    private func validateAuth() {
+        if FirebaseAuth.Auth.auth().currentUser == nil {
+            let vc = SingInViewController(loginManager: self.loginManager)
+            let nav = UINavigationController(rootViewController: vc)
+            nav.modalPresentationStyle = .fullScreen
+            present(nav, animated: false)
+        }
     }
 }
 

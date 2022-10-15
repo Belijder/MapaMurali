@@ -12,9 +12,7 @@ import RxCocoa
 
 class SingInViewController: UIViewController {
     
-    var loginManager = LoginManager()
-    var databaseManager = DatabaseManager()
-    
+    var loginManager: LoginManager
     var bag = DisposeBag()
     
     private let nameTextField = MMTextField(placeholder: "e-mail", type: .email)
@@ -35,17 +33,8 @@ class SingInViewController: UIViewController {
         
         layoutUI()
         addSingInObserver()
-        logintestowy()
-        
-        
     }
     
-    //TESTOWA DO LOGOWANIA
-    private func logintestowy() {
-        let login = "test@t.com"
-        let password = "asd123"
-        loginManager.singIn(email: login, password: password)
-    }
     
     override func viewDidLayoutSubviews() {
         nameTextField.styleTextFieldWithBottomBorder(color: MMColors.primary)
@@ -70,9 +59,7 @@ class SingInViewController: UIViewController {
         loginManager.userIsLoggedIn
             .subscribe(onNext: { value in
                 if value == true {
-                    let vc = MainTabBarViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
-                    vc.modalPresentationStyle = .fullScreen
-                    self.present(vc, animated: true, completion: nil)
+                    self.navigationController?.dismiss(animated: true)
                 }
             })
             .disposed(by: bag)
@@ -110,5 +97,14 @@ class SingInViewController: UIViewController {
             registerButton.heightAnchor.constraint(equalToConstant: 20),
             
         ])
+    }
+    
+    init(loginManager: LoginManager) {
+        self.loginManager = loginManager
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

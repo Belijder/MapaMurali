@@ -9,7 +9,7 @@ import UIKit
 
 class MMUsernameWithAvatarView: UIView {
 
-    let user: User
+    //let user: User
     
     
 

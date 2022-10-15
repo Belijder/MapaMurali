@@ -11,7 +11,6 @@ class UserAccountViewController: UIViewController {
     
     var loginManager: LoginManager
     
-    
     private let logOutButton: UIButton = {
         let button = UIButton(configuration: .tinted(), primaryAction: nil)
         button.setTitle("Logout", for: .normal)
@@ -29,7 +28,10 @@ class UserAccountViewController: UIViewController {
     
     @objc func logOut(_ sender: UIButton!) {
         loginManager.singOut()
-        self.dismiss(animated: true)
+        let vc = SingInViewController(loginManager: self.loginManager)
+        let nav = UINavigationController(rootViewController: vc)
+        nav.modalPresentationStyle = .fullScreen
+        present(nav, animated: false)
     }
     
     func addConstraints() {
