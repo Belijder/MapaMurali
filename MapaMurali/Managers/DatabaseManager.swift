@@ -31,6 +31,11 @@ class DatabaseManager {
     
     weak var delegate: DatabaseManagerDelegate?
     
+    func addUserToDatabase(user: User) {
+        
+    }
+    
+    
     func addNewItemToDatabase(itemData: [String : Any], fullSizeImageData: Data, thumbnailData: Data) {
         let newItemRef = db.collection("murals").document()
         newItemRef.setData(itemData) { error in

@@ -49,7 +49,6 @@
 		42E18CB728D7A8FE0068414E /* MMDataLoadingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E18CB628D7A8FE0068414E /* MMDataLoadingVC.swift */; };
 		42E18CB928DB98EA0068414E /* UIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E18CB828DB98EA0068414E /* UIImage+Ext.swift */; };
 		42E61C2228F1AE0600D38205 /* MuralDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C2128F1AE0600D38205 /* MuralDetailsViewController.swift */; };
-		42E61C2428F1B24A00D38205 /* MMCustomAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C2328F1B24A00D38205 /* MMCustomAnnotation.swift */; };
 		42E61C2628F1CE1D00D38205 /* MMFullSizeImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C2528F1CE1D00D38205 /* MMFullSizeImageView.swift */; };
 		42E61C2828F1CF3500D38205 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C2728F1CF3500D38205 /* NetworkManager.swift */; };
 		42E61C2A28F2DC7800D38205 /* Date+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C2928F2DC7800D38205 /* Date+Ext.swift */; };
@@ -58,6 +57,8 @@
 		42E61C3228F3191A00D38205 /* UIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C3128F3191A00D38205 /* UIHelper.swift */; };
 		42E61C3528F31DD800D38205 /* MuralCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C3428F31DD800D38205 /* MuralCell.swift */; };
 		42E61C3728F3200800D38205 /* MMSquareImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C3628F3200800D38205 /* MMSquareImageView.swift */; };
+		42E61C3928FAC03C00D38205 /* MMUsernameWithAvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C3828FAC03B00D38205 /* MMUsernameWithAvatarView.swift */; };
+		42E61C3B28FAC0C500D38205 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C3A28FAC0C500D38205 /* User.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -98,7 +99,6 @@
 		42E18CB628D7A8FE0068414E /* MMDataLoadingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMDataLoadingVC.swift; sourceTree = "<group>"; };
 		42E18CB828DB98EA0068414E /* UIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ext.swift"; sourceTree = "<group>"; };
 		42E61C2128F1AE0600D38205 /* MuralDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuralDetailsViewController.swift; sourceTree = "<group>"; };
-		42E61C2328F1B24A00D38205 /* MMCustomAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMCustomAnnotation.swift; sourceTree = "<group>"; };
 		42E61C2528F1CE1D00D38205 /* MMFullSizeImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMFullSizeImageView.swift; sourceTree = "<group>"; };
 		42E61C2728F1CF3500D38205 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		42E61C2928F2DC7800D38205 /* Date+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Ext.swift"; sourceTree = "<group>"; };
@@ -107,6 +107,8 @@
 		42E61C3128F3191A00D38205 /* UIHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIHelper.swift; sourceTree = "<group>"; };
 		42E61C3428F31DD800D38205 /* MuralCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuralCell.swift; sourceTree = "<group>"; };
 		42E61C3628F3200800D38205 /* MMSquareImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMSquareImageView.swift; sourceTree = "<group>"; };
+		42E61C3828FAC03B00D38205 /* MMUsernameWithAvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMUsernameWithAvatarView.swift; sourceTree = "<group>"; };
+		42E61C3A28FAC0C500D38205 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -221,7 +223,7 @@
 			isa = PBXGroup;
 			children = (
 				4289AEC728E216C200C3FFF5 /* Mural.swift */,
-				42E61C2328F1B24A00D38205 /* MMCustomAnnotation.swift */,
+				42E61C3A28FAC0C500D38205 /* User.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -230,6 +232,7 @@
 			isa = PBXGroup;
 			children = (
 				428BD66028DE322A000B8D69 /* MMAlertContainerView.swift */,
+				42E61C3828FAC03B00D38205 /* MMUsernameWithAvatarView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -417,8 +420,10 @@
 				42867B672895901000E5159F /* AddNewViewController.swift in Sources */,
 				429A021D28CFCF4600CD6862 /* UIView+Ext.swift in Sources */,
 				42867B6428958F5B00E5159F /* MainTabBarViewController.swift in Sources */,
+				42E61C3928FAC03C00D38205 /* MMUsernameWithAvatarView.swift in Sources */,
 				4283BAB428D606B100A54F0F /* MMCircleButton.swift in Sources */,
 				42E61C2828F1CF3500D38205 /* NetworkManager.swift in Sources */,
+				42E61C3B28FAC0C500D38205 /* User.swift in Sources */,
 				42E61C3528F31DD800D38205 /* MuralCell.swift in Sources */,
 				429A021B28CFCC7100CD6862 /* MMPlainButton.swift in Sources */,
 				428BD65E28DE30B0000B8D69 /* MMTitleLabel.swift in Sources */,
@@ -433,7 +438,6 @@
 				42E61C2A28F2DC7800D38205 /* Date+Ext.swift in Sources */,
 				42E61C2628F1CE1D00D38205 /* MMFullSizeImageView.swift in Sources */,
 				428BD66128DE322A000B8D69 /* MMAlertContainerView.swift in Sources */,
-				42E61C2428F1B24A00D38205 /* MMCustomAnnotation.swift in Sources */,
 				427CAB5528E60D3200DA7247 /* AddNewViewModel.swift in Sources */,
 				426E49FF28931180009C8E99 /* AppDelegate.swift in Sources */,
 				42E61C3728F3200800D38205 /* MMSquareImageView.swift in Sources */,
