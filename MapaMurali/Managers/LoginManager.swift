@@ -22,6 +22,14 @@ class LoginManager {
         }
     }
     
+    func singUp(email: String, password: String, completion: @escaping (String) -> Void) {
+        Auth.auth().createUser(withEmail: email, password: password) { result, error in
+            guard let result = result else { return }
+            completion(result.user.uid)
+            self.checkIfUserIsLogged()
+        }
+    }
+    
     func checkIfUserIsLogged() {
         if FirebaseAuth.Auth.auth().currentUser == nil {
             userIsLoggedIn.onNext(false)

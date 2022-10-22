@@ -9,6 +9,7 @@ import Foundation
 
 struct User: Codable {
     let id: String
+    let email: String
     let avatarURL: String
     let displayName: String
     let favoritesMurals: [String]

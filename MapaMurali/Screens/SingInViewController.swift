@@ -13,6 +13,7 @@ import RxCocoa
 class SingInViewController: UIViewController {
     
     var loginManager: LoginManager
+    let databaseManager: DatabaseManager
     var bag = DisposeBag()
     
     private let nameTextField = MMTextField(placeholder: "e-mail", type: .email)
@@ -50,9 +51,10 @@ class SingInViewController: UIViewController {
     }
     
     @objc func singUpButtonPressed(sender: UIButton!) {
-        let vc = SingUpViewController(loginManager: loginManager)
-        vc.modalPresentationStyle = .fullScreen
-        self.present(vc, animated: true)
+        let singUpVC = SingUpViewController(loginManager: loginManager, databaseManager: databaseManager)
+        singUpVC.modalPresentationStyle = .fullScreen
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Powrót do logowania", style: .plain, target: nil, action: nil)
+        self.navigationController?.pushViewController(singUpVC, animated: true)
     }
     
     func addSingInObserver() {
@@ -99,8 +101,9 @@ class SingInViewController: UIViewController {
         ])
     }
     
-    init(loginManager: LoginManager) {
+    init(loginManager: LoginManager, databaseManager: DatabaseManager) {
         self.loginManager = loginManager
+        self.databaseManager = databaseManager
         super.init(nibName: nil, bundle: nil)
     }
     

@@ -13,14 +13,14 @@ class MainTabBarViewController: UITabBarController {
     
     var loginManager = LoginManager()
     var databaseManager = DatabaseManager()
-    var bag = DisposeBag()
+//    var bag = DisposeBag()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         let vc1 = UINavigationController(rootViewController: MapViewController(databaseManager: databaseManager))
         let vc2 = UINavigationController(rootViewController: AddNewItemViewController(databaseManager: databaseManager))
-        let vc3 = UINavigationController(rootViewController: UserAccountViewController(loginManager: loginManager))
+        let vc3 = UINavigationController(rootViewController: UserAccountViewController(loginManager: loginManager, databaseManager: databaseManager))
         let vc4 = UINavigationController(rootViewController: MuralsCollectionViewController(databaseManager: databaseManager))
         
         vc1.tabBarItem.image = UIImage(systemName: "map")
@@ -50,9 +50,11 @@ class MainTabBarViewController: UITabBarController {
     
     private func validateAuth() {
         if FirebaseAuth.Auth.auth().currentUser == nil {
-            let vc = SingInViewController(loginManager: self.loginManager)
+            let vc = SingInViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
             let nav = UINavigationController(rootViewController: vc)
             nav.modalPresentationStyle = .fullScreen
+            nav.navigationBar.tintColor = MMColors.primary
+            nav.navigationBar.backItem?.title = "Zaloguj się"
             present(nav, animated: false)
         }
     }

@@ -20,6 +20,7 @@ protocol DatabaseManagerDelegate: AnyObject {
 enum ImageType: String {
     case fullSize = "images/"
     case thumbnail = "thumbnails/"
+    case avatar = "avatars/"
 }
 
 class DatabaseManager {
@@ -35,6 +36,16 @@ class DatabaseManager {
         
     }
     
+    func addNewUserToDatabase(id: String, userData: [String : Any], avatarImageData: Data) {
+        let newUserRef = db.collection("users").document(id)
+        newUserRef.setData(userData) { error in
+            if let error = error {
+                print("🔴 Error when try to add new user: \(error)")
+            } else {
+                self.addImageToStorage(docRef: newUserRef, imageData: avatarImageData, imageType: .avatar)
+            }
+        }
+    }
     
     func addNewItemToDatabase(itemData: [String : Any], fullSizeImageData: Data, thumbnailData: Data) {
         let newItemRef = db.collection("murals").document()

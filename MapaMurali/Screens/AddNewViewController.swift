@@ -130,11 +130,11 @@ class AddNewItemViewController: MMDataLoadingVC {
     }
     
     @objc func cameraImageViewTapped() {
-        let ac = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        ac.addAction(UIAlertAction(title: "Zrób zdjęcie", style: .default) { _ in self.actionSheetCameraButtonTapped() })
-        ac.addAction(UIAlertAction(title: "Wybierz z galerii", style: .default) { _ in self.actionSheetLibraryButtonTapped() })
-        ac.addAction(UIAlertAction(title: "Wróć", style: .cancel))
-        present(ac, animated: true)
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Zrób zdjęcie", style: .default) { _ in self.actionSheetCameraButtonTapped() })
+        actionSheet.addAction(UIAlertAction(title: "Wybierz z galerii", style: .default) { _ in self.actionSheetLibraryButtonTapped() })
+        actionSheet.addAction(UIAlertAction(title: "Wróć", style: .cancel))
+        present(actionSheet, animated: true)
     }
     
     func actionSheetCameraButtonTapped() {

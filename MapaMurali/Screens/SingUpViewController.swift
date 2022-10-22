@@ -6,52 +6,71 @@
 //
 
 import UIKit
+import RxSwift
 
 class SingUpViewController: UIViewController {
     
     let loginManager: LoginManager
+    let databaseManager: DatabaseManager
+    var bag = DisposeBag()
     
+    var avatarImage: Data?
+    private let avatarImageView = UIImageView()
+    private let removeImageButton = MMCircleButton(color: .label, systemImageName: "xmark")
     private let nickNameTextField = MMTextField(placeholder: "nazwa użytkownika", type: .custom)
     private let emailTextField = MMTextField(placeholder: "e-mail", type: .email)
     private let passwordTextField = MMTextField(placeholder: "hasło", type: .password)
-    
-    private let singUpButton: UIButton = {
-        let button = UIButton(configuration: .tinted(), primaryAction: nil)
-        button.setTitle("Zarejestruj się", for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
-    private let singInLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Masz już konto?"
-        label.textColor = .secondaryLabel
-        label.font = .systemFont(ofSize: 15, weight: .regular)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-        
-    }()
-    
-    private let singInButton: UIButton = {
-        let button = UIButton(configuration: .plain())
-        button.setTitle("Zaloguj się", for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
+    private let singUpButton = MMTintedButton(color: MMColors.primary, title: "Zarejestruj się!")
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        view.addSubview(nickNameTextField)
-        view.addSubview(emailTextField)
-        view.addSubview(passwordTextField)
-        view.addSubview(singUpButton)
+        view.addSubviews(avatarImageView, nickNameTextField, emailTextField, passwordTextField, singUpButton)
+        configureUIElements()
+        layoutUI()
+        addSingInObserver()
+    }
+    
+    func addSingInObserver() {
+        loginManager.userIsLoggedIn
+            .subscribe(onNext: { value in
+                if value == true {
+                    self.navigationController?.dismiss(animated: true)
+                }
+            })
+            .disposed(by: bag)
+    }
+    
+    func configureUIElements() {
+        let configuration = UIImage.SymbolConfiguration(weight: .thin)
+        let placeholderImage = UIImage(systemName: "person.crop.circle", withConfiguration: configuration)
+        avatarImageView.image = placeholderImage
+        avatarImageView.tintColor = .secondaryLabel
+        avatarImageView.clipsToBounds = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(avatarImageViewTapped))
+        avatarImageView.isUserInteractionEnabled = true
+        avatarImageView.addGestureRecognizer(tap)
         
-        view.addSubview(singInLabel)
-        view.addSubview(singInButton)
-        singInButton.addTarget(self, action: #selector(returnToSingInView), for: .touchUpInside)
-        addContraints()
+        singUpButton.addTarget(self, action: #selector(singUpButtonTapped), for: .touchUpInside)
+        
+    }
+    
+    @objc func singUpButtonTapped() {
+        guard let email = emailTextField.text else { return }
+        guard let password = passwordTextField.text else { return }
+        guard let avatarData = avatarImage else { return }
+        
+        loginManager.singUp(email: email, password: password) { [weak self] userID in
+            guard let self = self else { return }
+            
+            var userData = [String : Any]()
+            userData["id"] = userID
+            userData["displayName"] = self.nickNameTextField.text
+            userData["email"] = email
 
+            self.databaseManager.addNewUserToDatabase(id: userID, userData: userData, avatarImageData: avatarData)
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -60,46 +79,91 @@ class SingUpViewController: UIViewController {
         nickNameTextField.styleTextFieldWithBottomBorder(color: MMColors.primary)
     }
     
+    @objc func avatarImageViewTapped() {
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Zrób zdjęcie", style: .default) { _ in self.actionSheetCameraButtonTapped() })
+        actionSheet.addAction(UIAlertAction(title: "Wybierz z galerii", style: .default) { _ in self.actionSheetLibraryButtonTapped() })
+        actionSheet.addAction(UIAlertAction(title: "Wróć", style: .cancel))
+        present(actionSheet, animated: true)
+    }
+    
+    func actionSheetCameraButtonTapped() {
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            let imagePickerController = UIImagePickerController()
+            imagePickerController.delegate = self
+            imagePickerController.allowsEditing = true
+            imagePickerController.sourceType = .camera
+            self.present(imagePickerController, animated: true)
+        }
+    }
+    
+    func actionSheetLibraryButtonTapped() {
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+            let imagePickerController = UIImagePickerController()
+            imagePickerController.delegate = self
+            imagePickerController.sourceType = .photoLibrary
+            imagePickerController.allowsEditing = true
+            self.present(imagePickerController, animated: true)
+        }
+    }
+    
     @objc func returnToSingInView(sender: UIButton!) {
         self.dismiss(animated: true)
     }
     
     
-    func addContraints() {
+    func layoutUI() {
+        
+        avatarImageView.translatesAutoresizingMaskIntoConstraints = false
+        let padding: CGFloat = 20
+        
         NSLayoutConstraint.activate([
-            nickNameTextField.bottomAnchor.constraint(equalTo: emailTextField.topAnchor, constant: -20),
-            nickNameTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            nickNameTextField.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -40),
+            avatarImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
+            avatarImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            avatarImageView.heightAnchor.constraint(equalToConstant: 120),
+            avatarImageView.widthAnchor.constraint(equalToConstant: 120),
+            
+            nickNameTextField.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: padding),
+            nickNameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
+            nickNameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
             nickNameTextField.heightAnchor.constraint(equalToConstant: 50),
             
-            emailTextField.bottomAnchor.constraint(equalTo: passwordTextField.topAnchor, constant: -20),
-            emailTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            emailTextField.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -40),
+            emailTextField.topAnchor.constraint(equalTo: nickNameTextField.bottomAnchor, constant: padding),
+            emailTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
+            emailTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
             emailTextField.heightAnchor.constraint(equalToConstant: 50),
             
-            passwordTextField.bottomAnchor.constraint(equalTo: singUpButton.topAnchor, constant: -20),
-            passwordTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            passwordTextField.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -40),
+            passwordTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: padding),
+            passwordTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
+            passwordTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
             passwordTextField.heightAnchor.constraint(equalToConstant: 50),
             
-            singUpButton.centerXAnchor.constraint(equalTo: view.layoutMarginsGuide.centerXAnchor),
-            singUpButton.centerYAnchor.constraint(equalTo: view.layoutMarginsGuide.centerYAnchor),
- 
-            singInLabel.centerXAnchor.constraint(equalTo: view.layoutMarginsGuide.centerXAnchor),
-            singInLabel.topAnchor.constraint(equalTo: singUpButton.bottomAnchor, constant: 20),
-            
-            singInButton.centerXAnchor.constraint(equalTo: view.layoutMarginsGuide.centerXAnchor),
-            singInButton.topAnchor.constraint(equalTo: singInLabel.bottomAnchor)
+            singUpButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: padding),
+            singUpButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
+            singUpButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
+            singUpButton.heightAnchor.constraint(equalToConstant: 50),
         ])
     }
     
-    init(loginManager: LoginManager) {
+    init(loginManager: LoginManager, databaseManager: DatabaseManager) {
         self.loginManager = loginManager
+        self.databaseManager = databaseManager
         super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+}
+
+extension SingUpViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage
+        let resizedImage = image?.aspectFittedToHeight(120)
+        let circleImage = resizedImage?.cropImageToCircle()
+        avatarImageView.image = circleImage
+        avatarImage = image?.jpegData(compressionQuality: 0.3)
+        
+        self.dismiss(animated: true)
+    }
 }

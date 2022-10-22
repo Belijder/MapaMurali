@@ -10,6 +10,7 @@ import UIKit
 class UserAccountViewController: UIViewController {
     
     var loginManager: LoginManager
+    let databaseManager: DatabaseManager
     
     private let logOutButton: UIButton = {
         let button = UIButton(configuration: .tinted(), primaryAction: nil)
@@ -28,7 +29,7 @@ class UserAccountViewController: UIViewController {
     
     @objc func logOut(_ sender: UIButton!) {
         loginManager.singOut()
-        let vc = SingInViewController(loginManager: self.loginManager)
+        let vc = SingInViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
         let nav = UINavigationController(rootViewController: vc)
         nav.modalPresentationStyle = .fullScreen
         present(nav, animated: false)
@@ -41,8 +42,9 @@ class UserAccountViewController: UIViewController {
         ])
     }
     
-    init(loginManager: LoginManager) {
+    init(loginManager: LoginManager, databaseManager: DatabaseManager) {
         self.loginManager = loginManager
+        self.databaseManager = databaseManager
         super.init(nibName: nil, bundle: nil)
     }
     
