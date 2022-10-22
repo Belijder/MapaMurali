@@ -81,7 +81,7 @@ class MuralsCollectionViewController: UIViewController {
 extension MuralsCollectionViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let muralItem = isSearching ? filteredMurals[indexPath.item] : murals[indexPath.item]
-        let destVC = MuralDetailsViewController(muralItem: muralItem)
+        let destVC = MuralDetailsViewController(muralItem: muralItem, databaseManager: databaseManager)
         destVC.title = muralItem.adress
         let navControler = UINavigationController(rootViewController: destVC)
         navControler.modalPresentationStyle = .fullScreen

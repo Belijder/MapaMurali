@@ -59,6 +59,7 @@
 		42E61C3728F3200800D38205 /* MMSquareImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C3628F3200800D38205 /* MMSquareImageView.swift */; };
 		42E61C3928FAC03C00D38205 /* MMUsernameWithAvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C3828FAC03B00D38205 /* MMUsernameWithAvatarView.swift */; };
 		42E61C3B28FAC0C500D38205 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C3A28FAC0C500D38205 /* User.swift */; };
+		42E61C3D29045AAC00D38205 /* MMAvatarImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C3C29045AAC00D38205 /* MMAvatarImageView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -109,6 +110,7 @@
 		42E61C3628F3200800D38205 /* MMSquareImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMSquareImageView.swift; sourceTree = "<group>"; };
 		42E61C3828FAC03B00D38205 /* MMUsernameWithAvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMUsernameWithAvatarView.swift; sourceTree = "<group>"; };
 		42E61C3A28FAC0C500D38205 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		42E61C3C29045AAC00D38205 /* MMAvatarImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMAvatarImageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -186,6 +188,7 @@
 			isa = PBXGroup;
 			children = (
 				4283BAAF28D5E24A00A54F0F /* MMMuralImageView.swift */,
+				42E61C3C29045AAC00D38205 /* MMAvatarImageView.swift */,
 				4283BAB128D5E45800A54F0F /* MMMuralPlaceholderView.swift */,
 				4200210C28E9B0E000394299 /* MMAnnotationPinImageView.swift */,
 				42E61C2528F1CE1D00D38205 /* MMFullSizeImageView.swift */,
@@ -439,6 +442,7 @@
 				42E61C2628F1CE1D00D38205 /* MMFullSizeImageView.swift in Sources */,
 				428BD66128DE322A000B8D69 /* MMAlertContainerView.swift in Sources */,
 				427CAB5528E60D3200DA7247 /* AddNewViewModel.swift in Sources */,
+				42E61C3D29045AAC00D38205 /* MMAvatarImageView.swift in Sources */,
 				426E49FF28931180009C8E99 /* AppDelegate.swift in Sources */,
 				42E61C3728F3200800D38205 /* MMSquareImageView.swift in Sources */,
 				426E4A0128931180009C8E99 /* SceneDelegate.swift in Sources */,

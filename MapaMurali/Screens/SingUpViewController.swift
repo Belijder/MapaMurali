@@ -15,7 +15,7 @@ class SingUpViewController: UIViewController {
     var bag = DisposeBag()
     
     var avatarImage: Data?
-    private let avatarImageView = UIImageView()
+    private let avatarImageView = MMAvatarImageView(frame: .zero)
     private let removeImageButton = MMCircleButton(color: .label, systemImageName: "xmark")
     private let nickNameTextField = MMTextField(placeholder: "nazwa użytkownika", type: .custom)
     private let emailTextField = MMTextField(placeholder: "e-mail", type: .email)
@@ -43,11 +43,6 @@ class SingUpViewController: UIViewController {
     }
     
     func configureUIElements() {
-        let configuration = UIImage.SymbolConfiguration(weight: .thin)
-        let placeholderImage = UIImage(systemName: "person.crop.circle", withConfiguration: configuration)
-        avatarImageView.image = placeholderImage
-        avatarImageView.tintColor = .secondaryLabel
-        avatarImageView.clipsToBounds = true
         let tap = UITapGestureRecognizer(target: self, action: #selector(avatarImageViewTapped))
         avatarImageView.isUserInteractionEnabled = true
         avatarImageView.addGestureRecognizer(tap)
@@ -160,8 +155,8 @@ extension SingUpViewController: UIImagePickerControllerDelegate, UINavigationCon
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage
         let resizedImage = image?.aspectFittedToHeight(120)
-        let circleImage = resizedImage?.cropImageToCircle()
-        avatarImageView.image = circleImage
+        avatarImageView.layer.cornerRadius = avatarImageView.bounds.width / 2.0
+        avatarImageView.image = resizedImage
         avatarImage = image?.jpegData(compressionQuality: 0.3)
         
         self.dismiss(animated: true)

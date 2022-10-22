@@ -12,6 +12,7 @@ class MuralDetailsViewController: UIViewController {
     
     var muralItem: Mural!
     var imageView = MMFullSizeImageView(frame: .zero)
+    var databaseManager: DatabaseManager!
     
     //var favoriteButton: UIButton!
     
@@ -23,12 +24,14 @@ class MuralDetailsViewController: UIViewController {
     var dateLabelDescription = MMBodyLabel(textAlignment: .left)
     var dateLabel = MMBodyLabel(textAlignment: .left)
     var userLabelDescription = MMBodyLabel(textAlignment: .left)
-    var userLabel = MMTitleLabel(textAlignment: .left, fontSize: 20)
+    
+    var userView = MMUsernameWithAvatarView(imageHeight: 40)
    
     
-    init(muralItem: Mural) {
+    init(muralItem: Mural, databaseManager: DatabaseManager) {
         super.init(nibName: nil, bundle: nil)
         self.muralItem = muralItem
+        self.databaseManager = databaseManager
     }
     
     required init?(coder: NSCoder) {
@@ -39,7 +42,7 @@ class MuralDetailsViewController: UIViewController {
         super.viewDidLoad()
         //view.addSubviews(imageView, authorLabelDescription, authorLabel, dateLabelDescription, dateLabel, userLabelDescription, userLabel)
         
-        containerView.addSubviews(mapPinButton, dateLabelDescription, dateLabel, authorLabelDescription, authorLabel, sendEmailWithAuthorButton, userLabelDescription)
+        containerView.addSubviews(mapPinButton, dateLabelDescription, dateLabel, authorLabelDescription, authorLabel, sendEmailWithAuthorButton, userLabelDescription, userView)
         view.addSubviews(imageView, containerView)
         
         
@@ -48,7 +51,6 @@ class MuralDetailsViewController: UIViewController {
         configureContainerView()
         configureUIElements()
         layoutUI()
-
     }
     
     func checkAuthorPropertyInMuralItem() {
@@ -100,13 +102,32 @@ class MuralDetailsViewController: UIViewController {
         dateLabel.textColor = .white
         
         userLabelDescription.text = "Dodano przez:"
-        userLabel.text = muralItem.addedBy
+        
+        configureUserView()
+        
+        
+        //userLabel.text = muralItem.addedBy
+    }
+    
+    func configureUserView() {
+        databaseManager.fetchUserFromDatabase(id: muralItem.addedBy) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let user):
+                    self.userView.username.text = user.displayName
+                    self.userView.avatarView.setImage(from: user.avatarURL)
+                case .failure(let error):
+                    print("🔴 Error to fetch users info from Database. Error: \(error)")
+                    self.userView.username.text = "brak nazwy"
+                }
+            }
+        }
     }
     
     func layoutUI() {
         
         let horizontalPadding: CGFloat = 20
-        let verticalPadding: CGFloat = 10
+        //let verticalPadding: CGFloat = 10
         
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -139,7 +160,7 @@ class MuralDetailsViewController: UIViewController {
             authorLabelDescription.heightAnchor.constraint(equalToConstant: 20),
             authorLabelDescription.widthAnchor.constraint(equalToConstant: 150),
             
-            authorLabel.topAnchor.constraint(equalTo: authorLabelDescription.bottomAnchor, constant: verticalPadding),
+            authorLabel.topAnchor.constraint(equalTo: authorLabelDescription.bottomAnchor),
             authorLabel.leadingAnchor.constraint(equalTo: authorLabelDescription.leadingAnchor),
             authorLabel.heightAnchor.constraint(equalToConstant: 30),
             authorLabel.widthAnchor.constraint(equalToConstant: view.bounds.size.width / 3 * 2),
@@ -152,58 +173,21 @@ class MuralDetailsViewController: UIViewController {
             userLabelDescription.topAnchor.constraint(equalTo: sendEmailWithAuthorButton.bottomAnchor, constant: 20),
             userLabelDescription.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: horizontalPadding),
             userLabelDescription.heightAnchor.constraint(equalToConstant: 30),
-            userLabelDescription.widthAnchor.constraint(equalToConstant: view.bounds.size.width / 3 * 2)
+            userLabelDescription.widthAnchor.constraint(equalToConstant: view.bounds.size.width / 3 * 2),
             
-    
+            userView.topAnchor.constraint(equalTo: userLabelDescription.bottomAnchor),
+            userView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: horizontalPadding),
+            userView.heightAnchor.constraint(equalToConstant: 40),
+            userView.widthAnchor.constraint(equalToConstant: view.bounds.size.width / 3 * 2)
+            
         ])
-        
-        
-        
-        
-        //Stary Layout
-//        NSLayoutConstraint.activate([
-//            imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-//            imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//            imageView.widthAnchor.constraint(equalToConstant: view.bounds.width),
-//            imageView.heightAnchor.constraint(equalToConstant: view.bounds.width / 3 * 4),
-//
-//            authorLabelDescription.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: verticalPadding),
-//            authorLabelDescription.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: horizontalPadding),
-//            authorLabelDescription.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: horizontalPadding),
-//            authorLabelDescription.heightAnchor.constraint(equalToConstant: 15),
-//
-//            authorLabel.topAnchor.constraint(equalTo: authorLabelDescription.bottomAnchor, constant: 5),
-//            authorLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: horizontalPadding),
-//            authorLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: horizontalPadding),
-//            authorLabel.heightAnchor.constraint(equalToConstant: 30),
-//
-//            dateLabelDescription.topAnchor.constraint(equalTo: authorLabel.bottomAnchor, constant: verticalPadding),
-//            dateLabelDescription.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: horizontalPadding),
-//            dateLabelDescription.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: horizontalPadding),
-//            dateLabelDescription.heightAnchor.constraint(equalToConstant: 15),
-//
-//            dateLabel.topAnchor.constraint(equalTo: dateLabelDescription.bottomAnchor, constant: 5),
-//            dateLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: horizontalPadding),
-//            dateLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: horizontalPadding),
-//            dateLabel.heightAnchor.constraint(equalToConstant: 30),
-//
-//            userLabelDescription.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: verticalPadding),
-//            userLabelDescription.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: horizontalPadding),
-//            userLabelDescription.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: horizontalPadding),
-//            userLabelDescription.heightAnchor.constraint(equalToConstant: 15),
-//
-//            userLabel.topAnchor.constraint(equalTo: userLabelDescription.bottomAnchor, constant: 5),
-//            userLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: horizontalPadding),
-//            userLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: horizontalPadding),
-//            userLabel.heightAnchor.constraint(equalToConstant: 30),
-//        ])
     }
     
     @objc func dismissVC() {
         self.dismiss(animated: true)
     }
     
-    @objc func addToFavorite() {
-        print("dodano do ULUBIONYCH")
-    }
+//    @objc func addToFavorite() {
+//        print("dodano do ULUBIONYCH")
+//    }
 }

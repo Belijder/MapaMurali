@@ -43,6 +43,7 @@ class DatabaseManager {
                 print("🔴 Error when try to add new user: \(error)")
             } else {
                 self.addImageToStorage(docRef: newUserRef, imageData: avatarImageData, imageType: .avatar)
+                newUserRef.updateData(["favoritesMurals" : []])
             }
         }
     }
@@ -105,6 +106,13 @@ class DatabaseManager {
                     }
                 }
             }
+        }
+    }
+    
+    func fetchUserFromDatabase(id: String, completion: @escaping (Result<User, Error>) -> Void) {
+        let docRef = db.collection("users").document(id)
+        docRef.getDocument(as: User.self) { result in
+           completion(result)
         }
     }
     

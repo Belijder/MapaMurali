@@ -159,7 +159,7 @@ extension MapViewController: MKMapViewDelegate {
             guard let docRef = annotation.title else { return }
             guard let index = databaseManager.murals.firstIndex(where: { $0.docRef == docRef }) else { return }
             let muralItem = databaseManager.murals[index]
-            let vc = MuralDetailsViewController(muralItem: muralItem)
+            let vc = MuralDetailsViewController(muralItem: muralItem, databaseManager: databaseManager)
             vc.title = muralItem.adress
             let nc = UINavigationController(rootViewController: vc)
             
