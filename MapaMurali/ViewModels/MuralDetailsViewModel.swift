@@ -16,12 +16,13 @@ class MuralDetailsViewModel {
     let muralID: String
     var isUserFavorite = BehaviorSubject(value: false)
     var favoriteImageName = "heart"
+    var counterValue: Int
     
-    init(databaseManager: DatabaseManager, muralID: String) {
+    init(databaseManager: DatabaseManager, muralID: String, counterValue: Int) {
         self.databaseManager = databaseManager
         self.muralID = muralID
+        self.counterValue = counterValue
         fetchUserData()
-        
     }
     
     func fetchUserData() {
@@ -62,7 +63,9 @@ class MuralDetailsViewModel {
             if try isUserFavorite.value() == false {
                 databaseManager.addToFavorites(userID: user.id, muralID: muralID) { isSuccess in
                     if isSuccess {
+                        self.counterValue += 1
                         self.isUserFavorite.onNext(true)
+                        
                     } else {
                         // Something went wrong with adding to favorites
                         return
@@ -71,6 +74,7 @@ class MuralDetailsViewModel {
             } else {
                 databaseManager.removeFromFavorites(userID: user.id, muralID: muralID) { isSuccess in
                     if isSuccess {
+                        self.counterValue -= 1
                         self.isUserFavorite.onNext(false)
                     } else {
                         // Something went wrong with removeing from favorites

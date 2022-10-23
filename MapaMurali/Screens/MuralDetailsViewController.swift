@@ -27,13 +27,17 @@ class MuralDetailsViewController: UIViewController {
     var dateLabel = MMBodyLabel(textAlignment: .left)
     var userLabelDescription = MMBodyLabel(textAlignment: .left)
     
+    let favoriteCounter = MMFavoriteCounterView(imageHeight: 50, counter: 0, fontSize: 17)
+    
     var userView = MMUsernameWithAvatarView(imageHeight: 40)
     
     init(muralItem: Mural, databaseManager: DatabaseManager) {
-        self.vm = MuralDetailsViewModel(databaseManager: databaseManager, muralID: muralItem.docRef)
+        self.vm = MuralDetailsViewModel(databaseManager: databaseManager, muralID: muralItem.docRef, counterValue: muralItem.favoritesCount)
         super.init(nibName: nil, bundle: nil)
         self.muralItem = muralItem
         self.databaseManager = databaseManager
+        self.favoriteCounter.counterLabel.text = "\(muralItem.favoritesCount)"
+        
     }
     
     required init?(coder: NSCoder) {
@@ -42,7 +46,7 @@ class MuralDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        containerView.addSubviews(mapPinButton, dateLabelDescription, dateLabel, authorLabelDescription, authorLabel, sendEmailWithAuthorButton, userLabelDescription, userView)
+        containerView.addSubviews(mapPinButton, dateLabelDescription, dateLabel, authorLabelDescription, authorLabel, sendEmailWithAuthorButton, userLabelDescription, userView, favoriteCounter)
         view.addSubviews(imageView, containerView, favoriteButton)
         
         
@@ -71,6 +75,7 @@ class MuralDetailsViewController: UIViewController {
                 case false:
                     self.favoriteButton.set(systemImageName: "heart")
                 }
+                self.favoriteCounter.counterLabel.text = "\(self.vm.counterValue)"
             })
             .disposed(by: bag)
     }
@@ -122,6 +127,8 @@ class MuralDetailsViewController: UIViewController {
         
         favoriteButton.set(systemImageName: vm.favoriteImageName)
         favoriteButton.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
+        
+        favoriteCounter.counterLabel.text = "\(muralItem.favoritesCount)"
     }
     
     func configureUserView() {
@@ -139,10 +146,12 @@ class MuralDetailsViewController: UIViewController {
         }
     }
     
+    
     func layoutUI() {
         
         let horizontalPadding: CGFloat = 20
         //let verticalPadding: CGFloat = 10
+        
         
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -190,7 +199,7 @@ class MuralDetailsViewController: UIViewController {
             sendEmailWithAuthorButton.heightAnchor.constraint(equalToConstant: 30),
             sendEmailWithAuthorButton.widthAnchor.constraint(equalToConstant: 150),
             
-            userLabelDescription.topAnchor.constraint(equalTo: sendEmailWithAuthorButton.bottomAnchor, constant: 20),
+            userLabelDescription.topAnchor.constraint(equalTo: sendEmailWithAuthorButton.bottomAnchor, constant: 15),
             userLabelDescription.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: horizontalPadding),
             userLabelDescription.heightAnchor.constraint(equalToConstant: 30),
             userLabelDescription.widthAnchor.constraint(equalToConstant: view.bounds.size.width / 3 * 2),
@@ -198,8 +207,12 @@ class MuralDetailsViewController: UIViewController {
             userView.topAnchor.constraint(equalTo: userLabelDescription.bottomAnchor),
             userView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: horizontalPadding),
             userView.heightAnchor.constraint(equalToConstant: 40),
-            userView.widthAnchor.constraint(equalToConstant: view.bounds.size.width / 3 * 2)
+            userView.widthAnchor.constraint(equalToConstant: view.bounds.size.width / 3 * 2),
             
+            favoriteCounter.centerYAnchor.constraint(equalTo: userView.centerYAnchor),
+            favoriteCounter.centerXAnchor.constraint(equalTo: mapPinButton.centerXAnchor),
+            favoriteCounter.widthAnchor.constraint(equalToConstant: 50),
+            favoriteCounter.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
     
@@ -209,5 +222,6 @@ class MuralDetailsViewController: UIViewController {
     
     @objc func favoriteButtonTapped() {
         vm.favoriteButtonTapped()
+        
     }
 }

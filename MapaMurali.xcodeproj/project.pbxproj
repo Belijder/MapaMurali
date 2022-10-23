@@ -61,6 +61,7 @@
 		42E61C3B28FAC0C500D38205 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C3A28FAC0C500D38205 /* User.swift */; };
 		42E61C3D29045AAC00D38205 /* MMAvatarImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C3C29045AAC00D38205 /* MMAvatarImageView.swift */; };
 		42E61C3F29053F0400D38205 /* MuralDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C3E29053F0400D38205 /* MuralDetailsViewModel.swift */; };
+		42E61C412905A58000D38205 /* MMFavoriteCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C402905A58000D38205 /* MMFavoriteCounterView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -113,6 +114,7 @@
 		42E61C3A28FAC0C500D38205 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		42E61C3C29045AAC00D38205 /* MMAvatarImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMAvatarImageView.swift; sourceTree = "<group>"; };
 		42E61C3E29053F0400D38205 /* MuralDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuralDetailsViewModel.swift; sourceTree = "<group>"; };
+		42E61C402905A58000D38205 /* MMFavoriteCounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMFavoriteCounterView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -239,6 +241,7 @@
 			children = (
 				428BD66028DE322A000B8D69 /* MMAlertContainerView.swift */,
 				42E61C3828FAC03B00D38205 /* MMUsernameWithAvatarView.swift */,
+				42E61C402905A58000D38205 /* MMFavoriteCounterView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -427,6 +430,7 @@
 				429A021D28CFCF4600CD6862 /* UIView+Ext.swift in Sources */,
 				42867B6428958F5B00E5159F /* MainTabBarViewController.swift in Sources */,
 				42E61C3928FAC03C00D38205 /* MMUsernameWithAvatarView.swift in Sources */,
+				42E61C412905A58000D38205 /* MMFavoriteCounterView.swift in Sources */,
 				4283BAB428D606B100A54F0F /* MMCircleButton.swift in Sources */,
 				42E61C2828F1CF3500D38205 /* NetworkManager.swift in Sources */,
 				42E61C3B28FAC0C500D38205 /* User.swift in Sources */,
