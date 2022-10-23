@@ -7,28 +7,30 @@
 
 import UIKit
 import SwiftUI
+import RxSwift
 
 class MuralDetailsViewController: UIViewController {
     
     var muralItem: Mural!
     var imageView = MMFullSizeImageView(frame: .zero)
     var databaseManager: DatabaseManager!
+    var vm: MuralDetailsViewModel
+    var bag = DisposeBag()
     
-    //var favoriteButton: UIButton!
-    
+    var favoriteButton = MMCircleButton(color: .systemRed)
     var mapPinButton = MMCircleButton(color: .white, systemImageName: "mappin.and.ellipse")
     var containerView = UIView()
     var authorLabelDescription = MMBodyLabel(textAlignment: .left)
-    var authorLabel = MMTitleLabel(textAlignment: .left, fontSize: 20)
-    var sendEmailWithAuthorButton = MMTitleLabel(textAlignment: .left, fontSize: 20)
+    var authorLabel = MMTitleLabel(textAlignment: .left, fontSize: 15)
+    var sendEmailWithAuthorButton = MMTitleLabel(textAlignment: .left, fontSize: 15)
     var dateLabelDescription = MMBodyLabel(textAlignment: .left)
     var dateLabel = MMBodyLabel(textAlignment: .left)
     var userLabelDescription = MMBodyLabel(textAlignment: .left)
     
     var userView = MMUsernameWithAvatarView(imageHeight: 40)
-   
     
     init(muralItem: Mural, databaseManager: DatabaseManager) {
+        self.vm = MuralDetailsViewModel(databaseManager: databaseManager, muralID: muralItem.docRef)
         super.init(nibName: nil, bundle: nil)
         self.muralItem = muralItem
         self.databaseManager = databaseManager
@@ -40,10 +42,8 @@ class MuralDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //view.addSubviews(imageView, authorLabelDescription, authorLabel, dateLabelDescription, dateLabel, userLabelDescription, userLabel)
-        
         containerView.addSubviews(mapPinButton, dateLabelDescription, dateLabel, authorLabelDescription, authorLabel, sendEmailWithAuthorButton, userLabelDescription, userView)
-        view.addSubviews(imageView, containerView)
+        view.addSubviews(imageView, containerView, favoriteButton)
         
         
         configureViewController()
@@ -51,6 +51,7 @@ class MuralDetailsViewController: UIViewController {
         configureContainerView()
         configureUIElements()
         layoutUI()
+        addFavoriteObserver()
     }
     
     func checkAuthorPropertyInMuralItem() {
@@ -60,6 +61,20 @@ class MuralDetailsViewController: UIViewController {
             sendEmailWithAuthorButton.isHidden = true
         }
     }
+    
+    func addFavoriteObserver() {
+        vm.isUserFavorite
+            .subscribe(onNext: { value in
+                switch value {
+                case true:
+                    self.favoriteButton.set(systemImageName: "heart.fill")
+                case false:
+                    self.favoriteButton.set(systemImageName: "heart")
+                }
+            })
+            .disposed(by: bag)
+    }
+    
     
     func configureViewController() {
         view.backgroundColor = .systemBackground
@@ -105,8 +120,8 @@ class MuralDetailsViewController: UIViewController {
         
         configureUserView()
         
-        
-        //userLabel.text = muralItem.addedBy
+        favoriteButton.set(systemImageName: vm.favoriteImageName)
+        favoriteButton.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
     }
     
     func configureUserView() {
@@ -134,6 +149,11 @@ class MuralDetailsViewController: UIViewController {
             imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             imageView.widthAnchor.constraint(equalToConstant: view.bounds.width),
             imageView.heightAnchor.constraint(equalToConstant: view.bounds.width / 3 * 4),
+            
+            favoriteButton.topAnchor.constraint(equalTo: imageView.topAnchor, constant: 20),
+            favoriteButton.trailingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: -20),
+            favoriteButton.heightAnchor.constraint(equalToConstant: 44),
+            favoriteButton.widthAnchor.constraint(equalToConstant: 44),
             
             containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -187,7 +207,7 @@ class MuralDetailsViewController: UIViewController {
         self.dismiss(animated: true)
     }
     
-//    @objc func addToFavorite() {
-//        print("dodano do ULUBIONYCH")
-//    }
+    @objc func favoriteButtonTapped() {
+        vm.favoriteButtonTapped()
+    }
 }

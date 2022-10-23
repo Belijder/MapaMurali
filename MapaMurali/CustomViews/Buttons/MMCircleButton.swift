@@ -20,8 +20,13 @@ class MMCircleButton: UIButton {
     
     convenience init(color: UIColor, systemImageName: String) {
         self.init(frame: .zero)
-        set(color: color, systemImageName: systemImageName)
-        
+        set(color: color)
+        set(systemImageName: systemImageName)
+    }
+    
+    convenience init(color: UIColor) {
+        self.init(frame: .zero)
+        set(color: color)
     }
     
     private func configure() {
@@ -30,10 +35,14 @@ class MMCircleButton: UIButton {
         translatesAutoresizingMaskIntoConstraints = false
     }
     
-    final func set(color: UIColor, systemImageName: String) {
-        configuration?.image = UIImage(systemName: systemImageName)
+    final func set(color: UIColor) {
         configuration?.baseBackgroundColor = .systemBackground.withAlphaComponent(0.2)
         configuration?.baseForegroundColor = color
         configuration?.imagePadding = 4
     }
+    
+    final func set(systemImageName: String) {
+        configuration?.image = UIImage(systemName: systemImageName)
+    }
+    
 }

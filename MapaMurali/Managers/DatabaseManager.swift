@@ -23,6 +23,11 @@ enum ImageType: String {
     case avatar = "avatars/"
 }
 
+enum CollectionName: String {
+    case murals = "murals"
+    case users = "users"
+}
+
 class DatabaseManager {
     let storageRef = Storage.storage().reference()
     let db = Firestore.firestore()
@@ -31,10 +36,6 @@ class DatabaseManager {
     var murals = [Mural]()
     
     weak var delegate: DatabaseManagerDelegate?
-    
-    func addUserToDatabase(user: User) {
-        
-    }
     
     func addNewUserToDatabase(id: String, userData: [String : Any], avatarImageData: Data) {
         let newUserRef = db.collection("users").document(id)
@@ -47,6 +48,7 @@ class DatabaseManager {
             }
         }
     }
+    
     
     func addNewItemToDatabase(itemData: [String : Any], fullSizeImageData: Data, thumbnailData: Data) {
         let newItemRef = db.collection("murals").document()
@@ -116,4 +118,53 @@ class DatabaseManager {
         }
     }
     
+    func addToFavorites(userID: String, muralID: String, completion: @escaping (Bool) -> Void) {
+        let userDocRef = db.collection(CollectionName.users.rawValue).document(userID)
+        
+        userDocRef.updateData([
+            "favoritesMurals": FieldValue.arrayUnion([muralID])
+        ]) { [weak self] error in
+            
+            guard let self = self, error == nil else {
+                completion(false)
+                return
+            }
+            
+            let muralDocRef = self.db.collection(CollectionName.murals.rawValue).document(muralID)
+            muralDocRef.updateData([
+                "favoritesCount": FieldValue.increment(Int64(1))
+            ]) { error in
+                guard error == nil else {
+                    completion(false)
+                    return
+                }
+                completion(true)
+            }
+        }
+    }
+    
+    func removeFromFavorites(userID: String, muralID: String, completion: @escaping (Bool) -> Void) {
+        let userDocRef = db.collection(CollectionName.users.rawValue).document(userID)
+        
+        userDocRef.updateData([
+            "favoritesMurals": FieldValue.arrayRemove([muralID])
+        ]) { [weak self] error in
+            
+            guard let self = self, error == nil else {
+                completion(false)
+                return
+            }
+            
+            let muralDocRef = self.db.collection(CollectionName.murals.rawValue).document(muralID)
+            muralDocRef.updateData([
+                "favoritesCount": FieldValue.increment(Int64(-1))
+            ]) { error in
+                guard error == nil else {
+                    completion(false)
+                    return
+                }
+                completion(true)
+            }
+        }
+    }
 }
