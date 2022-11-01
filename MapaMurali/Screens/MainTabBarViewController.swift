@@ -6,32 +6,36 @@
 //
 
 import UIKit
-import RxSwift
 import FirebaseAuth
 
 class MainTabBarViewController: UITabBarController {
     
     var loginManager = LoginManager()
     var databaseManager = DatabaseManager()
-//    var bag = DisposeBag()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let vc1 = UINavigationController(rootViewController: MapViewController(databaseManager: databaseManager))
-        let vc2 = UINavigationController(rootViewController: AddNewItemViewController(databaseManager: databaseManager))
-        let vc3 = UINavigationController(rootViewController: UserAccountViewController(loginManager: loginManager, databaseManager: databaseManager))
-        let vc4 = UINavigationController(rootViewController: MuralsCollectionViewController(databaseManager: databaseManager))
+        let mapVC = UINavigationController(rootViewController: MapViewController(databaseManager: databaseManager))
+        let collectionVC = UINavigationController(rootViewController: MuralsCollectionViewController(databaseManager: databaseManager))
+        let addVC = UINavigationController(rootViewController: AddNewItemViewController(databaseManager: databaseManager))
+        let statisticsVC = UINavigationController(rootViewController: StatisticsViewController(databaseManager: databaseManager))
+        let accountVC = UINavigationController(rootViewController: UserAccountViewController(loginManager: loginManager, databaseManager: databaseManager))
         
-        vc1.tabBarItem.image = UIImage(systemName: "map")
-        vc2.tabBarItem.image = UIImage(systemName: "plus")
-        vc3.tabBarItem.image = UIImage(systemName: "person")
-        vc4.tabBarItem.image = UIImage(systemName: "photo.on.rectangle.angled")
+        mapVC.tabBarItem.image = UIImage(systemName: "map")
+        collectionVC.tabBarItem.image = UIImage(systemName: "photo.on.rectangle.angled")
+        addVC.tabBarItem.image = UIImage(systemName: "plus")
+        statisticsVC.tabBarItem.image = UIImage(systemName: "list.bullet")
+        accountVC.tabBarItem.image = UIImage(systemName: "person")
         
-        vc1.title = "Mapa"
-        vc2.title = "Dodaj"
-        vc3.title = "Moje konto"
-        vc4.title = "Murale"
+        mapVC.title = "Mapa"
+        collectionVC.title = "Murale"
+        addVC.title = "Dodaj"
+        statisticsVC.title = "Statystyki"
+        accountVC.title = "Moje konto"
+        
+        statisticsVC.isNavigationBarHidden = false
+        statisticsVC.navigationBar.prefersLargeTitles = true
         
         let blur = UIBlurEffect(style: .systemThinMaterial)
         let blurView = UIVisualEffectView(effect: blur)
@@ -40,7 +44,7 @@ class MainTabBarViewController: UITabBarController {
         tabBar.addSubview(blurView)
         tabBar.tintColor = MMColors.primary
         
-        setViewControllers([vc1, vc4, vc2, vc3], animated: true)
+        setViewControllers([mapVC, collectionVC, addVC, statisticsVC, accountVC], animated: true)
     }
     
     override func viewDidAppear(_ animated: Bool) {

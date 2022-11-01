@@ -22,6 +22,7 @@ class MMSquareImageView: UIImageView {
     
     func configure() {
         clipsToBounds = true
+        placeholderImage?.withTintColor(.secondaryLabel)
         image = placeholderImage
         translatesAutoresizingMaskIntoConstraints = false
     }

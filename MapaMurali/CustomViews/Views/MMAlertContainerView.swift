@@ -24,5 +24,6 @@ class MMAlertContainerView: UIView {
         layer.borderWidth = 2
         layer.borderColor = MMColors.primary.cgColor
         translatesAutoresizingMaskIntoConstraints = false
+        
     }
 }
