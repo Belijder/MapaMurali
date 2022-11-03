@@ -8,8 +8,8 @@
 import UIKit
 
 class StatisticsViewController: UIViewController {
-    
-    let databaseManager: DatabaseManager
+
+    let vm: StatisticsViewModel
     
     private let headers = ["Najpopularniejsze murale", "Najaktywniejsi użytkownicy", "Najbardziej muralowe Miasta"]
     
@@ -24,7 +24,7 @@ class StatisticsViewController: UIViewController {
         super.viewDidLoad()
         self.title = "Statystyki"
         view.addSubview(statisticTableView)
-
+        vm.createMostPopularMuralsArray()
         statisticTableView.delegate = self
         statisticTableView.dataSource = self
     }
@@ -35,7 +35,7 @@ class StatisticsViewController: UIViewController {
     }
     
     init(databaseManager: DatabaseManager) {
-        self.databaseManager = databaseManager
+        self.vm = StatisticsViewModel(databaseManager: databaseManager)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -53,7 +53,7 @@ extension StatisticsViewController: UITableViewDelegate, UITableViewDataSource {
         switch indexPath.section {
         case 0:
             let cell = statisticTableView.dequeueReusableCell(withIdentifier: MMCollectionViewTableViewCell.identifier, for: indexPath) as! MMCollectionViewTableViewCell
-            cell.set(murals: databaseManager.murals)
+            cell.set(murals: vm.mostPopularMurals)
             cell.delegate = self
             return cell
         default:
@@ -86,7 +86,7 @@ extension StatisticsViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension StatisticsViewController: MMCollectionViewTableViewProtocol {
     func didSelectItemInCollectionView(muralItem: Mural) {
-        let destVC = MuralDetailsViewController(muralItem: muralItem, databaseManager: databaseManager)
+        let destVC = MuralDetailsViewController(muralItem: muralItem, databaseManager: vm.databaseManager)
         destVC.title = muralItem.adress
         let navControler = UINavigationController(rootViewController: destVC)
         navControler.modalPresentationStyle = .fullScreen

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 import FirebaseStorage
 import FirebaseFirestore
 import FirebaseFirestoreSwift
@@ -29,11 +30,18 @@ enum CollectionName: String {
 }
 
 class DatabaseManager {
+    
+    init() {
+        fetchMostActivUsers()
+    }
+    
     let storageRef = Storage.storage().reference()
     let db = Firestore.firestore()
     
     var muralItems = BehaviorSubject<[Mural]>(value: [])
     var murals = [Mural]()
+    
+    var users = [User]()
     
     weak var delegate: DatabaseManagerDelegate?
     
@@ -51,7 +59,7 @@ class DatabaseManager {
     
     
     func addNewItemToDatabase(itemData: [String : Any], fullSizeImageData: Data, thumbnailData: Data) {
-        let newItemRef = db.collection("murals").document()
+        let newItemRef = db.collection(CollectionName.murals.rawValue).document()
         newItemRef.setData(itemData) { error in
             if let error = error {
                 print("Error writing document: \(error)")
@@ -59,8 +67,17 @@ class DatabaseManager {
                 newItemRef.updateData(["docRef" : newItemRef.documentID])
                 self.addImageToStorage(docRef: newItemRef, imageData: thumbnailData, imageType: .thumbnail)
                 self.addImageToStorage(docRef: newItemRef, imageData: fullSizeImageData, imageType: .fullSize)
+                self.increaseNumberOfMuralsAddedByUser()
             }
         }
+    }
+    
+    func increaseNumberOfMuralsAddedByUser() {
+        guard let userID = Auth.auth().currentUser?.uid else { return }
+        let docRef = db.collection(CollectionName.users.rawValue).document(userID)
+        docRef.updateData([
+            "muralsAdded": FieldValue.increment(Int64(1))
+        ])
     }
     
     func addImageToStorage(docRef: DocumentReference, imageData: Data, imageType: ImageType) {
@@ -79,7 +96,6 @@ class DatabaseManager {
                     }
                     docRef.updateData(["\(fieldKey)URL" : url.absoluteString])
                     self.delegate?.successToAddNewItem()
-
                 }
                 
             case .failure(_):
@@ -90,12 +106,12 @@ class DatabaseManager {
     }
     
     func fetchMuralItemsFromDatabase() {
-        db.collection("murals").getDocuments { querySnapshot, error in
+        db.collection(CollectionName.murals.rawValue).getDocuments { querySnapshot, error in
             if let error = error {
                 print("NIE UDAŁO SIĘ POBRAĆ MURALI Z BAZY DANYCH. ERROR: \(error.localizedDescription)")
             } else {
                 for document in querySnapshot!.documents { 
-                    let docRef = self.db.collection("murals").document(document.documentID)
+                    let docRef = self.db.collection(CollectionName.murals.rawValue).document(document.documentID)
                     docRef.getDocument(as: Mural.self) { result in
                         switch result {
                         case .success(let mural):
@@ -112,11 +128,34 @@ class DatabaseManager {
     }
     
     func fetchUserFromDatabase(id: String, completion: @escaping (Result<User, Error>) -> Void) {
-        let docRef = db.collection("users").document(id)
+        let docRef = db.collection(CollectionName.users.rawValue).document(id)
         docRef.getDocument(as: User.self) { result in
            completion(result)
         }
     }
+    
+    func fetchMostActivUsers() {
+        db.collection(CollectionName.users.rawValue).order(by: "muralsAdded").limit(to: 10).getDocuments { querySnapshot, error in
+            if let error = error {
+                print("🔴 Error to fetch most activ users from Database: \(error)")
+            } else {
+                for doc in querySnapshot!.documents {
+                    let docRef = self.db.collection(CollectionName.users.rawValue).document(doc.documentID)
+                    docRef.getDocument(as: User.self) { result in
+                        switch result {
+                        case .success(let user):
+                            self.users.append(user)
+                        case .failure(let error):
+                            print("🔴 Error to fetch user with id \(doc.documentID): \(error)")
+                        }
+                    }
+                }
+                print("🟡 Most Activ users Added")
+            }
+        }
+    }
+    
+    //MARK: Favorites
     
     func addToFavorites(userID: String, muralID: String, completion: @escaping (Bool) -> Void) {
         let userDocRef = db.collection(CollectionName.users.rawValue).document(userID)
