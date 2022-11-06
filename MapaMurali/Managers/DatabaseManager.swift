@@ -32,6 +32,7 @@ enum CollectionName: String {
 class DatabaseManager {
     
     init() {
+        fetchMuralItemsFromDatabase()
         fetchMostActivUsers()
     }
     

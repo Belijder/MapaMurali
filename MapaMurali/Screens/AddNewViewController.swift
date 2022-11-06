@@ -190,7 +190,7 @@ class AddNewItemViewController: MMDataLoadingVC {
             }
 
             do {
-                let data = try self.vm.createDataforDatabase(author: self.authorTextField.text)
+                let data = try self.vm.createDataforDatabase(author: self.authorTextField.text, city: self.cityTextField.text)
                 self.databaseManager.addNewItemToDatabase(itemData: data, fullSizeImageData: fullSizeImageData, thumbnailData: thumbnailImageData)
                 self.showLoadingView()
             } catch let error {

@@ -15,12 +15,14 @@ class AddNewViewModel {
     var thumbnailImageData: Data?
     var currentLocation: CLLocation?
     var adress: String?
+    var city: String?
     
-    func createDataforDatabase(author: String?) throws -> [String : Any] {
+    func createDataforDatabase(author: String?, city: String?) throws -> [String : Any] {
         
         guard let longitude = currentLocation?.coordinate.longitude,
               let latitude = currentLocation?.coordinate.latitude,
               let adress = adress,
+              let city = city,
               let user = Auth.auth().currentUser?.uid else {
             print("Error when try to create data for Database")
             throw MMError.failedToAddToDB
@@ -30,6 +32,7 @@ class AddNewViewModel {
         data["longitude"] = longitude
         data["latitude"] = latitude
         data["adress"] = adress
+        data["city"] = city
         data["author"] = author
         data["addedBy"] = user
         data["addedDate"] = Date.now

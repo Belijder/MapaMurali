@@ -18,6 +18,7 @@ class StatisticsViewController: UIViewController {
         table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         table.register(MMCollectionViewTableViewCell.self, forCellReuseIdentifier: MMCollectionViewTableViewCell.identifier)
         table.register(MMUsersTableViewInTableViewCell.self, forCellReuseIdentifier: MMUsersTableViewInTableViewCell.identifier)
+        table.register(MMPopularCitiesTableViewCell.self, forCellReuseIdentifier: MMPopularCitiesTableViewCell.identifier)
         table.separatorColor = .clear
         table.showsVerticalScrollIndicator = false
         return table
@@ -28,6 +29,7 @@ class StatisticsViewController: UIViewController {
         self.title = "Statystyki"
         view.addSubview(statisticTableView)
         vm.createMostPopularMuralsArray()
+        vm.createPopularCitiesArray()
         statisticTableView.delegate = self
         statisticTableView.dataSource = self
     }
@@ -35,6 +37,10 @@ class StatisticsViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         statisticTableView.frame = view.bounds
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
     
     init(databaseManager: DatabaseManager) {
@@ -66,6 +72,12 @@ extension StatisticsViewController: UITableViewDelegate, UITableViewDataSource {
             cell.set(users: sortedUsers)
             cell.delegate = self
             return cell
+            
+        case 2:
+            let cell = statisticTableView.dequeueReusableCell(withIdentifier: MMPopularCitiesTableViewCell.identifier) as! MMPopularCitiesTableViewCell
+            cell.set(cities: vm.popularCities)
+            cell.delegate = self
+            return cell
         default:
             let cell = statisticTableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
             return cell
@@ -87,24 +99,30 @@ extension StatisticsViewController: UITableViewDelegate, UITableViewDataSource {
         case 1:
             return 180.0
         case 2:
-            return 120.0
+            return 180.0
         default:
             return 10.0
         }
     }
 }
 
-extension StatisticsViewController: MMCollectionViewTableViewProtocol, MMUsersTableViewInTableViewDelegate {
+extension StatisticsViewController: MMCollectionViewTableViewProtocol, MMUsersTableViewInTableViewDelegate, MMPopularCitiesTableViewProtocol {
+    func didSelectRowWithCityName(city: String) {
+        let murals = vm.databaseManager.murals.filter { $0.city == city }
+        let destVC = MuralsCollectionViewController(databaseManager: vm.databaseManager)
+        destVC.murals = murals
+        destVC.title = city
+        navigationController?.navigationBar.tintColor = MMColors.primary
+        self.navigationController?.pushViewController(destVC, animated: true)
+    }
+    
     func didSelectRowWith(user: User) {
         let murals = vm.databaseManager.murals.filter { $0.addedBy == user.id }
         let destVC = MuralsCollectionViewController(databaseManager: vm.databaseManager)
         destVC.murals = murals
+        destVC.title = user.displayName
+        navigationController?.navigationBar.tintColor = MMColors.primary
         self.navigationController?.pushViewController(destVC, animated: true)
-        
-        
-//        let navControler = UINavigationController(rootViewController: destVC)
-//        navControler.modalPresentationStyle = .fullScreen
-//        self.present(navControler, animated: true)
     }
     
     func didSelectItemInCollectionView(muralItem: Mural) {

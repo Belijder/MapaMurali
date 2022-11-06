@@ -28,7 +28,7 @@ class MapViewController: UIViewController {
         configureMapView()
         setupUserTrackingButton()
         configureLocationManager()
-        databaseManager.fetchMuralItemsFromDatabase()
+//        databaseManager.fetchMuralItemsFromDatabase()
     
     }
     

@@ -16,26 +16,33 @@ class MainTabBarViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let mapVC = UINavigationController(rootViewController: MapViewController(databaseManager: databaseManager))
-        let collectionVC = UINavigationController(rootViewController: MuralsCollectionViewController(databaseManager: databaseManager))
-        let addVC = UINavigationController(rootViewController: AddNewItemViewController(databaseManager: databaseManager))
-        let statisticsVC = UINavigationController(rootViewController: StatisticsViewController(databaseManager: databaseManager))
-        let accountVC = UINavigationController(rootViewController: UserAccountViewController(loginManager: loginManager, databaseManager: databaseManager))
+        let mapNC = UINavigationController(rootViewController: MapViewController(databaseManager: databaseManager))
         
-        mapVC.tabBarItem.image = UIImage(systemName: "map")
-        collectionVC.tabBarItem.image = UIImage(systemName: "photo.on.rectangle.angled")
-        addVC.tabBarItem.image = UIImage(systemName: "plus")
-        statisticsVC.tabBarItem.image = UIImage(systemName: "list.bullet")
-        accountVC.tabBarItem.image = UIImage(systemName: "person")
+        let collectionVC = MuralsCollectionViewController(databaseManager: databaseManager)
+        collectionVC.title = "Przeglądaj"
+        let collectionNC = UINavigationController(rootViewController: collectionVC)
         
-        mapVC.title = "Mapa"
-        collectionVC.title = "Murale"
-        addVC.title = "Dodaj"
-        statisticsVC.title = "Statystyki"
-        accountVC.title = "Moje konto"
+        let addNC = UINavigationController(rootViewController: AddNewItemViewController(databaseManager: databaseManager))
+        let statisticsNC = UINavigationController(rootViewController: StatisticsViewController(databaseManager: databaseManager))
+        let accountNC = UINavigationController(rootViewController: UserAccountViewController(loginManager: loginManager, databaseManager: databaseManager))
         
-        statisticsVC.isNavigationBarHidden = false
-        statisticsVC.navigationBar.prefersLargeTitles = true
+        mapNC.tabBarItem.image = UIImage(systemName: "map")
+        collectionNC.tabBarItem.image = UIImage(systemName: "photo.on.rectangle.angled")
+        addNC.tabBarItem.image = UIImage(systemName: "plus")
+        statisticsNC.tabBarItem.image = UIImage(systemName: "list.bullet")
+        accountNC.tabBarItem.image = UIImage(systemName: "person")
+        
+        mapNC.title = "Mapa"
+        collectionNC.title = "Murale"
+        addNC.title = "Dodaj"
+        statisticsNC.title = "Statystyki"
+        accountNC.title = "Moje konto"
+        
+        collectionNC.isNavigationBarHidden = false
+        collectionNC.navigationBar.prefersLargeTitles = true
+        
+        statisticsNC.isNavigationBarHidden = false
+        statisticsNC.navigationBar.prefersLargeTitles = true
         
         let blur = UIBlurEffect(style: .systemThinMaterial)
         let blurView = UIVisualEffectView(effect: blur)
@@ -44,7 +51,7 @@ class MainTabBarViewController: UITabBarController {
         tabBar.addSubview(blurView)
         tabBar.tintColor = MMColors.primary
         
-        setViewControllers([mapVC, collectionVC, addVC, statisticsVC, accountVC], animated: true)
+        setViewControllers([mapNC, collectionNC, addNC, statisticsNC, accountNC], animated: true)
     }
     
     override func viewDidAppear(_ animated: Bool) {

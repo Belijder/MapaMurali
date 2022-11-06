@@ -12,6 +12,7 @@ class StatisticsViewModel {
     let databaseManager: DatabaseManager
     
     var mostPopularMurals = [Mural]()
+    var popularCities = [PopularCity]()
     
     init(databaseManager: DatabaseManager) {
         self.databaseManager = databaseManager
@@ -19,6 +20,29 @@ class StatisticsViewModel {
     
     func createMostPopularMuralsArray() {
         mostPopularMurals = databaseManager.murals.sorted(by: { $0.favoritesCount > $1.favoritesCount })
-        print("🔵 Most activ user have \(databaseManager.users[0].muralsAdded) murals added.")
     }
+    
+    func createPopularCitiesArray() {
+        var citiesNames = [String]()
+        
+        let murals = databaseManager.murals
+        for mural in murals {
+            if !citiesNames.contains(mural.city) {
+                citiesNames.append(mural.city)
+            }
+        }
+        
+        var popularCities = [PopularCity]()
+        
+        for city in citiesNames {
+            let muralsInCity = murals.filter { $0.city == city }
+            let popularCity = PopularCity(name: city, muralsCount: muralsInCity.count)
+            popularCities.append(popularCity)
+        }
+        
+        let sortedPopularCities = popularCities.sorted { $0.muralsCount > $1.muralsCount }
+
+        self.popularCities = sortedPopularCities
+    }
+    
 }

@@ -11,6 +11,9 @@
 		42618DD42914312D0052DB76 /* StatisticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42618DD32914312D0052DB76 /* StatisticsViewModel.swift */; };
 		42618DD6291655720052DB76 /* MMUsersTableViewInTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42618DD5291655720052DB76 /* MMUsersTableViewInTableViewCell.swift */; };
 		42618DD829165A0D0052DB76 /* MMMostActivUsersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42618DD729165A0D0052DB76 /* MMMostActivUsersCell.swift */; };
+		42618DDA2917BAB20052DB76 /* MMPopularCitiesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42618DD92917BAB20052DB76 /* MMPopularCitiesTableViewCell.swift */; };
+		42618DDC2917BB7C0052DB76 /* PopularCity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42618DDB2917BB7C0052DB76 /* PopularCity.swift */; };
+		42618DDE2917BC590052DB76 /* MMPopularCityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42618DDD2917BC590052DB76 /* MMPopularCityTableViewCell.swift */; };
 		426E49FF28931180009C8E99 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426E49FE28931180009C8E99 /* AppDelegate.swift */; };
 		426E4A0128931180009C8E99 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426E4A0028931180009C8E99 /* SceneDelegate.swift */; };
 		426E4A0328931180009C8E99 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426E4A0228931180009C8E99 /* MapViewController.swift */; };
@@ -75,6 +78,9 @@
 		42618DD32914312D0052DB76 /* StatisticsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewModel.swift; sourceTree = "<group>"; };
 		42618DD5291655720052DB76 /* MMUsersTableViewInTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMUsersTableViewInTableViewCell.swift; sourceTree = "<group>"; };
 		42618DD729165A0D0052DB76 /* MMMostActivUsersCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMMostActivUsersCell.swift; sourceTree = "<group>"; };
+		42618DD92917BAB20052DB76 /* MMPopularCitiesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMPopularCitiesTableViewCell.swift; sourceTree = "<group>"; };
+		42618DDB2917BB7C0052DB76 /* PopularCity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularCity.swift; sourceTree = "<group>"; };
+		42618DDD2917BC590052DB76 /* MMPopularCityTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMPopularCityTableViewCell.swift; sourceTree = "<group>"; };
 		426E49FB28931180009C8E99 /* MapaMurali.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MapaMurali.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		426E49FE28931180009C8E99 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		426E4A0028931180009C8E99 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -246,6 +252,7 @@
 			children = (
 				4289AEC728E216C200C3FFF5 /* Mural.swift */,
 				42E61C3A28FAC0C500D38205 /* User.swift */,
+				42618DDB2917BB7C0052DB76 /* PopularCity.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -341,6 +348,8 @@
 				427C1A632910E899000E5619 /* MMFavoritesMuralCollectionCell.swift */,
 				42618DD5291655720052DB76 /* MMUsersTableViewInTableViewCell.swift */,
 				42618DD729165A0D0052DB76 /* MMMostActivUsersCell.swift */,
+				42618DD92917BAB20052DB76 /* MMPopularCitiesTableViewCell.swift */,
+				42618DDD2917BC590052DB76 /* MMPopularCityTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -446,8 +455,10 @@
 				427CAB5828E9A83400DA7247 /* MMAnnotationView.swift in Sources */,
 				428BD66728DE3FDC000B8D69 /* MMError.swift in Sources */,
 				42E18CB928DB98EA0068414E /* UIImage+Ext.swift in Sources */,
+				42618DDC2917BB7C0052DB76 /* PopularCity.swift in Sources */,
 				42867B672895901000E5159F /* AddNewViewController.swift in Sources */,
 				429A021D28CFCF4600CD6862 /* UIView+Ext.swift in Sources */,
+				42618DDA2917BAB20052DB76 /* MMPopularCitiesTableViewCell.swift in Sources */,
 				42618DD42914312D0052DB76 /* StatisticsViewModel.swift in Sources */,
 				42867B6428958F5B00E5159F /* MainTabBarViewController.swift in Sources */,
 				42618DD6291655720052DB76 /* MMUsersTableViewInTableViewCell.swift in Sources */,
@@ -460,6 +471,7 @@
 				429A021B28CFCC7100CD6862 /* MMPlainButton.swift in Sources */,
 				427C1A642910E899000E5619 /* MMFavoritesMuralCollectionCell.swift in Sources */,
 				428BD65E28DE30B0000B8D69 /* MMTitleLabel.swift in Sources */,
+				42618DDE2917BC590052DB76 /* MMPopularCityTableViewCell.swift in Sources */,
 				426E4A0328931180009C8E99 /* MapViewController.swift in Sources */,
 				428BD66528DE3B7B000B8D69 /* UIViewController+Ext.swift in Sources */,
 				429A021528CFADD200CD6862 /* UITextField+Ext.swift in Sources */,

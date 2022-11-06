@@ -36,11 +36,15 @@ class MuralsCollectionViewController: UIViewController {
         configureCollectionView()
         configureDataSource()
         configureSearchController()
-        if murals.isEmpty { murals = databaseManager.murals }
-        updateData(on: murals)
         
+        if murals.isEmpty && self.title == "Przeglądaj" { murals = databaseManager.murals }
+        if self.title != "Przeglądaj" {
+            navigationController?.navigationBar.prefersLargeTitles = false
+            let closeButton = UIBarButtonItem(image: UIImage(systemName: "arrow.backward"), style: .plain, target: self, action: #selector(dismissVC))
+            navigationItem.leftBarButtonItem = closeButton
+        }
+        updateData(on: murals)
     }
-    
     
     func configureCollectionView() {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: UIHelper.createThreeColumnFlowLayout(in: view))
@@ -74,6 +78,10 @@ class MuralsCollectionViewController: UIViewController {
         DispatchQueue.main.async {
             self.dataSource.apply(snapshot, animatingDifferences: true)
         }
+    }
+    
+    @objc func dismissVC() {
+        self.navigationController?.popViewController(animated: true)
     }
 }
 
