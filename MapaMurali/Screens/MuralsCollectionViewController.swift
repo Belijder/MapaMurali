@@ -36,10 +36,11 @@ class MuralsCollectionViewController: UIViewController {
         configureCollectionView()
         configureDataSource()
         configureSearchController()
-        murals = databaseManager.murals
+        if murals.isEmpty { murals = databaseManager.murals }
         updateData(on: murals)
         
     }
+    
     
     func configureCollectionView() {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: UIHelper.createThreeColumnFlowLayout(in: view))

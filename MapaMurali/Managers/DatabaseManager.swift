@@ -52,7 +52,6 @@ class DatabaseManager {
                 print("🔴 Error when try to add new user: \(error)")
             } else {
                 self.addImageToStorage(docRef: newUserRef, imageData: avatarImageData, imageType: .avatar)
-                newUserRef.updateData(["favoritesMurals" : []])
             }
         }
     }

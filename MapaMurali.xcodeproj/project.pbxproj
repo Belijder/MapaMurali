@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		4200210D28E9B0E000394299 /* MMAnnotationPinImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4200210C28E9B0E000394299 /* MMAnnotationPinImageView.swift */; };
 		42618DD42914312D0052DB76 /* StatisticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42618DD32914312D0052DB76 /* StatisticsViewModel.swift */; };
+		42618DD6291655720052DB76 /* MMUsersTableViewInTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42618DD5291655720052DB76 /* MMUsersTableViewInTableViewCell.swift */; };
+		42618DD829165A0D0052DB76 /* MMMostActivUsersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42618DD729165A0D0052DB76 /* MMMostActivUsersCell.swift */; };
 		426E49FF28931180009C8E99 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426E49FE28931180009C8E99 /* AppDelegate.swift */; };
 		426E4A0128931180009C8E99 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426E4A0028931180009C8E99 /* SceneDelegate.swift */; };
 		426E4A0328931180009C8E99 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426E4A0228931180009C8E99 /* MapViewController.swift */; };
@@ -71,6 +73,8 @@
 /* Begin PBXFileReference section */
 		4200210C28E9B0E000394299 /* MMAnnotationPinImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMAnnotationPinImageView.swift; sourceTree = "<group>"; };
 		42618DD32914312D0052DB76 /* StatisticsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewModel.swift; sourceTree = "<group>"; };
+		42618DD5291655720052DB76 /* MMUsersTableViewInTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMUsersTableViewInTableViewCell.swift; sourceTree = "<group>"; };
+		42618DD729165A0D0052DB76 /* MMMostActivUsersCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMMostActivUsersCell.swift; sourceTree = "<group>"; };
 		426E49FB28931180009C8E99 /* MapaMurali.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MapaMurali.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		426E49FE28931180009C8E99 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		426E4A0028931180009C8E99 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -335,6 +339,8 @@
 				42E61C3428F31DD800D38205 /* MuralCell.swift */,
 				42E61C44290713D900D38205 /* MMCollectionViewTableViewCell.swift */,
 				427C1A632910E899000E5619 /* MMFavoritesMuralCollectionCell.swift */,
+				42618DD5291655720052DB76 /* MMUsersTableViewInTableViewCell.swift */,
+				42618DD729165A0D0052DB76 /* MMMostActivUsersCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -425,6 +431,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				428BD66328DE353B000B8D69 /* MMAlertVC.swift in Sources */,
+				42618DD829165A0D0052DB76 /* MMMostActivUsersCell.swift in Sources */,
 				42E18CB728D7A8FE0068414E /* MMDataLoadingVC.swift in Sources */,
 				42E61C3028F3143100D38205 /* MuralsCollectionViewController.swift in Sources */,
 				42E61C2228F1AE0600D38205 /* MuralDetailsViewController.swift in Sources */,
@@ -443,6 +450,7 @@
 				429A021D28CFCF4600CD6862 /* UIView+Ext.swift in Sources */,
 				42618DD42914312D0052DB76 /* StatisticsViewModel.swift in Sources */,
 				42867B6428958F5B00E5159F /* MainTabBarViewController.swift in Sources */,
+				42618DD6291655720052DB76 /* MMUsersTableViewInTableViewCell.swift in Sources */,
 				42E61C3928FAC03C00D38205 /* MMUsernameWithAvatarView.swift in Sources */,
 				42E61C412905A58000D38205 /* MMFavoriteCounterView.swift in Sources */,
 				4283BAB428D606B100A54F0F /* MMCircleButton.swift in Sources */,

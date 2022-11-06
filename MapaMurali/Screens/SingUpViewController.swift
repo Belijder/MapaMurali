@@ -63,6 +63,8 @@ class SingUpViewController: UIViewController {
             userData["id"] = userID
             userData["displayName"] = self.nickNameTextField.text
             userData["email"] = email
+            userData["muralsAdded"] = 0
+            userData["favoritesMurals"] = [String]()
 
             self.databaseManager.addNewUserToDatabase(id: userID, userData: userData, avatarImageData: avatarData)
         }

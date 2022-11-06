@@ -272,7 +272,7 @@ extension AddNewItemViewController: UIImagePickerControllerDelegate, UINavigatio
         
         self.vm.fullSizeImageData = compressedImage
         
-        let resizedImage = image?.aspectFittedToHeight(100)
+        let resizedImage = image?.aspectFittedToHeight(133)
         let thumbnailData = resizedImage?.jpegData(compressionQuality: 0.3)
         self.vm.thumbnailImageData = thumbnailData
 

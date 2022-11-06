@@ -14,7 +14,6 @@ protocol MMCollectionViewTableViewProtocol: AnyObject {
 class MMCollectionViewTableViewCell: UITableViewCell {
     
     var murals = [Mural]()
-//    var databaseManager: DatabaseManager!
     weak var delegate: MMCollectionViewTableViewProtocol?
     
     static let identifier = "MMCollectionViewTableViewCell"

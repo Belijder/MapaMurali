@@ -17,6 +17,9 @@ class StatisticsViewController: UIViewController {
         let table = UITableView()
         table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         table.register(MMCollectionViewTableViewCell.self, forCellReuseIdentifier: MMCollectionViewTableViewCell.identifier)
+        table.register(MMUsersTableViewInTableViewCell.self, forCellReuseIdentifier: MMUsersTableViewInTableViewCell.identifier)
+        table.separatorColor = .clear
+        table.showsVerticalScrollIndicator = false
         return table
     }()
 
@@ -56,6 +59,13 @@ extension StatisticsViewController: UITableViewDelegate, UITableViewDataSource {
             cell.set(murals: vm.mostPopularMurals)
             cell.delegate = self
             return cell
+            
+        case 1:
+            let cell = statisticTableView.dequeueReusableCell(withIdentifier: MMUsersTableViewInTableViewCell.identifier) as! MMUsersTableViewInTableViewCell
+            let sortedUsers = vm.databaseManager.users.sorted { $0.muralsAdded > $1.muralsAdded }
+            cell.set(users: sortedUsers)
+            cell.delegate = self
+            return cell
         default:
             let cell = statisticTableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
             return cell
@@ -75,7 +85,7 @@ extension StatisticsViewController: UITableViewDelegate, UITableViewDataSource {
         case 0:
             return 220.0
         case 1:
-            return 80.0
+            return 180.0
         case 2:
             return 120.0
         default:
@@ -84,7 +94,19 @@ extension StatisticsViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-extension StatisticsViewController: MMCollectionViewTableViewProtocol {
+extension StatisticsViewController: MMCollectionViewTableViewProtocol, MMUsersTableViewInTableViewDelegate {
+    func didSelectRowWith(user: User) {
+        let murals = vm.databaseManager.murals.filter { $0.addedBy == user.id }
+        let destVC = MuralsCollectionViewController(databaseManager: vm.databaseManager)
+        destVC.murals = murals
+        self.navigationController?.pushViewController(destVC, animated: true)
+        
+        
+//        let navControler = UINavigationController(rootViewController: destVC)
+//        navControler.modalPresentationStyle = .fullScreen
+//        self.present(navControler, animated: true)
+    }
+    
     func didSelectItemInCollectionView(muralItem: Mural) {
         let destVC = MuralDetailsViewController(muralItem: muralItem, databaseManager: vm.databaseManager)
         destVC.title = muralItem.adress
