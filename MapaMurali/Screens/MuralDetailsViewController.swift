@@ -27,7 +27,7 @@ class MuralDetailsViewController: UIViewController {
     var dateLabel = MMBodyLabel(textAlignment: .left)
     var userLabelDescription = MMBodyLabel(textAlignment: .left)
     
-    let favoriteCounter = MMFavoriteCounterView(imageHeight: 50, counter: 0, fontSize: 17)
+    let favoriteCounter = MMTitleLabel(textAlignment: .center, fontSize: 25)
     
     var userView = MMUsernameWithAvatarView(imageHeight: 40)
     
@@ -36,7 +36,7 @@ class MuralDetailsViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         self.muralItem = muralItem
         self.databaseManager = databaseManager
-        self.favoriteCounter.counterLabel.text = "\(muralItem.favoritesCount)"
+        self.favoriteCounter.createFavoriteCounterTextLabel(counter: muralItem.favoritesCount, imagePointSize: 25)
         
     }
     
@@ -75,7 +75,7 @@ class MuralDetailsViewController: UIViewController {
                 case false:
                     self.favoriteButton.set(systemImageName: "heart")
                 }
-                self.favoriteCounter.counterLabel.text = "\(self.vm.counterValue)"
+                self.favoriteCounter.createFavoriteCounterTextLabel(counter: self.vm.counterValue, imagePointSize: 25)
             })
             .disposed(by: bag)
     }
@@ -128,7 +128,7 @@ class MuralDetailsViewController: UIViewController {
         favoriteButton.set(systemImageName: vm.favoriteImageName)
         favoriteButton.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
         
-        favoriteCounter.counterLabel.text = "\(muralItem.favoritesCount)"
+        favoriteCounter.createFavoriteCounterTextLabel(counter: muralItem.favoritesCount, imagePointSize: 25)
     }
     
     func configureUserView() {

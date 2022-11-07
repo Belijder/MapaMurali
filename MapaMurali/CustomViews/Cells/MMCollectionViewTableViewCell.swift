@@ -19,10 +19,10 @@ class MMCollectionViewTableViewCell: UITableViewCell {
     static let identifier = "MMCollectionViewTableViewCell"
     
     private let collectionView: UICollectionView = {
-        let padding: CGFloat = 12
+        let padding: CGFloat = 20
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: 140, height: 200)
-        layout.sectionInset = UIEdgeInsets(top: 20, left: padding, bottom: 0, right: padding)
+        layout.itemSize = CGSize(width: 120, height: 160)
+        layout.sectionInset = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
         layout.scrollDirection = .horizontal
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(MMFavoritesMuralCollectionCell.self, forCellWithReuseIdentifier: MMFavoritesMuralCollectionCell.identifier)

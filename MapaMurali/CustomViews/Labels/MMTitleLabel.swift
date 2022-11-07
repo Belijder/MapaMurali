@@ -32,4 +32,16 @@ class MMTitleLabel: UILabel {
         lineBreakMode = .byTruncatingTail
         translatesAutoresizingMaskIntoConstraints = false
     }
+    
+    func createFavoriteCounterTextLabel(counter: Int, imagePointSize: CGFloat) {
+        let imageAttachment = NSTextAttachment()
+        let configuration = UIImage.SymbolConfiguration(pointSize: imagePointSize, weight: .regular)
+        imageAttachment.image = UIImage(systemName: "heart.fill", withConfiguration: configuration)?.withTintColor(.systemRed)
+        let fullString = NSMutableAttributedString(string: "")
+        fullString.append(NSAttributedString(attachment: imageAttachment))
+        fullString.append(NSAttributedString(string: " \(counter)"))
+        
+        attributedText = fullString
+        
+    }
 }
