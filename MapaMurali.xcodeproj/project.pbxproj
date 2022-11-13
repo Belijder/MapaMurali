@@ -49,6 +49,7 @@
 		428BD66328DE353B000B8D69 /* MMAlertVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428BD66228DE353B000B8D69 /* MMAlertVC.swift */; };
 		428BD66528DE3B7B000B8D69 /* UIViewController+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428BD66428DE3B7B000B8D69 /* UIViewController+Ext.swift */; };
 		428BD66728DE3FDC000B8D69 /* MMError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428BD66628DE3FDC000B8D69 /* MMError.swift */; };
+		428CEADA29214070006BC964 /* MMUserFavoritesMuralsCollectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428CEAD929214070006BC964 /* MMUserFavoritesMuralsCollectionVC.swift */; };
 		429A021228CFA1CE00CD6862 /* MMTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429A021128CFA1CE00CD6862 /* MMTextField.swift */; };
 		429A021528CFADD200CD6862 /* UITextField+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429A021428CFADD200CD6862 /* UITextField+Ext.swift */; };
 		429A021928CFB52B00CD6862 /* MMTintedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429A021828CFB52B00CD6862 /* MMTintedButton.swift */; };
@@ -112,6 +113,7 @@
 		428BD66228DE353B000B8D69 /* MMAlertVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMAlertVC.swift; sourceTree = "<group>"; };
 		428BD66428DE3B7B000B8D69 /* UIViewController+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Ext.swift"; sourceTree = "<group>"; };
 		428BD66628DE3FDC000B8D69 /* MMError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMError.swift; sourceTree = "<group>"; };
+		428CEAD929214070006BC964 /* MMUserFavoritesMuralsCollectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMUserFavoritesMuralsCollectionVC.swift; sourceTree = "<group>"; };
 		429A021128CFA1CE00CD6862 /* MMTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMTextField.swift; sourceTree = "<group>"; };
 		429A021428CFADD200CD6862 /* UITextField+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Ext.swift"; sourceTree = "<group>"; };
 		429A021828CFB52B00CD6862 /* MMTintedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMTintedButton.swift; sourceTree = "<group>"; };
@@ -160,6 +162,7 @@
 			children = (
 				42618DE0291FDACC0052DB76 /* MMUserMuralsCollectionsVC.swift */,
 				42618DE2291FE5810052DB76 /* MMUserAddedMuralsCollectionsVC.swift */,
+				428CEAD929214070006BC964 /* MMUserFavoritesMuralsCollectionVC.swift */,
 			);
 			path = UserMuralsCollectionVCs;
 			sourceTree = "<group>";
@@ -505,6 +508,7 @@
 				42618DE1291FDACC0052DB76 /* MMUserMuralsCollectionsVC.swift in Sources */,
 				42E61C2E28F2ED6400D38205 /* Constants.swift in Sources */,
 				42867B69289590BD00E5159F /* UserAccountViewController.swift in Sources */,
+				428CEADA29214070006BC964 /* MMUserFavoritesMuralsCollectionVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

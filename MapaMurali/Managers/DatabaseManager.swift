@@ -34,6 +34,7 @@ class DatabaseManager {
     init() {
         fetchMuralItemsFromDatabase()
         fetchMostActivUsers()
+        fetchCurrenUserData()
     }
     
     let storageRef = Storage.storage().reference()
@@ -44,6 +45,8 @@ class DatabaseManager {
     
     var users = [User]()
     
+    var currentUser: User?
+    
     weak var delegate: DatabaseManagerDelegate?
     
     func addNewUserToDatabase(id: String, userData: [String : Any], avatarImageData: Data) {
@@ -53,6 +56,19 @@ class DatabaseManager {
                 print("🔴 Error when try to add new user: \(error)")
             } else {
                 self.addImageToStorage(docRef: newUserRef, imageData: avatarImageData, imageType: .avatar)
+            }
+        }
+    }
+    
+    func fetchCurrenUserData() {
+        guard let userID = Auth.auth().currentUser?.uid else { return }
+        fetchUserFromDatabase(id: userID) { result in
+            switch result {
+            case .success(let user):
+                self.currentUser = user
+                print("🟡 Current User Data Fetched from Database.")
+            case .failure(let error):
+                print("🔴 Error to fetch curren user data from Database. Error: \(error)")
             }
         }
     }

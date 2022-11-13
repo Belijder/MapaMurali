@@ -7,27 +7,24 @@
 
 import UIKit
 
-//protocol MMUserAddedMuralsCollectionsDelegate: AnyObject {
-//    func didTapManageAddedMurals()
-//
-//}
+protocol MMUserAddedMuralsCollectionsDelegate: AnyObject {
+    func didTapManageAddedMurals()
+    func didSelectUserAddedMural(at index: Int)
+
+}
 
 class MMUserAddedMuralsCollectionsVC: MMUserMuralsCollectionsVC {
     
-//    weak var delegate: MMUserAddedMuralsCollectionsDelegate!
+    weak var delegate: MMUserAddedMuralsCollectionsDelegate!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         configureItems()
     }
-//
-//    init(collectionName: String, murals: [Mural], delegate: MMUserAddedMuralsCollectionsDelegate) {
-//        super.init(collectionTitle: collectionName, murals: murals)
-//        self.delegate = delegate
-//    }
-    
-    init(collectionName: String, murals: [Mural]) {
+
+    init(collectionName: String, murals: [Mural], delegate: MMUserAddedMuralsCollectionsDelegate) {
         super.init(collectionTitle: collectionName, murals: murals)
+        self.delegate = delegate
     }
     
     private func configureItems() {
@@ -39,8 +36,10 @@ class MMUserAddedMuralsCollectionsVC: MMUserMuralsCollectionsVC {
     }
     
     override func actionButtonTapped() {
-        print("🟠 Tutaj działa")
-//        delegate.didTapManageAddedMurals()
-       
+        delegate.didTapManageAddedMurals()
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        delegate.didSelectUserAddedMural(at: indexPath.row)
     }
 }

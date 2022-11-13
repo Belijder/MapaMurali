@@ -13,6 +13,7 @@ class UserAccountViewController: UIViewController {
     let databaseManager: DatabaseManager
     
     var userAddedMurals = [Mural]()
+    var userFavoriteMurals = [Mural]()
     
     let scrollView = UIScrollView()
     let contentView = UIView()
@@ -20,6 +21,7 @@ class UserAccountViewController: UIViewController {
     let usernameAndAvatar = MMUsernameWithAvatarView(imageHeight: 100)
     
     let userAddedMuralsCollectionView = UIView()
+    let userFavoriteMuralsCollectionView = UIView()
     
     private let logOutButton: UIButton = {
         let button = UIButton(configuration: .tinted(), primaryAction: nil)
@@ -35,8 +37,8 @@ class UserAccountViewController: UIViewController {
         
         setupScrollView()
         configureUsernameAndAvatarView()
-        layoutUI()
         configureCollectionsViews()
+        layoutUI()
 
         logOutButton.addTarget(self, action: #selector(logOut), for: .touchUpInside)
     }
@@ -73,14 +75,21 @@ class UserAccountViewController: UIViewController {
     
     func configureCollectionsViews() {
         userAddedMurals = databaseManager.murals.filter { $0.addedBy == loginManager.currentUserID }
-        add(childVC: MMUserAddedMuralsCollectionsVC(collectionName: "Nowe", murals: userAddedMurals), to: self.userAddedMuralsCollectionView)
+        add(childVC: MMUserAddedMuralsCollectionsVC(collectionName: "Dodane przez Ciebie", murals: userAddedMurals, delegate: self), to: self.userAddedMuralsCollectionView)
+        
+        if let user = databaseManager.currentUser {
+        userFavoriteMurals = databaseManager.murals.filter { user.favoritesMurals.contains($0.docRef) }
+        }
+            
+        add(childVC: MMUserFavoritesMuralsCollectionVC(colectionName: "Twoje ulubione murale", murals: userFavoriteMurals, delegate: self), to: userFavoriteMuralsCollectionView)
         
     }
     
     func layoutUI() {
-        contentView.addSubviews(usernameAndAvatar, userAddedMuralsCollectionView)
+        contentView.addSubviews(usernameAndAvatar, userAddedMuralsCollectionView, userFavoriteMuralsCollectionView)
         
         userAddedMuralsCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        userFavoriteMuralsCollectionView.translatesAutoresizingMaskIntoConstraints = false
         
         let padding: CGFloat = 20
         let sectionPadding: CGFloat = 30
@@ -100,6 +109,11 @@ class UserAccountViewController: UIViewController {
             userAddedMuralsCollectionView.topAnchor.constraint(equalTo: usernameAndAvatar.bottomAnchor, constant: sectionPadding),
             userAddedMuralsCollectionView.heightAnchor.constraint(equalToConstant: 200),
             
+            userFavoriteMuralsCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
+            userFavoriteMuralsCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
+            userFavoriteMuralsCollectionView.topAnchor.constraint(equalTo: userAddedMuralsCollectionView.bottomAnchor, constant: sectionPadding),
+            userFavoriteMuralsCollectionView.heightAnchor.constraint(equalToConstant: 200)
+            
         ])
     }
     
@@ -117,10 +131,8 @@ class UserAccountViewController: UIViewController {
     init(loginManager: LoginManager, databaseManager: DatabaseManager) {
         self.loginManager = loginManager
         self.databaseManager = databaseManager
-        super.init(nibName: nil, bundle: nil)
-        
-        
-        
+        if databaseManager.currentUser == nil { databaseManager.fetchCurrenUserData() }
+        super.init(nibName: nil, bundle: nil) 
     }
     
     required init?(coder: NSCoder) {
@@ -135,11 +147,30 @@ class UserAccountViewController: UIViewController {
     }
 }
 
-//extension UserAccountViewController: MMUserAddedMuralsCollectionsDelegate {
-//    func didTapManageAddedMurals() {
-//        print("🟢 Manage User Added Murals Button Tapped!")
-//    }
+extension UserAccountViewController: MMUserAddedMuralsCollectionsDelegate, MMUserFavoritesMuralsCollectionDelegate {
+    func didTapedBrowseButton() {
+        print("🟢 Browse User Favorites Murals Button Tapped!")
+    }
+    
+    func didSelectUserFavoriteMural(at index: Int) {
+        let destVC = MuralDetailsViewController(muralItem: userFavoriteMurals[index], databaseManager: databaseManager)
+        destVC.title = userFavoriteMurals[index].adress
+        let navControler = UINavigationController(rootViewController: destVC)
+        navControler.modalPresentationStyle = .fullScreen
+        self.present(navControler, animated: true)
+    }
     
     
+    func didTapManageAddedMurals() {
+        print("🟢 Manage User Added Murals Button Tapped!")
+    }
     
-//}
+    func didSelectUserAddedMural(at index: Int) {
+        let destVC = MuralDetailsViewController(muralItem: userAddedMurals[index], databaseManager: databaseManager)
+        destVC.title = userAddedMurals[index].adress
+        let navControler = UINavigationController(rootViewController: destVC)
+        navControler.modalPresentationStyle = .fullScreen
+        self.present(navControler, animated: true)
+    }
+    
+}
