@@ -46,7 +46,7 @@ class MMMostActivUsersCell: UITableViewCell {
         
         let padding: CGFloat = 10
         NSLayoutConstraint.activate([
-            usernameWithAvatar.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
+            usernameWithAvatar.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             usernameWithAvatar.topAnchor.constraint(equalTo: contentView.topAnchor, constant: padding),
             usernameWithAvatar.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -100),
             usernameWithAvatar.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0),

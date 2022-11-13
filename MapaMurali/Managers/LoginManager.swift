@@ -12,6 +12,7 @@ import RxCocoa
 
 class LoginManager {
     
+    var currentUserID = Auth.auth().currentUser?.uid
     var userIsLoggedIn = BehaviorSubject<Bool>(value: false)
     
     func singIn(email: String, password: String) {
@@ -37,6 +38,7 @@ class LoginManager {
         } else {
             userIsLoggedIn.onNext(true)
             print("\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "Unknown")")
+            currentUserID = Auth.auth().currentUser?.uid
         }
     }
     

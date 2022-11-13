@@ -14,6 +14,8 @@
 		42618DDA2917BAB20052DB76 /* MMPopularCitiesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42618DD92917BAB20052DB76 /* MMPopularCitiesTableViewCell.swift */; };
 		42618DDC2917BB7C0052DB76 /* PopularCity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42618DDB2917BB7C0052DB76 /* PopularCity.swift */; };
 		42618DDE2917BC590052DB76 /* MMPopularCityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42618DDD2917BC590052DB76 /* MMPopularCityTableViewCell.swift */; };
+		42618DE1291FDACC0052DB76 /* MMUserMuralsCollectionsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42618DE0291FDACC0052DB76 /* MMUserMuralsCollectionsVC.swift */; };
+		42618DE3291FE5810052DB76 /* MMUserAddedMuralsCollectionsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42618DE2291FE5810052DB76 /* MMUserAddedMuralsCollectionsVC.swift */; };
 		426E49FF28931180009C8E99 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426E49FE28931180009C8E99 /* AppDelegate.swift */; };
 		426E4A0128931180009C8E99 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426E4A0028931180009C8E99 /* SceneDelegate.swift */; };
 		426E4A0328931180009C8E99 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426E4A0228931180009C8E99 /* MapViewController.swift */; };
@@ -68,7 +70,6 @@
 		42E61C3B28FAC0C500D38205 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C3A28FAC0C500D38205 /* User.swift */; };
 		42E61C3D29045AAC00D38205 /* MMAvatarImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C3C29045AAC00D38205 /* MMAvatarImageView.swift */; };
 		42E61C3F29053F0400D38205 /* MuralDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C3E29053F0400D38205 /* MuralDetailsViewModel.swift */; };
-		42E61C412905A58000D38205 /* MMFavoriteCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C402905A58000D38205 /* MMFavoriteCounterView.swift */; };
 		42E61C432906FFB200D38205 /* StatisticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C422906FFB100D38205 /* StatisticsViewController.swift */; };
 		42E61C45290713D900D38205 /* MMCollectionViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C44290713D900D38205 /* MMCollectionViewTableViewCell.swift */; };
 /* End PBXBuildFile section */
@@ -81,6 +82,8 @@
 		42618DD92917BAB20052DB76 /* MMPopularCitiesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMPopularCitiesTableViewCell.swift; sourceTree = "<group>"; };
 		42618DDB2917BB7C0052DB76 /* PopularCity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularCity.swift; sourceTree = "<group>"; };
 		42618DDD2917BC590052DB76 /* MMPopularCityTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMPopularCityTableViewCell.swift; sourceTree = "<group>"; };
+		42618DE0291FDACC0052DB76 /* MMUserMuralsCollectionsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMUserMuralsCollectionsVC.swift; sourceTree = "<group>"; };
+		42618DE2291FE5810052DB76 /* MMUserAddedMuralsCollectionsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMUserAddedMuralsCollectionsVC.swift; sourceTree = "<group>"; };
 		426E49FB28931180009C8E99 /* MapaMurali.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MapaMurali.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		426E49FE28931180009C8E99 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		426E4A0028931180009C8E99 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -130,7 +133,6 @@
 		42E61C3A28FAC0C500D38205 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		42E61C3C29045AAC00D38205 /* MMAvatarImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMAvatarImageView.swift; sourceTree = "<group>"; };
 		42E61C3E29053F0400D38205 /* MuralDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuralDetailsViewModel.swift; sourceTree = "<group>"; };
-		42E61C402905A58000D38205 /* MMFavoriteCounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMFavoriteCounterView.swift; sourceTree = "<group>"; };
 		42E61C422906FFB100D38205 /* StatisticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewController.swift; sourceTree = "<group>"; };
 		42E61C44290713D900D38205 /* MMCollectionViewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMCollectionViewTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -153,6 +155,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		42618DDF291FDA3C0052DB76 /* UserMuralsCollectionVCs */ = {
+			isa = PBXGroup;
+			children = (
+				42618DE0291FDACC0052DB76 /* MMUserMuralsCollectionsVC.swift */,
+				42618DE2291FE5810052DB76 /* MMUserAddedMuralsCollectionsVC.swift */,
+			);
+			path = UserMuralsCollectionVCs;
+			sourceTree = "<group>";
+		};
 		426E49F228931180009C8E99 = {
 			isa = PBXGroup;
 			children = (
@@ -262,7 +273,6 @@
 			children = (
 				428BD66028DE322A000B8D69 /* MMAlertContainerView.swift */,
 				42E61C3828FAC03B00D38205 /* MMUsernameWithAvatarView.swift */,
-				42E61C402905A58000D38205 /* MMFavoriteCounterView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -334,6 +344,7 @@
 		42E18CB528D7A8C00068414E /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				42618DDF291FDA3C0052DB76 /* UserMuralsCollectionVCs */,
 				42E18CB628D7A8FE0068414E /* MMDataLoadingVC.swift */,
 				428BD66228DE353B000B8D69 /* MMAlertVC.swift */,
 			);
@@ -442,6 +453,7 @@
 				428BD66328DE353B000B8D69 /* MMAlertVC.swift in Sources */,
 				42618DD829165A0D0052DB76 /* MMMostActivUsersCell.swift in Sources */,
 				42E18CB728D7A8FE0068414E /* MMDataLoadingVC.swift in Sources */,
+				42618DE3291FE5810052DB76 /* MMUserAddedMuralsCollectionsVC.swift in Sources */,
 				42E61C3028F3143100D38205 /* MuralsCollectionViewController.swift in Sources */,
 				42E61C2228F1AE0600D38205 /* MuralDetailsViewController.swift in Sources */,
 				4289AEC828E216C200C3FFF5 /* Mural.swift in Sources */,
@@ -463,7 +475,6 @@
 				42867B6428958F5B00E5159F /* MainTabBarViewController.swift in Sources */,
 				42618DD6291655720052DB76 /* MMUsersTableViewInTableViewCell.swift in Sources */,
 				42E61C3928FAC03C00D38205 /* MMUsernameWithAvatarView.swift in Sources */,
-				42E61C412905A58000D38205 /* MMFavoriteCounterView.swift in Sources */,
 				4283BAB428D606B100A54F0F /* MMCircleButton.swift in Sources */,
 				42E61C2828F1CF3500D38205 /* NetworkManager.swift in Sources */,
 				42E61C3B28FAC0C500D38205 /* User.swift in Sources */,
@@ -491,6 +502,7 @@
 				42E61C3728F3200800D38205 /* MMSquareImageView.swift in Sources */,
 				426E4A0128931180009C8E99 /* SceneDelegate.swift in Sources */,
 				429A021228CFA1CE00CD6862 /* MMTextField.swift in Sources */,
+				42618DE1291FDACC0052DB76 /* MMUserMuralsCollectionsVC.swift in Sources */,
 				42E61C2E28F2ED6400D38205 /* Constants.swift in Sources */,
 				42867B69289590BD00E5159F /* UserAccountViewController.swift in Sources */,
 			);

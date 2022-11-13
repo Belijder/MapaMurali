@@ -67,6 +67,8 @@ class MainTabBarViewController: UITabBarController {
             nav.navigationBar.tintColor = MMColors.primary
             nav.navigationBar.backItem?.title = "Zaloguj się"
             present(nav, animated: false)
+        } else {
+            
         }
     }
 }

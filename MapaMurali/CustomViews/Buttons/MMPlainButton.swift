@@ -34,7 +34,6 @@ class MMPlainButton: UIButton {
         configuration?.baseBackgroundColor = color
         configuration?.title = title
         configuration?.buttonSize = .small
-        
     }
 
 }
