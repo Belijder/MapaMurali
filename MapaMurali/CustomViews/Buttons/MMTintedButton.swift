@@ -33,7 +33,6 @@ class MMTintedButton: UIButton {
         configuration?.baseForegroundColor = color
         configuration?.baseBackgroundColor = color
         configuration?.title = title
-        
     }
     
     

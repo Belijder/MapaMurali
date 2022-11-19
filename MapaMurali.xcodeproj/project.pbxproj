@@ -56,6 +56,10 @@
 		429A021B28CFCC7100CD6862 /* MMPlainButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429A021A28CFCC7100CD6862 /* MMPlainButton.swift */; };
 		429A021D28CFCF4600CD6862 /* UIView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429A021C28CFCF4600CD6862 /* UIView+Ext.swift */; };
 		429A022028CFD0E000CD6862 /* MMBodyLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429A021F28CFD0E000CD6862 /* MMBodyLabel.swift */; };
+		42D9EA1F2921581C00A7A9DC /* MMFilledButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9EA1E2921581C00A7A9DC /* MMFilledButton.swift */; };
+		42D9EA212922CD8D00A7A9DC /* ManageUserAddedMuralsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9EA202922CD8D00A7A9DC /* ManageUserAddedMuralsVC.swift */; };
+		42D9EA232922D1EA00A7A9DC /* MMUserAddedMuralTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9EA222922D1EA00A7A9DC /* MMUserAddedMuralTableViewCell.swift */; };
+		42D9EA2529260E0000A7A9DC /* EditMuralViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9EA2429260E0000A7A9DC /* EditMuralViewController.swift */; };
 		42E18CB728D7A8FE0068414E /* MMDataLoadingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E18CB628D7A8FE0068414E /* MMDataLoadingVC.swift */; };
 		42E18CB928DB98EA0068414E /* UIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E18CB828DB98EA0068414E /* UIImage+Ext.swift */; };
 		42E61C2228F1AE0600D38205 /* MuralDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C2128F1AE0600D38205 /* MuralDetailsViewController.swift */; };
@@ -120,6 +124,10 @@
 		429A021A28CFCC7100CD6862 /* MMPlainButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMPlainButton.swift; sourceTree = "<group>"; };
 		429A021C28CFCF4600CD6862 /* UIView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Ext.swift"; sourceTree = "<group>"; };
 		429A021F28CFD0E000CD6862 /* MMBodyLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMBodyLabel.swift; sourceTree = "<group>"; };
+		42D9EA1E2921581C00A7A9DC /* MMFilledButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMFilledButton.swift; sourceTree = "<group>"; };
+		42D9EA202922CD8D00A7A9DC /* ManageUserAddedMuralsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageUserAddedMuralsVC.swift; sourceTree = "<group>"; };
+		42D9EA222922D1EA00A7A9DC /* MMUserAddedMuralTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMUserAddedMuralTableViewCell.swift; sourceTree = "<group>"; };
+		42D9EA2429260E0000A7A9DC /* EditMuralViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMuralViewController.swift; sourceTree = "<group>"; };
 		42E18CB628D7A8FE0068414E /* MMDataLoadingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMDataLoadingVC.swift; sourceTree = "<group>"; };
 		42E18CB828DB98EA0068414E /* UIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ext.swift"; sourceTree = "<group>"; };
 		42E61C2128F1AE0600D38205 /* MuralDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuralDetailsViewController.swift; sourceTree = "<group>"; };
@@ -244,9 +252,11 @@
 				426E4A0228931180009C8E99 /* MapViewController.swift */,
 				42E61C2F28F3143100D38205 /* MuralsCollectionViewController.swift */,
 				42867B662895901000E5159F /* AddNewViewController.swift */,
+				42D9EA2429260E0000A7A9DC /* EditMuralViewController.swift */,
 				42E61C422906FFB100D38205 /* StatisticsViewController.swift */,
 				42867B68289590BD00E5159F /* UserAccountViewController.swift */,
 				42E61C2128F1AE0600D38205 /* MuralDetailsViewController.swift */,
+				42D9EA202922CD8D00A7A9DC /* ManageUserAddedMuralsVC.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -331,6 +341,7 @@
 				429A021828CFB52B00CD6862 /* MMTintedButton.swift */,
 				429A021A28CFCC7100CD6862 /* MMPlainButton.swift */,
 				4283BAB328D606B100A54F0F /* MMCircleButton.swift */,
+				42D9EA1E2921581C00A7A9DC /* MMFilledButton.swift */,
 			);
 			path = Buttons;
 			sourceTree = "<group>";
@@ -364,6 +375,7 @@
 				42618DD729165A0D0052DB76 /* MMMostActivUsersCell.swift */,
 				42618DD92917BAB20052DB76 /* MMPopularCitiesTableViewCell.swift */,
 				42618DDD2917BC590052DB76 /* MMPopularCityTableViewCell.swift */,
+				42D9EA222922D1EA00A7A9DC /* MMUserAddedMuralTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -474,8 +486,10 @@
 				42867B672895901000E5159F /* AddNewViewController.swift in Sources */,
 				429A021D28CFCF4600CD6862 /* UIView+Ext.swift in Sources */,
 				42618DDA2917BAB20052DB76 /* MMPopularCitiesTableViewCell.swift in Sources */,
+				42D9EA212922CD8D00A7A9DC /* ManageUserAddedMuralsVC.swift in Sources */,
 				42618DD42914312D0052DB76 /* StatisticsViewModel.swift in Sources */,
 				42867B6428958F5B00E5159F /* MainTabBarViewController.swift in Sources */,
+				42D9EA232922D1EA00A7A9DC /* MMUserAddedMuralTableViewCell.swift in Sources */,
 				42618DD6291655720052DB76 /* MMUsersTableViewInTableViewCell.swift in Sources */,
 				42E61C3928FAC03C00D38205 /* MMUsernameWithAvatarView.swift in Sources */,
 				4283BAB428D606B100A54F0F /* MMCircleButton.swift in Sources */,
@@ -492,6 +506,7 @@
 				4283BAB028D5E24A00A54F0F /* MMMuralImageView.swift in Sources */,
 				4283BAB228D5E45800A54F0F /* MMMuralPlaceholderView.swift in Sources */,
 				42E61C3228F3191A00D38205 /* UIHelper.swift in Sources */,
+				42D9EA1F2921581C00A7A9DC /* MMFilledButton.swift in Sources */,
 				429A021928CFB52B00CD6862 /* MMTintedButton.swift in Sources */,
 				427BD5AA28EB6063005F686A /* MMAnnotationClusterView.swift in Sources */,
 				42E61C2A28F2DC7800D38205 /* Date+Ext.swift in Sources */,
@@ -508,6 +523,7 @@
 				42618DE1291FDACC0052DB76 /* MMUserMuralsCollectionsVC.swift in Sources */,
 				42E61C2E28F2ED6400D38205 /* Constants.swift in Sources */,
 				42867B69289590BD00E5159F /* UserAccountViewController.swift in Sources */,
+				42D9EA2529260E0000A7A9DC /* EditMuralViewController.swift in Sources */,
 				428CEADA29214070006BC964 /* MMUserFavoritesMuralsCollectionVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

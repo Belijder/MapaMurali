@@ -37,7 +37,7 @@ class MMUsernameWithAvatarView: UIView {
             
             username.centerYAnchor.constraint(equalTo: avatarView.centerYAnchor),
             username.leadingAnchor.constraint(equalTo: avatarView.trailingAnchor, constant: 10),
-            username.heightAnchor.constraint(equalToConstant: 20),
+            username.heightAnchor.constraint(equalToConstant: 40),
             username.widthAnchor.constraint(equalToConstant: 100)
         ])
     }

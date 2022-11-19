@@ -47,6 +47,7 @@ class MMUserMuralsCollectionsVC: UIViewController {
     }
     
     func configureActionButton() {
+        actionButton.configuration?.titleAlignment = .trailing
         actionButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
     }
     
@@ -65,7 +66,7 @@ class MMUserMuralsCollectionsVC: UIViewController {
             
             actionButton.centerYAnchor.constraint(equalTo: collectionTitle.centerYAnchor),
             actionButton.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            actionButton.widthAnchor.constraint(equalToConstant: 150),
+            actionButton.leadingAnchor.constraint(equalTo: collectionTitle.trailingAnchor),
             actionButton.heightAnchor.constraint(equalToConstant: 20),
             
             collectionView.topAnchor.constraint(equalTo: collectionTitle.bottomAnchor, constant: 10),
@@ -84,7 +85,7 @@ extension MMUserMuralsCollectionsVC: UICollectionViewDelegate, UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MuralCell.reuseID, for: indexPath) as! MuralCell
-        cell.set(imageURL: murals[indexPath.row].imageURL)
+        cell.set(imageURL: murals[indexPath.row].thumbnailURL)
         cell.muralImageView.layer.cornerRadius = 20
         return cell
     }

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import MessageUI
 
 class UserAccountViewController: UIViewController {
     
@@ -23,23 +24,25 @@ class UserAccountViewController: UIViewController {
     let userAddedMuralsCollectionView = UIView()
     let userFavoriteMuralsCollectionView = UIView()
     
-    private let logOutButton: UIButton = {
-        let button = UIButton(configuration: .tinted(), primaryAction: nil)
-        button.setTitle("Logout", for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
+    let rateAppButton = MMFilledButton(foregroundColor: .label, backgroundColor: .secondarySystemBackground, title: "Oceń aplikację!")
+    let sendMessageButton = MMFilledButton(foregroundColor: .label, backgroundColor: .secondarySystemBackground, title: "Napisz do nas!")
+    let showAppStatueButton = MMFilledButton(foregroundColor: .label, backgroundColor: .secondarySystemBackground, title: "Regulamin")
+    let showPrivacyPolicyButton = MMFilledButton(foregroundColor: .label, backgroundColor: .secondarySystemBackground, title: "Polityka Prywatności")
+    let logOutButton = MMFilledButton(foregroundColor: .white, backgroundColor: .systemRed, title: "Wyloguj się")
+    let deleteAccountAndDataButton = MMPlainButton(color: .systemRed, title: "Usuń konto i dane")
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        self.title = "Moje konto"
+    
         
         setupScrollView()
         configureUsernameAndAvatarView()
         configureCollectionsViews()
         layoutUI()
 
+        sendMessageButton.addTarget(self, action: #selector(sendEmail), for: .touchUpInside)
         logOutButton.addTarget(self, action: #selector(logOut), for: .touchUpInside)
     }
     
@@ -51,7 +54,7 @@ class UserAccountViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            contentView.heightAnchor.constraint(equalToConstant: 900)
+            contentView.heightAnchor.constraint(equalToConstant: 930)
         ])
     }
     
@@ -82,17 +85,27 @@ class UserAccountViewController: UIViewController {
         }
             
         add(childVC: MMUserFavoritesMuralsCollectionVC(colectionName: "Twoje ulubione murale", murals: userFavoriteMurals, delegate: self), to: userFavoriteMuralsCollectionView)
-        
     }
     
     func layoutUI() {
-        contentView.addSubviews(usernameAndAvatar, userAddedMuralsCollectionView, userFavoriteMuralsCollectionView)
+        contentView.addSubviews(usernameAndAvatar, userAddedMuralsCollectionView, userFavoriteMuralsCollectionView, rateAppButton, sendMessageButton, showAppStatueButton, showPrivacyPolicyButton, logOutButton, deleteAccountAndDataButton)
         
         userAddedMuralsCollectionView.translatesAutoresizingMaskIntoConstraints = false
         userFavoriteMuralsCollectionView.translatesAutoresizingMaskIntoConstraints = false
         
+        let allbuttons = [rateAppButton, sendMessageButton, showAppStatueButton, showPrivacyPolicyButton, logOutButton, deleteAccountAndDataButton]
+
         let padding: CGFloat = 20
+        let betweenButtonPadding: CGFloat = 10
         let sectionPadding: CGFloat = 30
+        
+        for button in allbuttons {
+            NSLayoutConstraint.activate([
+                button.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
+                button.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
+                button.heightAnchor.constraint(equalToConstant: 50),
+            ])
+        }
         
         NSLayoutConstraint.activate([
             usernameAndAvatar.topAnchor.constraint(equalTo: contentView.topAnchor),
@@ -100,23 +113,24 @@ class UserAccountViewController: UIViewController {
             usernameAndAvatar.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
             usernameAndAvatar.heightAnchor.constraint(equalToConstant: 100),
             
-//            logOutButton.topAnchor.constraint(equalTo: usernameAndAvatar.bottomAnchor, constant: sectionPadding),
-//            logOutButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-//            logOutButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            
             userAddedMuralsCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
             userAddedMuralsCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
             userAddedMuralsCollectionView.topAnchor.constraint(equalTo: usernameAndAvatar.bottomAnchor, constant: sectionPadding),
-            userAddedMuralsCollectionView.heightAnchor.constraint(equalToConstant: 200),
+            userAddedMuralsCollectionView.heightAnchor.constraint(equalToConstant: 170),
             
             userFavoriteMuralsCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
             userFavoriteMuralsCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
             userFavoriteMuralsCollectionView.topAnchor.constraint(equalTo: userAddedMuralsCollectionView.bottomAnchor, constant: sectionPadding),
-            userFavoriteMuralsCollectionView.heightAnchor.constraint(equalToConstant: 200)
+            userFavoriteMuralsCollectionView.heightAnchor.constraint(equalToConstant: 170),
             
+            rateAppButton.topAnchor.constraint(equalTo: userFavoriteMuralsCollectionView.bottomAnchor, constant: sectionPadding),
+            sendMessageButton.topAnchor.constraint(equalTo: rateAppButton.bottomAnchor, constant: betweenButtonPadding),
+            showAppStatueButton.topAnchor.constraint(equalTo: sendMessageButton.bottomAnchor, constant: sectionPadding),
+            showPrivacyPolicyButton.topAnchor.constraint(equalTo: showAppStatueButton.bottomAnchor, constant: betweenButtonPadding),
+            logOutButton.topAnchor.constraint(equalTo: showPrivacyPolicyButton.bottomAnchor, constant: sectionPadding),
+            deleteAccountAndDataButton.topAnchor.constraint(equalTo: logOutButton.bottomAnchor, constant: betweenButtonPadding)
         ])
     }
-    
     
     @objc func logOut(_ sender: UIButton!) {
         loginManager.singOut()
@@ -124,6 +138,18 @@ class UserAccountViewController: UIViewController {
         let nav = UINavigationController(rootViewController: vc)
         nav.modalPresentationStyle = .fullScreen
         present(nav, animated: false)
+    }
+    
+    @objc func sendEmail() {
+        if MFMailComposeViewController.canSendMail() {
+            let mail = MFMailComposeViewController()
+            mail.mailComposeDelegate = self
+            mail.setToRecipients(["jakubzajda@gmail.com"])
+            mail.setMessageBody("<p>You're so awesome!</p>", isHTML: true)
+            present(mail, animated: true)
+        } else {
+            presentMMAlert(title: "Nie można wysłać maila", message: "Sprawdź czy masz skonfugurowanego klienta pocztowego i spróbuj ponownie. ", buttonTitle: "Ok")
+        }
     }
     
 
@@ -163,6 +189,10 @@ extension UserAccountViewController: MMUserAddedMuralsCollectionsDelegate, MMUse
     
     func didTapManageAddedMurals() {
         print("🟢 Manage User Added Murals Button Tapped!")
+        let destVC = ManageUserAddedMuralsVC(databaseManager: databaseManager, userAddedMurals: userAddedMurals)
+        destVC.title = "Zarządzaj muralami"
+        self.navigationController?.pushViewController(destVC, animated: true)
+        
     }
     
     func didSelectUserAddedMural(at index: Int) {
@@ -172,5 +202,10 @@ extension UserAccountViewController: MMUserAddedMuralsCollectionsDelegate, MMUse
         navControler.modalPresentationStyle = .fullScreen
         self.present(navControler, animated: true)
     }
-    
+}
+
+extension UserAccountViewController: MFMailComposeViewControllerDelegate {
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true)
+    }
 }

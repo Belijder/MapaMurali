@@ -12,7 +12,6 @@ class MMFavoritesMuralCollectionCell: UICollectionViewCell {
     static let identifier = "MMFavoritesMuralCollectionCell"
     
     let muralImageView = MMSquareImageView(frame: .zero)
-    //var favoritesCounter2 = MMFavoriteCounterView(imageHeight: 40, counter: 0, fontSize: 15)
     var favoritesCounter = MMTitleLabel(textAlignment: .center, fontSize: 16)
     
     override init(frame: CGRect) {
@@ -32,7 +31,6 @@ class MMFavoritesMuralCollectionCell: UICollectionViewCell {
     
     func set(mural: Mural) {
         muralImageView.downloadImage(fromURL: mural.thumbnailURL)
-        //favoritesCounter.counterLabel.text = "\(mural.favoritesCount)"
         favoritesCounter.createFavoriteCounterTextLabel(counter: mural.favoritesCount, imagePointSize: 16)
     }
     

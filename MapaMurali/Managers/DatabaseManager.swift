@@ -96,6 +96,7 @@ class DatabaseManager {
         ])
     }
     
+    
     func addImageToStorage(docRef: DocumentReference, imageData: Data, imageType: ImageType) {
         let ref = storageRef.child("\(imageType.rawValue + docRef.documentID).jpg")
         ref.putData(imageData) { result in
@@ -221,5 +222,37 @@ class DatabaseManager {
                 completion(true)
             }
         }
+    }
+    
+    
+    func removeMural(for id: String, completion: @escaping (Bool) -> Void) {
+        let muralDocRef = db.collection(CollectionName.murals.rawValue).document(id)
+        
+        muralDocRef.delete(completion: { error in
+            if let error = error {
+                print("🔴 Error when try to delete document from database. DocumentID: \(id). ERROR: \(error)")
+            } else {
+                self.removeImageFromStorage(imageType: .fullSize, docRef: id)
+                self.removeImageFromStorage(imageType: .thumbnail, docRef: id)
+            }
+        })
+        
+    }
+    
+    func removeImageFromStorage(imageType: ImageType, docRef: String) {
+        let imageRef = storageRef.child("\(imageType.rawValue + docRef).jpg")
+        imageRef.delete { error in
+            if let error = error {
+                print("🔴 Error when try to delete image from Storage. Image reference: \(imageRef). ERROR: \(error)")
+            } else {
+                print("🟢 Success to delete image from Storage. Image reference: \(imageRef).")
+            }
+        }
+    }
+    
+    func removeUserAccoutAndData(userID: String) {
+        let userAddedMurals = murals.filter { $0.addedBy == userID }
+        
+        
     }
 }
