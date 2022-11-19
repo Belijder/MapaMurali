@@ -44,6 +44,7 @@ class UserAccountViewController: UIViewController {
 
         sendMessageButton.addTarget(self, action: #selector(sendEmail), for: .touchUpInside)
         logOutButton.addTarget(self, action: #selector(logOut), for: .touchUpInside)
+        deleteAccountAndDataButton.addTarget(self, action: #selector(deleteAcconutButtonTapped), for: .touchUpInside)
     }
     
     func setupScrollView() {
@@ -132,8 +133,12 @@ class UserAccountViewController: UIViewController {
         ])
     }
     
-    @objc func logOut(_ sender: UIButton!) {
+    @objc func logOut() {
         loginManager.singOut()
+        presentLoginScreen()
+    }
+    
+    func presentLoginScreen() {
         let vc = SingInViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
         let nav = UINavigationController(rootViewController: vc)
         nav.modalPresentationStyle = .fullScreen
@@ -150,6 +155,54 @@ class UserAccountViewController: UIViewController {
         } else {
             presentMMAlert(title: "Nie można wysłać maila", message: "Sprawdź czy masz skonfugurowanego klienta pocztowego i spróbuj ponownie. ", buttonTitle: "Ok")
         }
+    }
+    
+    func deleteAcountAndData(password: String) {
+        print("🟡 Delete account button in alert tapped.")
+        loginManager.deleteAccount(password: password) { result in
+            switch result {
+            case .success(let userID):
+                self.databaseManager.removeAllUserData(userID: userID) { result in
+                    switch result {
+                    case .success(_):
+                        print("🟢 All user data was removed from database.")
+                        self.presentLoginScreen()
+                    case .failure(let error):
+                        print(error.rawValue)
+                        self.presentLoginScreen()
+                    }
+                }
+            case .failure(let error):
+                self.presentMMAlert(title: "Ups!", message: error.rawValue, buttonTitle: "Ok")
+            }
+        }
+    }
+    
+    @objc private func deleteAcconutButtonTapped() {
+        let alert = UIAlertController(title: "Usuń konto!",
+                                      message: "Aby potwierdzić usunięcie konta oraz wszystkich związanych z nim danych, podaj hasło używane do zalogowania się do aplikacji. Pamiętej, że tej operacji nie będzie można cofnąć.",
+                                      preferredStyle: .alert)
+        
+        
+        alert.addTextField { field in
+            field.placeholder = "Hasło"
+            field.clearButtonMode = .unlessEditing
+            field.returnKeyType = .continue
+            field.isSecureTextEntry = true
+        }
+        
+        alert.addAction(UIAlertAction(title: "Cofnij", style: .cancel))
+        alert.addAction(UIAlertAction(title: "Potwierdź", style: .destructive) { _ in
+            guard let password = alert.textFields![0].text else {
+                return
+            }
+            print("Password in alert: \(password)")
+            self.deleteAcountAndData(password: password)
+            
+        })
+        
+        present(alert, animated: true)
+        
     }
     
 

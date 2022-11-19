@@ -83,16 +83,16 @@ class DatabaseManager {
                 newItemRef.updateData(["docRef" : newItemRef.documentID])
                 self.addImageToStorage(docRef: newItemRef, imageData: thumbnailData, imageType: .thumbnail)
                 self.addImageToStorage(docRef: newItemRef, imageData: fullSizeImageData, imageType: .fullSize)
-                self.increaseNumberOfMuralsAddedByUser()
+                self.changeNumberOfMuralsAddedByUser(by: 1)
             }
         }
     }
     
-    func increaseNumberOfMuralsAddedByUser() {
+    func changeNumberOfMuralsAddedByUser(by value: Int64) {
         guard let userID = Auth.auth().currentUser?.uid else { return }
         let docRef = db.collection(CollectionName.users.rawValue).document(userID)
         docRef.updateData([
-            "muralsAdded": FieldValue.increment(Int64(1))
+            "muralsAdded": FieldValue.increment(value)
         ])
     }
     
@@ -231,28 +231,81 @@ class DatabaseManager {
         muralDocRef.delete(completion: { error in
             if let error = error {
                 print("🔴 Error when try to delete document from database. DocumentID: \(id). ERROR: \(error)")
-            } else {
-                self.removeImageFromStorage(imageType: .fullSize, docRef: id)
-                self.removeImageFromStorage(imageType: .thumbnail, docRef: id)
+            } else { 
+                self.removeImageFromStorage(imageType: .fullSize, docRef: id) { _ in
+                    self.removeImageFromStorage(imageType: .thumbnail, docRef: id) { _ in
+                        self.changeNumberOfMuralsAddedByUser(by: -1)
+                        completion(true)
+                    }
+                }
             }
         })
-        
     }
     
-    func removeImageFromStorage(imageType: ImageType, docRef: String) {
+    
+    func removeImageFromStorage(imageType: ImageType, docRef: String, completion: @escaping (Bool) -> Void) {
         let imageRef = storageRef.child("\(imageType.rawValue + docRef).jpg")
         imageRef.delete { error in
             if let error = error {
                 print("🔴 Error when try to delete image from Storage. Image reference: \(imageRef). ERROR: \(error)")
             } else {
                 print("🟢 Success to delete image from Storage. Image reference: \(imageRef).")
+                completion(true)
             }
         }
     }
     
-    func removeUserAccoutAndData(userID: String) {
+    func removeAllUserData(userID: String, completion: @escaping (Result<Bool, MMError>) -> Void) {
+        removeUserProfile(userID: userID) { result in
+            switch result {
+            case .success(_):
+                self.removeAllUserAddedMurals(userID: userID) { result in
+                    switch result {
+                    case .success(_):
+                        completion(.success(true))
+                    case .failure(let error):
+                        completion(.failure(error))
+                    }
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func removeAllUserAddedMurals(userID: String, completion: @escaping (Result<Bool, MMError>) -> Void) {
+        var removedMuralCounter = 0
         let userAddedMurals = murals.filter { $0.addedBy == userID }
+        for mural in userAddedMurals {
+            removeMural(for: mural.docRef) { success in
+                if success {
+                    print("🟢 Successfuly removed mural from Database.")
+                    removedMuralCounter += 1
+                    if removedMuralCounter == userAddedMurals.count {
+                        completion(.success(true))
+                    }
+                } else {
+                    print("🔴 Error when try to remove mural from Database. DocRef: \(mural.docRef)")
+                    removedMuralCounter += 1
+                    if removedMuralCounter == userAddedMurals.count {
+                        completion(.failure(MMError.defaultError))
+                    }
+                }
+            }
+        }
+    }
+    
+    func removeUserProfile(userID: String, completion: @escaping (Result<Bool, MMError>) -> Void) {
+        let userProfileRef = db.collection(CollectionName.users.rawValue).document(userID)
         
-        
+        userProfileRef.delete { error in
+            if let error = error {
+                print("🔴 Error when try to delete userAccount. ERROR: \(error)")
+                completion(.failure(MMError.defaultError))
+            } else {
+                print("🟢 Successfuly removed user profile from Database.")
+                completion(.success(true))
+            }
+        }
     }
 }

@@ -7,6 +7,7 @@
 
 import Foundation
 import Firebase
+import FirebaseAuth
 import RxSwift
 import RxCocoa
 
@@ -50,6 +51,52 @@ class LoginManager {
             } catch {
                 print("Error when try to SingOut user")
             }
+        }
+    }
+    
+    func deleteAccount(password: String, completion: @escaping (Result<String, MMError>) -> Void) {
+        guard let user = Auth.auth().currentUser else {
+            completion(.failure(MMError.defaultError))
+            return
+        }
+
+        user.delete { error in
+            if let error = error {
+                print("🟠 Error occured: \(error). Trying to reauthenticate user")
+                self.reauthenticateUser(password: password) { result in
+                    switch result {
+                    case .success(_):
+                        user.delete { error in
+                            if let error = error {
+                                print("🔴 Error occured when try delete accoutn after reauthenticate user: \(error)")
+                                completion(.failure(MMError.unableToDeleteAccount))
+                                print("🟢 Successfuly deleted user account.")
+                            } else {
+                                completion(.success(user.uid))
+                            }
+                        }
+                    
+                    case .failure(let error):
+                        print("🔴 Error occured when try to reauthenticate user: \(error)")
+                        completion(.failure(MMError.reauthenticateError))
+                    }
+                }
+            } else {
+                completion(.success(user.uid))
+            }
+        }
+    }
+    
+    func reauthenticateUser(password: String, completion: @escaping (Result<Bool, Error>) -> Void) {
+        let user = Auth.auth().currentUser
+        let credential = EmailAuthProvider.credential(withEmail: user?.email ?? "", password: password)
+
+        user?.reauthenticate(with: credential) { _, error in
+          if let error = error {
+              completion(.failure(error))
+          } else {
+              completion(.success(true))
+          }
         }
     }
 }
