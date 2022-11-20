@@ -211,6 +211,7 @@ class DatabaseManager {
                     completion(false)
                     return
                 }
+                self.currentUser?.favoritesMurals.append(muralID)
                 completion(true)
             }
         }
@@ -236,6 +237,7 @@ class DatabaseManager {
                     completion(false)
                     return
                 }
+                self.currentUser?.favoritesMurals.removeAll(where: { $0 == muralID })
                 completion(true)
             }
         }

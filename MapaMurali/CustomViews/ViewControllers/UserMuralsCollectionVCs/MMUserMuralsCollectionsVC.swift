@@ -6,8 +6,14 @@
 //
 
 import UIKit
+import simd
+
 
 class MMUserMuralsCollectionsVC: UIViewController {
+    
+    enum Section {
+        case main
+    }
     
     let collectionView: UICollectionView = {
         let padding: CGFloat = 20
@@ -23,15 +29,21 @@ class MMUserMuralsCollectionsVC: UIViewController {
         return collectionView
     }()
     
+    var dataSource: UICollectionViewDiffableDataSource<Section, Mural>!
+    
     let collectionTitle = MMTitleLabel(textAlignment: .left, fontSize: 15)
     let actionButton = MMPlainButton()
     
+    
     var murals: [Mural]!
     
-    init(collectionTitle: String, murals: [Mural]) {
+    var databaseManager: DatabaseManager!
+    
+    init(collectionTitle: String, murals: [Mural], databaseManager: DatabaseManager) {
         super.init(nibName: nil, bundle: nil)
         self.collectionTitle.text = collectionTitle
         self.murals = murals
+        self.databaseManager = databaseManager
     }
     
     required init?(coder: NSCoder) {
@@ -43,8 +55,9 @@ class MMUserMuralsCollectionsVC: UIViewController {
         layoutUIElements()
         configureActionButton()
         collectionView.delegate = self
-        collectionView.dataSource = self
+        configureDataSoure()
     }
+    
     
     func configureActionButton() {
         actionButton.configuration?.titleAlignment = .trailing
@@ -52,6 +65,25 @@ class MMUserMuralsCollectionsVC: UIViewController {
     }
     
     @objc func actionButtonTapped() {}
+    
+    func configureDataSoure() {
+        dataSource = UICollectionViewDiffableDataSource<Section, Mural>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, mural) -> UICollectionViewCell? in
+            
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MuralCell.reuseID, for: indexPath) as! MuralCell
+            cell.set(imageURL: mural.thumbnailURL)
+            cell.muralImageView.layer.cornerRadius = 20
+            return cell
+        })
+    }
+    
+    func updateData(on murals: [Mural]) {
+        var snapshot = NSDiffableDataSourceSnapshot<Section, Mural>()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(murals)
+        DispatchQueue.main.async {
+            self.dataSource.apply(snapshot, animatingDifferences: true)
+        }
+    }
     
     func layoutUIElements() {
         view.addSubviews(collectionTitle, actionButton, collectionView)
@@ -78,17 +110,17 @@ class MMUserMuralsCollectionsVC: UIViewController {
     }
 }
 
-extension MMUserMuralsCollectionsVC: UICollectionViewDelegate, UICollectionViewDataSource {
+extension MMUserMuralsCollectionsVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return murals.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MuralCell.reuseID, for: indexPath) as! MuralCell
-        cell.set(imageURL: murals[indexPath.row].thumbnailURL)
-        cell.muralImageView.layer.cornerRadius = 20
-        return cell
-    }
+//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MuralCell.reuseID, for: indexPath) as! MuralCell
+//        cell.set(imageURL: murals[indexPath.row].thumbnailURL)
+//        cell.muralImageView.layer.cornerRadius = 20
+//        return cell
+//    }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("🟡 Item tapped at: \(indexPath.row)")

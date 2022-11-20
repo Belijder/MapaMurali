@@ -7,24 +7,25 @@
 
 import UIKit
 
-protocol MMUserFavoritesMuralsCollectionDelegate: AnyObject {
-    func didTapedBrowseButton()
-    func didSelectUserFavoriteMural(at index: Int)
-}
-
 class MMUserFavoritesMuralsCollectionVC: MMUserMuralsCollectionsVC {
     
-    weak var delegate: MMUserFavoritesMuralsCollectionDelegate!
-
     override func viewDidLoad() {
         super.viewDidLoad()
         configureItems()
 
     }
     
-    init(colectionName: String, murals: [Mural], delegate: MMUserFavoritesMuralsCollectionDelegate) {
-        super.init(collectionTitle: colectionName, murals: murals)
-        self.delegate = delegate
+    init(colectionName: String, murals: [Mural], databaseManager: DatabaseManager) {
+        super.init(collectionTitle: colectionName, murals: murals, databaseManager: databaseManager)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let user = databaseManager.currentUser {
+            let userFavoriteMurals = databaseManager.murals.filter { user.favoritesMurals.contains($0.docRef) }
+            self.murals = userFavoriteMurals
+            updateData(on: murals)
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -36,13 +37,15 @@ class MMUserFavoritesMuralsCollectionVC: MMUserMuralsCollectionsVC {
     }
     
     override func actionButtonTapped() {
-        delegate.didTapedBrowseButton()
+        print("🟢 Browse User Favorites Murals Button Tapped!")
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        delegate.didSelectUserFavoriteMural(at: indexPath.row)
+        let destVC = MuralDetailsViewController(muralItem: murals[indexPath.row], databaseManager: databaseManager)
+        destVC.title = murals[indexPath.row].adress
+        let navControler = UINavigationController(rootViewController: destVC)
+        navControler.modalPresentationStyle = .fullScreen
+        self.present(navControler, animated: true)
+
     }
-    
-    
-    
 }

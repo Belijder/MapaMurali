@@ -10,9 +10,7 @@ import UIKit
 class ManageUserAddedMuralsVC: UIViewController {
     
     let databaseManager: DatabaseManager
-    
     var userAddedMurals: [Mural]
-    
     var muralsTableView: UITableView!
     
     init(databaseManager: DatabaseManager, userAddedMurals: [Mural]) {
@@ -86,6 +84,8 @@ extension ManageUserAddedMuralsVC: UITableViewDelegate, UITableViewDataSource {
                     completed(false)
                 }
             }
+            
+            self.databaseManager.murals.removeAll(where: { $0.docRef == self.userAddedMurals[indexPath.row].docRef })
             self.userAddedMurals.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
             print("🟡 Mural Was removed from userAddedMurals, and row in tableView has been deleted also.")

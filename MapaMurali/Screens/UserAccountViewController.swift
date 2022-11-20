@@ -82,14 +82,13 @@ class UserAccountViewController: UIViewController {
     }
     
     func configureCollectionsViews() {
-        userAddedMurals = databaseManager.murals.filter { $0.addedBy == loginManager.currentUserID }
-        add(childVC: MMUserAddedMuralsCollectionsVC(collectionName: "Dodane przez Ciebie", murals: userAddedMurals, delegate: self), to: self.userAddedMuralsCollectionView)
-        
-        if let user = databaseManager.currentUser {
-        userFavoriteMurals = databaseManager.murals.filter { user.favoritesMurals.contains($0.docRef) }
-        }
+        add(childVC: MMUserAddedMuralsCollectionsVC(collectionName: "Dodane przez Ciebie",
+                                                    murals: [],
+                                                    databaseManager: databaseManager), to: self.userAddedMuralsCollectionView)
             
-        add(childVC: MMUserFavoritesMuralsCollectionVC(colectionName: "Twoje ulubione murale", murals: userFavoriteMurals, delegate: self), to: userFavoriteMuralsCollectionView)
+        add(childVC: MMUserFavoritesMuralsCollectionVC(colectionName: "Twoje ulubione murale",
+                                                       murals: [],
+                                                       databaseManager: databaseManager), to: userFavoriteMuralsCollectionView)
     }
     
     func layoutUI() {
@@ -187,7 +186,6 @@ class UserAccountViewController: UIViewController {
                                       message: "Aby potwierdzić usunięcie konta oraz wszystkich związanych z nim danych, podaj hasło używane do zalogowania się do aplikacji. Pamiętej, że tej operacji nie będzie można cofnąć.",
                                       preferredStyle: .alert)
         
-        
         alert.addTextField { field in
             field.placeholder = "Hasło"
             field.clearButtonMode = .unlessEditing
@@ -209,8 +207,6 @@ class UserAccountViewController: UIViewController {
         
     }
     
-
-    
     init(loginManager: LoginManager, databaseManager: DatabaseManager) {
         self.loginManager = loginManager
         self.databaseManager = databaseManager
@@ -230,36 +226,36 @@ class UserAccountViewController: UIViewController {
     }
 }
 
-extension UserAccountViewController: MMUserAddedMuralsCollectionsDelegate, MMUserFavoritesMuralsCollectionDelegate {
-    func didTapedBrowseButton() {
-        print("🟢 Browse User Favorites Murals Button Tapped!")
-    }
+//extension UserAccountViewController: MMUserFavoritesMuralsCollectionDelegate {
+//    func didTapedBrowseButton() {
+//        print("🟢 Browse User Favorites Murals Button Tapped!")
+//    }
+//
+//    func didSelectUserFavoriteMural(at index: Int) {
+//        let destVC = MuralDetailsViewController(muralItem: userFavoriteMurals[index], databaseManager: databaseManager)
+//        destVC.title = userFavoriteMurals[index].adress
+//        let navControler = UINavigationController(rootViewController: destVC)
+//        navControler.modalPresentationStyle = .fullScreen
+//        self.present(navControler, animated: true)
+//    }
+//
+//
+//    func didTapManageAddedMurals() {
+//        print("🟢 Manage User Added Murals Button Tapped!")
+//        let destVC = ManageUserAddedMuralsVC(databaseManager: databaseManager, userAddedMurals: userAddedMurals)
+//        destVC.title = "Zarządzaj muralami"
+//        self.navigationController?.pushViewController(destVC, animated: true)
+//
+//    }
     
-    func didSelectUserFavoriteMural(at index: Int) {
-        let destVC = MuralDetailsViewController(muralItem: userFavoriteMurals[index], databaseManager: databaseManager)
-        destVC.title = userFavoriteMurals[index].adress
-        let navControler = UINavigationController(rootViewController: destVC)
-        navControler.modalPresentationStyle = .fullScreen
-        self.present(navControler, animated: true)
-    }
-    
-    
-    func didTapManageAddedMurals() {
-        print("🟢 Manage User Added Murals Button Tapped!")
-        let destVC = ManageUserAddedMuralsVC(databaseManager: databaseManager, userAddedMurals: userAddedMurals)
-        destVC.title = "Zarządzaj muralami"
-        self.navigationController?.pushViewController(destVC, animated: true)
-        
-    }
-    
-    func didSelectUserAddedMural(at index: Int) {
-        let destVC = MuralDetailsViewController(muralItem: userAddedMurals[index], databaseManager: databaseManager)
-        destVC.title = userAddedMurals[index].adress
-        let navControler = UINavigationController(rootViewController: destVC)
-        navControler.modalPresentationStyle = .fullScreen
-        self.present(navControler, animated: true)
-    }
-}
+//    func didSelectUserAddedMural(at index: Int) {
+//        let destVC = MuralDetailsViewController(muralItem: userAddedMurals[index], databaseManager: databaseManager)
+//        destVC.title = userAddedMurals[index].adress
+//        let navControler = UINavigationController(rootViewController: destVC)
+//        navControler.modalPresentationStyle = .fullScreen
+//        self.present(navControler, animated: true)
+//    }
+//}
 
 extension UserAccountViewController: MFMailComposeViewControllerDelegate {
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {

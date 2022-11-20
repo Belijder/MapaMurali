@@ -7,27 +7,32 @@
 
 import UIKit
 
-protocol MMUserAddedMuralsCollectionsDelegate: AnyObject {
-    func didTapManageAddedMurals()
-    func didSelectUserAddedMural(at index: Int)
-
-}
+//protocol MMUserAddedMuralsCollectionsDelegate: AnyObject {
+//    func didTapManageAddedMurals()
+//    func didSelectUserAddedMural(at index: Int)
+//
+//}
 
 class MMUserAddedMuralsCollectionsVC: MMUserMuralsCollectionsVC {
     
-    weak var delegate: MMUserAddedMuralsCollectionsDelegate!
+//    weak var delegate: MMUserAddedMuralsCollectionsDelegate!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         configureItems()
     }
 
-    init(collectionName: String, murals: [Mural], delegate: MMUserAddedMuralsCollectionsDelegate) {
-        super.init(collectionTitle: collectionName, murals: murals)
-        self.delegate = delegate
+    init(collectionName: String, murals: [Mural], databaseManager: DatabaseManager) {
+        super.init(collectionTitle: collectionName, murals: murals, databaseManager: databaseManager)
+//        self.delegate = delegate
     }
     
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        let userAddedMurals = databaseManager.murals.filter { $0.addedBy == databaseManager.currentUser?.id }
+        murals = userAddedMurals
+        updateData(on: murals)
+    }
     
     private func configureItems() {
         self.actionButton.set(color: .systemBlue, title: "Zarządzaj")
@@ -38,10 +43,17 @@ class MMUserAddedMuralsCollectionsVC: MMUserMuralsCollectionsVC {
     }
     
     override func actionButtonTapped() {
-        delegate.didTapManageAddedMurals()
+        print("🟢 Manage User Added Murals Button Tapped!")
+        let destVC = ManageUserAddedMuralsVC(databaseManager: databaseManager, userAddedMurals: murals)
+        destVC.title = "Zarządzaj muralami"
+        self.navigationController?.pushViewController(destVC, animated: true)
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        delegate.didSelectUserAddedMural(at: indexPath.row)
+        let destVC = MuralDetailsViewController(muralItem: murals[indexPath.row], databaseManager: databaseManager)
+        destVC.title = murals[indexPath.row].adress
+        let navControler = UINavigationController(rootViewController: destVC)
+        navControler.modalPresentationStyle = .fullScreen
+        self.present(navControler, animated: true)
     }
 }
