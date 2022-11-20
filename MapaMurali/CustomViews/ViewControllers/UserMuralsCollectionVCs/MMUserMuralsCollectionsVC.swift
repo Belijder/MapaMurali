@@ -15,6 +15,7 @@ class MMUserMuralsCollectionsVC: UIViewController {
         case main
     }
     
+    
     let collectionView: UICollectionView = {
         let padding: CGFloat = 20
         let layout = UICollectionViewFlowLayout()
@@ -33,7 +34,7 @@ class MMUserMuralsCollectionsVC: UIViewController {
     
     let collectionTitle = MMTitleLabel(textAlignment: .left, fontSize: 15)
     let actionButton = MMPlainButton()
-    
+    let emptyStateLabel = MMBodyLabel(textAlignment: .center)
     
     var murals: [Mural]!
     
@@ -77,6 +78,8 @@ class MMUserMuralsCollectionsVC: UIViewController {
     }
     
     func updateData(on murals: [Mural]) {
+        if murals.isEmpty { emptyStateLabel.alpha = 1 } else { emptyStateLabel.alpha = 0 }
+        
         var snapshot = NSDiffableDataSourceSnapshot<Section, Mural>()
         snapshot.appendSections([.main])
         snapshot.appendItems(murals)
@@ -87,6 +90,7 @@ class MMUserMuralsCollectionsVC: UIViewController {
     
     func layoutUIElements() {
         view.addSubviews(collectionTitle, actionButton, collectionView)
+        collectionView.addSubview(emptyStateLabel)
         
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -104,7 +108,12 @@ class MMUserMuralsCollectionsVC: UIViewController {
             collectionView.topAnchor.constraint(equalTo: collectionTitle.bottomAnchor, constant: 10),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.heightAnchor.constraint(equalToConstant: 140)
+            collectionView.heightAnchor.constraint(equalToConstant: 140),
+            
+            emptyStateLabel.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor),
+            emptyStateLabel.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor),
+            emptyStateLabel.heightAnchor.constraint(equalToConstant: 30),
+            emptyStateLabel.widthAnchor.constraint(equalToConstant: 250)
             
         ])
     }
@@ -115,15 +124,8 @@ extension MMUserMuralsCollectionsVC: UICollectionViewDelegate {
         return murals.count
     }
     
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MuralCell.reuseID, for: indexPath) as! MuralCell
-//        cell.set(imageURL: murals[indexPath.row].thumbnailURL)
-//        cell.muralImageView.layer.cornerRadius = 20
-//        return cell
-//    }
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("🟡 Item tapped at: \(indexPath.row)")
+        
     }
     
     
