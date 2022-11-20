@@ -24,12 +24,11 @@ class MapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         addMuralsItemsObserver()
+        addLastDeletedMuralObserwer()
         setMapConstraints()
         configureMapView()
         setupUserTrackingButton()
         configureLocationManager()
-//        databaseManager.fetchMuralItemsFromDatabase()
-    
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -67,6 +66,15 @@ class MapViewController: UIViewController {
                     self.map.addAnnotation(pin)
                     print("Dodano mural")
                 }
+            })
+            .disposed(by: bag)
+    }
+    
+    func addLastDeletedMuralObserwer() {
+        databaseManager.lastDeletedMuralID
+            .subscribe(onNext: { muralID in
+                guard let annottionToRemove = self.map.annotations.first(where: { $0.title == muralID }) else { return }
+                self.map.removeAnnotation(annottionToRemove)
             })
             .disposed(by: bag)
     }

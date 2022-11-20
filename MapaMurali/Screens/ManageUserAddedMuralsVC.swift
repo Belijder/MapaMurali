@@ -67,6 +67,9 @@ extension ManageUserAddedMuralsVC: UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let muralID = self.userAddedMurals[indexPath.row].docRef
+        
         let editAction = UIContextualAction(style: .normal, title: "Edytuj") { _, _, completed in
             print("🟡 Edit Swipe Action Tapped")
             
@@ -74,10 +77,13 @@ extension ManageUserAddedMuralsVC: UITableViewDelegate, UITableViewDataSource {
         }
         
         let deleteAction = UIContextualAction(style: .destructive, title: "Usuń") { _, _, completed in
+            
             print("🟡 Remove Swipe Action Tapped")
-            self.databaseManager.removeMural(for: self.userAddedMurals[indexPath.row].docRef) { success in
-                print("🟢 Mural was succesfully deleted from database.")
+            
+            self.databaseManager.removeMural(for: muralID) { success in
                 if success == true {
+                    print("🟢 Mural was succesfully deleted from database.")
+                    self.databaseManager.lastDeletedMuralID.onNext(muralID)
                     completed(true)
                 } else {
                     print("🔴 Try to delete mural from database faild.")
@@ -85,7 +91,7 @@ extension ManageUserAddedMuralsVC: UITableViewDelegate, UITableViewDataSource {
                 }
             }
             
-            self.databaseManager.murals.removeAll(where: { $0.docRef == self.userAddedMurals[indexPath.row].docRef })
+            self.databaseManager.murals.removeAll(where: { $0.docRef == muralID })
             self.userAddedMurals.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
             print("🟡 Mural Was removed from userAddedMurals, and row in tableView has been deleted also.")

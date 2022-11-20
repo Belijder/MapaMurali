@@ -41,8 +41,9 @@ class DatabaseManager {
     let db = Firestore.firestore()
     
     var muralItems = BehaviorSubject<[Mural]>(value: [])
-    var murals = [Mural]()
+    var lastDeletedMuralID = BehaviorSubject<String>(value: "")
     
+    var murals = [Mural]()
     var users = [User]()
     
     var currentUser: User?
