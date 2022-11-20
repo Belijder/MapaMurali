@@ -14,7 +14,7 @@ import RxSwift
 import RxCocoa
 
 protocol DatabaseManagerDelegate: AnyObject {
-    func successToAddNewItem()
+    func successToAddNewItem(muralID: String)
     func failedToAddNewItem(errortitle: String, errorMessage: String)
 }
 
@@ -55,7 +55,7 @@ class DatabaseManager {
             if let error = error {
                 print("🔴 Error when try to add new user: \(error)")
             } else {
-                self.addImageToStorage(docRef: newUserRef, imageData: avatarImageData, imageType: .avatar)
+                self.addImageToStorage(docRef: newUserRef, imageData: avatarImageData, imageType: .avatar) { _ in }
             }
         }
     }
@@ -81,9 +81,12 @@ class DatabaseManager {
                 print("Error writing document: \(error)")
             } else {
                 newItemRef.updateData(["docRef" : newItemRef.documentID])
-                self.addImageToStorage(docRef: newItemRef, imageData: thumbnailData, imageType: .thumbnail)
-                self.addImageToStorage(docRef: newItemRef, imageData: fullSizeImageData, imageType: .fullSize)
-                self.changeNumberOfMuralsAddedByUser(by: 1)
+                self.addImageToStorage(docRef: newItemRef, imageData: thumbnailData, imageType: .thumbnail) { _ in
+                    self.addImageToStorage(docRef: newItemRef, imageData: fullSizeImageData, imageType: .fullSize) { _ in
+                        self.changeNumberOfMuralsAddedByUser(by: 1)
+                        self.delegate?.successToAddNewItem(muralID: newItemRef.documentID)
+                    }
+                }
             }
         }
     }
@@ -97,7 +100,7 @@ class DatabaseManager {
     }
     
     
-    func addImageToStorage(docRef: DocumentReference, imageData: Data, imageType: ImageType) {
+    func addImageToStorage(docRef: DocumentReference, imageData: Data, imageType: ImageType, completion: @escaping (Bool) -> Void) {
         let ref = storageRef.child("\(imageType.rawValue + docRef.documentID).jpg")
         ref.putData(imageData) { result in
                         
@@ -112,7 +115,7 @@ class DatabaseManager {
                         return
                     }
                     docRef.updateData(["\(fieldKey)URL" : url.absoluteString])
-                    self.delegate?.successToAddNewItem()
+                    completion(true)
                 }
                 
             case .failure(_):
@@ -140,6 +143,20 @@ class DatabaseManager {
                         }
                     }
                 }
+            }
+        }
+    }
+    
+    func fetchMuralfromDatabase(with muralID: String) {
+        let docRef = db.collection(CollectionName.murals.rawValue).document(muralID)
+        
+        docRef.getDocument(as: Mural.self) { result in
+            switch result {
+            case .success(let mural):
+                self.murals.append(mural)
+                self.muralItems.onNext([mural])
+            case .failure(let error):
+                print("🔴 Error when try to decode mural with id: \(muralID) from Database. ERROR: \(error)")
             }
         }
     }

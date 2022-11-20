@@ -47,6 +47,10 @@ class UserAccountViewController: UIViewController {
         deleteAccountAndDataButton.addTarget(self, action: #selector(deleteAcconutButtonTapped), for: .touchUpInside)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
     func setupScrollView() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)

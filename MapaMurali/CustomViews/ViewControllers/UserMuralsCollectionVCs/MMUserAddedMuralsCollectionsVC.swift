@@ -27,6 +27,8 @@ class MMUserAddedMuralsCollectionsVC: MMUserMuralsCollectionsVC {
         self.delegate = delegate
     }
     
+    
+    
     private func configureItems() {
         self.actionButton.set(color: .systemBlue, title: "Zarządzaj")
     }

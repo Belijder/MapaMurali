@@ -329,8 +329,9 @@ extension AddNewItemViewController: CLLocationManagerDelegate {
 }
 
 extension AddNewItemViewController: DatabaseManagerDelegate {
-    func successToAddNewItem() {
+    func successToAddNewItem(muralID: String) {
         dismissLoadingView()
+        self.databaseManager.fetchMuralfromDatabase(with: muralID)
         self.presentMMAlert(title: "Udało się!", message: "Twój mural został dodany! Dzięki za pomoc w tworzeniu naszej mapy!", buttonTitle: "Ok")
 
     }
