@@ -204,6 +204,14 @@ class AddNewItemViewController: MMDataLoadingVC {
         view.addGestureRecognizer(tap)
     }
     
+    func cleanUpFields() {
+        selectedImageView.removeImage()
+        adressTextField.text = ""
+        cityTextField.text = ""
+        authorTextField.text = ""
+        removeImageButton.alpha = 0
+    }
+    
     private func layoutUI() {
         selectedImageView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -265,7 +273,16 @@ class AddNewItemViewController: MMDataLoadingVC {
 extension AddNewItemViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
+        var image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
+        
+        
+        if let imageToCheck = image {
+            if imageToCheck.size.width > imageToCheck.size.height {
+                let verticalImage = imageToCheck.cropImageToVerticalRectangle()
+                image = verticalImage
+            }
+        }
+        
         let compressedImage = image?.jpegData(compressionQuality: 0.3)
         
         selectedImageView.image = UIImage(data: compressedImage!)
@@ -273,6 +290,7 @@ extension AddNewItemViewController: UIImagePickerControllerDelegate, UINavigatio
         self.vm.fullSizeImageData = compressedImage
         
         let resizedImage = image?.aspectFittedToHeight(133)
+        
         let thumbnailData = resizedImage?.jpegData(compressionQuality: 0.3)
         self.vm.thumbnailImageData = thumbnailData
 
@@ -333,6 +351,7 @@ extension AddNewItemViewController: DatabaseManagerDelegate {
         dismissLoadingView()
         self.databaseManager.fetchMuralfromDatabase(with: muralID)
         self.presentMMAlert(title: "Udało się!", message: "Twój mural został dodany! Dzięki za pomoc w tworzeniu naszej mapy!", buttonTitle: "Ok")
+        self.cleanUpFields()
 
     }
     

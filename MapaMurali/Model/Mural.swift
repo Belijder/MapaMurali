@@ -18,5 +18,5 @@ struct Mural: Codable, Hashable {
     let addedDate: Date
     let imageURL: String
     let thumbnailURL: String
-    let favoritesCount: Int
+    var favoritesCount: Int
 }
