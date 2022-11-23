@@ -55,6 +55,7 @@ class UserAccountViewController: UIViewController {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         scrollView.pinToEdges(of: view)
+        scrollView.showsVerticalScrollIndicator = false
         contentView.pinToEdges(of: scrollView)
         
         NSLayoutConstraint.activate([

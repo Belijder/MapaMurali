@@ -13,5 +13,5 @@ struct User: Codable {
     let avatarURL: String
     let displayName: String
     var favoritesMurals: [String]
-    let muralsAdded: Int
+    var muralsAdded: Int
 }

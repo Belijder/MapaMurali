@@ -7,21 +7,21 @@
 
 import UIKit
 import RxSwift
+import RxRelay
 
 class MostPopularMuralsVC: UIViewController {
     
-    //MARK: - Live Cicle
+    //MARK: - Initialization
     init(viewModel: StatisticsViewModel) {
         super.init(nibName: nil, bundle: nil)
-//        self.databaseManager = databaseManager
         self.statisticsViewModel = viewModel
-        print("🔵\(murals)")
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: - Live Cicle
     override func viewDidLoad() {
         super.viewDidLoad()
         layoutUIElements()
@@ -32,11 +32,8 @@ class MostPopularMuralsVC: UIViewController {
     
     
     //MARK: - Properities
-    
-    
     let disposeBag = DisposeBag()
-    let murals = BehaviorSubject<[Mural]>(value: [])
-//    var databaseManager: DatabaseManager!
+    let murals = BehaviorRelay<[Mural]>(value: [])
     var statisticsViewModel: StatisticsViewModel!
     
     let titleLabel = MMTitleLabel(textAlignment: .left, fontSize: 15)
@@ -66,13 +63,13 @@ class MostPopularMuralsVC: UIViewController {
         NSLayoutConstraint.activate([
             
             titleLabel.topAnchor.constraint(equalTo: view.topAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: padding),
+            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             titleLabel.heightAnchor.constraint(equalToConstant: 20),
             
             collectionView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: padding),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.heightAnchor.constraint(equalToConstant: 200)
         ])
     }
@@ -86,12 +83,25 @@ class MostPopularMuralsVC: UIViewController {
                 cell.set(mural: mural)
             }
             .disposed(by: disposeBag)
+        
+        collectionView.rx.modelSelected(Mural.self).subscribe(onNext: { mural in
+            let destVC = MuralDetailsViewController(muralItem: mural, databaseManager: self.statisticsViewModel.databaseManager)
+            destVC.title = mural.adress
+            let navControler = UINavigationController(rootViewController: destVC)
+            navControler.modalPresentationStyle = .fullScreen
+            self.present(navControler, animated: true)
+        }).disposed(by: disposeBag)
+        
+       
+            
+            
+            
     }
     
     func addMuralObserver() {
         statisticsViewModel.mostPopularMurals
             .subscribe(onNext: { murals in
-                self.murals.onNext(murals)
+                self.murals.accept(murals)
             })
             .disposed(by: disposeBag)
     }

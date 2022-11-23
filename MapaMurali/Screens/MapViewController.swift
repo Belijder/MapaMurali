@@ -59,12 +59,14 @@ class MapViewController: UIViewController {
         databaseManager.muralItems
             .subscribe(onNext: { murals in
                 for mural in murals {
-                    let pin = MKPointAnnotation()
-                    pin.title = mural.docRef
-                    pin.subtitle = mural.thumbnailURL
-                    pin.coordinate = CLLocationCoordinate2D(latitude: mural.latitude, longitude: mural.longitude)
-                    self.map.addAnnotation(pin)
-                    print("Dodano mural")
+                    if !self.map.annotations.contains(where: { $0.title == mural.docRef }) {
+                        let pin = MKPointAnnotation()
+                        pin.title = mural.docRef
+                        pin.subtitle = mural.thumbnailURL
+                        pin.coordinate = CLLocationCoordinate2D(latitude: mural.latitude, longitude: mural.longitude)
+                        self.map.addAnnotation(pin)
+                        print("Dodano mural")
+                    }
                 }
             })
             .disposed(by: bag)

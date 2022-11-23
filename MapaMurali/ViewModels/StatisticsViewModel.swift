@@ -15,22 +15,36 @@ class StatisticsViewModel {
     let disposeBag = DisposeBag()
     
     var mostPopularMurals = BehaviorSubject<[Mural]>(value: [])
+    var mostActivUsers = BehaviorSubject<[User]>(value: [])
+    var mostMuralCities = BehaviorSubject<[PopularCity]>(value: [])
+    
     var popularCities = [PopularCity]()
     
     init(databaseManager: DatabaseManager) {
         self.databaseManager = databaseManager
         addMuralObserver()
-//        createMostPopularMuralsArray()
+        addUsersObserver()
     }
     
-//    func createMostPopularMuralsArray() {
-//        mostPopularMurals = databaseManager.murals.sorted(by: { $0.favoritesCount > $1.favoritesCount })
-//    }
+    func createMostPopularMuralsArray(from murals: [Mural]) {
+        let sortedMurals = murals.sorted(by: { $0.favoritesCount > $1.favoritesCount })
+        var bestMurals = [Mural]()
+        
+        if murals.count > 10 {
+            for index in 0...9 {
+                bestMurals.append(sortedMurals[index])
+                mostPopularMurals.onNext(bestMurals)
+            }
+        } else {
+            mostPopularMurals.onNext(sortedMurals)
+        }
     
-    func createPopularCitiesArray() {
+       
+    }
+    
+    func createPopularCitiesArray(from murals: [Mural]) {
         var citiesNames = [String]()
         
-        let murals = databaseManager.murals
         for mural in murals {
             if !citiesNames.contains(mural.city) {
                 citiesNames.append(mural.city)
@@ -47,13 +61,22 @@ class StatisticsViewModel {
         
         let sortedPopularCities = popularCities.sorted { $0.muralsCount > $1.muralsCount }
 
-        self.popularCities = sortedPopularCities
+        self.mostMuralCities.onNext(sortedPopularCities)
     }
     
     func addMuralObserver() {
         databaseManager.muralItems
             .subscribe(onNext: { murals in
-                self.mostPopularMurals.onNext(murals)
+                self.createMostPopularMuralsArray(from: murals)
+                self.createPopularCitiesArray(from: murals)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func addUsersObserver() {
+        databaseManager.observableUsersItem
+            .subscribe(onNext: { users in
+                self.mostActivUsers.onNext(users)
             })
             .disposed(by: disposeBag)
     }

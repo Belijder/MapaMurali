@@ -43,8 +43,19 @@ class DatabaseManager {
     var muralItems = BehaviorSubject<[Mural]>(value: [])
     var lastDeletedMuralID = BehaviorSubject<String>(value: "")
     
-    var murals = [Mural]()
-    var users = [User]()
+    var murals = [Mural]() {
+        didSet {
+            muralItems.onNext(murals)
+        }
+    }
+    var users = [User]() {
+        didSet {
+            let sortedUsers = users.sorted { $0.muralsAdded > $1.muralsAdded }
+            observableUsersItem.onNext(sortedUsers)
+        }
+    }
+    
+    var observableUsersItem = BehaviorSubject<[User]>(value: [])
     
     var currentUser: User?
     
@@ -85,6 +96,11 @@ class DatabaseManager {
                 self.addImageToStorage(docRef: newItemRef, imageData: thumbnailData, imageType: .thumbnail) { _ in
                     self.addImageToStorage(docRef: newItemRef, imageData: fullSizeImageData, imageType: .fullSize) { _ in
                         self.changeNumberOfMuralsAddedByUser(by: 1)
+                        
+                        if let index = self.users.firstIndex(where: { $0.id == self.currentUser?.id }) {
+                            self.users[index].muralsAdded += 1
+                        }
+                        
                         self.delegate?.successToAddNewItem(muralID: newItemRef.documentID)
                     }
                 }
@@ -137,7 +153,6 @@ class DatabaseManager {
                         switch result {
                         case .success(let mural):
                             self.murals.append(mural)
-                            self.muralItems.onNext([mural])
                             print(self.muralItems)
                         case .failure(_):
                             print("FAILED TO GET DOCUMENT: \(document.documentID)")
@@ -213,6 +228,11 @@ class DatabaseManager {
                     return
                 }
                 self.currentUser?.favoritesMurals.append(muralID)
+                
+                if let muralIndex = self.murals.firstIndex(where: { $0.docRef == muralID }) {
+                    self.murals[muralIndex].favoritesCount += 1
+                }
+                
                 completion(true)
             }
         }
@@ -239,6 +259,11 @@ class DatabaseManager {
                     return
                 }
                 self.currentUser?.favoritesMurals.removeAll(where: { $0 == muralID })
+                
+                if let muralIndex = self.murals.firstIndex(where: { $0.docRef == muralID }) {
+                    self.murals[muralIndex].favoritesCount -= 1
+                }
+                
                 completion(true)
             }
         }
@@ -255,6 +280,11 @@ class DatabaseManager {
                 self.removeImageFromStorage(imageType: .fullSize, docRef: id) { _ in
                     self.removeImageFromStorage(imageType: .thumbnail, docRef: id) { _ in
                         self.changeNumberOfMuralsAddedByUser(by: -1)
+                        
+                        if let index = self.users.firstIndex(where: { $0.id == self.currentUser?.id }) {
+                            self.users[index].muralsAdded -= 1
+                        }
+                        
                         completion(true)
                     }
                 }
