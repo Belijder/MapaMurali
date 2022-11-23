@@ -131,7 +131,7 @@ class DatabaseManager {
             if let error = error {
                 print("NIE UDAŁO SIĘ POBRAĆ MURALI Z BAZY DANYCH. ERROR: \(error.localizedDescription)")
             } else {
-                for document in querySnapshot!.documents { 
+                for document in querySnapshot!.documents {
                     let docRef = self.db.collection(CollectionName.murals.rawValue).document(document.documentID)
                     docRef.getDocument(as: Mural.self) { result in
                         switch result {

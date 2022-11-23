@@ -226,36 +226,6 @@ class UserAccountViewController: UIViewController {
     }
 }
 
-//extension UserAccountViewController: MMUserFavoritesMuralsCollectionDelegate {
-//    func didTapedBrowseButton() {
-//        print("🟢 Browse User Favorites Murals Button Tapped!")
-//    }
-//
-//    func didSelectUserFavoriteMural(at index: Int) {
-//        let destVC = MuralDetailsViewController(muralItem: userFavoriteMurals[index], databaseManager: databaseManager)
-//        destVC.title = userFavoriteMurals[index].adress
-//        let navControler = UINavigationController(rootViewController: destVC)
-//        navControler.modalPresentationStyle = .fullScreen
-//        self.present(navControler, animated: true)
-//    }
-//
-//
-//    func didTapManageAddedMurals() {
-//        print("🟢 Manage User Added Murals Button Tapped!")
-//        let destVC = ManageUserAddedMuralsVC(databaseManager: databaseManager, userAddedMurals: userAddedMurals)
-//        destVC.title = "Zarządzaj muralami"
-//        self.navigationController?.pushViewController(destVC, animated: true)
-//
-//    }
-    
-//    func didSelectUserAddedMural(at index: Int) {
-//        let destVC = MuralDetailsViewController(muralItem: userAddedMurals[index], databaseManager: databaseManager)
-//        destVC.title = userAddedMurals[index].adress
-//        let navControler = UINavigationController(rootViewController: destVC)
-//        navControler.modalPresentationStyle = .fullScreen
-//        self.present(navControler, animated: true)
-//    }
-//}
 
 extension UserAccountViewController: MFMailComposeViewControllerDelegate {
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {

@@ -60,6 +60,8 @@
 		42D9EA212922CD8D00A7A9DC /* ManageUserAddedMuralsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9EA202922CD8D00A7A9DC /* ManageUserAddedMuralsVC.swift */; };
 		42D9EA232922D1EA00A7A9DC /* MMUserAddedMuralTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9EA222922D1EA00A7A9DC /* MMUserAddedMuralTableViewCell.swift */; };
 		42D9EA2529260E0000A7A9DC /* EditMuralViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9EA2429260E0000A7A9DC /* EditMuralViewController.swift */; };
+		42D9EA28292C1AB000A7A9DC /* MostPopularMuralsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9EA27292C1AB000A7A9DC /* MostPopularMuralsVC.swift */; };
+		42D9EA2A292C1CA000A7A9DC /* MostPopularMuralsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9EA29292C1CA000A7A9DC /* MostPopularMuralsViewModel.swift */; };
 		42E18CB728D7A8FE0068414E /* MMDataLoadingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E18CB628D7A8FE0068414E /* MMDataLoadingVC.swift */; };
 		42E18CB928DB98EA0068414E /* UIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E18CB828DB98EA0068414E /* UIImage+Ext.swift */; };
 		42E61C2228F1AE0600D38205 /* MuralDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C2128F1AE0600D38205 /* MuralDetailsViewController.swift */; };
@@ -128,6 +130,8 @@
 		42D9EA202922CD8D00A7A9DC /* ManageUserAddedMuralsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageUserAddedMuralsVC.swift; sourceTree = "<group>"; };
 		42D9EA222922D1EA00A7A9DC /* MMUserAddedMuralTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMUserAddedMuralTableViewCell.swift; sourceTree = "<group>"; };
 		42D9EA2429260E0000A7A9DC /* EditMuralViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMuralViewController.swift; sourceTree = "<group>"; };
+		42D9EA27292C1AB000A7A9DC /* MostPopularMuralsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MostPopularMuralsVC.swift; sourceTree = "<group>"; };
+		42D9EA29292C1CA000A7A9DC /* MostPopularMuralsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MostPopularMuralsViewModel.swift; sourceTree = "<group>"; };
 		42E18CB628D7A8FE0068414E /* MMDataLoadingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMDataLoadingVC.swift; sourceTree = "<group>"; };
 		42E18CB828DB98EA0068414E /* UIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ext.swift"; sourceTree = "<group>"; };
 		42E61C2128F1AE0600D38205 /* MuralDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuralDetailsViewController.swift; sourceTree = "<group>"; };
@@ -355,10 +359,19 @@
 			path = Labels;
 			sourceTree = "<group>";
 		};
+		42D9EA26292C1A6F00A7A9DC /* StatisticsChildsVC */ = {
+			isa = PBXGroup;
+			children = (
+				42D9EA27292C1AB000A7A9DC /* MostPopularMuralsVC.swift */,
+			);
+			path = StatisticsChildsVC;
+			sourceTree = "<group>";
+		};
 		42E18CB528D7A8C00068414E /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
 				42618DDF291FDA3C0052DB76 /* UserMuralsCollectionVCs */,
+				42D9EA26292C1A6F00A7A9DC /* StatisticsChildsVC */,
 				42E18CB628D7A8FE0068414E /* MMDataLoadingVC.swift */,
 				428BD66228DE353B000B8D69 /* MMAlertVC.swift */,
 			);
@@ -370,6 +383,7 @@
 			children = (
 				42E61C3428F31DD800D38205 /* MuralCell.swift */,
 				42E61C44290713D900D38205 /* MMCollectionViewTableViewCell.swift */,
+				42D9EA29292C1CA000A7A9DC /* MostPopularMuralsViewModel.swift */,
 				427C1A632910E899000E5619 /* MMFavoritesMuralCollectionCell.swift */,
 				42618DD5291655720052DB76 /* MMUsersTableViewInTableViewCell.swift */,
 				42618DD729165A0D0052DB76 /* MMMostActivUsersCell.swift */,
@@ -479,6 +493,7 @@
 				42867B702896FC8100E5159F /* LoginManager.swift in Sources */,
 				42E61C45290713D900D38205 /* MMCollectionViewTableViewCell.swift in Sources */,
 				429A022028CFD0E000CD6862 /* MMBodyLabel.swift in Sources */,
+				42D9EA28292C1AB000A7A9DC /* MostPopularMuralsVC.swift in Sources */,
 				427CAB5828E9A83400DA7247 /* MMAnnotationView.swift in Sources */,
 				428BD66728DE3FDC000B8D69 /* MMError.swift in Sources */,
 				42E18CB928DB98EA0068414E /* UIImage+Ext.swift in Sources */,
@@ -504,6 +519,7 @@
 				428BD66528DE3B7B000B8D69 /* UIViewController+Ext.swift in Sources */,
 				429A021528CFADD200CD6862 /* UITextField+Ext.swift in Sources */,
 				4283BAB028D5E24A00A54F0F /* MMMuralImageView.swift in Sources */,
+				42D9EA2A292C1CA000A7A9DC /* MostPopularMuralsViewModel.swift in Sources */,
 				4283BAB228D5E45800A54F0F /* MMMuralPlaceholderView.swift in Sources */,
 				42E61C3228F3191A00D38205 /* UIHelper.swift in Sources */,
 				42D9EA1F2921581C00A7A9DC /* MMFilledButton.swift in Sources */,
