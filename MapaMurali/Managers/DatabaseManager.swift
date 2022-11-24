@@ -170,7 +170,6 @@ class DatabaseManager {
             switch result {
             case .success(let mural):
                 self.murals.append(mural)
-                self.muralItems.onNext([mural])
             case .failure(let error):
                 print("🔴 Error when try to decode mural with id: \(muralID) from Database. ERROR: \(error)")
             }
