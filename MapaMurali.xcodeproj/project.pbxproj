@@ -11,7 +11,6 @@
 		42618DD42914312D0052DB76 /* StatisticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42618DD32914312D0052DB76 /* StatisticsViewModel.swift */; };
 		42618DD6291655720052DB76 /* MMUsersTableViewInTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42618DD5291655720052DB76 /* MMUsersTableViewInTableViewCell.swift */; };
 		42618DD829165A0D0052DB76 /* MMMostActivUsersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42618DD729165A0D0052DB76 /* MMMostActivUsersCell.swift */; };
-		42618DDA2917BAB20052DB76 /* MMPopularCitiesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42618DD92917BAB20052DB76 /* MMPopularCitiesTableViewCell.swift */; };
 		42618DDC2917BB7C0052DB76 /* PopularCity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42618DDB2917BB7C0052DB76 /* PopularCity.swift */; };
 		42618DDE2917BC590052DB76 /* MMPopularCityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42618DDD2917BC590052DB76 /* MMPopularCityTableViewCell.swift */; };
 		42618DE1291FDACC0052DB76 /* MMUserMuralsCollectionsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42618DE0291FDACC0052DB76 /* MMUserMuralsCollectionsVC.swift */; };
@@ -61,7 +60,6 @@
 		42D9EA232922D1EA00A7A9DC /* MMUserAddedMuralTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9EA222922D1EA00A7A9DC /* MMUserAddedMuralTableViewCell.swift */; };
 		42D9EA2529260E0000A7A9DC /* EditMuralViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9EA2429260E0000A7A9DC /* EditMuralViewController.swift */; };
 		42D9EA28292C1AB000A7A9DC /* MostPopularMuralsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9EA27292C1AB000A7A9DC /* MostPopularMuralsVC.swift */; };
-		42D9EA2A292C1CA000A7A9DC /* MostPopularMuralsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9EA29292C1CA000A7A9DC /* MostPopularMuralsViewModel.swift */; };
 		42D9EA2C292EB42400A7A9DC /* MostActivUsersVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9EA2B292EB42300A7A9DC /* MostActivUsersVC.swift */; };
 		42D9EA2E292ED5F600A7A9DC /* MostMuralCitiesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9EA2D292ED5F600A7A9DC /* MostMuralCitiesVC.swift */; };
 		42E18CB728D7A8FE0068414E /* MMDataLoadingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E18CB628D7A8FE0068414E /* MMDataLoadingVC.swift */; };
@@ -80,7 +78,6 @@
 		42E61C3D29045AAC00D38205 /* MMAvatarImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C3C29045AAC00D38205 /* MMAvatarImageView.swift */; };
 		42E61C3F29053F0400D38205 /* MuralDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C3E29053F0400D38205 /* MuralDetailsViewModel.swift */; };
 		42E61C432906FFB200D38205 /* StatisticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C422906FFB100D38205 /* StatisticsViewController.swift */; };
-		42E61C45290713D900D38205 /* MMCollectionViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C44290713D900D38205 /* MMCollectionViewTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -88,7 +85,6 @@
 		42618DD32914312D0052DB76 /* StatisticsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewModel.swift; sourceTree = "<group>"; };
 		42618DD5291655720052DB76 /* MMUsersTableViewInTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMUsersTableViewInTableViewCell.swift; sourceTree = "<group>"; };
 		42618DD729165A0D0052DB76 /* MMMostActivUsersCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMMostActivUsersCell.swift; sourceTree = "<group>"; };
-		42618DD92917BAB20052DB76 /* MMPopularCitiesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMPopularCitiesTableViewCell.swift; sourceTree = "<group>"; };
 		42618DDB2917BB7C0052DB76 /* PopularCity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularCity.swift; sourceTree = "<group>"; };
 		42618DDD2917BC590052DB76 /* MMPopularCityTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMPopularCityTableViewCell.swift; sourceTree = "<group>"; };
 		42618DE0291FDACC0052DB76 /* MMUserMuralsCollectionsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMUserMuralsCollectionsVC.swift; sourceTree = "<group>"; };
@@ -133,7 +129,6 @@
 		42D9EA222922D1EA00A7A9DC /* MMUserAddedMuralTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMUserAddedMuralTableViewCell.swift; sourceTree = "<group>"; };
 		42D9EA2429260E0000A7A9DC /* EditMuralViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMuralViewController.swift; sourceTree = "<group>"; };
 		42D9EA27292C1AB000A7A9DC /* MostPopularMuralsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MostPopularMuralsVC.swift; sourceTree = "<group>"; };
-		42D9EA29292C1CA000A7A9DC /* MostPopularMuralsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MostPopularMuralsViewModel.swift; sourceTree = "<group>"; };
 		42D9EA2B292EB42300A7A9DC /* MostActivUsersVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MostActivUsersVC.swift; sourceTree = "<group>"; };
 		42D9EA2D292ED5F600A7A9DC /* MostMuralCitiesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MostMuralCitiesVC.swift; sourceTree = "<group>"; };
 		42E18CB628D7A8FE0068414E /* MMDataLoadingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMDataLoadingVC.swift; sourceTree = "<group>"; };
@@ -152,7 +147,6 @@
 		42E61C3C29045AAC00D38205 /* MMAvatarImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMAvatarImageView.swift; sourceTree = "<group>"; };
 		42E61C3E29053F0400D38205 /* MuralDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuralDetailsViewModel.swift; sourceTree = "<group>"; };
 		42E61C422906FFB100D38205 /* StatisticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewController.swift; sourceTree = "<group>"; };
-		42E61C44290713D900D38205 /* MMCollectionViewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMCollectionViewTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -388,12 +382,9 @@
 			isa = PBXGroup;
 			children = (
 				42E61C3428F31DD800D38205 /* MuralCell.swift */,
-				42E61C44290713D900D38205 /* MMCollectionViewTableViewCell.swift */,
-				42D9EA29292C1CA000A7A9DC /* MostPopularMuralsViewModel.swift */,
 				427C1A632910E899000E5619 /* MMFavoritesMuralCollectionCell.swift */,
 				42618DD5291655720052DB76 /* MMUsersTableViewInTableViewCell.swift */,
 				42618DD729165A0D0052DB76 /* MMMostActivUsersCell.swift */,
-				42618DD92917BAB20052DB76 /* MMPopularCitiesTableViewCell.swift */,
 				42618DDD2917BC590052DB76 /* MMPopularCityTableViewCell.swift */,
 				42D9EA222922D1EA00A7A9DC /* MMUserAddedMuralTableViewCell.swift */,
 			);
@@ -498,7 +489,6 @@
 				42867B6B28959CE400E5159F /* SingInViewController.swift in Sources */,
 				42867B80289C4CC600E5159F /* SingUpViewController.swift in Sources */,
 				42867B702896FC8100E5159F /* LoginManager.swift in Sources */,
-				42E61C45290713D900D38205 /* MMCollectionViewTableViewCell.swift in Sources */,
 				429A022028CFD0E000CD6862 /* MMBodyLabel.swift in Sources */,
 				42D9EA28292C1AB000A7A9DC /* MostPopularMuralsVC.swift in Sources */,
 				42D9EA2E292ED5F600A7A9DC /* MostMuralCitiesVC.swift in Sources */,
@@ -508,7 +498,6 @@
 				42618DDC2917BB7C0052DB76 /* PopularCity.swift in Sources */,
 				42867B672895901000E5159F /* AddNewViewController.swift in Sources */,
 				429A021D28CFCF4600CD6862 /* UIView+Ext.swift in Sources */,
-				42618DDA2917BAB20052DB76 /* MMPopularCitiesTableViewCell.swift in Sources */,
 				42D9EA212922CD8D00A7A9DC /* ManageUserAddedMuralsVC.swift in Sources */,
 				42618DD42914312D0052DB76 /* StatisticsViewModel.swift in Sources */,
 				42867B6428958F5B00E5159F /* MainTabBarViewController.swift in Sources */,
@@ -527,7 +516,6 @@
 				428BD66528DE3B7B000B8D69 /* UIViewController+Ext.swift in Sources */,
 				429A021528CFADD200CD6862 /* UITextField+Ext.swift in Sources */,
 				4283BAB028D5E24A00A54F0F /* MMMuralImageView.swift in Sources */,
-				42D9EA2A292C1CA000A7A9DC /* MostPopularMuralsViewModel.swift in Sources */,
 				4283BAB228D5E45800A54F0F /* MMMuralPlaceholderView.swift in Sources */,
 				42E61C3228F3191A00D38205 /* UIHelper.swift in Sources */,
 				42D9EA1F2921581C00A7A9DC /* MMFilledButton.swift in Sources */,

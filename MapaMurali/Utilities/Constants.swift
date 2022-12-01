@@ -8,6 +8,9 @@
 import UIKit
 
 enum MMColors {
-    static let primary = UIColor(named: "ThemePrimary")!
-    static let secondary = UIColor(named: "ThemeSecondary")!
+//    static let primary = UIColor(named: "ThemePrimary")!
+//    static let secondary = UIColor(named: "ThemeSecondary")!
+    
+    static let primary = UIColor(named: "PrimaryTheme")!
+    static let secondary = UIColor(named: "SecondaryTheme")!
 }
