@@ -73,6 +73,11 @@ extension ManageUserAddedMuralsVC: UITableViewDelegate, UITableViewDataSource {
         let editAction = UIContextualAction(style: .normal, title: "Edytuj") { _, _, completed in
             print("🟡 Edit Swipe Action Tapped")
             
+            let destVC = EditMuralViewController(mural: self.userAddedMurals[indexPath.row], databaseManager: self.databaseManager)
+            let navControler = UINavigationController(rootViewController: destVC)
+            navControler.modalPresentationStyle = .fullScreen
+            self.present(navControler, animated: true)
+            
             completed(true)
         }
         
