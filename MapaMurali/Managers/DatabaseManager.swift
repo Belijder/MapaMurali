@@ -44,6 +44,7 @@ class DatabaseManager {
     
     var muralItems = BehaviorSubject<[Mural]>(value: [])
     var lastDeletedMuralID = BehaviorSubject<String>(value: "")
+    var lastEditedMuralID = PublishSubject<Mural>()
     
     var murals = [Mural]() {
         didSet {

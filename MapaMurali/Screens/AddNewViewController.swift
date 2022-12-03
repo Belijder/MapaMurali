@@ -374,7 +374,7 @@ extension AddNewItemViewController: DatabaseManagerDelegate {
             mural.city = data.city
             mural.adress = data.address
             
-            databaseManager.murals[index] = mural
+            databaseManager.lastEditedMuralID.onNext(mural)
         }
         
         dismissLoadingView()

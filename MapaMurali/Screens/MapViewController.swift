@@ -25,6 +25,7 @@ class MapViewController: UIViewController {
         super.viewDidLoad()
         addMuralsItemsObserver()
         addLastDeletedMuralObserwer()
+        addLastEditedMuralObserver()
         setMapConstraints()
         configureMapView()
         setupUserTrackingButton()
@@ -77,6 +78,19 @@ class MapViewController: UIViewController {
             .subscribe(onNext: { muralID in
                 guard let annottionToRemove = self.map.annotations.first(where: { $0.title == muralID }) else { return }
                 self.map.removeAnnotation(annottionToRemove)
+            })
+            .disposed(by: bag)
+    }
+    
+    func addLastEditedMuralObserver() {
+        databaseManager.lastEditedMuralID
+            .subscribe(onNext: { mural in
+                self.databaseManager.murals.removeAll(where: { $0.docRef == mural.docRef })
+                
+                guard let annottionToRemove = self.map.annotations.first(where: { $0.title == mural.docRef }) else { return }
+                self.map.removeAnnotation(annottionToRemove)
+                
+                self.databaseManager.murals.append(mural)
             })
             .disposed(by: bag)
     }

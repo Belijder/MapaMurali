@@ -18,7 +18,6 @@ final class MMAnnotationView: MKAnnotationView {
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
         imageView = MMAnnotationPinImageView(annotation: annotation)
         frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-        centerOffset = CGPoint(x: 0, y: -frame.size.height / 2)
         canShowCallout = false
         
         setupUI()
