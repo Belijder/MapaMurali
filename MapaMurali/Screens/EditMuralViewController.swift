@@ -12,6 +12,7 @@ class EditMuralViewController: AddNewItemViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavigationController()
+        removeImageButton.removeFromSuperview()
     }
     
     var mural: Mural!
@@ -49,6 +50,10 @@ class EditMuralViewController: AddNewItemViewController {
     
     override func callToActionButtonTapped() {
         print("🟡 Save edited mural tapped")
+    }
+    
+    override func cameraImageViewTapped() {
+        
     }
     
     @objc func dismissVC() {

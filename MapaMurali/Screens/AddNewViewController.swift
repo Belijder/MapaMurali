@@ -34,6 +34,7 @@ class AddNewItemViewController: MMDataLoadingVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        
         view.addSubviews(selectedImageView, removeImageButton, adressTextField, cityTextField, authorTextField, callToActionBatton)
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -42,11 +43,11 @@ class AddNewItemViewController: MMDataLoadingVC {
         configureRemoveImageButton()
         configureCameraImageView()
         configureCallToActionButton()
+        
         adressTextField.delegate = self
         cityTextField.delegate = self
         authorTextField.delegate = self
         locationManager.delegate = self
-        
         databaseManager.delegate = self
         
         layoutUI()
@@ -177,22 +178,30 @@ class AddNewItemViewController: MMDataLoadingVC {
     }
     
     @objc func callToActionButtonTapped() {
-        geoCoder.geocodeAddressString(adressTextField.text!) { placemark, error in
-            
-            guard error == nil, let coordinates = placemark![0].location?.coordinate else {
-                self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: MMError.failedToAddToDB.rawValue, buttonTitle: "Ok")
+        
+        guard let fullSizeImageData = self.vm.fullSizeImageData, let thumbnailImageData = self.vm.thumbnailImageData else {
+            self.presentMMAlert(title: "Nie można załadować zdjęcia.", message: "Wybierz lub zrób inne zdjęcie i spróbuj ponownie.", buttonTitle: "Ok")
+            return
+        }
+        
+        vm.adress = adressTextField.text
+        vm.city = cityTextField.text
+        
+        guard let adress = vm.adress, let city = vm.city else {
+            self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: MMError.invalidAddress.rawValue, buttonTitle: "Ok")
+            return
+        }
+        
+        let addressString = "\(adress), \(city)"
+        
+        vm.getCoordinate(addressString: addressString) { location, error in
+            if error != nil {
+                self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: MMError.invalidAddress.rawValue, buttonTitle: "Ok")
                 return
             }
-            print(coordinates)
             
-            
-            guard let fullSizeImageData = self.vm.fullSizeImageData, let thumbnailImageData = self.vm.thumbnailImageData else {
-                self.presentMMAlert(title: "Nie można załadować zdjęcia.", message: "Wybierz lub zrób inne zdjęcie i spróbuj ponownie.", buttonTitle: "Ok")
-                return
-            }
-
             do {
-                let data = try self.vm.createDataforDatabase(author: self.authorTextField.text, city: self.cityTextField.text)
+                let data = try self.vm.createDataforDatabase(author: self.authorTextField.text, location: location)
                 self.databaseManager.addNewItemToDatabase(itemData: data, fullSizeImageData: fullSizeImageData, thumbnailData: thumbnailImageData)
                 self.showLoadingView()
             } catch let error {
@@ -337,8 +346,9 @@ extension AddNewItemViewController: CLLocationManagerDelegate {
             }
             
             self.adressTextField.text = "\(streetName) \(streetNumber)"
-            self.cityTextField.text = "\(cityName)"
-            self.vm.adress = "\(streetName) \(streetNumber), \(cityName)"
+            self.cityTextField.text = cityName
+            self.vm.adress = "\(streetName) \(streetNumber)"
+            self.vm.city = cityName
             self.dismissLoadingView()
         }
     }

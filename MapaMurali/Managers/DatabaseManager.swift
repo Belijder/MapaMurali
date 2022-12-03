@@ -108,6 +108,13 @@ class DatabaseManager {
         }
     }
     
+//    func updateMuralInformations(id: String, itemData: [String : Any], completion: @escaping (Bool) -> ()) {
+//        let muralRef = db.collection(CollectionName.murals.rawValue).document(id)
+//        muralRef.updateData([
+//            "adress": itemData["adress"] 
+//        ])
+//    }
+    
     func changeNumberOfMuralsAddedByUser(by value: Int64) {
         guard let userID = Auth.auth().currentUser?.uid else { return }
         let docRef = db.collection(CollectionName.users.rawValue).document(userID)
@@ -203,6 +210,8 @@ class DatabaseManager {
             }
         }
     }
+    
+    
     
     //MARK: Favorites
     
