@@ -28,7 +28,9 @@ class AddNewItemViewController: MMDataLoadingVC {
     var selectedImageViewHeightConstraint: NSLayoutConstraint!
     var removeImageButtonHeightConstraint: NSLayoutConstraint!
     var removeImageButtonWidthConstraint: NSLayoutConstraint!
-
+    
+    var selectedImageViewTopAnchorConstant: CGFloat = 80
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -233,7 +235,7 @@ class AddNewItemViewController: MMDataLoadingVC {
         
         NSLayoutConstraint.activate([
             selectedImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            selectedImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 80),
+            selectedImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: selectedImageViewTopAnchorConstant),
             
             removeImageButton.topAnchor.constraint(equalTo: selectedImageView.topAnchor, constant: 10),
             removeImageButton.trailingAnchor.constraint(equalTo: selectedImageView.trailingAnchor, constant: -10),

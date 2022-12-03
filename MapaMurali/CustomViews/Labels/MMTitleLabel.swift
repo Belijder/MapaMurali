@@ -36,7 +36,7 @@ class MMTitleLabel: UILabel {
     func createFavoriteCounterTextLabel(counter: Int, imagePointSize: CGFloat) {
         let imageAttachment = NSTextAttachment()
         let configuration = UIImage.SymbolConfiguration(pointSize: imagePointSize, weight: .regular)
-        imageAttachment.image = UIImage(systemName: "heart.fill", withConfiguration: configuration)?.withTintColor(.systemRed)
+        imageAttachment.image = UIImage(systemName: "heart.fill", withConfiguration: configuration)?.withTintColor(MMColors.primary)
         let fullString = NSMutableAttributedString(string: "")
         fullString.append(NSAttributedString(attachment: imageAttachment))
         fullString.append(NSAttributedString(string: " \(counter)"))

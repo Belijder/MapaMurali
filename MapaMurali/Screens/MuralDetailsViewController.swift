@@ -114,7 +114,7 @@ class MuralDetailsViewController: UIViewController {
         authorLabel.text = muralItem.author
         
         sendEmailWithAuthorButton.text = "Napisz do nas!"
-        sendEmailWithAuthorButton.textColor = .systemBlue
+        sendEmailWithAuthorButton.textColor = MMColors.primary
         sendEmailWithAuthorButton.font.withSize(15)
         
         dateLabelDescription.text = "Data dodania:"
@@ -150,8 +150,6 @@ class MuralDetailsViewController: UIViewController {
     func layoutUI() {
         
         let horizontalPadding: CGFloat = 20
-        //let verticalPadding: CGFloat = 10
-        
         
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),

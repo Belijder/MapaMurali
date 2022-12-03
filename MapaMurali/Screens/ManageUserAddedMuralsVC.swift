@@ -26,6 +26,8 @@ class ManageUserAddedMuralsVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        navigationController?.navigationBar.tintColor = MMColors.primary
+        
         configureMuralTableView()
         
     }
@@ -38,7 +40,6 @@ class ManageUserAddedMuralsVC: UIViewController {
         muralsTableView.backgroundColor = .systemBackground
         muralsTableView.register(MMUserAddedMuralTableViewCell.self, forCellReuseIdentifier: MMUserAddedMuralTableViewCell.identifire)
     }
-
 }
 
 extension ManageUserAddedMuralsVC: UITableViewDelegate, UITableViewDataSource {

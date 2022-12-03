@@ -33,7 +33,7 @@ class MMUserFavoritesMuralsCollectionVC: MMUserMuralsCollectionsVC {
     }
     
     func configureItems() {
-        actionButton.set(color: .systemBlue, title: "Przeglądaj")
+        actionButton.set(color: MMColors.primary, title: "Przeglądaj")
         self.emptyStateLabel.text = "Nie masz jeszcze ulubionych murali."
     }
     

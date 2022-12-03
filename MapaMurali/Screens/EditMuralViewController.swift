@@ -11,6 +11,7 @@ class EditMuralViewController: AddNewItemViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureNavigationController()
     }
     
     var mural: Mural!
@@ -31,6 +32,15 @@ class EditMuralViewController: AddNewItemViewController {
         self.cityTextField.text = mural.city
         self.authorTextField.text = mural.author
         self.callToActionBatton.set(color: MMColors.primary, title: "Zapisz zmiany")
+        self.selectedImageViewTopAnchorConstant = 100
+    }
+    
+    func configureNavigationController() {
+        navigationController?.navigationBar.isHidden = false
+        let backButton = UIBarButtonItem(image: UIImage(systemName: "arrow.backward"), style: .plain, target: self, action: #selector(self.dismissVC))
+        navigationItem.leftBarButtonItem = backButton
+        title = "Edytuj mural"
+        navigationController?.navigationBar.tintColor = MMColors.primary
     }
     
     required init?(coder: NSCoder) {
@@ -41,9 +51,7 @@ class EditMuralViewController: AddNewItemViewController {
         print("🟡 Save edited mural tapped")
     }
     
-    
-    
-
- 
-
+    @objc func dismissVC() {
+        self.dismiss(animated: true, completion: nil)
+    }
 }
