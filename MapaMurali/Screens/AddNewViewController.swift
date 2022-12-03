@@ -13,7 +13,7 @@ class AddNewItemViewController: MMDataLoadingVC {
     
     let locationManager = CLLocationManager()
     let geoCoder = CLGeocoder()
-    let vm = AddNewViewModel()
+    var vm = AddNewViewModel()
 
     var databaseManager: DatabaseManager
     
@@ -202,8 +202,8 @@ class AddNewItemViewController: MMDataLoadingVC {
             
             do {
                 let data = try self.vm.createDataforDatabase(author: self.authorTextField.text, location: location)
-                self.databaseManager.addNewItemToDatabase(itemData: data, fullSizeImageData: fullSizeImageData, thumbnailData: thumbnailImageData)
                 self.showLoadingView()
+                self.databaseManager.addNewItemToDatabase(itemData: data, fullSizeImageData: fullSizeImageData, thumbnailData: thumbnailImageData)
             } catch let error {
                 self.presentMMAlert(title: "Mural nie został dodany", message: error.localizedDescription, buttonTitle: "Ok")
             }
@@ -359,6 +359,28 @@ extension AddNewItemViewController: CLLocationManagerDelegate {
 }
 
 extension AddNewItemViewController: DatabaseManagerDelegate {
+    func failedToEditMuralData(errorMessage: String) {
+        dismissLoadingView()
+        self.presentMMAlert(title: "Nie udało się zaktualizować danych.", message: errorMessage, buttonTitle: "Ok")
+    }
+    
+    func successToEditMuralData(muralID: String, data: EditedDataForMural) {
+        if let index = databaseManager.murals.firstIndex(where: { $0.docRef == muralID }) {
+            
+            var mural = databaseManager.murals[index]
+            mural.longitude = data.location.longitude
+            mural.latitude = data.location.latitude
+            mural.author = data.author
+            mural.city = data.city
+            mural.adress = data.address
+            
+            databaseManager.murals[index] = mural
+        }
+        
+        dismissLoadingView()
+        self.dismiss(animated: true)
+    }
+    
     func successToAddNewItem(muralID: String) {
         dismissLoadingView()
         self.databaseManager.fetchMuralfromDatabase(with: muralID)

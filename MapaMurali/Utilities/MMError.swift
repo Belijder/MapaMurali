@@ -14,4 +14,5 @@ enum MMError: String, Error {
     case reauthenticateError = "Nie udało się uwierzytelnić konta. Sprawdź hasło i spróbuj ponownie."
     case unableToDeleteAccount = "Coś poszło nie tak podczas próby usunięcia konta. Sprawdź połączenie z internetem i spróbuj ponownie"
     case invalidAddress = "Nieprawidłowy adres. Upewnij się, że wpisałeś dobry adres i spróbuj ponownie."
+    case failedToEditMuralData = "Nie udało się zaktualizować informacji w Bazie danych. Sprawdź czy wszystkie pola są prawidłowo wypełnione i spróbuj ponownie."
 }

@@ -11,8 +11,6 @@ import Firebase
 
 class AddNewViewModel {
     
-    var isGeolocalizatorButtunUsed = false
-    
     var fullSizeImageData: Data?
     var thumbnailImageData: Data?
     var currentLocation: CLLocation?

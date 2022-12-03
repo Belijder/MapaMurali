@@ -16,6 +16,8 @@ import RxCocoa
 protocol DatabaseManagerDelegate: AnyObject {
     func successToAddNewItem(muralID: String)
     func failedToAddNewItem(errortitle: String, errorMessage: String)
+    func successToEditMuralData(muralID: String, data: EditedDataForMural)
+    func failedToEditMuralData(errorMessage: String)
 }
 
 enum ImageType: String {
@@ -91,6 +93,7 @@ class DatabaseManager {
         newItemRef.setData(itemData) { error in
             if let error = error {
                 print("Error writing document: \(error)")
+                self.delegate?.failedToAddNewItem(errortitle: "Nie udało się dodać muralu", errorMessage: MMError.failedToAddToDB.rawValue)
             } else {
                 newItemRef.updateData(["docRef" : newItemRef.documentID])
                 self.addImageToStorage(docRef: newItemRef, imageData: thumbnailData, imageType: .thumbnail) { _ in
@@ -108,12 +111,23 @@ class DatabaseManager {
         }
     }
     
-//    func updateMuralInformations(id: String, itemData: [String : Any], completion: @escaping (Bool) -> ()) {
-//        let muralRef = db.collection(CollectionName.murals.rawValue).document(id)
-//        muralRef.updateData([
-//            "adress": itemData["adress"] 
-//        ])
-//    }
+    func updateMuralInformations(id: String, data: EditedDataForMural) {
+        let muralRef = db.collection(CollectionName.murals.rawValue).document(id)
+        muralRef.updateData([
+            "adress": data.address,
+            "city": data.city,
+            "latitude": data.location.latitude,
+            "longitude": data.location.longitude,
+            "author": data.author
+        ]) { error in
+            if error != nil {
+                self.delegate?.failedToEditMuralData(errorMessage: MMError.failedToEditMuralData.rawValue)
+            } else {
+                self.delegate?.successToEditMuralData(muralID: id, data: data)
+                
+            }
+        }
+    }
     
     func changeNumberOfMuralsAddedByUser(by value: Int64) {
         guard let userID = Auth.auth().currentUser?.uid else { return }

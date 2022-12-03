@@ -49,12 +49,39 @@ class EditMuralViewController: AddNewItemViewController {
     }
     
     override func callToActionButtonTapped() {
+        
+        self.showLoadingView()
+        
         print("🟡 Save edited mural tapped")
-    }
-    
-    override func cameraImageViewTapped() {
+        
+        vm.adress = adressTextField.text
+        vm.city = cityTextField.text
+        
+        guard let adress = vm.adress, let city = vm.city else {
+            self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: MMError.invalidAddress.rawValue, buttonTitle: "Ok")
+            return
+        }
+        
+        let addressString = "\(adress), \(city)"
+        
+        vm.getCoordinate(addressString: addressString) { location, error in
+            if error != nil {
+                self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: MMError.invalidAddress.rawValue, buttonTitle: "Ok")
+                return
+            }
+            
+            let data = EditedDataForMural(location: location,
+                                          address: adress,
+                                          city: city,
+                                          author: self.authorTextField.text ?? "")
+            
+            self.databaseManager.updateMuralInformations(id: self.mural.docRef, data: data)
+        }
+        
         
     }
+    
+    override func cameraImageViewTapped() { }
     
     @objc func dismissVC() {
         self.dismiss(animated: true, completion: nil)
