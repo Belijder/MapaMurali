@@ -29,6 +29,7 @@ enum ImageType: String {
 enum CollectionName: String {
     case murals = "murals"
     case users = "users"
+    case legalTerms = "legalTerms"
 }
 
 class DatabaseManager {
@@ -74,6 +75,7 @@ class DatabaseManager {
             }
         }
     }
+    
     
     func fetchCurrenUserData() {
         guard let userID = Auth.auth().currentUser?.uid else { return }
@@ -181,6 +183,18 @@ class DatabaseManager {
                         }
                     }
                 }
+            }
+        }
+    }
+    
+    func fetchLegalTerms(completion: @escaping (Result<LegalTerms, MMError>) -> Void) {
+        let docRef = db.collection(CollectionName.legalTerms.rawValue).document("lZqycsOSTXAUMSQJMZTW")
+        docRef.getDocument(as: LegalTerms.self) { result in
+            switch result {
+            case .success(let terms):
+                completion(.success(terms))
+            case .failure(_):
+                completion(.failure(MMError.failedToGetLegalTerms))
             }
         }
     }

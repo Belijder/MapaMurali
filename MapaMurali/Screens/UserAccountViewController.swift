@@ -26,7 +26,7 @@ class UserAccountViewController: UIViewController {
     
     let rateAppButton = MMFilledButton(foregroundColor: .label, backgroundColor: .secondarySystemBackground, title: "Oceń aplikację!")
     let sendMessageButton = MMFilledButton(foregroundColor: .label, backgroundColor: .secondarySystemBackground, title: "Napisz do nas!")
-    let showAppStatueButton = MMFilledButton(foregroundColor: .label, backgroundColor: .secondarySystemBackground, title: "Regulamin")
+    let showTermOfUseButton = MMFilledButton(foregroundColor: .label, backgroundColor: .secondarySystemBackground, title: "Regulamin")
     let showPrivacyPolicyButton = MMFilledButton(foregroundColor: .label, backgroundColor: .secondarySystemBackground, title: "Polityka Prywatności")
     let logOutButton = MMFilledButton(foregroundColor: .white, backgroundColor: .systemRed, title: "Wyloguj się")
     let deleteAccountAndDataButton = MMPlainButton(color: .systemRed, title: "Usuń konto i dane")
@@ -40,6 +40,7 @@ class UserAccountViewController: UIViewController {
         setupScrollView()
         configureUsernameAndAvatarView()
         configureCollectionsViews()
+        configureButtons()
         layoutUI()
 
         sendMessageButton.addTarget(self, action: #selector(sendEmail), for: .touchUpInside)
@@ -92,13 +93,17 @@ class UserAccountViewController: UIViewController {
                                                        databaseManager: databaseManager), to: userFavoriteMuralsCollectionView)
     }
     
+    func configureButtons() {
+        showTermOfUseButton.addTarget(self, action: #selector(showTermOfUse), for: .touchUpInside)
+    }
+    
     func layoutUI() {
-        contentView.addSubviews(usernameAndAvatar, userAddedMuralsCollectionView, userFavoriteMuralsCollectionView, rateAppButton, sendMessageButton, showAppStatueButton, showPrivacyPolicyButton, logOutButton, deleteAccountAndDataButton)
+        contentView.addSubviews(usernameAndAvatar, userAddedMuralsCollectionView, userFavoriteMuralsCollectionView, rateAppButton, sendMessageButton, showTermOfUseButton, showPrivacyPolicyButton, logOutButton, deleteAccountAndDataButton)
         
         userAddedMuralsCollectionView.translatesAutoresizingMaskIntoConstraints = false
         userFavoriteMuralsCollectionView.translatesAutoresizingMaskIntoConstraints = false
         
-        let allbuttons = [rateAppButton, sendMessageButton, showAppStatueButton, showPrivacyPolicyButton, logOutButton, deleteAccountAndDataButton]
+        let allbuttons = [rateAppButton, sendMessageButton, showTermOfUseButton, showPrivacyPolicyButton, logOutButton, deleteAccountAndDataButton]
 
         let padding: CGFloat = 20
         let betweenButtonPadding: CGFloat = 10
@@ -130,8 +135,8 @@ class UserAccountViewController: UIViewController {
             
             rateAppButton.topAnchor.constraint(equalTo: userFavoriteMuralsCollectionView.bottomAnchor, constant: sectionPadding),
             sendMessageButton.topAnchor.constraint(equalTo: rateAppButton.bottomAnchor, constant: betweenButtonPadding),
-            showAppStatueButton.topAnchor.constraint(equalTo: sendMessageButton.bottomAnchor, constant: sectionPadding),
-            showPrivacyPolicyButton.topAnchor.constraint(equalTo: showAppStatueButton.bottomAnchor, constant: betweenButtonPadding),
+            showTermOfUseButton.topAnchor.constraint(equalTo: sendMessageButton.bottomAnchor, constant: sectionPadding),
+            showPrivacyPolicyButton.topAnchor.constraint(equalTo: showTermOfUseButton.bottomAnchor, constant: betweenButtonPadding),
             logOutButton.topAnchor.constraint(equalTo: showPrivacyPolicyButton.bottomAnchor, constant: sectionPadding),
             deleteAccountAndDataButton.topAnchor.constraint(equalTo: logOutButton.bottomAnchor, constant: betweenButtonPadding)
         ])
@@ -158,6 +163,21 @@ class UserAccountViewController: UIViewController {
             present(mail, animated: true)
         } else {
             presentMMAlert(title: "Nie można wysłać maila", message: "Sprawdź czy masz skonfugurowanego klienta pocztowego i spróbuj ponownie. ", buttonTitle: "Ok")
+        }
+    }
+    
+    @objc func showTermOfUse() {
+        databaseManager.fetchLegalTerms { result in
+            switch result {
+            case.success(let terms):
+                guard let url = URL(string: terms.termOfUse) else {
+                    self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: MMError.failedToGetLegalTerms.rawValue, buttonTitle: "Ok")
+                    return
+                }
+                self.presentSafariVC(with: url)
+            case .failure(let error):
+                self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: error.rawValue, buttonTitle: "Ok")
+            }
         }
     }
     

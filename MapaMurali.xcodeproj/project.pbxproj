@@ -25,6 +25,7 @@
 		427CAB5528E60D3200DA7247 /* AddNewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427CAB5428E60D3200DA7247 /* AddNewViewModel.swift */; };
 		427CAB5828E9A83400DA7247 /* MMAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427CAB5728E9A83300DA7247 /* MMAnnotationView.swift */; };
 		4283A6FE293B95DC00EDFEB5 /* EditMuralViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4283A6FD293B95DC00EDFEB5 /* EditMuralViewModel.swift */; };
+		4283A700293CA7D600EDFEB5 /* LegalTerms.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4283A6FF293CA7D600EDFEB5 /* LegalTerms.swift */; };
 		4283BAB028D5E24A00A54F0F /* MMMuralImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4283BAAF28D5E24A00A54F0F /* MMMuralImageView.swift */; };
 		4283BAB228D5E45800A54F0F /* MMMuralPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4283BAB128D5E45800A54F0F /* MMMuralPlaceholderView.swift */; };
 		4283BAB428D606B100A54F0F /* MMCircleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4283BAB328D606B100A54F0F /* MMCircleButton.swift */; };
@@ -102,6 +103,7 @@
 		427CAB5428E60D3200DA7247 /* AddNewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewViewModel.swift; sourceTree = "<group>"; };
 		427CAB5728E9A83300DA7247 /* MMAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMAnnotationView.swift; sourceTree = "<group>"; };
 		4283A6FD293B95DC00EDFEB5 /* EditMuralViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMuralViewModel.swift; sourceTree = "<group>"; };
+		4283A6FF293CA7D600EDFEB5 /* LegalTerms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegalTerms.swift; sourceTree = "<group>"; };
 		4283BAAF28D5E24A00A54F0F /* MMMuralImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMMuralImageView.swift; sourceTree = "<group>"; };
 		4283BAB128D5E45800A54F0F /* MMMuralPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMMuralPlaceholderView.swift; sourceTree = "<group>"; };
 		4283BAB328D606B100A54F0F /* MMCircleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMCircleButton.swift; sourceTree = "<group>"; };
@@ -282,6 +284,7 @@
 				4289AEC728E216C200C3FFF5 /* Mural.swift */,
 				42E61C3A28FAC0C500D38205 /* User.swift */,
 				42618DDB2917BB7C0052DB76 /* PopularCity.swift */,
+				4283A6FF293CA7D600EDFEB5 /* LegalTerms.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -498,6 +501,7 @@
 				427CAB5828E9A83400DA7247 /* MMAnnotationView.swift in Sources */,
 				428BD66728DE3FDC000B8D69 /* MMError.swift in Sources */,
 				42E18CB928DB98EA0068414E /* UIImage+Ext.swift in Sources */,
+				4283A700293CA7D600EDFEB5 /* LegalTerms.swift in Sources */,
 				42618DDC2917BB7C0052DB76 /* PopularCity.swift in Sources */,
 				42867B672895901000E5159F /* AddNewViewController.swift in Sources */,
 				429A021D28CFCF4600CD6862 /* UIView+Ext.swift in Sources */,
