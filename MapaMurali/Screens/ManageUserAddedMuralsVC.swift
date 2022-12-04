@@ -7,11 +7,21 @@
 
 import UIKit
 import RxSwift
+import RxRelay
 
 class ManageUserAddedMuralsVC: UIViewController {
     
     let databaseManager: DatabaseManager
-    var userAddedMurals: [Mural]
+    let disposeBag = DisposeBag()
+    
+    var userAddedMurals: [Mural] {
+        didSet {
+            self.observableMurals.accept(userAddedMurals)
+        }
+    }
+    
+    var observableMurals = BehaviorRelay<[Mural]>(value: [])
+    
     var muralsTableView: UITableView!
     
     init(databaseManager: DatabaseManager, userAddedMurals: [Mural]) {
@@ -29,7 +39,10 @@ class ManageUserAddedMuralsVC: UIViewController {
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.tintColor = MMColors.primary
         
+        addDatabaseMuralsObserver()
         configureMuralTableView()
+        bindTableView()
+        self.observableMurals.accept(userAddedMurals)
         
     }
     
@@ -37,56 +50,65 @@ class ManageUserAddedMuralsVC: UIViewController {
         muralsTableView = UITableView(frame: view.bounds)
         view.addSubview(muralsTableView)
         muralsTableView.delegate = self
-        muralsTableView.dataSource = self
         muralsTableView.backgroundColor = .systemBackground
         muralsTableView.register(MMUserAddedMuralTableViewCell.self, forCellReuseIdentifier: MMUserAddedMuralTableViewCell.identifire)
     }
+    
+    
+    //MARK: - Biding
+    func bindTableView() {
+        observableMurals
+            .bind(to: muralsTableView.rx.items(cellIdentifier: MMUserAddedMuralTableViewCell.identifire, cellType: MMUserAddedMuralTableViewCell.self)) { (row, mural, cell) in
+                cell.set(from: mural)
+                cell.muralImageView.layer.cornerRadius = 10
+            }
+            .disposed(by: disposeBag)
+        
+        muralsTableView.rx.modelSelected(Mural.self)
+            .subscribe(onNext: { mural in
+                let destVC = MuralDetailsViewController(muralItem: mural, databaseManager: self.databaseManager)
+                destVC.title = mural.adress
+                let navControler = UINavigationController(rootViewController: destVC)
+                navControler.modalPresentationStyle = .fullScreen
+                self.present(navControler, animated: true)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func addDatabaseMuralsObserver() {
+        databaseManager.muralItems
+            .subscribe(onNext: { murals in
+                let userAddedMurals = murals.filter { $0.addedBy == self.databaseManager.currentUser?.id }
+                self.userAddedMurals = userAddedMurals
+            })
+            .disposed(by: disposeBag)
+    }
 }
 
-extension ManageUserAddedMuralsVC: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        userAddedMurals.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = muralsTableView.dequeueReusableCell(withIdentifier: MMUserAddedMuralTableViewCell.identifire) as! MMUserAddedMuralTableViewCell
-        cell.set(from: userAddedMurals[indexPath.row])
-        cell.muralImageView.layer.cornerRadius = 10
-        return cell
-    }
-    
+extension ManageUserAddedMuralsVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let destVC = MuralDetailsViewController(muralItem: userAddedMurals[indexPath.row], databaseManager: databaseManager)
-        destVC.title = userAddedMurals[indexPath.row].adress
-        let navControler = UINavigationController(rootViewController: destVC)
-        navControler.modalPresentationStyle = .fullScreen
-        self.present(navControler, animated: true)
-    }
-    
-    
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        
+
         let muralID = self.userAddedMurals[indexPath.row].docRef
         
         let editAction = UIContextualAction(style: .normal, title: "Edytuj") { _, _, completed in
             print("🟡 Edit Swipe Action Tapped")
-            
+
             let destVC = EditMuralViewController(mural: self.userAddedMurals[indexPath.row], databaseManager: self.databaseManager)
             let navControler = UINavigationController(rootViewController: destVC)
             navControler.modalPresentationStyle = .fullScreen
             self.present(navControler, animated: true)
-            
+
             completed(true)
         }
-        
+
         let deleteAction = UIContextualAction(style: .destructive, title: "Usuń") { _, _, completed in
-            
+
             print("🟡 Remove Swipe Action Tapped")
-            
+
             self.databaseManager.removeMural(for: muralID) { success in
                 if success == true {
                     print("🟢 Mural was succesfully deleted from database.")
@@ -97,17 +119,16 @@ extension ManageUserAddedMuralsVC: UITableViewDelegate, UITableViewDataSource {
                     completed(false)
                 }
             }
-            
+
             self.databaseManager.murals.removeAll(where: { $0.docRef == muralID })
             self.userAddedMurals.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
             print("🟡 Mural Was removed from userAddedMurals, and row in tableView has been deleted also.")
         }
-        
+
         editAction.image = UIImage(systemName: "square.and.pencil")
         editAction.backgroundColor = .systemYellow
         deleteAction.image = UIImage(systemName: "trash")
-        
+
         let swipeActions = UISwipeActionsConfiguration(actions: [deleteAction, editAction])
         return swipeActions
     }
