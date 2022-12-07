@@ -9,7 +9,7 @@ import UIKit
 
 class StatisticsViewController: UIViewController {
 
-    //MARK: - Properieties
+    //MARK: - Properties
     let vm: StatisticsViewModel
     
     let scrollView = UIScrollView()
@@ -19,7 +19,7 @@ class StatisticsViewController: UIViewController {
     let mostActivUsersView = UIView()
     let mostMuralCitiesView = UIView()
     
-    //MARK: - Live Cicle
+    //MARK: - Live cicle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -36,7 +36,7 @@ class StatisticsViewController: UIViewController {
     }
     
     
-    //MARK: - Setup UI
+    //MARK: - Set up
     func layoutUI() {
         
         contentView.addSubviews(mostPopularMuralsCollectionView, mostActivUsersView, mostMuralCitiesView)
@@ -83,7 +83,7 @@ class StatisticsViewController: UIViewController {
         add(childVC: MostMuralCitiesVC(viewModel: vm), to: mostMuralCitiesView)
     }
     
-    //MARK: - Buissness logic
+    //MARK: -  Logic
     func add(childVC: UIViewController, to containerView: UIView) {
         addChild(childVC)
         containerView.addSubview(childVC.view)

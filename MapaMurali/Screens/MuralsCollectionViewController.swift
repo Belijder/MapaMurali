@@ -13,6 +13,7 @@ class MuralsCollectionViewController: UIViewController {
         case main
     }
     
+    //MARK: - Properties
     var collectionView: UICollectionView!
     var dataSource: UICollectionViewDiffableDataSource<Section, Mural>!
     var databaseManager: DatabaseManager
@@ -21,6 +22,7 @@ class MuralsCollectionViewController: UIViewController {
     var filteredMurals: [Mural] = []
     var isSearching = false
     
+    //MARK: - Initialization
     init(databaseManager: DatabaseManager) {
         self.databaseManager = databaseManager
         super.init(nibName: nil, bundle: nil)
@@ -30,6 +32,7 @@ class MuralsCollectionViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: - Live cicle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -46,6 +49,7 @@ class MuralsCollectionViewController: UIViewController {
         updateData(on: murals)
     }
     
+    //MARK: - Set up
     func configureCollectionView() {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: UIHelper.createThreeColumnFlowLayout(in: view))
         view.addSubview(collectionView)
@@ -71,6 +75,7 @@ class MuralsCollectionViewController: UIViewController {
         navigationItem.searchController = searchController
     }
     
+    //MARK: - Logic
     func updateData(on murals: [Mural]) {
         var snapshot = NSDiffableDataSourceSnapshot<Section, Mural>()
         snapshot.appendSections([.main])
@@ -80,13 +85,13 @@ class MuralsCollectionViewController: UIViewController {
         }
     }
     
+    //MARK: - Actions
     @objc func dismissVC() {
         self.navigationController?.popViewController(animated: true)
     }
 }
 
-
-
+//MARK: - Extensions
 extension MuralsCollectionViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let muralItem = isSearching ? filteredMurals[indexPath.item] : murals[indexPath.item]
@@ -97,7 +102,6 @@ extension MuralsCollectionViewController: UICollectionViewDelegate {
         self.present(navControler, animated: true)
     }
 }
-
 
 extension MuralsCollectionViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {

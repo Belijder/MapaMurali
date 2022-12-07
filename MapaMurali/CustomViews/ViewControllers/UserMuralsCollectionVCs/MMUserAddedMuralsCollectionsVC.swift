@@ -7,15 +7,7 @@
 
 import UIKit
 
-//protocol MMUserAddedMuralsCollectionsDelegate: AnyObject {
-//    func didTapManageAddedMurals()
-//    func didSelectUserAddedMural(at index: Int)
-//
-//}
-
 class MMUserAddedMuralsCollectionsVC: MMUserMuralsCollectionsVC {
-    
-//    weak var delegate: MMUserAddedMuralsCollectionsDelegate!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +16,6 @@ class MMUserAddedMuralsCollectionsVC: MMUserMuralsCollectionsVC {
 
     init(collectionName: String, murals: [Mural], databaseManager: DatabaseManager) {
         super.init(collectionTitle: collectionName, murals: murals, databaseManager: databaseManager)
-//        self.delegate = delegate
     }
     
     override func viewWillAppear(_ animated: Bool) {

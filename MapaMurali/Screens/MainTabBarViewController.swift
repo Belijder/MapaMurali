@@ -10,9 +10,11 @@ import FirebaseAuth
 
 class MainTabBarViewController: UITabBarController {
     
+    //MARK: - Properties
     var loginManager = LoginManager()
     var databaseManager = DatabaseManager()
 
+    //MARK: - Live cicle
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -59,6 +61,7 @@ class MainTabBarViewController: UITabBarController {
         validateAuth()
     }
     
+    //MARK: - Logic
     private func validateAuth() {
         if FirebaseAuth.Auth.auth().currentUser == nil {
             let vc = SingInViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
@@ -68,7 +71,7 @@ class MainTabBarViewController: UITabBarController {
             nav.navigationBar.backItem?.title = "Zaloguj się"
             present(nav, animated: false)
         } else {
-            
+            return
         }
     }
 }

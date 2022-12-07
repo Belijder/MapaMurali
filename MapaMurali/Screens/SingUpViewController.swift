@@ -10,6 +10,7 @@ import RxSwift
 
 class SingUpViewController: UIViewController {
     
+    //MARK: - Properties
     let loginManager: LoginManager
     let databaseManager: DatabaseManager
     var bag = DisposeBag()
@@ -23,6 +24,18 @@ class SingUpViewController: UIViewController {
     private let singUpButton = MMTintedButton(color: MMColors.primary, title: "Zarejestruj się!")
 
     
+    //MARK: - Inicialization
+    init(loginManager: LoginManager, databaseManager: DatabaseManager) {
+        self.loginManager = loginManager
+        self.databaseManager = databaseManager
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    //MARK: - Live cicle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -32,16 +45,14 @@ class SingUpViewController: UIViewController {
         addSingInObserver()
     }
     
-    func addSingInObserver() {
-        loginManager.userIsLoggedIn
-            .subscribe(onNext: { value in
-                if value == true {
-                    self.navigationController?.dismiss(animated: true)
-                }
-            })
-            .disposed(by: bag)
+    override func viewDidLayoutSubviews() {
+        emailTextField.styleTextFieldWithBottomBorder(color: MMColors.primary)
+        passwordTextField.styleTextFieldWithBottomBorder(color: MMColors.primary)
+        nickNameTextField.styleTextFieldWithBottomBorder(color: MMColors.primary)
     }
     
+    
+    //MARK: - Set up
     func configureUIElements() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(avatarImageViewTapped))
         avatarImageView.isUserInteractionEnabled = true
@@ -51,66 +62,8 @@ class SingUpViewController: UIViewController {
         
     }
     
-    @objc func singUpButtonTapped() {
-        guard let email = emailTextField.text else { return }
-        guard let password = passwordTextField.text else { return }
-        guard let avatarData = avatarImage else { return }
-        
-        loginManager.singUp(email: email, password: password) { [weak self] userID in
-            guard let self = self else { return }
-            
-            var userData = [String : Any]()
-            userData["id"] = userID
-            userData["displayName"] = self.nickNameTextField.text
-            userData["email"] = email
-            userData["muralsAdded"] = 0
-            userData["favoritesMurals"] = [String]()
-
-            self.databaseManager.addNewUserToDatabase(id: userID, userData: userData, avatarImageData: avatarData)
-        }
-    }
-    
-    override func viewDidLayoutSubviews() {
-        emailTextField.styleTextFieldWithBottomBorder(color: MMColors.primary)
-        passwordTextField.styleTextFieldWithBottomBorder(color: MMColors.primary)
-        nickNameTextField.styleTextFieldWithBottomBorder(color: MMColors.primary)
-    }
-    
-    @objc func avatarImageViewTapped() {
-        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        actionSheet.addAction(UIAlertAction(title: "Zrób zdjęcie", style: .default) { _ in self.actionSheetCameraButtonTapped() })
-        actionSheet.addAction(UIAlertAction(title: "Wybierz z galerii", style: .default) { _ in self.actionSheetLibraryButtonTapped() })
-        actionSheet.addAction(UIAlertAction(title: "Wróć", style: .cancel))
-        present(actionSheet, animated: true)
-    }
-    
-    func actionSheetCameraButtonTapped() {
-        if UIImagePickerController.isSourceTypeAvailable(.camera) {
-            let imagePickerController = UIImagePickerController()
-            imagePickerController.delegate = self
-            imagePickerController.allowsEditing = true
-            imagePickerController.sourceType = .camera
-            self.present(imagePickerController, animated: true)
-        }
-    }
-    
-    func actionSheetLibraryButtonTapped() {
-        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
-            let imagePickerController = UIImagePickerController()
-            imagePickerController.delegate = self
-            imagePickerController.sourceType = .photoLibrary
-            imagePickerController.allowsEditing = true
-            self.present(imagePickerController, animated: true)
-        }
-    }
-    
-    @objc func returnToSingInView(sender: UIButton!) {
-        self.dismiss(animated: true)
-    }
-    
     
     func layoutUI() {
-        
         avatarImageView.translatesAutoresizingMaskIntoConstraints = false
         let padding: CGFloat = 20
         
@@ -142,17 +95,76 @@ class SingUpViewController: UIViewController {
         ])
     }
     
-    init(loginManager: LoginManager, databaseManager: DatabaseManager) {
-        self.loginManager = loginManager
-        self.databaseManager = databaseManager
-        super.init(nibName: nil, bundle: nil)
+    //MARK: - Actions
+    @objc func singUpButtonTapped() {
+        guard let email = emailTextField.text else { return }
+        guard let password = passwordTextField.text else { return }
+        guard let avatarData = avatarImage else { return }
+        
+        loginManager.singUp(email: email, password: password) { [weak self] userID in
+            guard let self = self else { return }
+            
+            var userData = [String : Any]()
+            userData["id"] = userID
+            userData["displayName"] = self.nickNameTextField.text
+            userData["email"] = email
+            userData["muralsAdded"] = 0
+            userData["favoritesMurals"] = [String]()
+
+            self.databaseManager.addNewUserToDatabase(id: userID, userData: userData, avatarImageData: avatarData)
+        }
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    
+    @objc func avatarImageViewTapped() {
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Zrób zdjęcie", style: .default) { _ in self.actionSheetCameraButtonTapped() })
+        actionSheet.addAction(UIAlertAction(title: "Wybierz z galerii", style: .default) { _ in self.actionSheetLibraryButtonTapped() })
+        actionSheet.addAction(UIAlertAction(title: "Wróć", style: .cancel))
+        present(actionSheet, animated: true)
+    }
+    
+    
+    func actionSheetCameraButtonTapped() {
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            let imagePickerController = UIImagePickerController()
+            imagePickerController.delegate = self
+            imagePickerController.allowsEditing = true
+            imagePickerController.sourceType = .camera
+            self.present(imagePickerController, animated: true)
+        }
+    }
+    
+    
+    func actionSheetLibraryButtonTapped() {
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+            let imagePickerController = UIImagePickerController()
+            imagePickerController.delegate = self
+            imagePickerController.sourceType = .photoLibrary
+            imagePickerController.allowsEditing = true
+            self.present(imagePickerController, animated: true)
+        }
+    }
+    
+    
+    @objc func returnToSingInView(sender: UIButton!) {
+        self.dismiss(animated: true)
+    }
+    
+    
+    //MARK: - Binding
+    func addSingInObserver() {
+        loginManager.userIsLoggedIn
+            .subscribe(onNext: { value in
+                if value == true {
+                    self.navigationController?.dismiss(animated: true)
+                }
+            })
+            .disposed(by: bag)
     }
 }
 
+//MARK: - Extensions
 extension SingUpViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage

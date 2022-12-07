@@ -10,6 +10,7 @@ import MessageUI
 
 class UserAccountViewController: UIViewController {
     
+    //MARK: - Properties
     var loginManager: LoginManager
     let databaseManager: DatabaseManager
     
@@ -24,13 +25,15 @@ class UserAccountViewController: UIViewController {
     let userAddedMuralsCollectionView = UIView()
     let userFavoriteMuralsCollectionView = UIView()
     
-    let rateAppButton = MMFilledButton(foregroundColor: .label, backgroundColor: .secondarySystemBackground, title: "Oceń aplikację!")
-    let sendMessageButton = MMFilledButton(foregroundColor: .label, backgroundColor: .secondarySystemBackground, title: "Napisz do nas!")
-    let showTermOfUseButton = MMFilledButton(foregroundColor: .label, backgroundColor: .secondarySystemBackground, title: "Regulamin")
-    let showPrivacyPolicyButton = MMFilledButton(foregroundColor: .label, backgroundColor: .secondarySystemBackground, title: "Polityka Prywatności")
+    let rateAppButton = MMFilledButton(foregroundColor: MMColors.secondary, backgroundColor: .secondarySystemBackground, title: "Oceń aplikację!")
+    let sendMessageButton = MMFilledButton(foregroundColor: MMColors.secondary, backgroundColor: .secondarySystemBackground, title: "Napisz do nas!")
+    let showTermOfUseButton = MMFilledButton(foregroundColor: MMColors.secondary, backgroundColor: .secondarySystemBackground, title: "Regulamin")
+    let showPrivacyPolicyButton = MMFilledButton(foregroundColor: MMColors.secondary, backgroundColor: .secondarySystemBackground, title: "Polityka Prywatności")
     let logOutButton = MMFilledButton(foregroundColor: .white, backgroundColor: .systemRed, title: "Wyloguj się")
     let deleteAccountAndDataButton = MMPlainButton(color: .systemRed, title: "Usuń konto i dane")
 
+    
+    //MARK: - Live cicle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -52,6 +55,7 @@ class UserAccountViewController: UIViewController {
         super.viewWillAppear(animated)
     }
     
+    //MARK: - Set up
     func setupScrollView() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
@@ -95,6 +99,7 @@ class UserAccountViewController: UIViewController {
     
     func configureButtons() {
         showTermOfUseButton.addTarget(self, action: #selector(showTermOfUse), for: .touchUpInside)
+        showPrivacyPolicyButton.addTarget(self, action: #selector(showPrivacyPolicy), for: .touchUpInside)
     }
     
     func layoutUI() {
@@ -142,6 +147,7 @@ class UserAccountViewController: UIViewController {
         ])
     }
     
+    //MARK: - Logic
     @objc func logOut() {
         loginManager.singOut()
         presentLoginScreen()
@@ -158,7 +164,7 @@ class UserAccountViewController: UIViewController {
         if MFMailComposeViewController.canSendMail() {
             let mail = MFMailComposeViewController()
             mail.mailComposeDelegate = self
-            mail.setToRecipients(["jakubzajda@gmail.com"])
+            mail.setToRecipients(["mapamurali@gmail.com"])
             mail.setMessageBody("<p>You're so awesome!</p>", isHTML: true)
             present(mail, animated: true)
         } else {
@@ -171,6 +177,21 @@ class UserAccountViewController: UIViewController {
             switch result {
             case.success(let terms):
                 guard let url = URL(string: terms.termOfUse) else {
+                    self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: MMError.failedToGetLegalTerms.rawValue, buttonTitle: "Ok")
+                    return
+                }
+                self.presentSafariVC(with: url)
+            case .failure(let error):
+                self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: error.rawValue, buttonTitle: "Ok")
+            }
+        }
+    }
+    
+    @objc func showPrivacyPolicy() {
+        databaseManager.fetchLegalTerms { result in
+            switch result {
+            case.success(let terms):
+                guard let url = URL(string: terms.privacyPolicy) else {
                     self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: MMError.failedToGetLegalTerms.rawValue, buttonTitle: "Ok")
                     return
                 }
@@ -228,6 +249,14 @@ class UserAccountViewController: UIViewController {
         
     }
     
+    func add(childVC: UIViewController, to containerView: UIView) {
+        addChild(childVC)
+        containerView.addSubview(childVC.view)
+        childVC.view.frame = containerView.bounds
+        childVC.didMove(toParent: self)
+    }
+    
+    //MARK: - Initialization
     init(loginManager: LoginManager, databaseManager: DatabaseManager) {
         self.loginManager = loginManager
         self.databaseManager = databaseManager
@@ -239,15 +268,10 @@ class UserAccountViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func add(childVC: UIViewController, to containerView: UIView) {
-        addChild(childVC)
-        containerView.addSubview(childVC.view)
-        childVC.view.frame = containerView.bounds
-        childVC.didMove(toParent: self)
-    }
+
 }
 
-
+//MARK: - Extensions
 extension UserAccountViewController: MFMailComposeViewControllerDelegate {
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         controller.dismiss(animated: true)

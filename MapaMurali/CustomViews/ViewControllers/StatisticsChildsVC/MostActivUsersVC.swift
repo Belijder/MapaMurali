@@ -28,6 +28,7 @@ class MostActivUsersVC: UIViewController {
         addUserObserver()
         bindTableView()
         titleLabel.text = "Najaktywniejsi użytkownicy"
+    
     }
     
     

@@ -8,15 +8,12 @@
 import UIKit
 
 class EditMuralViewController: AddNewItemViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        configureNavigationController()
-        removeImageButton.removeFromSuperview()
-    }
+   
+    //MARK: - Properties
+        var mural: Mural!
     
-    var mural: Mural!
     
+    //MARK: - Initialization
     init(mural: Mural, databaseManager: DatabaseManager) {
         super.init(databaseManager: databaseManager)
         self.mural = mural
@@ -36,6 +33,18 @@ class EditMuralViewController: AddNewItemViewController {
         self.selectedImageViewTopAnchorConstant = 100
     }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    //MARK: - Live cicle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        configureNavigationController()
+        removeImageButton.removeFromSuperview()
+    }
+    
+    //MARK: - Set up
     func configureNavigationController() {
         navigationController?.navigationBar.isHidden = false
         let backButton = UIBarButtonItem(image: UIImage(systemName: "arrow.backward"), style: .plain, target: self, action: #selector(self.dismissVC))
@@ -44,10 +53,7 @@ class EditMuralViewController: AddNewItemViewController {
         navigationController?.navigationBar.tintColor = MMColors.primary
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
+    //MARK: - Actions
     override func callToActionButtonTapped() {
         
         self.showLoadingView()

@@ -12,6 +12,7 @@ import RxCocoa
 
 class SingInViewController: UIViewController {
     
+    //MARK: - Properties
     var loginManager: LoginManager
     let databaseManager: DatabaseManager
     var bag = DisposeBag()
@@ -22,7 +23,20 @@ class SingInViewController: UIViewController {
     
     private let registerLabel = MMBodyLabel(textAlignment: .center)
     private let registerButton = MMPlainButton(color: MMColors.primary, title: "Zarejestruj się")
+    
+    
+    //MARK: - Inicialization
+    init(loginManager: LoginManager, databaseManager: DatabaseManager) {
+        self.loginManager = loginManager
+        self.databaseManager = databaseManager
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
+    //MARK: - Live cicle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -42,34 +56,8 @@ class SingInViewController: UIViewController {
         passwordTextField.styleTextFieldWithBottomBorder(color: MMColors.primary)
     }
     
-    
-    @objc func tryToSingIn(sender: UIButton!) {
-        // Check email and password to singIn
-        guard let login = nameTextField.text else { return }
-        guard let password = passwordTextField.text else { return }
-        loginManager.singIn(email: login, password: password)
-    }
-    
-    @objc func singUpButtonPressed(sender: UIButton!) {
-        let singUpVC = SingUpViewController(loginManager: loginManager, databaseManager: databaseManager)
-        singUpVC.modalPresentationStyle = .fullScreen
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Powrót do logowania", style: .plain, target: nil, action: nil)
-        self.navigationController?.pushViewController(singUpVC, animated: true)
-    }
-    
-    func addSingInObserver() {
-        loginManager.userIsLoggedIn
-            .subscribe(onNext: { value in
-                if value == true {
-                    self.navigationController?.dismiss(animated: true)
-                }
-            })
-            .disposed(by: bag)
-    }
-    
-    
+    //MARK: - Set up
     func layoutUI() {
-        
         let padding: CGFloat = 20
 
         NSLayoutConstraint.activate([
@@ -96,18 +84,33 @@ class SingInViewController: UIViewController {
             registerButton.centerYAnchor.constraint(equalTo: registerLabel.centerYAnchor),
             registerButton.leadingAnchor.constraint(equalTo: view.centerXAnchor),
             registerButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            registerButton.heightAnchor.constraint(equalToConstant: 20),
-            
+            registerButton.heightAnchor.constraint(equalToConstant: 20)
         ])
     }
     
-    init(loginManager: LoginManager, databaseManager: DatabaseManager) {
-        self.loginManager = loginManager
-        self.databaseManager = databaseManager
-        super.init(nibName: nil, bundle: nil)
+    //MARK: - Actions
+    @objc func tryToSingIn(sender: UIButton!) {
+        // Check email and password to singIn
+        guard let login = nameTextField.text else { return }
+        guard let password = passwordTextField.text else { return }
+        loginManager.singIn(email: login, password: password)
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    @objc func singUpButtonPressed(sender: UIButton!) {
+        let singUpVC = SingUpViewController(loginManager: loginManager, databaseManager: databaseManager)
+        singUpVC.modalPresentationStyle = .fullScreen
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Powrót do logowania", style: .plain, target: nil, action: nil)
+        self.navigationController?.pushViewController(singUpVC, animated: true)
+    }
+    
+    //MARK: - Binding
+    func addSingInObserver() {
+        loginManager.userIsLoggedIn
+            .subscribe(onNext: { value in
+                if value == true {
+                    self.navigationController?.dismiss(animated: true)
+                }
+            })
+            .disposed(by: bag)
     }
 }

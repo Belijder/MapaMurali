@@ -13,14 +13,28 @@ import QuartzCore
 
 class MapViewController: UIViewController {
     
-    let map = MKMapView()
+    //MARK: - Properties
     var databaseManager: DatabaseManager
+    
+    let map = MKMapView()
     let locationManager = CLLocationManager()
+    
     var userLocation: CLLocationCoordinate2D?
     var mapIsLocatingUser = true
     
     private var bag = DisposeBag()
     
+    //MARK: - Initialization
+    init(databaseManager: DatabaseManager) {
+        self.databaseManager = databaseManager
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    //MARK: - Live cicle
     override func viewDidLoad() {
         super.viewDidLoad()
         addMuralsItemsObserver()
@@ -37,6 +51,7 @@ class MapViewController: UIViewController {
         locationManager.requestLocation()
     }
     
+    //MARK: - Set up
     func configureLocationManager() {
         locationManager.delegate = self
         locationManager.requestAlwaysAuthorization()
@@ -49,13 +64,44 @@ class MapViewController: UIViewController {
         setMapRegion(with: map.userLocation.coordinate)
     }
     
+    func setMapConstraints() {
+        view.addSubview(map)
+        map.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            map.topAnchor.constraint(equalTo: self.view.topAnchor),
+            map.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+            map.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            map.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
+            
+        ])
+    }
+    
+    func setupUserTrackingButton() {
+        let button = MKUserTrackingButton(mapView: map)
+    
+        button.layer.backgroundColor = UIColor(white: 1, alpha: 0.8).cgColor
+        button.layer.borderColor = UIColor.white.cgColor
+        button.layer.borderWidth = 1
+        button.layer.cornerRadius = 5
+        button.translatesAutoresizingMaskIntoConstraints = false
+        map.addSubview(button)
+
+        NSLayoutConstraint.activate([button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
+                                     button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10)
+        ])
+    }
+    
+    //MARK: - Logic
     func setMapRegion(with coordinate: CLLocationCoordinate2D) {
         let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: coordinate.latitude,
                                                                        longitude: coordinate.longitude),
                                                                        span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
         map.setRegion(region, animated: true)
     }
+
     
+    //MARK: - Binding
     func addMuralsItemsObserver() {
         databaseManager.muralItems
             .subscribe(onNext: { murals in
@@ -94,46 +140,9 @@ class MapViewController: UIViewController {
             })
             .disposed(by: bag)
     }
-    
-    
-    func setMapConstraints() {
-        view.addSubview(map)
-        map.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            map.topAnchor.constraint(equalTo: self.view.topAnchor),
-            map.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-            map.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            map.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
-            
-        ])
-    }
-    
-    func setupUserTrackingButton() {
-        let button = MKUserTrackingButton(mapView: map)
-    
-        button.layer.backgroundColor = UIColor(white: 1, alpha: 0.8).cgColor
-        button.layer.borderColor = UIColor.white.cgColor
-        button.layer.borderWidth = 1
-        button.layer.cornerRadius = 5
-        button.translatesAutoresizingMaskIntoConstraints = false
-        map.addSubview(button)
-
-        NSLayoutConstraint.activate([button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
-                                     button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10)
-        ])
-    }
-    
-    init(databaseManager: DatabaseManager) {
-        self.databaseManager = databaseManager
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
 }
 
+//MARK: - Extensions
 extension MapViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
 

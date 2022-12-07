@@ -36,7 +36,7 @@ class MMCircleButton: UIButton {
     }
     
     final func set(color: UIColor) {
-        configuration?.baseBackgroundColor = .systemBackground.withAlphaComponent(0.2)
+        configuration?.baseBackgroundColor = .systemBackground.withAlphaComponent(0.3)
         configuration?.baseForegroundColor = color
         configuration?.imagePadding = 4
     }

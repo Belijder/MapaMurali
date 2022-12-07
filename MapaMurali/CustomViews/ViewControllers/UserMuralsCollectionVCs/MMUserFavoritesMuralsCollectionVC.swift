@@ -35,6 +35,7 @@ class MMUserFavoritesMuralsCollectionVC: MMUserMuralsCollectionsVC {
     func configureItems() {
         actionButton.set(color: MMColors.primary, title: "Przeglądaj")
         self.emptyStateLabel.text = "Nie masz jeszcze ulubionych murali."
+        
     }
     
     override func actionButtonTapped() {

@@ -11,6 +11,7 @@ import CoreLocation
 
 class AddNewItemViewController: MMDataLoadingVC {
     
+    //MARK: - Properties
     let locationManager = CLLocationManager()
     let geoCoder = CLGeocoder()
     var vm = AddNewViewModel()
@@ -31,10 +32,22 @@ class AddNewItemViewController: MMDataLoadingVC {
     
     var selectedImageViewTopAnchorConstant: CGFloat = 80
     
+    
+    //MARK: - Inicialization
+    init(databaseManager: DatabaseManager) {
+        self.databaseManager = databaseManager
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
+    //MARK: - Live cicle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        
         view.addSubviews(selectedImageView, removeImageButton, adressTextField, cityTextField, authorTextField, callToActionBatton)
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -53,9 +66,180 @@ class AddNewItemViewController: MMDataLoadingVC {
         layoutUI()
         configureAdressTextField()
         createDissmisKeyboardTapGesture()
+    }
+    
+ 
+    override func viewDidLayoutSubviews() {
+        adressTextField.styleTextFieldWithBottomBorder(color: MMColors.primary)
+        cityTextField.styleTextFieldWithBottomBorder(color: MMColors.primary)
+        authorTextField.styleTextFieldWithBottomBorder(color: MMColors.primary)
+    }
+    
+    //MARK: - Set up
+    private func configureRemoveImageButton() {
+        let symbolConfiguration = UIImage.SymbolConfiguration(pointSize: 15)
+        removeImageButton.configuration?.preferredSymbolConfigurationForImage = symbolConfiguration
+        removeImageButton.alpha = 0.0
+        removeImageButton.addTarget(self, action: #selector(removeImageButtonTapped), for: .touchUpInside)
+    }
+    
+    
+    private func configureCameraImageView() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(cameraImageViewTapped))
+        selectedImageView.isUserInteractionEnabled = true
+        selectedImageView.addGestureRecognizer(tap)
+    }
+    
+    
+    func configureAdressTextField() {
+        let localizationButton = MMCircleButton(color: MMColors.primary, systemImageName: "location.circle.fill")
+        localizationButton.frame = CGRect(x: adressTextField.frame.size.width - 25, y: 25, width: 25, height: 25)
+        adressTextField.rightView = localizationButton
+        adressTextField.rightViewMode = .always
+        localizationButton.addTarget(self, action: #selector(localizationButtonTapped), for: .touchUpInside)
         
     }
     
+    private func configureCallToActionButton() {
+        callToActionBatton.addTarget(self, action: #selector(callToActionButtonTapped), for: .touchUpInside)
+    }
+    
+    
+    private func layoutUI() {
+        selectedImageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let horizontalPadding: CGFloat = 20
+        let verticalPadding: CGFloat = 15
+        let height: CGFloat = 45
+        
+        selectedImageViewWidthConstraint = selectedImageView.widthAnchor.constraint(equalToConstant: 300)
+        selectedImageViewWidthConstraint.isActive = true
+        
+        selectedImageViewHeightConstraint = selectedImageView.heightAnchor.constraint(equalToConstant: 400)
+        selectedImageViewHeightConstraint.isActive = true
+        
+        removeImageButtonWidthConstraint = removeImageButton.heightAnchor.constraint(equalToConstant: 40)
+        removeImageButtonWidthConstraint.isActive = true
+        removeImageButtonHeightConstraint = removeImageButton.widthAnchor.constraint(equalToConstant: 40)
+        removeImageButtonHeightConstraint.isActive = true
+        
+        NSLayoutConstraint.activate([
+            selectedImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            selectedImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: selectedImageViewTopAnchorConstant),
+            
+            removeImageButton.topAnchor.constraint(equalTo: selectedImageView.topAnchor, constant: 10),
+            removeImageButton.trailingAnchor.constraint(equalTo: selectedImageView.trailingAnchor, constant: -10),
+            
+            adressTextField.topAnchor.constraint(equalTo: selectedImageView.bottomAnchor, constant: verticalPadding + 10),
+            adressTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: horizontalPadding),
+            adressTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -horizontalPadding),
+            adressTextField.heightAnchor.constraint(equalToConstant: height),
+            
+            cityTextField.topAnchor.constraint(equalTo: adressTextField.bottomAnchor, constant: verticalPadding),
+            cityTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: horizontalPadding),
+            cityTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -horizontalPadding),
+            cityTextField.heightAnchor.constraint(equalToConstant: height),
+            
+            authorTextField.topAnchor.constraint(equalTo: cityTextField.bottomAnchor, constant: verticalPadding),
+            authorTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: horizontalPadding),
+            authorTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -horizontalPadding),
+            authorTextField.heightAnchor.constraint(equalToConstant: height),
+            
+            callToActionBatton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            callToActionBatton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: horizontalPadding),
+            callToActionBatton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -horizontalPadding),
+            callToActionBatton.heightAnchor.constraint(equalToConstant: height)
+        ])
+    }
+    
+    //MARK: - Logic
+    
+    func createDissmisKeyboardTapGesture() {
+        let tap = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
+        view.addGestureRecognizer(tap)
+    }
+    
+    func cleanUpFields() {
+        selectedImageView.removeImage()
+        adressTextField.text = ""
+        cityTextField.text = ""
+        authorTextField.text = ""
+        removeImageButton.alpha = 0
+    }
+    
+    //MARK: - Actions
+    
+    @objc func cameraImageViewTapped() {
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Zrób zdjęcie", style: .default) { _ in self.actionSheetCameraButtonTapped() })
+        actionSheet.addAction(UIAlertAction(title: "Wybierz z galerii", style: .default) { _ in self.actionSheetLibraryButtonTapped() })
+        actionSheet.addAction(UIAlertAction(title: "Wróć", style: .cancel))
+        present(actionSheet, animated: true)
+    }
+    
+    func actionSheetCameraButtonTapped() {
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            let imagePickerController = UIImagePickerController()
+            imagePickerController.delegate = self
+            imagePickerController.sourceType = .camera
+            self.present(imagePickerController, animated: true)
+        }
+    }
+    
+    func actionSheetLibraryButtonTapped() {
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+            let imagePickerController = UIImagePickerController()
+            imagePickerController.delegate = self
+            imagePickerController.sourceType = .photoLibrary
+            self.present(imagePickerController, animated: true)
+        }
+    }
+    
+    @objc func removeImageButtonTapped() {
+        selectedImageView.removeImage()
+        removeImageButton.alpha = 0.0
+    }
+    
+    @objc func localizationButtonTapped() {
+        locationManager.requestLocation()
+        showLoadingView()
+    }
+    
+    @objc func callToActionButtonTapped() {
+        
+        guard let fullSizeImageData = self.vm.fullSizeImageData, let thumbnailImageData = self.vm.thumbnailImageData else {
+            self.presentMMAlert(title: "Nie można załadować zdjęcia.", message: "Wybierz lub zrób inne zdjęcie i spróbuj ponownie.", buttonTitle: "Ok")
+            return
+        }
+        
+        vm.adress = adressTextField.text
+        vm.city = cityTextField.text
+        
+        guard let adress = vm.adress, let city = vm.city else {
+            self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: MMError.invalidAddress.rawValue, buttonTitle: "Ok")
+            return
+        }
+        
+        let addressString = "\(adress), \(city)"
+        
+        vm.getCoordinate(addressString: addressString) { location, error in
+            if error != nil {
+                self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: MMError.invalidAddress.rawValue, buttonTitle: "Ok")
+                return
+            }
+            
+            do {
+                let data = try self.vm.createDataforDatabase(author: self.authorTextField.text, location: location)
+                self.showLoadingView()
+                self.databaseManager.addNewItemToDatabase(itemData: data, fullSizeImageData: fullSizeImageData, thumbnailData: thumbnailImageData)
+            } catch let error {
+                self.presentMMAlert(title: "Mural nie został dodany", message: error.localizedDescription, buttonTitle: "Ok")
+            }
+        }
+    }
+
+
+    //MARK: - Biding
     @objc func keyboardWillShow(notification: Notification) {
         self.keyboardAnimationControl(notification, keyboardIsShowing: true)
     }
@@ -69,7 +253,7 @@ class AddNewItemViewController: MMDataLoadingVC {
         let curve = (userInfo[UIResponder.keyboardAnimationCurveUserInfoKey]! as AnyObject).uint32Value
         let options = UIView.AnimationOptions(rawValue: UInt(curve!) << 16 | UIView.AnimationOptions.beginFromCurrentState.rawValue)
         let duration = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey]! as AnyObject).doubleValue
-
+        
         if keyboardIsShowing {
             self.selectedImageViewWidthConstraint.constant = 180
             self.selectedImageViewHeightConstraint.constant = 245
@@ -106,181 +290,9 @@ class AddNewItemViewController: MMDataLoadingVC {
             animations: { self.view.layoutIfNeeded() }
         )
     }
- 
-    override func viewDidLayoutSubviews() {
-        adressTextField.styleTextFieldWithBottomBorder(color: MMColors.primary)
-        cityTextField.styleTextFieldWithBottomBorder(color: MMColors.primary)
-        authorTextField.styleTextFieldWithBottomBorder(color: MMColors.primary)
-    }
-    
-    private func configureRemoveImageButton() {
-        let symbolConfiguration = UIImage.SymbolConfiguration(pointSize: 15)
-        removeImageButton.configuration?.preferredSymbolConfigurationForImage = symbolConfiguration
-        removeImageButton.alpha = 0.0
-        removeImageButton.addTarget(self, action: #selector(removeImageButtonTapped), for: .touchUpInside)
-    }
-    
-    @objc func removeImageButtonTapped() {
-        selectedImageView.removeImage()
-        removeImageButton.alpha = 0.0
-    }
-    
-    private func configureCameraImageView() {
-        
-        let tap = UITapGestureRecognizer(target: self, action: #selector(cameraImageViewTapped))
-        selectedImageView.isUserInteractionEnabled = true
-        selectedImageView.addGestureRecognizer(tap)
-    }
-    
-    @objc func cameraImageViewTapped() {
-        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        actionSheet.addAction(UIAlertAction(title: "Zrób zdjęcie", style: .default) { _ in self.actionSheetCameraButtonTapped() })
-        actionSheet.addAction(UIAlertAction(title: "Wybierz z galerii", style: .default) { _ in self.actionSheetLibraryButtonTapped() })
-        actionSheet.addAction(UIAlertAction(title: "Wróć", style: .cancel))
-        present(actionSheet, animated: true)
-    }
-    
-    func actionSheetCameraButtonTapped() {
-        if UIImagePickerController.isSourceTypeAvailable(.camera) {
-            let imagePickerController = UIImagePickerController()
-            imagePickerController.delegate = self
-            imagePickerController.sourceType = .camera
-            self.present(imagePickerController, animated: true)
-        }
-    }
-    
-    func actionSheetLibraryButtonTapped() {
-        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
-            let imagePickerController = UIImagePickerController()
-            imagePickerController.delegate = self
-            imagePickerController.sourceType = .photoLibrary
-            self.present(imagePickerController, animated: true)
-        }
-    }
-    
-    
-    func configureAdressTextField() {
-        let localizationButton = MMCircleButton(color: MMColors.primary, systemImageName: "location.circle.fill")
-        localizationButton.frame = CGRect(x: adressTextField.frame.size.width - 25, y: 25, width: 25, height: 25)
-        adressTextField.rightView = localizationButton
-        adressTextField.rightViewMode = .always
-        localizationButton.addTarget(self, action: #selector(localizationButtonTapped), for: .touchUpInside)
-        
-    }
-    
-    @objc func localizationButtonTapped() {
-        locationManager.requestLocation()
-        showLoadingView()
-    }
-    
-    private func configureCallToActionButton() {
-        callToActionBatton.addTarget(self, action: #selector(callToActionButtonTapped), for: .touchUpInside)
-    }
-    
-    @objc func callToActionButtonTapped() {
-        
-        guard let fullSizeImageData = self.vm.fullSizeImageData, let thumbnailImageData = self.vm.thumbnailImageData else {
-            self.presentMMAlert(title: "Nie można załadować zdjęcia.", message: "Wybierz lub zrób inne zdjęcie i spróbuj ponownie.", buttonTitle: "Ok")
-            return
-        }
-        
-        vm.adress = adressTextField.text
-        vm.city = cityTextField.text
-        
-        guard let adress = vm.adress, let city = vm.city else {
-            self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: MMError.invalidAddress.rawValue, buttonTitle: "Ok")
-            return
-        }
-        
-        let addressString = "\(adress), \(city)"
-        
-        vm.getCoordinate(addressString: addressString) { location, error in
-            if error != nil {
-                self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: MMError.invalidAddress.rawValue, buttonTitle: "Ok")
-                return
-            }
-            
-            do {
-                let data = try self.vm.createDataforDatabase(author: self.authorTextField.text, location: location)
-                self.showLoadingView()
-                self.databaseManager.addNewItemToDatabase(itemData: data, fullSizeImageData: fullSizeImageData, thumbnailData: thumbnailImageData)
-            } catch let error {
-                self.presentMMAlert(title: "Mural nie został dodany", message: error.localizedDescription, buttonTitle: "Ok")
-            }
-        }
-    }
-    
-    func createDissmisKeyboardTapGesture() {
-        let tap = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
-        view.addGestureRecognizer(tap)
-    }
-    
-    func cleanUpFields() {
-        selectedImageView.removeImage()
-        adressTextField.text = ""
-        cityTextField.text = ""
-        authorTextField.text = ""
-        removeImageButton.alpha = 0
-    }
-    
-    private func layoutUI() {
-        selectedImageView.translatesAutoresizingMaskIntoConstraints = false
-        
-        let horizontalPadding: CGFloat = 20
-        let verticalPadding: CGFloat = 15
-        let height: CGFloat = 45
-        
-        selectedImageViewWidthConstraint = selectedImageView.widthAnchor.constraint(equalToConstant: 300)
-        selectedImageViewWidthConstraint.isActive = true
-        
-        selectedImageViewHeightConstraint = selectedImageView.heightAnchor.constraint(equalToConstant: 400)
-        selectedImageViewHeightConstraint.isActive = true
-        
-        removeImageButtonWidthConstraint = removeImageButton.heightAnchor.constraint(equalToConstant: 40)
-        removeImageButtonWidthConstraint.isActive = true
-        removeImageButtonHeightConstraint = removeImageButton.widthAnchor.constraint(equalToConstant: 40)
-        removeImageButtonHeightConstraint.isActive = true
-        
-        
-        NSLayoutConstraint.activate([
-            selectedImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            selectedImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: selectedImageViewTopAnchorConstant),
-            
-            removeImageButton.topAnchor.constraint(equalTo: selectedImageView.topAnchor, constant: 10),
-            removeImageButton.trailingAnchor.constraint(equalTo: selectedImageView.trailingAnchor, constant: -10),
-            
-            adressTextField.topAnchor.constraint(equalTo: selectedImageView.bottomAnchor, constant: verticalPadding + 10),
-            adressTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: horizontalPadding),
-            adressTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -horizontalPadding),
-            adressTextField.heightAnchor.constraint(equalToConstant: height),
-            
-            cityTextField.topAnchor.constraint(equalTo: adressTextField.bottomAnchor, constant: verticalPadding),
-            cityTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: horizontalPadding),
-            cityTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -horizontalPadding),
-            cityTextField.heightAnchor.constraint(equalToConstant: height),
-            
-            authorTextField.topAnchor.constraint(equalTo: cityTextField.bottomAnchor, constant: verticalPadding),
-            authorTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: horizontalPadding),
-            authorTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -horizontalPadding),
-            authorTextField.heightAnchor.constraint(equalToConstant: height),
-            
-            callToActionBatton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-            callToActionBatton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: horizontalPadding),
-            callToActionBatton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -horizontalPadding),
-            callToActionBatton.heightAnchor.constraint(equalToConstant: height)
-        ])
-    }
-    
-    init(databaseManager: DatabaseManager) {
-        self.databaseManager = databaseManager
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
 }
 
+//MARK: - Extensions
 extension AddNewItemViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {

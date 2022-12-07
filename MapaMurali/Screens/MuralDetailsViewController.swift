@@ -6,20 +6,23 @@
 //
 
 import UIKit
-import SwiftUI
 import RxSwift
+import MessageUI
 
 class MuralDetailsViewController: UIViewController {
     
+    //MARK: - Properties
     var muralItem: Mural!
-    var imageView = MMFullSizeImageView(frame: .zero)
     var databaseManager: DatabaseManager!
     var vm: MuralDetailsViewModel
     var bag = DisposeBag()
     
-    var favoriteButton = MMCircleButton(color: .systemRed)
-    var mapPinButton = MMCircleButton(color: .white, systemImageName: "mappin.and.ellipse")
+    var imageView = MMFullSizeImageView(frame: .zero)
     var containerView = UIView()
+    
+    var favoriteButton = MMCircleButton(color: MMColors.primary)
+    var mapPinButton = MMCircleButton(color: .white, systemImageName: "mappin.and.ellipse")
+   
     var authorLabelDescription = MMBodyLabel(textAlignment: .left)
     var authorLabel = MMTitleLabel(textAlignment: .left, fontSize: 15)
     var sendEmailWithAuthorButton = MMTitleLabel(textAlignment: .left, fontSize: 15)
@@ -27,10 +30,14 @@ class MuralDetailsViewController: UIViewController {
     var dateLabel = MMBodyLabel(textAlignment: .left)
     var userLabelDescription = MMBodyLabel(textAlignment: .left)
     
+    var editOrReportMuralButton = MMCircleButton()
+    var deleteMuralButton = MMCircleButton(color: .systemRed, systemImageName: "trash")
+    
     let favoriteCounter = MMTitleLabel(textAlignment: .center, fontSize: 25)
     
     var userView = MMUsernameWithAvatarView(imageHeight: 40)
     
+    //MARK: - Initialization
     init(muralItem: Mural, databaseManager: DatabaseManager) {
         self.vm = MuralDetailsViewModel(databaseManager: databaseManager, muralID: muralItem.docRef, counterValue: muralItem.favoritesCount)
         super.init(nibName: nil, bundle: nil)
@@ -44,11 +51,11 @@ class MuralDetailsViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: - Live cicle
     override func viewDidLoad() {
         super.viewDidLoad()
-        containerView.addSubviews(mapPinButton, dateLabelDescription, dateLabel, authorLabelDescription, authorLabel, sendEmailWithAuthorButton, userLabelDescription, userView, favoriteCounter)
-        view.addSubviews(imageView, containerView, favoriteButton)
-        
+        containerView.addSubviews(mapPinButton, dateLabelDescription, dateLabel, authorLabelDescription, authorLabel, sendEmailWithAuthorButton, userLabelDescription, userView, favoriteCounter, editOrReportMuralButton)
+        view.addSubviews(imageView, containerView, favoriteButton, deleteMuralButton)
         
         configureViewController()
         checkAuthorPropertyInMuralItem()
@@ -58,6 +65,7 @@ class MuralDetailsViewController: UIViewController {
         addFavoriteObserver()
     }
     
+    //MARK: - Logic
     func checkAuthorPropertyInMuralItem() {
         if let author = muralItem.author, author.isEmpty {
             authorLabel.isHidden = true
@@ -66,21 +74,9 @@ class MuralDetailsViewController: UIViewController {
         }
     }
     
-    func addFavoriteObserver() {
-        vm.isUserFavorite
-            .subscribe(onNext: { value in
-                switch value {
-                case true:
-                    self.favoriteButton.set(systemImageName: "heart.fill")
-                case false:
-                    self.favoriteButton.set(systemImageName: "heart")
-                }
-                self.favoriteCounter.createFavoriteCounterTextLabel(counter: self.vm.counterValue, imagePointSize: 25)
-            })
-            .disposed(by: bag)
-    }
     
     
+    //MARK: - Set up
     func configureViewController() {
         view.backgroundColor = .systemBackground
         navigationController?.isToolbarHidden = false
@@ -89,6 +85,7 @@ class MuralDetailsViewController: UIViewController {
         let closeButton = UIBarButtonItem(image: UIImage(systemName: "arrow.backward"), style: .plain, target: self, action: #selector(dismissVC))
         navigationItem.leftBarButtonItem = closeButton
     }
+    
     
     func configureContainerView() {
         containerView.backgroundColor = UIColor.systemBackground
@@ -100,22 +97,25 @@ class MuralDetailsViewController: UIViewController {
         containerView.translatesAutoresizingMaskIntoConstraints = false
     }
     
+    
     func configureSendEmailWithAuthorButton() {
+        sendEmailWithAuthorButton.text = "Napisz do nas!"
+        sendEmailWithAuthorButton.textColor = MMColors.primary
+        sendEmailWithAuthorButton.font.withSize(15)
         
+        let tap = UITapGestureRecognizer(target: self, action: #selector(sendEmailWithAuthor))
+        sendEmailWithAuthorButton.isUserInteractionEnabled = true
+        sendEmailWithAuthorButton.addGestureRecognizer(tap)
     }
+    
     
     func configureUIElements() {
         imageView.downloadImage(from: muralItem.imageURL)
         
         mapPinButton.configuration?.baseBackgroundColor = MMColors.primary
         
-        
         authorLabelDescription.text = muralItem.author?.isEmpty == true ? "Znasz autora?" : "Autor"
         authorLabel.text = muralItem.author
-        
-        sendEmailWithAuthorButton.text = "Napisz do nas!"
-        sendEmailWithAuthorButton.textColor = MMColors.primary
-        sendEmailWithAuthorButton.font.withSize(15)
         
         dateLabelDescription.text = "Data dodania:"
         dateLabel.text = muralItem.addedDate.convertToDayMonthYearFormat()
@@ -129,8 +129,36 @@ class MuralDetailsViewController: UIViewController {
         favoriteButton.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
         
         favoriteCounter.createFavoriteCounterTextLabel(counter: muralItem.favoritesCount, imagePointSize: 25)
+        
+        configureSendEmailWithAuthorButton()
+        
+        configureEditOrReportMuralButton()
+        configureDeleteButton()
     }
     
+    
+    func configureEditOrReportMuralButton() {
+        editOrReportMuralButton.set(color: .systemYellow)
+        editOrReportMuralButton.configuration?.baseBackgroundColor = .systemYellow.withAlphaComponent(0.3)
+        if muralItem.addedBy == databaseManager.currentUser?.id {
+            editOrReportMuralButton.setImage(UIImage(systemName: "square.and.pencil"), for: .normal)
+            editOrReportMuralButton.addTarget(self, action: #selector(editMural), for: .touchUpInside)
+        } else {
+            editOrReportMuralButton.setImage(UIImage(systemName: "exclamationmark.bubble"), for: .normal)
+            editOrReportMuralButton.addTarget(self, action: #selector(reportMural), for: .touchUpInside)
+        }
+    }
+    
+    
+    func configureDeleteButton() {
+        if muralItem.addedBy == databaseManager.currentUser?.id {
+            deleteMuralButton.addTarget(self, action: #selector(deleteMural), for: .touchUpInside)
+        } else {
+            deleteMuralButton.alpha = 0.0
+        }
+    }
+    
+
     func configureUserView() {
         databaseManager.fetchUserFromDatabase(id: muralItem.addedBy) { result in
             DispatchQueue.main.async {
@@ -148,8 +176,7 @@ class MuralDetailsViewController: UIViewController {
     
     
     func layoutUI() {
-        
-        let horizontalPadding: CGFloat = 20
+        let horizontalPadding: CGFloat = 30
         
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -207,19 +234,80 @@ class MuralDetailsViewController: UIViewController {
             userView.heightAnchor.constraint(equalToConstant: 40),
             userView.widthAnchor.constraint(equalToConstant: view.bounds.size.width / 3 * 2),
             
-            favoriteCounter.centerYAnchor.constraint(equalTo: userView.centerYAnchor),
+            favoriteCounter.centerYAnchor.constraint(equalTo: authorLabel.centerYAnchor),
             favoriteCounter.centerXAnchor.constraint(equalTo: mapPinButton.centerXAnchor),
             favoriteCounter.widthAnchor.constraint(equalToConstant: 50),
-            favoriteCounter.heightAnchor.constraint(equalToConstant: 50)
+            favoriteCounter.heightAnchor.constraint(equalToConstant: 50),
+            
+            editOrReportMuralButton.centerYAnchor.constraint(equalTo: userView.centerYAnchor),
+            editOrReportMuralButton.centerXAnchor.constraint(equalTo: mapPinButton.centerXAnchor),
+            editOrReportMuralButton.heightAnchor.constraint(equalToConstant: 44),
+            editOrReportMuralButton.widthAnchor.constraint(equalToConstant: 44),
+            
+            deleteMuralButton.topAnchor.constraint(equalTo: imageView.topAnchor, constant: 20),
+            deleteMuralButton.leadingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: 20),
+            deleteMuralButton.heightAnchor.constraint(equalToConstant: 44),
+            deleteMuralButton.widthAnchor.constraint(equalToConstant: 44)
         ])
     }
     
+    //MARK: - Actions
     @objc func dismissVC() {
         self.dismiss(animated: true)
     }
     
+    
     @objc func favoriteButtonTapped() {
         vm.favoriteButtonTapped()
-        
+    }
+    
+    
+    @objc func sendEmailWithAuthor() {
+        if MFMailComposeViewController.canSendMail() {
+            let mail = MFMailComposeViewController()
+            mail.mailComposeDelegate = self
+            mail.setToRecipients(["mapamurali@gmail.com"])
+            mail.setMessageBody("<p>Znam autora tego muralu -> (ID: \(muralItem.docRef)). /n /n Autorem jest: </p>", isHTML: true)
+            present(mail, animated: true)
+        } else {
+            presentMMAlert(title: "Nie można wysłać maila", message: "Sprawdź czy masz skonfugurowanego klienta pocztowego i spróbuj ponownie. ", buttonTitle: "Ok")
+        }
+    }
+    
+    
+    @objc func editMural() {
+        print("🟡 Edit Mural Button Tapped")
+    }
+    
+    
+    @objc func reportMural() {
+        print("🟡 Report Mural Button Tapped")
+    }
+    
+    
+    @objc func deleteMural() {
+        print("🟠 Delete Mural Button Tapped")
+    }
+    
+    //MARK: - Binding
+    func addFavoriteObserver() {
+        vm.isUserFavorite
+            .subscribe(onNext: { value in
+                switch value {
+                case true:
+                    self.favoriteButton.set(systemImageName: "heart.fill")
+                case false:
+                    self.favoriteButton.set(systemImageName: "heart")
+                }
+                self.favoriteCounter.createFavoriteCounterTextLabel(counter: self.vm.counterValue, imagePointSize: 25)
+            })
+            .disposed(by: bag)
+    }
+}
+
+//MARK: - Extensions
+extension MuralDetailsViewController: MFMailComposeViewControllerDelegate {
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true)
     }
 }

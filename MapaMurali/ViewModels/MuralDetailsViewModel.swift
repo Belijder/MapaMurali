@@ -86,8 +86,4 @@ class MuralDetailsViewModel {
             print("🔴 Failed to read values of isUserFavorite. Error: \(error)")
         }
     }
-    
-    
-    
-    
 }

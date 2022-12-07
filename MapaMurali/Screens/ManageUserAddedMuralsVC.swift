@@ -11,8 +11,13 @@ import RxRelay
 
 class ManageUserAddedMuralsVC: UIViewController {
     
+    //MARK: - Properties
     let databaseManager: DatabaseManager
+    
+    var muralsTableView: UITableView!
+    
     let disposeBag = DisposeBag()
+    var observableMurals = BehaviorRelay<[Mural]>(value: [])
     
     var userAddedMurals: [Mural] {
         didSet {
@@ -20,10 +25,7 @@ class ManageUserAddedMuralsVC: UIViewController {
         }
     }
     
-    var observableMurals = BehaviorRelay<[Mural]>(value: [])
-    
-    var muralsTableView: UITableView!
-    
+    //MARK: - Inicialization
     init(databaseManager: DatabaseManager, userAddedMurals: [Mural]) {
         self.databaseManager = databaseManager
         self.userAddedMurals = userAddedMurals
@@ -34,6 +36,7 @@ class ManageUserAddedMuralsVC: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: - Live cicle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -45,7 +48,7 @@ class ManageUserAddedMuralsVC: UIViewController {
         self.observableMurals.accept(userAddedMurals)
         
     }
-    
+    //MARK: - Set up
     func configureMuralTableView() {
         muralsTableView = UITableView(frame: view.bounds)
         view.addSubview(muralsTableView)
@@ -84,7 +87,7 @@ class ManageUserAddedMuralsVC: UIViewController {
             .disposed(by: disposeBag)
     }
 }
-
+//MARK: - Extensions
 extension ManageUserAddedMuralsVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
