@@ -10,6 +10,24 @@ import RxSwift
 import RxRelay
 
 class MostMuralCitiesVC: UIViewController {
+    
+    //MARK: - Properities
+    let disposeBag = DisposeBag()
+    let cities = BehaviorRelay<[PopularCity]>(value: [])
+    var statisticsViewModel: StatisticsViewModel!
+    
+    let titleLabel = MMTitleLabel(textAlignment: .left, fontSize: 15)
+    
+    lazy var citiesTableView: UITableView = {
+        let tableView = UITableView()
+        tableView.register(MMPopularCityTableViewCell.self, forCellReuseIdentifier: MMPopularCityTableViewCell.identifier)
+        tableView.showsVerticalScrollIndicator = false
+        tableView.delegate = self
+        tableView.backgroundColor = .secondarySystemBackground
+        tableView.layer.cornerRadius = 20
+        tableView.separatorColor = .clear
+        return tableView
+    }()
 
     //MARK: - Initialization
     init(viewModel: StatisticsViewModel) {
@@ -29,27 +47,9 @@ class MostMuralCitiesVC: UIViewController {
         bindTableView()
         titleLabel.text = "Najbardziej muralowe miasta"
     }
+
     
-    
-    //MARK: - Properities
-    let disposeBag = DisposeBag()
-    let cities = BehaviorRelay<[PopularCity]>(value: [])
-    var statisticsViewModel: StatisticsViewModel!
-    
-    let titleLabel = MMTitleLabel(textAlignment: .left, fontSize: 15)
-    
-    lazy var citiesTableView: UITableView = {
-        let tableView = UITableView()
-        tableView.register(MMPopularCityTableViewCell.self, forCellReuseIdentifier: MMPopularCityTableViewCell.identifier)
-        tableView.showsVerticalScrollIndicator = false
-        tableView.delegate = self
-        tableView.backgroundColor = .secondarySystemBackground
-        tableView.layer.cornerRadius = 20
-        tableView.separatorColor = .clear
-        return tableView
-    }()
-    
-    //MARK: - Setup UI
+    //MARK: - Set up
     private func layoutUIElements() {
         citiesTableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubviews(titleLabel, citiesTableView)
@@ -101,6 +101,7 @@ class MostMuralCitiesVC: UIViewController {
     }
 }
 
+//MARK: - Extensions
 extension MostMuralCitiesVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50

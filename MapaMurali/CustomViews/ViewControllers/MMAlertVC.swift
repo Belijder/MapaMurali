@@ -9,6 +9,7 @@ import UIKit
 
 class MMAlertVC: UIViewController {
     
+    //MARK: - Properties
     let containerView = MMAlertContainerView()
     let titleLabel = MMTitleLabel(textAlignment: .center, fontSize: 20)
     let messageLabel = MMBodyLabel(textAlignment: .center)
@@ -18,6 +19,7 @@ class MMAlertVC: UIViewController {
     var alertMessage: String?
     var buttonTitle: String?
     
+    //MARK: - Initialization
     init(title: String, message: String, buttonTitle: String) {
         super.init(nibName: nil, bundle: nil)
         self.alertTitle = title
@@ -29,6 +31,7 @@ class MMAlertVC: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: - Live cicle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.black.withAlphaComponent(0.75)
@@ -38,6 +41,7 @@ class MMAlertVC: UIViewController {
 
     }
     
+    //MARK: - Set up
     func configure() {
         titleLabel.text = alertTitle ?? "Coś poszło nie tak."
         
@@ -46,10 +50,6 @@ class MMAlertVC: UIViewController {
         
         actionButton.setTitle(buttonTitle ?? "Ok", for: .normal)
         actionButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
-    }
-    
-    @objc func dismissVC() {
-        self.dismiss(animated: true)
     }
     
     func layoutUI() {
@@ -76,6 +76,11 @@ class MMAlertVC: UIViewController {
             messageLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -padding),
             messageLabel.bottomAnchor.constraint(equalTo: actionButton.topAnchor, constant: -12) 
         ])
+    }
+    
+    //MARK: - Actions
+    @objc func dismissVC() {
+        self.dismiss(animated: true)
     }
     
    

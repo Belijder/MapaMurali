@@ -51,7 +51,7 @@ class MostActivUsersVC: UIViewController {
     }()
     
 
-    //MARK: - Setup UI
+    //MARK: - Set up
     private func layoutUIElements() {
         usersTableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubviews(titleLabel, usersTableView)
@@ -102,6 +102,7 @@ class MostActivUsersVC: UIViewController {
     }
 }
 
+//MARK: - Extensions
 extension MostActivUsersVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50

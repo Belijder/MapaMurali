@@ -15,7 +15,7 @@ class MMUserMuralsCollectionsVC: UIViewController {
         case main
     }
     
-    
+    //MARK: - Properties
     let collectionView: UICollectionView = {
         let padding: CGFloat = 20
         let layout = UICollectionViewFlowLayout()
@@ -40,6 +40,8 @@ class MMUserMuralsCollectionsVC: UIViewController {
     
     var databaseManager: DatabaseManager!
     
+    
+    //MARK: - Initialization
     init(collectionTitle: String, murals: [Mural], databaseManager: DatabaseManager) {
         super.init(nibName: nil, bundle: nil)
         self.collectionTitle.text = collectionTitle
@@ -51,6 +53,7 @@ class MMUserMuralsCollectionsVC: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    //MARK: - Live cicle
     override func viewDidLoad() {
         super.viewDidLoad()
         layoutUIElements()
@@ -59,13 +62,12 @@ class MMUserMuralsCollectionsVC: UIViewController {
         configureDataSoure()
     }
     
-    
+    //MARK: - Set up
     func configureActionButton() {
         actionButton.configuration?.titleAlignment = .trailing
         actionButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
     }
     
-    @objc func actionButtonTapped() {}
     
     func configureDataSoure() {
         dataSource = UICollectionViewDiffableDataSource<Section, Mural>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, mural) -> UICollectionViewCell? in
@@ -77,17 +79,7 @@ class MMUserMuralsCollectionsVC: UIViewController {
         })
     }
     
-    func updateData(on murals: [Mural]) {
-        if murals.isEmpty { emptyStateLabel.alpha = 1 } else { emptyStateLabel.alpha = 0 }
-        
-        var snapshot = NSDiffableDataSourceSnapshot<Section, Mural>()
-        snapshot.appendSections([.main])
-        snapshot.appendItems(murals)
-        DispatchQueue.main.async {
-            self.dataSource.apply(snapshot, animatingDifferences: true)
-        }
-    }
-    
+
     func layoutUIElements() {
         view.addSubviews(collectionTitle, actionButton, collectionView)
         collectionView.addSubview(emptyStateLabel)
@@ -114,19 +106,32 @@ class MMUserMuralsCollectionsVC: UIViewController {
             emptyStateLabel.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor),
             emptyStateLabel.heightAnchor.constraint(equalToConstant: 30),
             emptyStateLabel.widthAnchor.constraint(equalToConstant: 250)
-            
         ])
+    }
+    
+    //MARK: - Actions
+    @objc func actionButtonTapped() {}
+    
+    
+    //MARK: - Logic
+    func updateData(on murals: [Mural]) {
+        if murals.isEmpty { emptyStateLabel.alpha = 1 } else { emptyStateLabel.alpha = 0 }
+        
+        var snapshot = NSDiffableDataSourceSnapshot<Section, Mural>()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(murals)
+        DispatchQueue.main.async {
+            self.dataSource.apply(snapshot, animatingDifferences: true)
+        }
     }
 }
 
+//MARK: - Extensions
 extension MMUserMuralsCollectionsVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return murals.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-    }
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) { }
     
 }

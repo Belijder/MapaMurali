@@ -53,7 +53,7 @@ class MostPopularMuralsVC: UIViewController {
     }()
     
     
-    //MARK: - Setup UI
+    //MARK: - Set up
     func layoutUIElements() {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubviews(titleLabel, collectionView)
@@ -91,11 +91,6 @@ class MostPopularMuralsVC: UIViewController {
             navControler.modalPresentationStyle = .fullScreen
             self.present(navControler, animated: true)
         }).disposed(by: disposeBag)
-        
-       
-            
-            
-            
     }
     
     func addMuralObserver() {
