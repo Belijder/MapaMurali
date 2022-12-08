@@ -34,12 +34,7 @@ enum CollectionName: String {
 
 class DatabaseManager {
     
-    init() {
-        fetchMuralItemsFromDatabase()
-        fetchMostActivUsers()
-        fetchCurrenUserData()
-    }
-    
+    //MARK: - Properties
     let storageRef = Storage.storage().reference()
     let db = Firestore.firestore()
     
@@ -65,6 +60,14 @@ class DatabaseManager {
     
     weak var delegate: DatabaseManagerDelegate?
     
+    //MARK: - Initialization
+    init() {
+        fetchMuralItemsFromDatabase()
+        fetchMostActivUsers()
+        fetchCurrenUserData()
+    }
+    
+    //MARK: - Create
     func addNewUserToDatabase(id: String, userData: [String : Any], avatarImageData: Data) {
         let newUserRef = db.collection("users").document(id)
         newUserRef.setData(userData) { error in
@@ -75,21 +78,6 @@ class DatabaseManager {
             }
         }
     }
-    
-    
-    func fetchCurrenUserData() {
-        guard let userID = Auth.auth().currentUser?.uid else { return }
-        fetchUserFromDatabase(id: userID) { result in
-            switch result {
-            case .success(let user):
-                self.currentUser = user
-                print("🟡 Current User Data Fetched from Database.")
-            case .failure(let error):
-                print("🔴 Error to fetch curren user data from Database. Error: \(error)")
-            }
-        }
-    }
-    
     
     func addNewItemToDatabase(itemData: [String : Any], fullSizeImageData: Data, thumbnailData: Data) {
         let newItemRef = db.collection(CollectionName.murals.rawValue).document()
@@ -113,33 +101,6 @@ class DatabaseManager {
             }
         }
     }
-    
-    func updateMuralInformations(id: String, data: EditedDataForMural) {
-        let muralRef = db.collection(CollectionName.murals.rawValue).document(id)
-        muralRef.updateData([
-            "adress": data.address,
-            "city": data.city,
-            "latitude": data.location.latitude,
-            "longitude": data.location.longitude,
-            "author": data.author
-        ]) { error in
-            if error != nil {
-                self.delegate?.failedToEditMuralData(errorMessage: MMError.failedToEditMuralData.rawValue)
-            } else {
-                self.delegate?.successToEditMuralData(muralID: id, data: data)
-                
-            }
-        }
-    }
-    
-    func changeNumberOfMuralsAddedByUser(by value: Int64) {
-        guard let userID = Auth.auth().currentUser?.uid else { return }
-        let docRef = db.collection(CollectionName.users.rawValue).document(userID)
-        docRef.updateData([
-            "muralsAdded": FieldValue.increment(value)
-        ])
-    }
-    
     
     func addImageToStorage(docRef: DocumentReference, imageData: Data, imageType: ImageType, completion: @escaping (Bool) -> Void) {
         let ref = storageRef.child("\(imageType.rawValue + docRef.documentID).jpg")
@@ -166,6 +127,21 @@ class DatabaseManager {
         }
     }
     
+    
+    //MARK: - Read
+    func fetchCurrenUserData() {
+        guard let userID = Auth.auth().currentUser?.uid else { return }
+        fetchUserFromDatabase(id: userID) { result in
+            switch result {
+            case .success(let user):
+                self.currentUser = user
+                print("🟡 Current User Data Fetched from Database.")
+            case .failure(let error):
+                print("🔴 Error to fetch curren user data from Database. Error: \(error)")
+            }
+        }
+    }
+    
     func fetchMuralItemsFromDatabase() {
         db.collection(CollectionName.murals.rawValue).getDocuments { querySnapshot, error in
             if let error = error {
@@ -183,18 +159,6 @@ class DatabaseManager {
                         }
                     }
                 }
-            }
-        }
-    }
-    
-    func fetchLegalTerms(completion: @escaping (Result<LegalTerms, MMError>) -> Void) {
-        let docRef = db.collection(CollectionName.legalTerms.rawValue).document("lZqycsOSTXAUMSQJMZTW")
-        docRef.getDocument(as: LegalTerms.self) { result in
-            switch result {
-            case .success(let terms):
-                completion(.success(terms))
-            case .failure(_):
-                completion(.failure(MMError.failedToGetLegalTerms))
             }
         }
     }
@@ -240,9 +204,46 @@ class DatabaseManager {
         }
     }
     
+    func fetchLegalTerms(completion: @escaping (Result<LegalTerms, MMError>) -> Void) {
+        let docRef = db.collection(CollectionName.legalTerms.rawValue).document("lZqycsOSTXAUMSQJMZTW")
+        docRef.getDocument(as: LegalTerms.self) { result in
+            switch result {
+            case .success(let terms):
+                completion(.success(terms))
+            case .failure(_):
+                completion(.failure(MMError.failedToGetLegalTerms))
+            }
+        }
+    }
     
     
-    //MARK: Favorites
+    //MARK: - Update
+    func updateMuralInformations(id: String, data: EditedDataForMural) {
+        let muralRef = db.collection(CollectionName.murals.rawValue).document(id)
+        muralRef.updateData([
+            "adress": data.address,
+            "city": data.city,
+            "latitude": data.location.latitude,
+            "longitude": data.location.longitude,
+            "author": data.author
+        ]) { error in
+            if error != nil {
+                self.delegate?.failedToEditMuralData(errorMessage: MMError.failedToEditMuralData.rawValue)
+            } else {
+                self.delegate?.successToEditMuralData(muralID: id, data: data)
+                
+            }
+        }
+    }
+    
+    func changeNumberOfMuralsAddedByUser(by value: Int64) {
+        guard let userID = Auth.auth().currentUser?.uid else { return }
+        let docRef = db.collection(CollectionName.users.rawValue).document(userID)
+        docRef.updateData([
+            "muralsAdded": FieldValue.increment(value)
+        ])
+    }
+    
     
     func addToFavorites(userID: String, muralID: String, completion: @escaping (Bool) -> Void) {
         let userDocRef = db.collection(CollectionName.users.rawValue).document(userID)
@@ -275,6 +276,7 @@ class DatabaseManager {
         }
     }
     
+    
     func removeFromFavorites(userID: String, muralID: String, completion: @escaping (Bool) -> Void) {
         let userDocRef = db.collection(CollectionName.users.rawValue).document(userID)
         
@@ -306,7 +308,7 @@ class DatabaseManager {
         }
     }
     
-    
+    //MARK: - Delete
     func removeMural(for id: String, completion: @escaping (Bool) -> Void) {
         let muralDocRef = db.collection(CollectionName.murals.rawValue).document(id)
         
