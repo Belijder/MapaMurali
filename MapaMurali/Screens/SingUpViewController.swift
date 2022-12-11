@@ -101,18 +101,20 @@ class SingUpViewController: UIViewController {
         guard let password = passwordTextField.text else { return }
         guard let avatarData = avatarImage else { return }
         
-        loginManager.singUp(email: email, password: password) { [weak self] userID in
-            guard let self = self else { return }
-            
-            var userData = [String : Any]()
-            userData["id"] = userID
-            userData["displayName"] = self.nickNameTextField.text
-            userData["email"] = email
-            userData["muralsAdded"] = 0
-            userData["favoritesMurals"] = [String]()
-
-            self.databaseManager.addNewUserToDatabase(id: userID, userData: userData, avatarImageData: avatarData)
-        }
+//        loginManager.singUp(email: email, password: password) { [weak self] userID in
+//            guard let self = self else { return }
+//
+//            var userData = [String : Any]()
+//            userData["id"] = userID
+//            userData["displayName"] = self.nickNameTextField.text
+//            userData["email"] = email
+//            userData["muralsAdded"] = 0
+//            userData["favoritesMurals"] = [String]()
+//
+//            self.databaseManager.addNewUserToDatabase(id: userID, userData: userData, avatarImageData: avatarData)
+//        }
+        
+        loginManager.singUpWithMailVerification(email: email)
     }
     
     

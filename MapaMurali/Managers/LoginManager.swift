@@ -32,6 +32,24 @@ class LoginManager {
         }
     }
     
+    
+    func singUpWithMailVerification(email: String) {
+        let actionCodeSettings = ActionCodeSettings()
+        actionCodeSettings.url = URL(string: "mapamurali.page.link")
+        actionCodeSettings.handleCodeInApp = true
+        actionCodeSettings.setIOSBundleID(Bundle.main.bundleIdentifier!)
+        
+        
+        Auth.auth().sendSignInLink(toEmail: email, actionCodeSettings: actionCodeSettings) { error in
+            if let error = error {
+                print("🔴 Error when try to send verification mail. ERROR: \(error)")
+                return
+            }
+            print("🟢 Succesfully sent a verification email")
+            UserDefaults.standard.set(email, forKey: "Email")
+        }
+    }
+    
     func checkIfUserIsLogged() {
         if FirebaseAuth.Auth.auth().currentUser == nil {
             userIsLoggedIn.onNext(false)
