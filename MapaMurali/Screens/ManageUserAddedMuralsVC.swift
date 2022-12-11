@@ -122,9 +122,7 @@ extension ManageUserAddedMuralsVC: UITableViewDelegate {
                     completed(false)
                 }
             }
-
             self.databaseManager.murals.removeAll(where: { $0.docRef == muralID })
-            self.userAddedMurals.remove(at: indexPath.row)
             print("🟡 Mural Was removed from userAddedMurals, and row in tableView has been deleted also.")
         }
 

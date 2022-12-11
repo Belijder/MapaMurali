@@ -7,12 +7,15 @@
 
 import UIKit
 import FirebaseAuth
+import RxSwift
+import CoreLocation
 
 class MainTabBarViewController: UITabBarController {
     
     //MARK: - Properties
     var loginManager = LoginManager()
     var databaseManager = DatabaseManager()
+    var disposeBag = DisposeBag()
 
     //MARK: - Live cicle
     override func viewDidLoad() {
@@ -54,6 +57,8 @@ class MainTabBarViewController: UITabBarController {
         tabBar.tintColor = MMColors.primary
         
         setViewControllers([mapNC, collectionNC, addNC, statisticsNC, accountNC], animated: true)
+        
+        addMapPinButtonTappedObserver()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -73,6 +78,15 @@ class MainTabBarViewController: UITabBarController {
         } else {
             return
         }
+    }
+    
+    //MARK: - Biding
+    func addMapPinButtonTappedObserver() {
+        databaseManager.mapPinButtonTappedOnMural
+            .subscribe(onNext: { _ in
+                self.selectedIndex = 0
+            })
+            .disposed(by: disposeBag)
     }
 }
 

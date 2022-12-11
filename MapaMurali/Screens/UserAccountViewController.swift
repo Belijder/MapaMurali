@@ -100,6 +100,7 @@ class UserAccountViewController: UIViewController {
     func configureButtons() {
         showTermOfUseButton.addTarget(self, action: #selector(showTermOfUse), for: .touchUpInside)
         showPrivacyPolicyButton.addTarget(self, action: #selector(showPrivacyPolicy), for: .touchUpInside)
+        rateAppButton.addTarget(self, action: #selector(rateAppButtonTapped), for: .touchUpInside)
     }
     
     func layoutUI() {
@@ -158,6 +159,10 @@ class UserAccountViewController: UIViewController {
         let nav = UINavigationController(rootViewController: vc)
         nav.modalPresentationStyle = .fullScreen
         present(nav, animated: false)
+    }
+    
+    @objc func rateAppButtonTapped() {
+    
     }
     
     @objc func sendEmail() {

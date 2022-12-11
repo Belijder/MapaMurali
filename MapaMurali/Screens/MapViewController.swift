@@ -40,6 +40,8 @@ class MapViewController: UIViewController {
         addMuralsItemsObserver()
         addLastDeletedMuralObserwer()
         addLastEditedMuralObserver()
+        addMapPinButtonTappedObserver()
+        
         setMapConstraints()
         configureMapView()
         setupUserTrackingButton()
@@ -137,6 +139,14 @@ class MapViewController: UIViewController {
                 self.map.removeAnnotation(annottionToRemove)
                 
                 self.databaseManager.murals.append(mural)
+            })
+            .disposed(by: bag)
+    }
+    
+    func addMapPinButtonTappedObserver() {
+        databaseManager.mapPinButtonTappedOnMural
+            .subscribe(onNext: { mural in
+                self.setMapRegion(with: CLLocationCoordinate2D(latitude: mural.latitude, longitude: mural.longitude))
             })
             .disposed(by: bag)
     }

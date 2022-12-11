@@ -8,10 +8,8 @@
 import UIKit
 import Firebase
 import FirebaseStorage
-import FirebaseFirestore
 import FirebaseFirestoreSwift
 import RxSwift
-import RxCocoa
 
 protocol DatabaseManagerDelegate: AnyObject {
     func successToAddNewItem(muralID: String)
@@ -41,6 +39,7 @@ class DatabaseManager {
     var muralItems = BehaviorSubject<[Mural]>(value: [])
     var lastDeletedMuralID = BehaviorSubject<String>(value: "")
     var lastEditedMuralID = PublishSubject<Mural>()
+    var mapPinButtonTappedOnMural = PublishSubject<Mural>()
     
     var murals = [Mural]() {
         didSet {

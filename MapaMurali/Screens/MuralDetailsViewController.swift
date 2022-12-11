@@ -113,6 +113,7 @@ class MuralDetailsViewController: UIViewController {
         imageView.downloadImage(from: muralItem.imageURL)
         
         mapPinButton.configuration?.baseBackgroundColor = MMColors.primary
+        mapPinButton.addTarget(self, action: #selector(mapPinButtonTapped), for: .touchUpInside)
         
         authorLabelDescription.text = muralItem.author?.isEmpty == true ? "Znasz autora?" : "Autor"
         authorLabel.text = muralItem.author
@@ -259,6 +260,12 @@ class MuralDetailsViewController: UIViewController {
     
     @objc func favoriteButtonTapped() {
         vm.favoriteButtonTapped()
+    }
+    
+    @objc func mapPinButtonTapped() {
+        print("🟡 Map Pin button tapped.")
+        databaseManager.mapPinButtonTappedOnMural.onNext(muralItem)
+        dismissVC()
     }
     
     
