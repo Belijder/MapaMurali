@@ -24,6 +24,7 @@
 		427C1A642910E899000E5619 /* MMFavoritesMuralCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427C1A632910E899000E5619 /* MMFavoritesMuralCollectionCell.swift */; };
 		427CAB5528E60D3200DA7247 /* AddNewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427CAB5428E60D3200DA7247 /* AddNewViewModel.swift */; };
 		427CAB5828E9A83400DA7247 /* MMAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427CAB5728E9A83300DA7247 /* MMAnnotationView.swift */; };
+		42824F02295C64C000C33AA5 /* VerificationEmailSendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42824F01295C64C000C33AA5 /* VerificationEmailSendViewController.swift */; };
 		4283A6FE293B95DC00EDFEB5 /* EditMuralViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4283A6FD293B95DC00EDFEB5 /* EditMuralViewModel.swift */; };
 		4283A700293CA7D600EDFEB5 /* LegalTerms.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4283A6FF293CA7D600EDFEB5 /* LegalTerms.swift */; };
 		4283BAB028D5E24A00A54F0F /* MMMuralImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4283BAAF28D5E24A00A54F0F /* MMMuralImageView.swift */; };
@@ -105,6 +106,7 @@
 		427C1A632910E899000E5619 /* MMFavoritesMuralCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMFavoritesMuralCollectionCell.swift; sourceTree = "<group>"; };
 		427CAB5428E60D3200DA7247 /* AddNewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewViewModel.swift; sourceTree = "<group>"; };
 		427CAB5728E9A83300DA7247 /* MMAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMAnnotationView.swift; sourceTree = "<group>"; };
+		42824F01295C64C000C33AA5 /* VerificationEmailSendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationEmailSendViewController.swift; sourceTree = "<group>"; };
 		4283A6FD293B95DC00EDFEB5 /* EditMuralViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMuralViewModel.swift; sourceTree = "<group>"; };
 		4283A6FF293CA7D600EDFEB5 /* LegalTerms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegalTerms.swift; sourceTree = "<group>"; };
 		4283BAAF28D5E24A00A54F0F /* MMMuralImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMMuralImageView.swift; sourceTree = "<group>"; };
@@ -230,6 +232,7 @@
 			children = (
 				42867B6A28959CE400E5159F /* SingInViewController.swift */,
 				42867B7F289C4CC600E5159F /* SingUpViewController.swift */,
+				42824F01295C64C000C33AA5 /* VerificationEmailSendViewController.swift */,
 				42EA93AB294DA8AB006F3EF0 /* CompleteUserDetailsViewController.swift */,
 			);
 			path = Authorizations;
@@ -520,6 +523,7 @@
 				42D9EA2E292ED5F600A7A9DC /* MostMuralCitiesVC.swift in Sources */,
 				427CAB5828E9A83400DA7247 /* MMAnnotationView.swift in Sources */,
 				428BD66728DE3FDC000B8D69 /* MMError.swift in Sources */,
+				42824F02295C64C000C33AA5 /* VerificationEmailSendViewController.swift in Sources */,
 				42E18CB928DB98EA0068414E /* UIImage+Ext.swift in Sources */,
 				4283A700293CA7D600EDFEB5 /* LegalTerms.swift in Sources */,
 				42618DDC2917BB7C0052DB76 /* PopularCity.swift in Sources */,

@@ -56,10 +56,10 @@ class LoginManager {
         
         user.sendEmailVerification(with: actionCodeSettings, completion: { error in
             if error != nil {
-                print("🔴 Error when try to sent verification mail. ERROR: \(error?.localizedDescription)")
+                print("🔴 Error when try to sent verification mail. ERROR: \(String(describing: error?.localizedDescription))")
                 return
             }
-            print("🟢 Success to sent verification mail to email: \( user.email)")
+            print("🟢 Success to sent verification mail to email: \(String(describing: user.email))")
             UserDefaults.standard.set(email, forKey: Setup.kEmail)
         })
     }

@@ -8,11 +8,13 @@
 import UIKit
 
 enum MMColors {
-//    static let primary = UIColor(named: "ThemePrimary")!
-//    static let secondary = UIColor(named: "ThemeSecondary")!
-    
     static let primary = UIColor(named: "PrimaryTheme")!
     static let secondary = UIColor(named: "SecondaryTheme")!
+    
+    static let violetDark = UIColor(named: "VioletDark")!
+    static let violetLight = UIColor(named: "VioletLight")!
+    static let orangeDark = UIColor(named: "OrangeDark")!
+    static let orangeLight = UIColor(named: "OrangeLight")!
 }
 
 enum Setup {

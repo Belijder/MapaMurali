@@ -40,7 +40,7 @@ class SingUpViewController: UIViewController {
         view.addSubviews(emailTextField, passwordTextField, confirmPasswordTextField, singUpButton)
         configureUIElements()
         layoutUI()
-        addMagicLinkSubscriber()
+//        addMagicLinkSubscriber()
         addSingInObserver()
     }
     
@@ -124,6 +124,9 @@ class SingUpViewController: UIViewController {
             
             self.loginManager.singUp(email: email, password: password) { uid in
                 print("🟠 UID is: \(uid)")
+                let destVC = VerificationEmailSendViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
+                destVC.modalPresentationStyle = .fullScreen
+                self.present(destVC, animated: true)
             }
         }
     }
@@ -145,15 +148,15 @@ class SingUpViewController: UIViewController {
             .disposed(by: bag)
     }
     
-    func addMagicLinkSubscriber() {
-        loginManager.recivedMagicLink
-            .subscribe(onNext: { link in
-                print("🟠 Magic link reviced. Opening CompleteUserDetailsVC")
-                let destVC = CompleteUserDetailsViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
-                destVC.modalPresentationStyle = .fullScreen
-                destVC.navigationController?.isNavigationBarHidden = true
-                self.present(destVC, animated: false)
-            })
-            .disposed(by: bag)
-    }
+//    func addMagicLinkSubscriber() {
+//        loginManager.recivedMagicLink
+//            .subscribe(onNext: { link in
+//                print("🟠 Magic link reviced. Opening CompleteUserDetailsVC")
+//                let destVC = CompleteUserDetailsViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
+//                destVC.modalPresentationStyle = .fullScreen
+//                destVC.navigationController?.isNavigationBarHidden = true
+//                self.present(destVC, animated: false)
+//            })
+//            .disposed(by: bag)
+//    }
 }

@@ -92,7 +92,8 @@ class MainTabBarViewController: UITabBarController {
             //Present VC with info about verification requirements
             
 //            if FirebaseAuth.Auth.auth().currentUser?.isEmailVerified == false {
-//                let destVC = UIViewController()
+//                let destVC = VerificationEmailSendViewController(loginManager: loginManager, databaseManager: databaseManager)
+//                destVC.modalPresentationStyle = .fullScreen
 //                present(destVC, animated: false)
 //            }
         }

@@ -30,7 +30,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
-        print("🟠 Magic link userActivity: \(userActivity.webpageURL)")
+        print("🟠 Magic link userActivity: \(String(describing: userActivity.webpageURL))")
         guard let link = userActivity.webpageURL?.absoluteString else { return }
         loginManager.recivedMagicLink.onNext(link)
     }
