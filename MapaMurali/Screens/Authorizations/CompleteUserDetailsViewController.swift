@@ -1,30 +1,30 @@
 //
-//  SingUpViewController.swift
+//  CompleteUserDetailsViewController.swift
 //  MapaMurali
 //
-//  Created by Jakub Zajda on 04/08/2022.
+//  Created by Jakub Zajda on 17/12/2022.
 //
 
 import UIKit
 import RxSwift
 
-class SingUpViewController: UIViewController {
+class CompleteUserDetailsViewController: UIViewController {
     
     //MARK: - Properties
+    
     let loginManager: LoginManager
     let databaseManager: DatabaseManager
     var bag = DisposeBag()
     
-    var avatarImage: Data?
     private let avatarImageView = MMAvatarImageView(frame: .zero)
-    private let removeImageButton = MMCircleButton(color: .label, systemImageName: "xmark")
     private let nickNameTextField = MMTextField(placeholder: "nazwa użytkownika", type: .custom)
-    private let emailTextField = MMTextField(placeholder: "e-mail", type: .email)
-    private let passwordTextField = MMTextField(placeholder: "hasło", type: .password)
-    private let singUpButton = MMTintedButton(color: MMColors.primary, title: "Zarejestruj się!")
-
+    private let callToActionButton = MMTintedButton(color: MMColors.primary, title: "Zaczynamy!")
     
-    //MARK: - Inicialization
+    var avatarImage: Data?
+    
+    
+    //MARK: - Initialization
+    
     init(loginManager: LoginManager, databaseManager: DatabaseManager) {
         self.loginManager = loginManager
         self.databaseManager = databaseManager
@@ -35,35 +35,39 @@ class SingUpViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
     //MARK: - Live cicle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
-        view.addSubviews(avatarImageView, nickNameTextField, emailTextField, passwordTextField, singUpButton)
+        configureViewController()
         configureUIElements()
         layoutUI()
         addSingInObserver()
+        
     }
     
     override func viewDidLayoutSubviews() {
-        emailTextField.styleTextFieldWithBottomBorder(color: MMColors.primary)
-        passwordTextField.styleTextFieldWithBottomBorder(color: MMColors.primary)
         nickNameTextField.styleTextFieldWithBottomBorder(color: MMColors.primary)
     }
     
-    
     //MARK: - Set up
+    func configureViewController() {
+        view.backgroundColor = .systemBackground
+        title = "Uzupełnij informacje"
+    }
+    
     func configureUIElements() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(avatarImageViewTapped))
         avatarImageView.isUserInteractionEnabled = true
         avatarImageView.addGestureRecognizer(tap)
         
-        singUpButton.addTarget(self, action: #selector(singUpButtonTapped), for: .touchUpInside)
-        
+        callToActionButton.addTarget(self, action: #selector(callToActionButtonTapped), for: .touchUpInside)
     }
     
-    
     func layoutUI() {
+        view.addSubviews(avatarImageView, nickNameTextField, callToActionButton)
+        
         avatarImageView.translatesAutoresizingMaskIntoConstraints = false
         let padding: CGFloat = 20
         
@@ -78,45 +82,18 @@ class SingUpViewController: UIViewController {
             nickNameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
             nickNameTextField.heightAnchor.constraint(equalToConstant: 50),
             
-            emailTextField.topAnchor.constraint(equalTo: nickNameTextField.bottomAnchor, constant: padding),
-            emailTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-            emailTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
-            emailTextField.heightAnchor.constraint(equalToConstant: 50),
             
-            passwordTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: padding),
-            passwordTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-            passwordTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
-            passwordTextField.heightAnchor.constraint(equalToConstant: 50),
-            
-            singUpButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: padding),
-            singUpButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-            singUpButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
-            singUpButton.heightAnchor.constraint(equalToConstant: 50),
+            callToActionButton.topAnchor.constraint(equalTo: nickNameTextField.bottomAnchor, constant: padding),
+            callToActionButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
+            callToActionButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
+            callToActionButton.heightAnchor.constraint(equalToConstant: 50),
         ])
     }
     
-    //MARK: - Actions
-    @objc func singUpButtonTapped() {
-        guard let email = emailTextField.text else { return }
-        guard let password = passwordTextField.text else { return }
-        guard let avatarData = avatarImage else { return }
-        
-//        loginManager.singUp(email: email, password: password) { [weak self] userID in
-//            guard let self = self else { return }
-//
-//            var userData = [String : Any]()
-//            userData["id"] = userID
-//            userData["displayName"] = self.nickNameTextField.text
-//            userData["email"] = email
-//            userData["muralsAdded"] = 0
-//            userData["favoritesMurals"] = [String]()
-//
-//            self.databaseManager.addNewUserToDatabase(id: userID, userData: userData, avatarImageData: avatarData)
-//        }
-        
-        loginManager.singUpWithMailVerification(email: email)
-    }
     
+    //MARK: - Logic
+    
+    //MARK: - Actions
     
     @objc func avatarImageViewTapped() {
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -148,18 +125,43 @@ class SingUpViewController: UIViewController {
         }
     }
     
-    
-    @objc func returnToSingInView(sender: UIButton!) {
-        self.dismiss(animated: true)
+    @objc func callToActionButtonTapped() {
+        
+        guard let email = UserDefaults.standard.object(forKey: Setup.kEmail) as? String else { return }
+        print("🟠 email from UserDefault is: \(email)")
+        
+        guard let avatarData = avatarImage else {
+            presentMMAlert(title: "Dodaj avatar", message: "Dodaj avatar do swojego konta.", buttonTitle: "Ok")
+            return
+        }
+        
+        guard let userID = loginManager.currentUserID else {
+            presentMMAlert(title: "Ups", message: "Coś poszło nie tak. Nie udało się utworzyć konta. Spróbuj ponownie za chwilę.", buttonTitle: "Ok")
+            return
+        }
+        
+            var userData = [String : Any]()
+            userData["id"] = userID
+            userData["displayName"] = self.nickNameTextField.text
+            userData["email"] = email
+            userData["muralsAdded"] = 0
+            userData["favoritesMurals"] = [String]()
+            
+        self.databaseManager.addNewUserToDatabase(id: userID, userData: userData, avatarImageData: avatarData) { success in
+            if success {
+                self.loginManager.userIsLoggedIn.onNext(true)
+            }
+        }
+        
     }
     
     
-    //MARK: - Binding
+    //MARK: - Bindings
     func addSingInObserver() {
         loginManager.userIsLoggedIn
             .subscribe(onNext: { value in
                 if value == true {
-                    self.navigationController?.dismiss(animated: true)
+                    self.view.window?.rootViewController?.dismiss(animated: true)
                 }
             })
             .disposed(by: bag)
@@ -167,7 +169,7 @@ class SingUpViewController: UIViewController {
 }
 
 //MARK: - Extensions
-extension SingUpViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+extension CompleteUserDetailsViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage
         let resizedImage = image?.aspectFittedToHeight(120)
@@ -178,3 +180,5 @@ extension SingUpViewController: UIImagePickerControllerDelegate, UINavigationCon
         self.dismiss(animated: true)
     }
 }
+
+

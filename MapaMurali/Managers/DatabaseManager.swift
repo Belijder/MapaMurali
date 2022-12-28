@@ -67,13 +67,17 @@ class DatabaseManager {
     }
     
     //MARK: - Create
-    func addNewUserToDatabase(id: String, userData: [String : Any], avatarImageData: Data) {
+    func addNewUserToDatabase(id: String, userData: [String : Any], avatarImageData: Data, completion: @escaping (Bool) -> Void) {
         let newUserRef = db.collection("users").document(id)
         newUserRef.setData(userData) { error in
             if let error = error {
                 print("🔴 Error when try to add new user: \(error)")
+                completion(false)
             } else {
-                self.addImageToStorage(docRef: newUserRef, imageData: avatarImageData, imageType: .avatar) { _ in }
+                self.addImageToStorage(docRef: newUserRef, imageData: avatarImageData, imageType: .avatar) { _ in
+                    print("🟢 New user successfuly added to database.")
+                    completion(true)
+                }
             }
         }
     }

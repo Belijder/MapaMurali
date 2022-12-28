@@ -50,11 +50,15 @@ class SingInViewController: UIViewController {
         addSingInObserver()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        loginManager.checkIfUserIsLogged()
+    }
     
     override func viewDidLayoutSubviews() {
         nameTextField.styleTextFieldWithBottomBorder(color: MMColors.primary)
         passwordTextField.styleTextFieldWithBottomBorder(color: MMColors.primary)
     }
+    
     
     //MARK: - Set up
     func layoutUI() {
@@ -99,8 +103,11 @@ class SingInViewController: UIViewController {
     @objc func singUpButtonPressed(sender: UIButton!) {
         let singUpVC = SingUpViewController(loginManager: loginManager, databaseManager: databaseManager)
         singUpVC.modalPresentationStyle = .fullScreen
+        singUpVC.navigationController?.isNavigationBarHidden = false
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "Powrót do logowania", style: .plain, target: nil, action: nil)
-        self.navigationController?.pushViewController(singUpVC, animated: true)
+        
+//        self.pushViewController(singUpVC, animated: true)
+        self.present(singUpVC, animated: true)
     }
     
     //MARK: - Binding
@@ -108,7 +115,7 @@ class SingInViewController: UIViewController {
         loginManager.userIsLoggedIn
             .subscribe(onNext: { value in
                 if value == true {
-                    self.navigationController?.dismiss(animated: true)
+                    self.view.window?.rootViewController?.dismiss(animated: true)
                 }
             })
             .disposed(by: bag)

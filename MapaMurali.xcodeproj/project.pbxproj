@@ -80,6 +80,9 @@
 		42E61C3D29045AAC00D38205 /* MMAvatarImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C3C29045AAC00D38205 /* MMAvatarImageView.swift */; };
 		42E61C3F29053F0400D38205 /* MuralDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C3E29053F0400D38205 /* MuralDetailsViewModel.swift */; };
 		42E61C432906FFB200D38205 /* StatisticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C422906FFB100D38205 /* StatisticsViewController.swift */; };
+		42EA93A72947C4A9006F3EF0 /* FirebaseDynamicLinks in Frameworks */ = {isa = PBXBuildFile; productRef = 42EA93A62947C4A9006F3EF0 /* FirebaseDynamicLinks */; };
+		42EA93A92948FB87006F3EF0 /* InfoPlistParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EA93A82948FB87006F3EF0 /* InfoPlistParser.swift */; };
+		42EA93AC294DA8AB006F3EF0 /* CompleteUserDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EA93AB294DA8AB006F3EF0 /* CompleteUserDetailsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -151,6 +154,9 @@
 		42E61C3C29045AAC00D38205 /* MMAvatarImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMAvatarImageView.swift; sourceTree = "<group>"; };
 		42E61C3E29053F0400D38205 /* MuralDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuralDetailsViewModel.swift; sourceTree = "<group>"; };
 		42E61C422906FFB100D38205 /* StatisticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewController.swift; sourceTree = "<group>"; };
+		42EA93A82948FB87006F3EF0 /* InfoPlistParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoPlistParser.swift; sourceTree = "<group>"; };
+		42EA93AA294A4D49006F3EF0 /* MapaMurali.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MapaMurali.entitlements; sourceTree = "<group>"; };
+		42EA93AB294DA8AB006F3EF0 /* CompleteUserDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteUserDetailsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,6 +167,7 @@
 				42867B7728998CD800E5159F /* FirebaseDatabase in Frameworks */,
 				42867B7528998CD800E5159F /* FirebaseAuth in Frameworks */,
 				42867B7E2899C42900E5159F /* RxSwift in Frameworks */,
+				42EA93A72947C4A9006F3EF0 /* FirebaseDynamicLinks in Frameworks */,
 				4289AEC528E211B200C3FFF5 /* FirebaseFirestoreSwift in Frameworks */,
 				42867B7C2899C42900E5159F /* RxCocoa in Frameworks */,
 				42867B7928998CD800E5159F /* FirebaseStorage in Frameworks */,
@@ -200,6 +207,7 @@
 		426E49FD28931180009C8E99 /* MapaMurali */ = {
 			isa = PBXGroup;
 			children = (
+				42EA93AA294A4D49006F3EF0 /* MapaMurali.entitlements */,
 				426E49FE28931180009C8E99 /* AppDelegate.swift */,
 				426E4A0028931180009C8E99 /* SceneDelegate.swift */,
 				4289AEC628E2169F00C3FFF5 /* Model */,
@@ -215,6 +223,16 @@
 				426E4A0C28931184009C8E99 /* Info.plist */,
 			);
 			path = MapaMurali;
+			sourceTree = "<group>";
+		};
+		4275EB8E295ADAA4004946ED /* Authorizations */ = {
+			isa = PBXGroup;
+			children = (
+				42867B6A28959CE400E5159F /* SingInViewController.swift */,
+				42867B7F289C4CC600E5159F /* SingUpViewController.swift */,
+				42EA93AB294DA8AB006F3EF0 /* CompleteUserDetailsViewController.swift */,
+			);
+			path = Authorizations;
 			sourceTree = "<group>";
 		};
 		427CAB5328E60CFC00DA7247 /* ViewModels */ = {
@@ -253,8 +271,7 @@
 		42867B6528958FDC00E5159F /* Screens */ = {
 			isa = PBXGroup;
 			children = (
-				42867B6A28959CE400E5159F /* SingInViewController.swift */,
-				42867B7F289C4CC600E5159F /* SingUpViewController.swift */,
+				4275EB8E295ADAA4004946ED /* Authorizations */,
 				42867B6328958F5B00E5159F /* MainTabBarViewController.swift */,
 				426E4A0228931180009C8E99 /* MapViewController.swift */,
 				42E61C2F28F3143100D38205 /* MuralsCollectionViewController.swift */,
@@ -339,6 +356,7 @@
 				42E61C3128F3191A00D38205 /* UIHelper.swift */,
 				428BD66628DE3FDC000B8D69 /* MMError.swift */,
 				42E61C2D28F2ED6400D38205 /* Constants.swift */,
+				42EA93A82948FB87006F3EF0 /* InfoPlistParser.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -421,6 +439,7 @@
 				42867B7D2899C42900E5159F /* RxSwift */,
 				4289AEC228E211B200C3FFF5 /* FirebaseFirestore */,
 				4289AEC428E211B200C3FFF5 /* FirebaseFirestoreSwift */,
+				42EA93A62947C4A9006F3EF0 /* FirebaseDynamicLinks */,
 			);
 			productName = MapaMurali;
 			productReference = 426E49FB28931180009C8E99 /* MapaMurali.app */;
@@ -454,6 +473,7 @@
 				42867B7328998CD800E5159F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				42867B7A2899C42900E5159F /* XCRemoteSwiftPackageReference "RxSwift" */,
 				4289AEC128E211B200C3FFF5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				42EA93A52947C4A9006F3EF0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 426E49FC28931180009C8E99 /* Products */;
 			projectDirPath = "";
@@ -503,6 +523,7 @@
 				42E18CB928DB98EA0068414E /* UIImage+Ext.swift in Sources */,
 				4283A700293CA7D600EDFEB5 /* LegalTerms.swift in Sources */,
 				42618DDC2917BB7C0052DB76 /* PopularCity.swift in Sources */,
+				42EA93AC294DA8AB006F3EF0 /* CompleteUserDetailsViewController.swift in Sources */,
 				42867B672895901000E5159F /* AddNewViewController.swift in Sources */,
 				429A021D28CFCF4600CD6862 /* UIView+Ext.swift in Sources */,
 				42D9EA212922CD8D00A7A9DC /* ManageUserAddedMuralsVC.swift in Sources */,
@@ -535,6 +556,7 @@
 				428BD66128DE322A000B8D69 /* MMAlertContainerView.swift in Sources */,
 				42E61C432906FFB200D38205 /* StatisticsViewController.swift in Sources */,
 				427CAB5528E60D3200DA7247 /* AddNewViewModel.swift in Sources */,
+				42EA93A92948FB87006F3EF0 /* InfoPlistParser.swift in Sources */,
 				42E61C3D29045AAC00D38205 /* MMAvatarImageView.swift in Sources */,
 				426E49FF28931180009C8E99 /* AppDelegate.swift in Sources */,
 				42E61C3728F3200800D38205 /* MMSquareImageView.swift in Sources */,
@@ -681,6 +703,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MapaMurali/MapaMurali.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -715,6 +738,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MapaMurali/MapaMurali.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -792,6 +816,14 @@
 				minimumVersion = 9.6.0;
 			};
 		};
+		42EA93A52947C4A9006F3EF0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 9.6.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -829,6 +861,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4289AEC128E211B200C3FFF5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestoreSwift;
+		};
+		42EA93A62947C4A9006F3EF0 /* FirebaseDynamicLinks */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4289AEC128E211B200C3FFF5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDynamicLinks;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -13,10 +13,23 @@ import CoreLocation
 class MainTabBarViewController: UITabBarController {
     
     //MARK: - Properties
-    var loginManager = LoginManager()
-    var databaseManager = DatabaseManager()
+    var loginManager: LoginManager
+    var databaseManager: DatabaseManager
     var disposeBag = DisposeBag()
 
+    //MARK: - Initialization
+    
+    init(loginManager: LoginManager, databaseManager: DatabaseManager) {
+        self.loginManager = loginManager
+        self.databaseManager = databaseManager
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
     //MARK: - Live cicle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,14 +82,19 @@ class MainTabBarViewController: UITabBarController {
     //MARK: - Logic
     private func validateAuth() {
         if FirebaseAuth.Auth.auth().currentUser == nil {
-            let vc = SingInViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
-            let nav = UINavigationController(rootViewController: vc)
-            nav.modalPresentationStyle = .fullScreen
-            nav.navigationBar.tintColor = MMColors.primary
-            nav.navigationBar.backItem?.title = "Zaloguj się"
-            present(nav, animated: false)
+            let destVC = SingInViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
+//            let nav = UINavigationController(rootViewController: vc)
+            destVC.modalPresentationStyle = .fullScreen
+            destVC.navigationController?.navigationBar.tintColor = MMColors.primary
+            destVC.navigationController?.navigationBar.backItem?.title = "Zaloguj się"
+            present(destVC, animated: false)
         } else {
-            return
+            //Present VC with info about verification requirements
+            
+//            if FirebaseAuth.Auth.auth().currentUser?.isEmailVerified == false {
+//                let destVC = UIViewController()
+//                present(destVC, animated: false)
+//            }
         }
     }
     

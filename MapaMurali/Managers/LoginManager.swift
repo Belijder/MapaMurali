@@ -16,6 +16,8 @@ class LoginManager {
     var currentUserID = Auth.auth().currentUser?.uid
     var userIsLoggedIn = BehaviorSubject<Bool>(value: false)
     
+    var recivedMagicLink = PublishSubject<String>()
+    
     func singIn(email: String, password: String) {
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
             if result != nil {
@@ -27,39 +29,74 @@ class LoginManager {
     func singUp(email: String, password: String, completion: @escaping (String) -> Void) {
         Auth.auth().createUser(withEmail: email, password: password) { result, error in
             guard let result = result else { return }
-            completion(result.user.uid)
-            self.checkIfUserIsLogged()
-        }
-    }
-    
-    
-    func singUpWithMailVerification(email: String) {
-        let actionCodeSettings = ActionCodeSettings()
-        actionCodeSettings.url = URL(string: "mapamurali.page.link")
-        actionCodeSettings.handleCodeInApp = true
-        actionCodeSettings.setIOSBundleID(Bundle.main.bundleIdentifier!)
-        
-        
-        Auth.auth().sendSignInLink(toEmail: email, actionCodeSettings: actionCodeSettings) { error in
-            if let error = error {
-                print("🔴 Error when try to send verification mail. ERROR: \(error)")
+            guard let userEmail = result.user.email else {
+                print("🔴 Cannot find user email for verification.")
                 return
             }
-            print("🟢 Succesfully sent a verification email")
-            UserDefaults.standard.set(email, forKey: "Email")
+
+            self.sendVerificationMailTo(email: userEmail)
+            self.currentUserID = result.user.uid
+            self.checkIfUserIsLogged()
+            
+            completion(result.user.uid)
         }
     }
     
+    
+    func sendVerificationMailTo(email: String) {
+        guard let user = Auth.auth().currentUser else {
+            print("🔴 Error when try to sent verification mail. User not found.")
+            return
+        }
+        
+        let actionCodeSettings = ActionCodeSettings()
+        actionCodeSettings.url = URL(string: String(format: "https://www.mapamurali.page.link/?email=%@", user.email!))
+        actionCodeSettings.handleCodeInApp = false
+        actionCodeSettings.setIOSBundleID(Bundle.main.bundleIdentifier!)
+        
+        user.sendEmailVerification(with: actionCodeSettings, completion: { error in
+            if error != nil {
+                print("🔴 Error when try to sent verification mail. ERROR: \(error?.localizedDescription)")
+                return
+            }
+            print("🟢 Success to sent verification mail to email: \( user.email)")
+            UserDefaults.standard.set(email, forKey: Setup.kEmail)
+        })
+    }
+    
+    
     func checkIfUserIsLogged() {
-        if FirebaseAuth.Auth.auth().currentUser == nil {
+        guard let user = Auth.auth().currentUser else {
             userIsLoggedIn.onNext(false)
             print("🔴 User is not logged.")
-        } else {
-            userIsLoggedIn.onNext(true)
+            return
+        }
+        
+        print("🟠 Is user verified: \(user.isEmailVerified) ")
+        userIsLoggedIn.onNext(true)
+        currentUserID = Auth.auth().currentUser?.uid
+        
+        if user.isEmailVerified {
             print("\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "Unknown")")
-            currentUserID = Auth.auth().currentUser?.uid
+        }
+        
+    }
+    
+    func checkIfEmailIsNOTAlreadyRegistered(email: String, completion: @escaping (Bool, MMError?) -> Void) {
+        Auth.auth().fetchSignInMethods(forEmail: email) { providers, error in
+            if let error = error {
+                print("🔴 Error when try to fetch sing In providers for email: \(email). ERROR: \(error.localizedDescription)")
+                completion(false, MMError.failedToFetchSingInMethods)
+            }
+            
+            if providers == nil {
+                completion(true, nil)
+            } else {
+                completion(false, nil)
+            }
         }
     }
+    
     
     func singOut() {
         if Auth.auth().currentUser != nil {

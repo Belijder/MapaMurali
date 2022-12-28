@@ -33,6 +33,18 @@ class UserAccountViewController: UIViewController {
     let deleteAccountAndDataButton = MMPlainButton(color: .systemRed, title: "Usuń konto i dane")
 
     
+    //MARK: - Initialization
+    init(loginManager: LoginManager, databaseManager: DatabaseManager) {
+        self.loginManager = loginManager
+        self.databaseManager = databaseManager
+        if databaseManager.currentUser == nil { databaseManager.fetchCurrenUserData() }
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     //MARK: - Live cicle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,10 +57,6 @@ class UserAccountViewController: UIViewController {
         configureCollectionsViews()
         configureButtons()
         layoutUI()
-
-        sendMessageButton.addTarget(self, action: #selector(sendEmail), for: .touchUpInside)
-        logOutButton.addTarget(self, action: #selector(logOut), for: .touchUpInside)
-        deleteAccountAndDataButton.addTarget(self, action: #selector(deleteAcconutButtonTapped), for: .touchUpInside)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -101,6 +109,10 @@ class UserAccountViewController: UIViewController {
         showTermOfUseButton.addTarget(self, action: #selector(showTermOfUse), for: .touchUpInside)
         showPrivacyPolicyButton.addTarget(self, action: #selector(showPrivacyPolicy), for: .touchUpInside)
         rateAppButton.addTarget(self, action: #selector(rateAppButtonTapped), for: .touchUpInside)
+        
+        sendMessageButton.addTarget(self, action: #selector(sendEmail), for: .touchUpInside)
+        logOutButton.addTarget(self, action: #selector(logOut), for: .touchUpInside)
+        deleteAccountAndDataButton.addTarget(self, action: #selector(deleteAcconutButtonTapped), for: .touchUpInside)
     }
     
     func layoutUI() {
@@ -260,19 +272,6 @@ class UserAccountViewController: UIViewController {
         childVC.view.frame = containerView.bounds
         childVC.didMove(toParent: self)
     }
-    
-    //MARK: - Initialization
-    init(loginManager: LoginManager, databaseManager: DatabaseManager) {
-        self.loginManager = loginManager
-        self.databaseManager = databaseManager
-        if databaseManager.currentUser == nil { databaseManager.fetchCurrenUserData() }
-        super.init(nibName: nil, bundle: nil) 
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
 
 }
 
