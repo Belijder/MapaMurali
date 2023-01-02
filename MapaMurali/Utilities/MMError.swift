@@ -17,6 +17,10 @@ enum MMError: String, Error {
     case failedToEditMuralData = "Nie udało się zaktualizować informacji w Bazie danych. Sprawdź czy wszystkie pola są prawidłowo wypełnione i spróbuj ponownie."
     case failedToGetLegalTerms = "Nie udało się pobrać regulaminu. Sprawdź połączenie z interentem i spróbuj ponownie. Jeśli problem będzie się dalej pojawiał, skontaktuj się z nami!"
     
+    
     case failedToFetchSingInMethods = "Wystąpił błąd przy próbie weryfikacji maila. Sprawdź połączenie z internetem i spróbuj ponownie."
     case incompatiblePasswords = "Wprowadzone przez Ciebie hasła nie są takie same. Upewnij się, że dobrze wpisałeś hasła i spróbuj ponownie."
+    
+    case accountNotExist = "Konto o podanym mailu nie istnieje. Załóż konto."
+    case failedToSendPasswordResset = "Nie udało się wysłać prośby o zresetowanie hasła. Sprawdź połączenie z internetem i spróbuj ponownie"
 }

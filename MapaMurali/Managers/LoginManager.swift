@@ -82,6 +82,28 @@ class LoginManager {
         
     }
     
+    func resetPasswordFor(email: String, completion: @escaping (Result<Bool, MMError>) -> Void) {
+        checkIfEmailIsNOTAlreadyRegistered(email: email) { mailIsNotRegistered, error in
+            guard error == nil else {
+                completion(.failure(MMError.failedToFetchSingInMethods))
+                return
+            }
+            
+            guard mailIsNotRegistered == false else {
+                completion(.failure(MMError.accountNotExist))
+                return
+            }
+            
+            Auth.auth().sendPasswordReset(withEmail: email) { error in
+                if error != nil {
+                    completion(.failure(MMError.failedToSendPasswordResset))
+                } else {
+                    completion(.success(true))
+                }
+            }
+        }
+    }
+    
     func checkIfEmailIsNOTAlreadyRegistered(email: String, completion: @escaping (Bool, MMError?) -> Void) {
         Auth.auth().fetchSignInMethods(forEmail: email) { providers, error in
             if let error = error {

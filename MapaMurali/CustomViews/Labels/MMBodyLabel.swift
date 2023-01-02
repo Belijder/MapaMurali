@@ -33,4 +33,15 @@ class MMBodyLabel: UILabel {
         translatesAutoresizingMaskIntoConstraints = false
     }
     
+    func createStringWithUnderlinedTextForRegistracionForm(plainText: String, textToUnderline: String) {
+        let underlinedText = NSMutableAttributedString(string: textToUnderline)
+        underlinedText.addAttribute(.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: NSRange(location: 0, length: textToUnderline.count))
+        underlinedText.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: 15), range: NSRange(location: 0, length: textToUnderline.count))
+        
+        let fullString = NSMutableAttributedString(string: "\(plainText) ")
+        fullString.append(NSAttributedString(attributedString: underlinedText))
+        
+        attributedText = fullString
+    }
+    
 }
