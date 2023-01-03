@@ -143,12 +143,39 @@ class SingInViewController: UIViewController {
         view.addGestureRecognizer(tap)
     }
     
+    //MARK: - Logic
+    
+    func validateFields() -> Message? {
+        if emailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" ||
+            passwordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
+            return Message(title: "Uzupełnij pola", body: "Aby się zalogować musisz wypełnić pola z adresem email i hasłem.")
+        }
+        
+        let cleanedEmail = emailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        if Utilities.isEmailValid(cleanedEmail) == false {
+            return Message(title: "Nieprawidłowy email", body: "Ten email nie wygląda na prawidłowy. Popraw adres i spróbuj ponownie.")
+        }
+        
+        return nil
+    }
+    
     //MARK: - Actions
     @objc func tryToSingIn(sender: UIButton!) {
-        // Check email and password to singIn
-        guard let login = emailTextField.text else { return }
-        guard let password = passwordTextField.text else { return }
-        loginManager.singIn(email: login, password: password)
+        let faildMessage = validateFields()
+        if faildMessage != nil {
+            presentMMAlert(title: faildMessage!.title, message: faildMessage!.body, buttonTitle: "Ok")
+            return
+        }
+        
+        let cleanedEmail = emailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        let cleanedPassword = passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        loginManager.singIn(email: cleanedEmail, password: cleanedPassword) { message in
+            if message != nil {
+                self.presentMMAlert(title: message!.title, message: message!.body, buttonTitle: "Ok")
+            }
+        }
     }
     
     @objc func singUpButtonPressed(sender: UIButton!) {

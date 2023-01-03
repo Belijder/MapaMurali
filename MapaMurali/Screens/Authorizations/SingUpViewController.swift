@@ -181,39 +181,62 @@ class SingUpViewController: UIViewController {
         view.addGestureRecognizer(tap)
     }
     
+    func validateFields() -> Message? {
+
+        if emailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" ||
+            passwordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" ||
+            confirmPasswordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
+            return Message(title: "Uzupełnij wymagane pola", body: "Aby założy konto musisz uzupełnić wszystkie wymagane pola")
+        }
+        
+        let email = emailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        let password = passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        let confirmedPassword = confirmPasswordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        guard password == confirmedPassword else {
+            return Message(title: "Niezgodne hasła", body: MMError.incompatiblePasswords.rawValue)
+        }
+        
+        if Utilities.isEmailValid(email) == false {
+            return Message(title: "Nieprawidłowy email", body: "Ten email nie wygląda na prawidłowy. Popraw adres i spróbuj ponownie.")
+        }
+        
+        if Utilities.isPasswordValid(password) == false {
+            return Message(title: "Hasło zbyt słabe", body: "Upewnij się, że hasło ma minimum 8 znaków oraz zawiera co najmniej jeden znak specjalny i cyfrę.")
+        }
+        
+        if !acceptTermOfUseToggle.isOn || !acceptPrivacyPolicyToggle.isOn {
+            return Message(title: "Zaznacz zgody", body: "Aby aktywować konto musisz potwierdzić, że zapoznałeś się i akceptujesz warunki użytkowania oraz politykę prywatności naszej aplikacji.")
+        }
+        
+        return nil
+    }
+    
     
     //MARK: - Actions
     @objc func singUpButtonTapped() {
-        guard let email = emailTextField.text else {
-            presentMMAlert(title: "Podaj e-mail", message: "Uzupełnij pole z email-em i spróbuj ponownie.", buttonTitle: "Ok")
-            return
-            
-        }
-        
-        guard let password = passwordTextField.text, let confirmedPassword = confirmPasswordTextField.text else {
-            presentMMAlert(title: "Zdefiniuj hasło", message: "Uzupełnij pola z hasłem i spróbuj ponownie.", buttonTitle: "Ok")
+        let errorMessage = validateFields()
+        if errorMessage != nil {
+            presentMMAlert(title: errorMessage!.title, message: errorMessage!.body, buttonTitle: "Ok")
             return
         }
         
-        
-        guard password == confirmedPassword else {
-            presentMMAlert(title: "Niezgodne hasła", message: MMError.incompatiblePasswords.rawValue, buttonTitle: "Ok")
-            return
-        }
+        let cleanedEmail = emailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        let cleanedPassword = passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
 
         
-        loginManager.checkIfEmailIsNOTAlreadyRegistered(email: email) { success, error in
+        loginManager.checkIfEmailIsNOTAlreadyRegistered(email: cleanedEmail) { success, error in
             if let error = error {
                 self.presentMMAlert(title: "Ups...", message: error.rawValue, buttonTitle: "Ok")
                 return
             }
             
             guard success else {
-                self.presentMMAlert(title: "Konto już istnieje", message: "Ten mail jest już zarejestrowany w naszej bazie. Zaloguj się.", buttonTitle: "Ok")
+                self.presentMMAlert(title: "Konto już istnieje", message: "Ten mail jest już zarejestrowany w naszej bazie. Spróbuj się zalogować.", buttonTitle: "Ok")
                 return
             }
             
-            self.loginManager.singUp(email: email, password: password) { uid in
+            self.loginManager.singUp(email: cleanedEmail, password: cleanedPassword) { uid in
                 print("🟠 UID is: \(uid)")
                 let destVC = VerificationEmailSendViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
                 destVC.modalPresentationStyle = .fullScreen
@@ -227,7 +250,6 @@ class SingUpViewController: UIViewController {
             switch result {
             case.success(let terms):
                 guard let url = URL(string: terms.termOfUse) else {
-//                    print("🔴 URL error when try to fetch legal terms.")
                     self.presentMMAlert(title: "Ups! Coś poszło nie tak. ", message: MMError.failedToGetLegalTerms.rawValue, buttonTitle: "Ok")
                     return
                 }

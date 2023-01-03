@@ -18,11 +18,35 @@ class LoginManager {
     
     var recivedMagicLink = PublishSubject<String>()
     
-    func singIn(email: String, password: String) {
+    func singIn(email: String, password: String, completion: @escaping (Message?) -> Void) {
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
-            if result != nil {
-                self.checkIfUserIsLogged()
+            if let error = error {
+                
+                let nsError = error as NSError
+                print("🔴 ERROR CODE: \(nsError.code)")
+                print("🔴 ERROR DOMAIN: \(nsError.domain)")
+                print("🔴 Error.Localized: \(error.localizedDescription)")
+                
+                let errorMessage = self.handleFirebaseError(nsError)
+                completion(errorMessage)
+            } else {
+                if result != nil {
+                    self.checkIfUserIsLogged()
+                }
             }
+        }
+    }
+    
+    func handleFirebaseError(_ error: NSError) -> Message {
+        switch error.code {
+        case 17011:
+            return Message(title: "Konto nie istnieje.", body: "Ten adres email nie jest przypisany do żadnego konta w naszej bazie. Musisz się zarejestrować.")
+        case 17010:
+            return Message(title: "Konto tymczasowo zablokowane.", body: "Dostęp do tego konta został tymczasowo zablokowany z powodu wielu nieudanych prób logowania. Możesz je natychmiast przywrócić, resetując hasło lub spróbować ponownie później.")
+        case 17009:
+            return Message(title: "Nieprawidłowe hasło", body: "Upewnij się, że wpisałeś dobre hasło. Jeśli nie pamiętasz swojego hasła, może je zresetować.")
+        default:
+            return Message(title: "Ups! Coś poszło nie tak.", body: error.localizedDescription)
         }
     }
     

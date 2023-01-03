@@ -18,7 +18,7 @@ class CompleteUserDetailsViewController: UIViewController {
     
     private let avatarImageView = MMAvatarImageView(frame: .zero)
     private let nickNameTextField = MMTextField(placeholder: "nazwa użytkownika", type: .custom)
-    private let callToActionButton = MMTintedButton(color: MMColors.primary, title: "Zaczynamy!")
+    private let callToActionButton = MMFilledButton(foregroundColor: .white, backgroundColor: MMColors.violetDark, title: "Zaczynamy!")
     
     var avatarImage: Data?
     
@@ -48,12 +48,12 @@ class CompleteUserDetailsViewController: UIViewController {
     }
     
     override func viewDidLayoutSubviews() {
-        nickNameTextField.styleTextFieldWithBottomBorder(color: MMColors.primary)
+        nickNameTextField.styleTextFieldWithBottomBorder(color: MMColors.violetDark)
     }
     
     //MARK: - Set up
     func configureViewController() {
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = MMColors.orangeDark
         title = "Uzupełnij informacje"
     }
     
