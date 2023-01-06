@@ -36,6 +36,26 @@ class MMDataLoadingVC: UIViewController {
         self.containerView.removeFromSuperview()
         self.containerView = nil
     }
-
+    
+    
+    func showEmptyStateView(with message: String, in view: UIView) {
+        let emptyStateView = MMEmptyStateView(message: message)
+        emptyStateView.frame = view.frame
+        view.addSubview(emptyStateView)
+    }
+    
+    func hideEmptyStateView(form view: UIView) {
+        let subviews = view.subviews
+        
+        for subview in subviews {
+            if subview is MMEmptyStateView {
+                print("🟡 The view contains a subview of type MMEmptyStateView")
+                subview.removeFromSuperview()
+                print("🟡 The subview of type UIView was removed from superView")
+            }
+        }
+    }
+    
+    
 
 }

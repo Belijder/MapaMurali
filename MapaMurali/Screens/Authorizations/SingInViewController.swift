@@ -17,7 +17,7 @@ class SingInViewController: UIViewController {
     let databaseManager: DatabaseManager
     var bag = DisposeBag()
     
-    private let logoImage = UIImageView(image: UIImage(named: "LogoViolet"))
+    private let logoImage = UIImageView(image: MMImages.violetLogo)
     private let titleLabel = MMTitleLabel(textAlignment: .left, fontSize: 20)
     
     private let emailTextField = MMTextField(placeholder: "e-mail", type: .email)

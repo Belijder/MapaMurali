@@ -167,11 +167,48 @@ class UserAccountViewController: UIViewController {
     }
     
     func presentLoginScreen() {
-        let vc = SingInViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
-        let nav = UINavigationController(rootViewController: vc)
-        nav.modalPresentationStyle = .fullScreen
-        present(nav, animated: false)
+//        let vc = SingInViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
+//        let nav = UINavigationController(rootViewController: vc)
+//        nav.modalPresentationStyle = .fullScreen
+//        present(nav, animated: false)
+        
+        let destVC = SingInViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
+        destVC.modalPresentationStyle = .fullScreen
+        destVC.navigationController?.navigationBar.tintColor = MMColors.primary
+//        destVC.navigationController?.navigationBar.backItem?.title = "Zaloguj się"
+        present(destVC, animated: false)
     }
+    
+    func deleteAcountAndData(password: String) {
+        print("🟡 Delete account button in alert tapped.")
+        loginManager.deleteAccount(password: password) { result in
+            switch result {
+            case .success(let userID):
+                self.databaseManager.removeAllUserData(userID: userID) { result in
+                    switch result {
+                    case .success(_):
+                        print("🟢 All user data was removed from database.")
+                        self.presentLoginScreen()
+                    case .failure(let error):
+                        print(error.rawValue)
+                        self.presentLoginScreen()
+                    }
+                }
+            case .failure(let error):
+                self.presentMMAlert(title: "Ups!", message: error.rawValue, buttonTitle: "Ok")
+            }
+        }
+    }
+    
+    func add(childVC: UIViewController, to containerView: UIView) {
+        addChild(childVC)
+        containerView.addSubview(childVC.view)
+        childVC.view.frame = containerView.bounds
+        childVC.didMove(toParent: self)
+    }
+    
+    
+    //MARK: - Actions
     
     @objc func rateAppButtonTapped() {
     
@@ -219,27 +256,7 @@ class UserAccountViewController: UIViewController {
         }
     }
     
-    func deleteAcountAndData(password: String) {
-        print("🟡 Delete account button in alert tapped.")
-        loginManager.deleteAccount(password: password) { result in
-            switch result {
-            case .success(let userID):
-                self.databaseManager.removeAllUserData(userID: userID) { result in
-                    switch result {
-                    case .success(_):
-                        print("🟢 All user data was removed from database.")
-                        self.presentLoginScreen()
-                    case .failure(let error):
-                        print(error.rawValue)
-                        self.presentLoginScreen()
-                    }
-                }
-            case .failure(let error):
-                self.presentMMAlert(title: "Ups!", message: error.rawValue, buttonTitle: "Ok")
-            }
-        }
-    }
-    
+
     @objc private func deleteAcconutButtonTapped() {
         let alert = UIAlertController(title: "Usuń konto!",
                                       message: "Aby potwierdzić usunięcie konta oraz wszystkich związanych z nim danych, podaj hasło używane do zalogowania się do aplikacji. Pamiętej, że tej operacji nie będzie można cofnąć.",
@@ -263,16 +280,7 @@ class UserAccountViewController: UIViewController {
         })
         
         present(alert, animated: true)
-        
     }
-    
-    func add(childVC: UIViewController, to containerView: UIView) {
-        addChild(childVC)
-        containerView.addSubview(childVC.view)
-        childVC.view.frame = containerView.bounds
-        childVC.didMove(toParent: self)
-    }
-
 }
 
 //MARK: - Extensions

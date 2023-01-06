@@ -83,19 +83,17 @@ class MainTabBarViewController: UITabBarController {
     private func validateAuth() {
         if FirebaseAuth.Auth.auth().currentUser == nil {
             let destVC = SingInViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
-//            let nav = UINavigationController(rootViewController: vc)
             destVC.modalPresentationStyle = .fullScreen
             destVC.navigationController?.navigationBar.tintColor = MMColors.primary
             destVC.navigationController?.navigationBar.backItem?.title = "Zaloguj się"
             present(destVC, animated: false)
         } else {
-            //Present VC with info about verification requirements
-            
-//            if FirebaseAuth.Auth.auth().currentUser?.isEmailVerified == false {
-//                let destVC = VerificationEmailSendViewController(loginManager: loginManager, databaseManager: databaseManager)
-//                destVC.modalPresentationStyle = .fullScreen
-//                present(destVC, animated: false)
-//            }
+            //Present VC with info about verification requirements if needed
+            if FirebaseAuth.Auth.auth().currentUser?.isEmailVerified == false {
+                let destVC = VerificationEmailSendViewController(loginManager: loginManager, databaseManager: databaseManager)
+                destVC.modalPresentationStyle = .fullScreen
+                present(destVC, animated: false)
+            }
         }
     }
     

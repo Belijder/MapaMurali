@@ -17,6 +17,11 @@ enum MMColors {
     static let orangeLight = UIColor(named: "OrangeLight")!
 }
 
+enum MMImages {
+    static let mmSignet = UIImage(named: "MMSignet")
+    static let violetLogo = UIImage(named: "LogoViolet")
+}
+
 enum Setup {
     static let kFirebaseOpenAppScheme = "FirebaseOpenAppScheme"
     static let kFirebaseOpenAppURIPrefix = "FirebaseOpenAppURIPrefix"

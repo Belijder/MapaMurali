@@ -27,6 +27,7 @@
 		42824F02295C64C000C33AA5 /* VerificationEmailSendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42824F01295C64C000C33AA5 /* VerificationEmailSendViewController.swift */; };
 		42824F042964378200C33AA5 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42824F032964378100C33AA5 /* Utilities.swift */; };
 		42824F0629645E6200C33AA5 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42824F0529645E6200C33AA5 /* Message.swift */; };
+		42824F082966FA1300C33AA5 /* MMEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42824F072966FA1300C33AA5 /* MMEmptyStateView.swift */; };
 		4283A6FE293B95DC00EDFEB5 /* EditMuralViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4283A6FD293B95DC00EDFEB5 /* EditMuralViewModel.swift */; };
 		4283A700293CA7D600EDFEB5 /* LegalTerms.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4283A6FF293CA7D600EDFEB5 /* LegalTerms.swift */; };
 		4283BAB028D5E24A00A54F0F /* MMMuralImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4283BAAF28D5E24A00A54F0F /* MMMuralImageView.swift */; };
@@ -111,6 +112,7 @@
 		42824F01295C64C000C33AA5 /* VerificationEmailSendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationEmailSendViewController.swift; sourceTree = "<group>"; };
 		42824F032964378100C33AA5 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		42824F0529645E6200C33AA5 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		42824F072966FA1300C33AA5 /* MMEmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMEmptyStateView.swift; sourceTree = "<group>"; };
 		4283A6FD293B95DC00EDFEB5 /* EditMuralViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMuralViewModel.swift; sourceTree = "<group>"; };
 		4283A6FF293CA7D600EDFEB5 /* LegalTerms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegalTerms.swift; sourceTree = "<group>"; };
 		4283BAAF28D5E24A00A54F0F /* MMMuralImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMMuralImageView.swift; sourceTree = "<group>"; };
@@ -318,6 +320,7 @@
 			isa = PBXGroup;
 			children = (
 				428BD66028DE322A000B8D69 /* MMAlertContainerView.swift */,
+				42824F072966FA1300C33AA5 /* MMEmptyStateView.swift */,
 				42E61C3828FAC03B00D38205 /* MMUsernameWithAvatarView.swift */,
 			);
 			path = Views;
@@ -570,6 +573,7 @@
 				427CAB5528E60D3200DA7247 /* AddNewViewModel.swift in Sources */,
 				42EA93A92948FB87006F3EF0 /* InfoPlistParser.swift in Sources */,
 				42E61C3D29045AAC00D38205 /* MMAvatarImageView.swift in Sources */,
+				42824F082966FA1300C33AA5 /* MMEmptyStateView.swift in Sources */,
 				426E49FF28931180009C8E99 /* AppDelegate.swift in Sources */,
 				42E61C3728F3200800D38205 /* MMSquareImageView.swift in Sources */,
 				426E4A0128931180009C8E99 /* SceneDelegate.swift in Sources */,

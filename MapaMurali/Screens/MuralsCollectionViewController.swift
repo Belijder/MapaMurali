@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MuralsCollectionViewController: UIViewController {
+class MuralsCollectionViewController: MMDataLoadingVC {
     
     enum Section {
         case main
@@ -19,7 +19,10 @@ class MuralsCollectionViewController: UIViewController {
     var databaseManager: DatabaseManager
     
     var murals: [Mural] = []
+    
     var filteredMurals: [Mural] = []
+    
+    
     var isSearching = false
     
     //MARK: - Initialization
@@ -41,12 +44,18 @@ class MuralsCollectionViewController: UIViewController {
         configureSearchController()
         
         if murals.isEmpty && self.title == "Przeglądaj" { murals = databaseManager.murals }
+        
         if self.title != "Przeglądaj" {
             navigationController?.navigationBar.prefersLargeTitles = false
             let closeButton = UIBarButtonItem(image: UIImage(systemName: "arrow.backward"), style: .plain, target: self, action: #selector(dismissVC))
             navigationItem.leftBarButtonItem = closeButton
+            
+            if murals.isEmpty {
+                showEmptyStateView(with: "Nie masz jeszcze żadnych ulubionych murali.", in: view)
+            }
         }
         updateData(on: murals)
+        
     }
     
     //MARK: - Set up
@@ -120,5 +129,11 @@ extension MuralsCollectionViewController: UISearchResultsUpdating {
         }
         
         updateData(on: filteredMurals)
+        
+        if filteredMurals.isEmpty {
+            showEmptyStateView(with: "Nie znaleziono żadnych murali spełniających kryteria wyszukiwania :(", in: view)
+        } else {
+            hideEmptyStateView(form: view)
+        }
     }
 }

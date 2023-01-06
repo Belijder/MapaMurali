@@ -44,6 +44,10 @@ class MMUserFavoritesMuralsCollectionVC: MMUserMuralsCollectionsVC {
     //MARK: - Actions
     override func actionButtonTapped() {
         print("🟢 Browse User Favorites Murals Button Tapped!")
+        let destVC = MuralsCollectionViewController(databaseManager: databaseManager)
+        destVC.murals = murals
+        destVC.title = "Ulubione murale"
+        self.navigationController?.pushViewController(destVC, animated: true)
     }
     
     //MARK: - Extensions

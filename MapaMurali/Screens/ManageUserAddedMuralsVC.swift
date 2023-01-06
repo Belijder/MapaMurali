@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import RxRelay
 
-class ManageUserAddedMuralsVC: UIViewController {
+class ManageUserAddedMuralsVC: MMDataLoadingVC {
     
     //MARK: - Properties
     let databaseManager: DatabaseManager
@@ -46,6 +46,10 @@ class ManageUserAddedMuralsVC: UIViewController {
         configureMuralTableView()
         bindTableView()
         self.observableMurals.accept(userAddedMurals)
+        
+        if userAddedMurals.isEmpty {
+            showEmptyStateView(with: "Nie masz żadnych dodanych murali. Idź na spacer i zrób kilka fotek :)", in: view)
+        }
         
     }
     //MARK: - Set up
