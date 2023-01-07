@@ -63,14 +63,17 @@ class MuralDetailsViewController: UIViewController {
         configureUIElements()
         layoutUI()
         addFavoriteObserver()
+        addLastEditedMuralsObserver()
     }
     
     //MARK: - Logic
     func checkAuthorPropertyInMuralItem() {
         if let author = muralItem.author, author.isEmpty {
             authorLabel.isHidden = true
+            sendEmailWithAuthorButton.isHidden = false
         } else {
             sendEmailWithAuthorButton.isHidden = true
+            authorLabel.isHidden = false
         }
     }
     
@@ -284,6 +287,10 @@ class MuralDetailsViewController: UIViewController {
     
     @objc func editMural() {
         print("🟡 Edit Mural Button Tapped")
+        let destVC = EditMuralViewController(mural: muralItem, databaseManager: self.databaseManager)
+        let navControler = UINavigationController(rootViewController: destVC)
+        navControler.modalPresentationStyle = .fullScreen
+        self.present(navControler, animated: true)
     }
     
     
@@ -307,6 +314,21 @@ class MuralDetailsViewController: UIViewController {
                     self.favoriteButton.set(systemImageName: "heart")
                 }
                 self.favoriteCounter.createFavoriteCounterTextLabel(counter: self.vm.counterValue, imagePointSize: 25)
+            })
+            .disposed(by: bag)
+    }
+    
+    func addLastEditedMuralsObserver() {
+        databaseManager.lastEditedMuralID
+            .subscribe(onNext: { editedMural in
+                if editedMural.docRef == self.muralItem.docRef {
+                    self.muralItem.adress = editedMural.adress
+                    self.muralItem.city = editedMural.city
+                    self.title = editedMural.adress
+                    self.muralItem.author = editedMural.author
+                    self.authorLabel.text = editedMural.author
+                    self.checkAuthorPropertyInMuralItem()
+                }
             })
             .disposed(by: bag)
     }
