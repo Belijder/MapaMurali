@@ -156,7 +156,7 @@ class MuralDetailsViewController: UIViewController {
     
     func configureDeleteButton() {
         if muralItem.addedBy == databaseManager.currentUser?.id {
-            deleteMuralButton.addTarget(self, action: #selector(deleteMural), for: .touchUpInside)
+            deleteMuralButton.addTarget(self, action: #selector(deleteMuralButtonTapped), for: .touchUpInside)
         } else {
             deleteMuralButton.alpha = 0.0
         }
@@ -255,6 +255,22 @@ class MuralDetailsViewController: UIViewController {
         ])
     }
     
+    //MARK: - Logic
+    
+    func deleteMural() {
+        self.databaseManager.removeMural(for: muralItem.docRef) { success in
+            if success == true {
+                print("🟢 Mural was succesfully deleted from database.")
+                self.databaseManager.lastDeletedMuralID.onNext(self.muralItem.docRef)
+            } else {
+                print("🔴 Try to delete mural from database faild.")
+            }
+        }
+        self.databaseManager.murals.removeAll(where: { $0.docRef == muralItem.docRef })
+        self.view.window!.rootViewController?.dismiss(animated: true, completion: nil)
+    }
+    
+    
     //MARK: - Actions
     @objc func dismissVC() {
         self.dismiss(animated: true)
@@ -296,11 +312,23 @@ class MuralDetailsViewController: UIViewController {
     
     @objc func reportMural() {
         print("🟡 Report Mural Button Tapped")
+        if MFMailComposeViewController.canSendMail() {
+            let mail = MFMailComposeViewController()
+            mail.mailComposeDelegate = self
+            mail.setToRecipients(["mapamurali@gmail.com"])
+            mail.setSubject("Zgłoszenie dotyczące muralu: \(muralItem.docRef)")
+            mail.setMessageBody("<p>Napisz czego dotyczy zgłoszenie</p>", isHTML: true)
+            present(mail, animated: true)
+        } else {
+            presentMMAlert(title: "Nie można wysłać maila", message: "Sprawdź czy masz skonfugurowanego klienta pocztowego i spróbuj ponownie. ", buttonTitle: "Ok")
+        }
     }
     
-    
-    @objc func deleteMural() {
-        print("🟠 Delete Mural Button Tapped")
+    @objc func deleteMuralButtonTapped() {
+        let actionSheet = UIAlertController(title: "Usunąć mural?", message: nil, preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Usuń", style: .destructive) { _ in self.deleteMural() })
+        actionSheet.addAction(UIAlertAction(title: "Anuluj", style: .cancel))
+        present(actionSheet, animated: true)
     }
     
     //MARK: - Binding
