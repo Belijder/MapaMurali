@@ -40,6 +40,7 @@ class DatabaseManager {
     var lastDeletedMuralID = BehaviorSubject<String>(value: "")
     var lastEditedMuralID = PublishSubject<Mural>()
     var mapPinButtonTappedOnMural = PublishSubject<Mural>()
+    var currentUserPublisher = PublishSubject<User>()
     
     var murals = [Mural]() {
         didSet {
@@ -55,7 +56,13 @@ class DatabaseManager {
     
     var observableUsersItem = BehaviorSubject<[User]>(value: [])
     
-    var currentUser: User?
+    var currentUser: User? {
+        didSet {
+            if let user = currentUser {
+                currentUserPublisher.onNext(user)
+            }
+        }
+    }
     
     weak var delegate: DatabaseManagerDelegate?
     
@@ -63,7 +70,7 @@ class DatabaseManager {
     init() {
         fetchMuralItemsFromDatabase()
         fetchMostActivUsers()
-        fetchCurrenUserData()
+//        fetchCurrenUserData()
     }
     
     //MARK: - Create

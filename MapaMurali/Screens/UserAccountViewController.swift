@@ -7,12 +7,15 @@
 
 import UIKit
 import MessageUI
+import RxSwift
 
 class UserAccountViewController: UIViewController {
     
     //MARK: - Properties
     var loginManager: LoginManager
     let databaseManager: DatabaseManager
+    
+    var disposeBag = DisposeBag()
     
     var userAddedMurals = [Mural]()
     var userFavoriteMurals = [Mural]()
@@ -51,9 +54,8 @@ class UserAccountViewController: UIViewController {
         view.backgroundColor = .systemBackground
         self.title = "Moje konto"
     
-        
+        addCurrentUserSubscriber()
         setupScrollView()
-        configureUsernameAndAvatarView()
         configureCollectionsViews()
         configureButtons()
         layoutUI()
@@ -61,6 +63,7 @@ class UserAccountViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        configureUsernameAndAvatarView()
     }
     
     //MARK: - Set up
@@ -78,21 +81,29 @@ class UserAccountViewController: UIViewController {
     }
     
     func configureUsernameAndAvatarView() {
-        guard let userID = loginManager.currentUserID else { return }
-        databaseManager.fetchUserFromDatabase(id: userID) { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let user):
-                    self.usernameAndAvatar.username.text = user.displayName
-                    self.usernameAndAvatar.avatarView.setImage(from: user.avatarURL)
-                case .failure(let error):
-                    print("🔴 Error to fetch users info from Database. Error: \(error)")
-                    self.usernameAndAvatar.username.text = "brak nazwy"
-                }
-            }
+        self.usernameAndAvatar.username.font = UIFont.systemFont(ofSize: 30, weight: .bold)
+        
+//        guard let userID = loginManager.currentUserID else { return }
+//        databaseManager.fetchUserFromDatabase(id: userID) { result in
+//            DispatchQueue.main.async {
+//                switch result {
+//                case .success(let user):
+//                    self.usernameAndAvatar.username.text = user.displayName
+//                    self.usernameAndAvatar.avatarView.setImage(from: user.avatarURL)
+//                case .failure(let error):
+//                    print("🔴 Error to fetch users info from Database. Error: \(error)")
+//                    self.usernameAndAvatar.username.text = "brak nazwy"
+//                }
+//            }
+//        }
+        
+        guard let user = databaseManager.currentUser else {
+            databaseManager.fetchCurrenUserData()
+            return
         }
         
-        self.usernameAndAvatar.username.font = UIFont.systemFont(ofSize: 30, weight: .bold)
+        self.usernameAndAvatar.username.text = user.displayName
+        self.usernameAndAvatar.avatarView.setImage(from: user.avatarURL)
     }
     
     func configureCollectionsViews() {
@@ -167,15 +178,9 @@ class UserAccountViewController: UIViewController {
     }
     
     func presentLoginScreen() {
-//        let vc = SingInViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
-//        let nav = UINavigationController(rootViewController: vc)
-//        nav.modalPresentationStyle = .fullScreen
-//        present(nav, animated: false)
-        
         let destVC = SingInViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
         destVC.modalPresentationStyle = .fullScreen
         destVC.navigationController?.navigationBar.tintColor = MMColors.primary
-//        destVC.navigationController?.navigationBar.backItem?.title = "Zaloguj się"
         present(destVC, animated: false)
     }
     
@@ -280,6 +285,16 @@ class UserAccountViewController: UIViewController {
         })
         
         present(alert, animated: true)
+    }
+    
+    //MARK: - Binding
+    
+    func addCurrentUserSubscriber() {
+        databaseManager.currentUserPublisher
+            .subscribe(onNext: { user in
+                self.configureUsernameAndAvatarView()
+            })
+            .disposed(by: disposeBag)
     }
 }
 

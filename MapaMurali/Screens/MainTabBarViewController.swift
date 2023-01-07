@@ -72,6 +72,7 @@ class MainTabBarViewController: UITabBarController {
         setViewControllers([mapNC, collectionNC, addNC, statisticsNC, accountNC], animated: true)
         
         addMapPinButtonTappedObserver()
+        addUserLoginObserver()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -89,11 +90,11 @@ class MainTabBarViewController: UITabBarController {
             present(destVC, animated: false)
         } else {
             //Present VC with info about verification requirements if needed
-            if FirebaseAuth.Auth.auth().currentUser?.isEmailVerified == false {
-                let destVC = VerificationEmailSendViewController(loginManager: loginManager, databaseManager: databaseManager)
-                destVC.modalPresentationStyle = .fullScreen
-                present(destVC, animated: false)
-            }
+//            if FirebaseAuth.Auth.auth().currentUser?.isEmailVerified == false {
+//                let destVC = VerificationEmailSendViewController(loginManager: loginManager, databaseManager: databaseManager)
+//                destVC.modalPresentationStyle = .fullScreen
+//                present(destVC, animated: false)
+//            }
         }
     }
     
@@ -102,6 +103,17 @@ class MainTabBarViewController: UITabBarController {
         databaseManager.mapPinButtonTappedOnMural
             .subscribe(onNext: { _ in
                 self.selectedIndex = 0
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func addUserLoginObserver() {
+        loginManager.userIsLoggedIn
+            .subscribe(onNext: { value in
+                if value == true {
+                    self.selectedViewController = self.viewControllers?[0]
+                    self.databaseManager.fetchCurrenUserData()
+                }
             })
             .disposed(by: disposeBag)
     }

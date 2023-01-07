@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 class MuralsCollectionViewController: MMDataLoadingVC {
     
@@ -17,9 +18,9 @@ class MuralsCollectionViewController: MMDataLoadingVC {
     var collectionView: UICollectionView!
     var dataSource: UICollectionViewDiffableDataSource<Section, Mural>!
     var databaseManager: DatabaseManager
-    
+    var disposeBag = DisposeBag()
+
     var murals: [Mural] = []
-    
     var filteredMurals: [Mural] = []
     
     
@@ -42,6 +43,7 @@ class MuralsCollectionViewController: MMDataLoadingVC {
         configureCollectionView()
         configureDataSource()
         configureSearchController()
+        addMuralsObserver()
         
         if murals.isEmpty && self.title == "Przeglądaj" { murals = databaseManager.murals }
         
@@ -80,6 +82,7 @@ class MuralsCollectionViewController: MMDataLoadingVC {
     func configureSearchController() {
         let searchController = UISearchController()
         searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
         searchController.searchBar.placeholder = "Szukaj"
         navigationItem.searchController = searchController
     }
@@ -98,6 +101,18 @@ class MuralsCollectionViewController: MMDataLoadingVC {
     @objc func dismissVC() {
         self.navigationController?.popViewController(animated: true)
     }
+    
+    //MARK: - Binding
+    func addMuralsObserver() {
+        if title == "Przeglądaj" {
+            databaseManager.muralItems
+                .subscribe(onNext: { murals in
+                    self.murals = murals
+                    self.updateData(on: self.murals)
+                })
+                .disposed(by: disposeBag)
+        }
+    }
 }
 
 //MARK: - Extensions
@@ -112,7 +127,7 @@ extension MuralsCollectionViewController: UICollectionViewDelegate {
     }
 }
 
-extension MuralsCollectionViewController: UISearchResultsUpdating {
+extension MuralsCollectionViewController: UISearchResultsUpdating, UISearchBarDelegate {
     func updateSearchResults(for searchController: UISearchController) {
         guard let filter = searchController.searchBar.text, !filter.isEmpty else {
             filteredMurals.removeAll()
@@ -131,6 +146,14 @@ extension MuralsCollectionViewController: UISearchResultsUpdating {
         updateData(on: filteredMurals)
         
         if filteredMurals.isEmpty {
+            showEmptyStateView(with: "Nie znaleziono żadnych murali spełniających kryteria wyszukiwania :(", in: view)
+        } else {
+            hideEmptyStateView(form: view)
+        }
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        if murals.isEmpty {
             showEmptyStateView(with: "Nie znaleziono żadnych murali spełniających kryteria wyszukiwania :(", in: view)
         } else {
             hideEmptyStateView(form: view)
