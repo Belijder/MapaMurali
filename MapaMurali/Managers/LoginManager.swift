@@ -88,6 +88,20 @@ class LoginManager {
         })
     }
     
+    func reloadUserStatus(completion: @escaping (Bool) -> Void) {
+        Auth.auth().currentUser?.reload(completion: { error in
+            if let error = error {
+                print("🔴 Error to reload user status. ERROR: \(error.localizedDescription)")
+                completion(false)
+            } else {
+                if Auth.auth().currentUser?.isEmailVerified == true {
+                    completion(true)
+                } else {
+                    completion(false)
+                }
+            }
+        })
+    }
     
     func checkIfUserIsLogged() {
         guard let user = Auth.auth().currentUser else {

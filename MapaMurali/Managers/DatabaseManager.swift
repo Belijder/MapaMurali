@@ -141,6 +141,7 @@ class DatabaseManager {
     //MARK: - Read
     func fetchCurrenUserData() {
         guard let userID = Auth.auth().currentUser?.uid else { return }
+        print("🟠 User verification status: \(Auth.auth().currentUser?.isEmailVerified)")
         fetchUserFromDatabase(id: userID) { result in
             switch result {
             case .success(let user):

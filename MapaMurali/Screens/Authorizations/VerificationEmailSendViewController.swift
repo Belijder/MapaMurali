@@ -7,6 +7,7 @@
 
 import UIKit
 import RxSwift
+import FirebaseAuth
 
 class VerificationEmailSendViewController: UIViewController {
     
@@ -136,6 +137,11 @@ class VerificationEmailSendViewController: UIViewController {
     
     @objc func resendVerificationMail() {
         print("🟡 Resending verification email")
+        guard let user = Auth.auth().currentUser else {
+            presentMMAlert(title: "Ups.", message: "Coś poszło nie tak. Sprawdź połączenie z internetem i spróbuj ponownie.", buttonTitle: "OK")
+            return
+        }
+        loginManager.sendVerificationMailTo(email: user.email!)
     }
     
     //MARK: - Biding
