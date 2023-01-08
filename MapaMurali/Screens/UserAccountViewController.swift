@@ -8,8 +8,9 @@
 import UIKit
 import MessageUI
 import RxSwift
+import FirebaseAuth
 
-class UserAccountViewController: UIViewController {
+class UserAccountViewController: MMDataLoadingVC {
     
     //MARK: - Properties
     var loginManager: LoginManager
@@ -53,8 +54,10 @@ class UserAccountViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         self.title = "Moje konto"
-    
+        
+        addUserLoginObserver()
         addCurrentUserSubscriber()
+        
         setupScrollView()
         configureCollectionsViews()
         configureButtons()
@@ -185,6 +188,7 @@ class UserAccountViewController: UIViewController {
     }
     
     func deleteAcountAndData(password: String) {
+        showLoadingView()
         print("🟡 Delete account button in alert tapped.")
         loginManager.deleteAccount(password: password) { result in
             switch result {
@@ -192,16 +196,36 @@ class UserAccountViewController: UIViewController {
                 self.databaseManager.removeAllUserData(userID: userID) { result in
                     switch result {
                     case .success(_):
-                        print("🟢 All user data was removed from database.")
-                        self.presentLoginScreen()
+                        print("🟢 All user data was removed from database. This should be last print.")
+                        print("Current user is: \(Auth.auth().currentUser?.uid)")
+                        self.loginManager.userIsLoggedIn.onNext(false)
+                        self.dismissLoadingView()
                     case .failure(let error):
-                        print(error.rawValue)
-                        self.presentLoginScreen()
+                        print("🔴 Error on the last step in deleting account. ERROR: \(error.rawValue)")
+                        self.validateAuth()
+                        self.dismissLoadingView()
                     }
                 }
             case .failure(let error):
                 self.presentMMAlert(title: "Ups!", message: error.rawValue, buttonTitle: "Ok")
             }
+        }
+    }
+    
+    private func validateAuth() {
+        if FirebaseAuth.Auth.auth().currentUser == nil {
+            let destVC = SingInViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
+            destVC.modalPresentationStyle = .fullScreen
+            destVC.navigationController?.navigationBar.tintColor = MMColors.primary
+            destVC.navigationController?.navigationBar.backItem?.title = "Zaloguj się"
+            present(destVC, animated: false)
+        } else {
+            //Present VC with info about verification requirements if needed
+//            if FirebaseAuth.Auth.auth().currentUser?.isEmailVerified == false {
+//                let destVC = VerificationEmailSendViewController(loginManager: loginManager, databaseManager: databaseManager)
+//                destVC.modalPresentationStyle = .fullScreen
+//                present(destVC, animated: false)
+//            }
         }
     }
     
@@ -224,7 +248,7 @@ class UserAccountViewController: UIViewController {
             let mail = MFMailComposeViewController()
             mail.mailComposeDelegate = self
             mail.setToRecipients(["mapamurali@gmail.com"])
-            mail.setMessageBody("<p>You're so awesome!</p>", isHTML: true)
+            mail.setMessageBody("<p>W czym możemy pomóc? :)</p>", isHTML: true)
             present(mail, animated: true)
         } else {
             presentMMAlert(title: "Nie można wysłać maila", message: "Sprawdź czy masz skonfugurowanego klienta pocztowego i spróbuj ponownie. ", buttonTitle: "Ok")
@@ -293,6 +317,16 @@ class UserAccountViewController: UIViewController {
         databaseManager.currentUserPublisher
             .subscribe(onNext: { user in
                 self.configureUsernameAndAvatarView()
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func addUserLoginObserver() {
+        loginManager.userIsLoggedIn
+            .subscribe(onNext: { value in
+                if value == false {
+                    self.validateAuth()
+                }
             })
             .disposed(by: disposeBag)
     }

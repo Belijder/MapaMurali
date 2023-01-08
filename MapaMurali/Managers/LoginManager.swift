@@ -158,8 +158,10 @@ class LoginManager {
     func deleteAccount(password: String, completion: @escaping (Result<String, MMError>) -> Void) {
         guard let user = Auth.auth().currentUser else {
             completion(.failure(MMError.defaultError))
+            print("🔴 User to delete not exist. Escaping failure in func deleteAccount")
             return
         }
+        print("🟢 User to delete is exist. Trying to delete user from Database.")
 
         user.delete { error in
             if let error = error {
@@ -171,9 +173,9 @@ class LoginManager {
                             if let error = error {
                                 print("🔴 Error occured when try delete accoutn after reauthenticate user: \(error)")
                                 completion(.failure(MMError.unableToDeleteAccount))
-                                print("🟢 Successfuly deleted user account.")
                             } else {
                                 completion(.success(user.uid))
+                                print("🟢 Successfuly deleted user account after reauthenticate.")
                             }
                         }
                     
@@ -184,6 +186,7 @@ class LoginManager {
                 }
             } else {
                 completion(.success(user.uid))
+                print("🟢 Successfuly deleted user account.")
             }
         }
     }

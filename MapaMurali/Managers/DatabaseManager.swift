@@ -355,6 +355,7 @@ class DatabaseManager {
     }
     
     func removeAllUserData(userID: String, completion: @escaping (Result<Bool, MMError>) -> Void) {
+        print("🟡 The removeAllUserData function has been run")
         removeUserProfile(userID: userID) { result in
             switch result {
             case .success(_):
@@ -373,28 +374,41 @@ class DatabaseManager {
     }
     
     func removeAllUserAddedMurals(userID: String, completion: @escaping (Result<Bool, MMError>) -> Void) {
-        var removedMuralCounter = 0
+        print("🟡 The removeAllUserAddedMurals function has been run")
+        var removedMuralCounter = 0 {
+            didSet {
+                if removedMuralCounter == userAddedMurals.count {
+                    completion(.success(true))
+                }
+            }
+        }
+        
         let userAddedMurals = murals.filter { $0.addedBy == userID }
+        
+        guard userAddedMurals.count > 0 else {
+            print("🟡 User has no murals added.")
+            completion(.success(true))
+            return
+        }
+        
         for mural in userAddedMurals {
             removeMural(for: mural.docRef) { success in
                 if success {
+                    if let index = self.murals.firstIndex(where: { $0.docRef == mural.docRef}) {
+                        self.murals.remove(at: index)
+                    }
                     print("🟢 Successfuly removed mural from Database.")
                     removedMuralCounter += 1
-                    if removedMuralCounter == userAddedMurals.count {
-                        completion(.success(true))
-                    }
                 } else {
                     print("🔴 Error when try to remove mural from Database. DocRef: \(mural.docRef)")
                     removedMuralCounter += 1
-                    if removedMuralCounter == userAddedMurals.count {
-                        completion(.failure(MMError.defaultError))
-                    }
                 }
             }
         }
     }
     
     func removeUserProfile(userID: String, completion: @escaping (Result<Bool, MMError>) -> Void) {
+        print("🟡 The removeUserProfile function has been run")
         let userProfileRef = db.collection(CollectionName.users.rawValue).document(userID)
         
         userProfileRef.delete { error in
