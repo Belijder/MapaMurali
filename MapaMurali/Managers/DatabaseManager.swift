@@ -360,6 +360,9 @@ class DatabaseManager {
         removeUserProfile(userID: userID) { result in
             switch result {
             case .success(_):
+                self.removeImageFromStorage(imageType: .avatar, docRef: userID) { _ in
+                    print("🟢 Avatar image removed from storage.")
+                }
                 self.removeAllUserAddedMurals(userID: userID) { result in
                     switch result {
                     case .success(_):
