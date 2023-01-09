@@ -62,6 +62,7 @@ class MapViewController: UIViewController {
     func configureMapView() {
         map.delegate = self
         map.showsUserLocation = true
+        map.pointOfInterestFilter = .excludingAll
         map.userTrackingMode = .followWithHeading
         setMapRegion(with: map.userLocation.coordinate)
     }
@@ -81,13 +82,14 @@ class MapViewController: UIViewController {
     
     func setupUserTrackingButton() {
         let button = MKUserTrackingButton(mapView: map)
-    
-        button.layer.backgroundColor = UIColor(white: 1, alpha: 0.8).cgColor
-        button.layer.borderColor = UIColor.white.cgColor
+        button.layer.backgroundColor = MMColors.orangeDark.cgColor
+        button.layer.borderColor = MMColors.orangeLight.cgColor
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 5
+        button.tintColor = MMColors.violetDark
         button.translatesAutoresizingMaskIntoConstraints = false
         map.addSubview(button)
+        map.userTrackingMode = .follow
 
         NSLayoutConstraint.activate([button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
                                      button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10)

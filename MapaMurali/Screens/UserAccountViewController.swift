@@ -188,7 +188,7 @@ class UserAccountViewController: MMDataLoadingVC {
     }
     
     func deleteAcountAndData(password: String) {
-        showLoadingView()
+        showLoadingView(message: "Trwa usuwanie konta")
         print("🟡 Delete account button in alert tapped.")
         loginManager.deleteAccount(password: password) { result in
             switch result {

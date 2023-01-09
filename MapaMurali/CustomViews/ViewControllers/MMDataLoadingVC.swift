@@ -11,7 +11,7 @@ class MMDataLoadingVC: UIViewController {
     
     var containerView: UIView!
     
-    func showLoadingView() {
+    func showLoadingView(message: String?) {
         containerView = UIView(frame: view.bounds)
         view.addSubview(containerView)
         
@@ -28,6 +28,20 @@ class MMDataLoadingVC: UIViewController {
             activityIndicator.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
             activityIndicator.centerYAnchor.constraint(equalTo: containerView.centerYAnchor)
         ])
+        
+        if message != nil {
+            let messageLabel = MMBodyLabel(textAlignment: .center)
+            containerView.addSubviews(messageLabel)
+            messageLabel.text = message
+            messageLabel.textColor = .secondaryLabel
+            
+            NSLayoutConstraint.activate([
+                messageLabel.topAnchor.constraint(equalTo: activityIndicator.bottomAnchor, constant: 30),
+                messageLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
+                messageLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
+                messageLabel.heightAnchor.constraint(equalToConstant: 20)
+            ])
+        }
         
         activityIndicator.startAnimating()
     }

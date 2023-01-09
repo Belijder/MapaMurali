@@ -179,6 +179,7 @@ class AddNewItemViewController: MMDataLoadingVC {
     
     func actionSheetCameraButtonTapped() {
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            showLoadingView(message: "Uzyskiwanie dostępu do aparatu...")
             let imagePickerController = UIImagePickerController()
             imagePickerController.delegate = self
             imagePickerController.sourceType = .camera
@@ -188,6 +189,7 @@ class AddNewItemViewController: MMDataLoadingVC {
     
     func actionSheetLibraryButtonTapped() {
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+            showLoadingView(message: "Otwieranie albumu ze zdjęciami...")
             let imagePickerController = UIImagePickerController()
             imagePickerController.delegate = self
             imagePickerController.sourceType = .photoLibrary
@@ -202,7 +204,7 @@ class AddNewItemViewController: MMDataLoadingVC {
     
     @objc func localizationButtonTapped() {
         locationManager.requestLocation()
-        showLoadingView()
+        showLoadingView(message: "Pobieranie lokalizacji...")
     }
     
     @objc func callToActionButtonTapped() {
@@ -230,7 +232,7 @@ class AddNewItemViewController: MMDataLoadingVC {
             
             do {
                 let data = try self.vm.createDataforDatabase(author: self.authorTextField.text, location: location)
-                self.showLoadingView()
+                self.showLoadingView(message: "Dodawanie muralu...")
                 self.databaseManager.addNewItemToDatabase(itemData: data, fullSizeImageData: fullSizeImageData, thumbnailData: thumbnailImageData)
             } catch let error {
                 self.presentMMAlert(title: "Mural nie został dodany", message: error.localizedDescription, buttonTitle: "Ok")
@@ -296,8 +298,9 @@ class AddNewItemViewController: MMDataLoadingVC {
 extension AddNewItemViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        var image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
+        self.dismissLoadingView()
         
+        var image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
         
         if let imageToCheck = image {
             if imageToCheck.size.width > imageToCheck.size.height {
@@ -321,6 +324,12 @@ extension AddNewItemViewController: UIImagePickerControllerDelegate, UINavigatio
         removeImageButton.alpha = 1.0
         
         self.dismiss(animated: true)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        print("🟡 Cancel button tapped in UIImagePickerController")
+        dismiss(animated: true, completion: nil)
+        self.dismissLoadingView()
     }
 }
 

@@ -56,7 +56,7 @@ class EditMuralViewController: AddNewItemViewController {
     //MARK: - Actions
     override func callToActionButtonTapped() {
         
-        self.showLoadingView()
+        self.showLoadingView(message: "Zapisywanie zmian...")
         
         print("🟡 Save edited mural tapped")
         
