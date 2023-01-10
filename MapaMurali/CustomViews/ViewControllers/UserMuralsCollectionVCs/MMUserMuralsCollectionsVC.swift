@@ -89,7 +89,6 @@ class MMUserMuralsCollectionsVC: UIViewController {
         NSLayoutConstraint.activate([
             collectionTitle.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionTitle.topAnchor.constraint(equalTo: view.topAnchor),
-            collectionTitle.widthAnchor.constraint(equalToConstant: 250),
             collectionTitle.heightAnchor.constraint(equalToConstant: 20),
             
             actionButton.centerYAnchor.constraint(equalTo: collectionTitle.centerYAnchor),

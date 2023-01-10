@@ -59,9 +59,9 @@ class UserAccountViewController: MMDataLoadingVC {
         addCurrentUserSubscriber()
         
         setupScrollView()
-        configureCollectionsViews()
         configureButtons()
         layoutUI()
+        configureCollectionsViews()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -79,26 +79,12 @@ class UserAccountViewController: MMDataLoadingVC {
         
         NSLayoutConstraint.activate([
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            contentView.heightAnchor.constraint(equalToConstant: 930)
+            contentView.heightAnchor.constraint(equalToConstant: 940)
         ])
     }
     
     func configureUsernameAndAvatarView() {
         self.usernameAndAvatar.username.font = UIFont.systemFont(ofSize: 30, weight: .bold)
-        
-//        guard let userID = loginManager.currentUserID else { return }
-//        databaseManager.fetchUserFromDatabase(id: userID) { result in
-//            DispatchQueue.main.async {
-//                switch result {
-//                case .success(let user):
-//                    self.usernameAndAvatar.username.text = user.displayName
-//                    self.usernameAndAvatar.avatarView.setImage(from: user.avatarURL)
-//                case .failure(let error):
-//                    print("🔴 Error to fetch users info from Database. Error: \(error)")
-//                    self.usernameAndAvatar.username.text = "brak nazwy"
-//                }
-//            }
-//        }
         
         guard let user = databaseManager.currentUser else {
             databaseManager.fetchCurrenUserData()
