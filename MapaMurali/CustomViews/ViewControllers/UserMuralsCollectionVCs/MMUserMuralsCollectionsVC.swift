@@ -62,6 +62,12 @@ class MMUserMuralsCollectionsVC: UIViewController {
         configureDataSoure()
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            collectionView.layer.backgroundColor = UIColor.secondarySystemBackground.cgColor
+        }
+    }
+    
     //MARK: - Set up
     func configureActionButton() {
         actionButton.configuration?.titleAlignment = .trailing

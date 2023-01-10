@@ -24,6 +24,12 @@ class MMFavoritesMuralCollectionCell: UICollectionViewCell {
         muralImageView.roundCorners(corners: [.topLeft, .topRight], radius: 20)
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            contentView.layer.backgroundColor = UIColor.tertiarySystemBackground.cgColor
+        }
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
