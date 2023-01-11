@@ -84,6 +84,7 @@ class MuralsCollectionViewController: MMDataLoadingVC {
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
         searchController.searchBar.placeholder = "Szukaj"
+        searchController.searchBar.returnKeyType = .done
         navigationItem.searchController = searchController
     }
     

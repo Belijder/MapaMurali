@@ -70,15 +70,24 @@ class SingUpViewController: UIViewController {
         titleLabel.text = "Załóż konto"
         titleLabel.textColor = MMColors.violetDark
         
+        emailTextField.delegate = self
+        emailTextField.tag = 1
+        emailTextField.returnKeyType = .next
         emailTextField.textColor = .white
         emailTextField.attributedPlaceholder = NSAttributedString(string: "e-mail",
                                                                   attributes: [NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.5)])
         
+        
+        passwordTextField.delegate = self
+        passwordTextField.tag = 2
+        passwordTextField.returnKeyType = .next
         passwordTextField.textColor = .white
         passwordTextField.attributedPlaceholder = NSAttributedString(string: "hasło",
                                                                      attributes: [NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.5)])
-        
+        confirmPasswordTextField.delegate = self
+        confirmPasswordTextField.tag = 3
         confirmPasswordTextField.textColor = .white
+        confirmPasswordTextField.returnKeyType = .done
         confirmPasswordTextField.attributedPlaceholder = NSAttributedString(string: "powtórz hasło",
                                                                             attributes: [NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.5)])
         
@@ -290,5 +299,17 @@ class SingUpViewController: UIViewController {
                 }
             })
             .disposed(by: bag)
+    }
+}
+
+//MARK: - Extensions
+extension SingUpViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if let nextField = textField.superview?.viewWithTag(textField.tag + 1) as? UITextField {
+            nextField.becomeFirstResponder()
+        } else {
+            textField.resignFirstResponder()
+        }
+        return false
     }
 }

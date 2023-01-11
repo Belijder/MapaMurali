@@ -71,11 +71,16 @@ class SingInViewController: UIViewController {
         titleLabel.text = "Logowanie"
         titleLabel.textColor = MMColors.violetDark
         
+        emailTextField.delegate = self
+        emailTextField.tag = 1
         emailTextField.textColor = .white
+        emailTextField.returnKeyType = .next
         emailTextField.attributedPlaceholder = NSAttributedString(string: "e-mail",
                                                                   attributes: [NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.5)])
-        
+        passwordTextField.delegate = self
+        passwordTextField.tag = 2
         passwordTextField.textColor = .white
+        passwordTextField.returnKeyType = .done
         passwordTextField.attributedPlaceholder = NSAttributedString(string: "hasło",
                                                                   attributes: [NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.5)])
         
@@ -230,5 +235,16 @@ class SingInViewController: UIViewController {
                 }
             })
             .disposed(by: bag)
+    }
+}
+
+extension SingInViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if let nextField = textField.superview?.viewWithTag(textField.tag + 1) as? UITextField {
+            nextField.becomeFirstResponder()
+        } else {
+            textField.resignFirstResponder()
+        }
+        return false
     }
 }

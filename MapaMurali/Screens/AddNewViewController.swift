@@ -56,15 +56,12 @@ class AddNewItemViewController: MMDataLoadingVC {
         configureRemoveImageButton()
         configureCameraImageView()
         configureCallToActionButton()
+        configureTextFields()
         
-        adressTextField.delegate = self
-        cityTextField.delegate = self
-        authorTextField.delegate = self
         locationManager.delegate = self
         databaseManager.delegate = self
         
         layoutUI()
-        configureAdressTextField()
         createDissmisKeyboardTapGesture()
     }
     
@@ -91,17 +88,29 @@ class AddNewItemViewController: MMDataLoadingVC {
     }
     
     
-    func configureAdressTextField() {
+    private func configureCallToActionButton() {
+        callToActionBatton.addTarget(self, action: #selector(callToActionButtonTapped), for: .touchUpInside)
+    }
+    
+    
+    private func configureTextFields() {
+        adressTextField.delegate = self
+        adressTextField.tag = 1
+        adressTextField.returnKeyType = .next
+        
         let localizationButton = MMCircleButton(color: MMColors.primary, systemImageName: "location.circle.fill")
         localizationButton.frame = CGRect(x: adressTextField.frame.size.width - 25, y: 25, width: 25, height: 25)
         adressTextField.rightView = localizationButton
         adressTextField.rightViewMode = .always
         localizationButton.addTarget(self, action: #selector(localizationButtonTapped), for: .touchUpInside)
         
-    }
-    
-    private func configureCallToActionButton() {
-        callToActionBatton.addTarget(self, action: #selector(callToActionButtonTapped), for: .touchUpInside)
+        cityTextField.delegate = self
+        cityTextField.tag = 2
+        cityTextField.returnKeyType = .next
+        
+        authorTextField.delegate = self
+        authorTextField.tag = 3
+        authorTextField.returnKeyType = .done
     }
     
     
@@ -334,10 +343,14 @@ extension AddNewItemViewController: UIImagePickerControllerDelegate, UINavigatio
 }
 
 extension AddNewItemViewController: UITextFieldDelegate {
-    
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
+        if let nextField = textField.superview?.viewWithTag(textField.tag + 1) as? UITextField {
+            nextField.becomeFirstResponder()
+        } else {
+            textField.resignFirstResponder()
+        }
+        return false
     }
 }
 
