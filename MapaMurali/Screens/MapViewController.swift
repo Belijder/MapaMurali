@@ -21,8 +21,26 @@ class MapViewController: UIViewController {
     
     var userLocation: CLLocationCoordinate2D?
     var mapIsLocatingUser = true
+    var clusteredMurals = PublishSubject<[Mural]>()
     
     private var bag = DisposeBag()
+    
+    lazy var clusteredCollectionView: UICollectionView = {
+        let padding: CGFloat = 20
+        let layout = UICollectionViewFlowLayout()
+        layout.itemSize = CGSize(width: 120, height: 160)
+        layout.sectionInset = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
+        layout.scrollDirection = .horizontal
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.register(MMFavoritesMuralCollectionCell.self, forCellWithReuseIdentifier: MMFavoritesMuralCollectionCell.identifier)
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.backgroundColor = .secondarySystemBackground.withAlphaComponent(0.5)
+        collectionView.layer.cornerRadius = 20
+        collectionView.alpha = 0.0
+        return collectionView
+    }()
+    
+   
     
     //MARK: - Initialization
     init(databaseManager: DatabaseManager) {
@@ -41,6 +59,8 @@ class MapViewController: UIViewController {
         addLastDeletedMuralObserwer()
         addLastEditedMuralObserver()
         addMapPinButtonTappedObserver()
+        bindClusteredCollectionView()
+        clusteredMuralsObserver()
         
         setMapConstraints()
         configureMapView()
@@ -68,15 +88,20 @@ class MapViewController: UIViewController {
     }
     
     func setMapConstraints() {
-        view.addSubview(map)
+        view.addSubviews(map, clusteredCollectionView)
         map.translatesAutoresizingMaskIntoConstraints = false
+        clusteredCollectionView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             map.topAnchor.constraint(equalTo: self.view.topAnchor),
             map.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
             map.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            map.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
+            map.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
             
+            clusteredCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            clusteredCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            clusteredCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            clusteredCollectionView.heightAnchor.constraint(equalToConstant: 200),
         ])
     }
     
@@ -91,8 +116,8 @@ class MapViewController: UIViewController {
         map.addSubview(button)
         map.userTrackingMode = .follow
 
-        NSLayoutConstraint.activate([button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
-                                     button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10)
+        NSLayoutConstraint.activate([button.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+                                     button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10)
         ])
     }
     
@@ -149,6 +174,37 @@ class MapViewController: UIViewController {
         databaseManager.mapPinButtonTappedOnMural
             .subscribe(onNext: { mural in
                 self.setMapRegion(with: CLLocationCoordinate2D(latitude: mural.latitude, longitude: mural.longitude))
+            })
+            .disposed(by: bag)
+    }
+    
+    private func bindClusteredCollectionView() {
+        clusteredMurals
+            .bind(to:
+                clusteredCollectionView.rx.items(cellIdentifier: MMFavoritesMuralCollectionCell.identifier,
+                                        cellType: MMFavoritesMuralCollectionCell.self)) { indexPath, mural, cell in
+                cell.set(mural: mural)
+            }
+            .disposed(by: bag)
+        
+        clusteredCollectionView.rx.modelSelected(Mural.self).subscribe(onNext: { mural in
+            let destVC = MuralDetailsViewController(muralItem: mural, databaseManager: self.databaseManager)
+            destVC.title = mural.adress
+            let navControler = UINavigationController(rootViewController: destVC)
+            navControler.modalPresentationStyle = .fullScreen
+            self.present(navControler, animated: true)
+        })
+        .disposed(by: bag)
+    }
+    
+    private func clusteredMuralsObserver() {
+        clusteredMurals
+            .subscribe(onNext: { murals in
+                if murals.isEmpty {
+                    UIView.animate(withDuration: 0.25) { self.clusteredCollectionView.alpha = 0.0 }
+                } else {
+                    UIView.animate(withDuration: 0.25) { self.clusteredCollectionView.alpha = 1.0 }
+                }
             })
             .disposed(by: bag)
     }
@@ -213,10 +269,21 @@ extension MapViewController: MKMapViewDelegate {
                 self.map.deselectAnnotation(view.annotation, animated: true)
             }
         }
+        
+        if let clusterAnnotation = annotation as? MKClusterAnnotation {
+            var murals = [Mural]()
+            for annotation in clusterAnnotation.memberAnnotations {
+                if let mural = databaseManager.murals.first(where: { $0.docRef == annotation.title }) {
+                    murals.append(mural)
+                }
+            }
+            clusteredMurals.onNext(murals)
+        }
     }
     
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
         print("Odtapnięto \(view)")
+        clusteredMurals.onNext([])
     }
 }
 
