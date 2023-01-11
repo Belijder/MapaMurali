@@ -29,13 +29,13 @@ class MuralDetailsViewController: UIViewController {
     var dateLabelDescription = MMBodyLabel(textAlignment: .left)
     var dateLabel = MMBodyLabel(textAlignment: .left)
     var userLabelDescription = MMBodyLabel(textAlignment: .left)
+    var userView = MMUsernameWithAvatarView(imageHeight: 40)
     
     var editOrReportMuralButton = MMCircleButton()
     var deleteMuralButton = MMCircleButton(color: .systemRed, systemImageName: "trash")
     
     let favoriteCounter = MMTitleLabel(textAlignment: .center, fontSize: 25)
     
-    var userView = MMUsernameWithAvatarView(imageHeight: 40)
     
     //MARK: - Initialization
     init(muralItem: Mural, databaseManager: DatabaseManager) {
@@ -162,7 +162,6 @@ class MuralDetailsViewController: UIViewController {
         }
     }
     
-
     func configureUserView() {
         databaseManager.fetchUserFromDatabase(id: muralItem.addedBy) { result in
             DispatchQueue.main.async {
@@ -170,6 +169,11 @@ class MuralDetailsViewController: UIViewController {
                 case .success(let user):
                     self.userView.username.text = user.displayName
                     self.userView.avatarView.setImage(from: user.avatarURL)
+                    
+                    let tap = UITapGestureRecognizer(target: self, action: #selector(self.userViewTapped))
+                    self.userView.isUserInteractionEnabled = true
+                    self.userView.addGestureRecognizer(tap)
+                    
                 case .failure(let error):
                     print("🔴 Error to fetch users info from Database. Error: \(error)")
                     self.userView.username.text = "brak nazwy"
@@ -285,6 +289,17 @@ class MuralDetailsViewController: UIViewController {
         print("🟡 Map Pin button tapped.")
         databaseManager.mapPinButtonTappedOnMural.onNext(muralItem)
         dismissVC()
+    }
+    
+    @objc func userViewTapped() {
+        let usersMural = self.databaseManager.murals.filter { $0.addedBy == muralItem.addedBy }
+        
+        let destVC = MuralsCollectionViewController(databaseManager: self.databaseManager)
+        destVC.title = "Dodane przez \(userView.username.text ?? "użytkownika")"
+        destVC.murals = usersMural
+        
+        self.navigationController?.navigationBar.tintColor = MMColors.primary
+        self.navigationController?.pushViewController(destVC, animated: true)
     }
     
     
