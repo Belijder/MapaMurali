@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-class CompleteUserDetailsViewController: UIViewController {
+class CompleteUserDetailsViewController: MMDataLoadingVC {
     
     //MARK: - Properties
     
@@ -16,6 +16,7 @@ class CompleteUserDetailsViewController: UIViewController {
     let databaseManager: DatabaseManager
     var bag = DisposeBag()
     
+    private let titleLabel = MMTitleLabel(textAlignment: .left, fontSize: 20)
     private let avatarImageView = MMAvatarImageView(frame: .zero)
     private let nickNameTextField = MMTextField(placeholder: "nazwa użytkownika", type: .custom)
     private let callToActionButton = MMFilledButton(foregroundColor: .white, backgroundColor: MMColors.violetDark, title: "Zaczynamy!")
@@ -58,6 +59,9 @@ class CompleteUserDetailsViewController: UIViewController {
     }
     
     func configureUIElements() {
+        titleLabel.text = "Uzupełnij informacje"
+        titleLabel.textColor = MMColors.violetDark
+        
         let tap = UITapGestureRecognizer(target: self, action: #selector(avatarImageViewTapped))
         avatarImageView.isUserInteractionEnabled = true
         avatarImageView.addGestureRecognizer(tap)
@@ -66,13 +70,19 @@ class CompleteUserDetailsViewController: UIViewController {
     }
     
     func layoutUI() {
-        view.addSubviews(avatarImageView, nickNameTextField, callToActionButton)
+        view.addSubviews(titleLabel, avatarImageView, nickNameTextField, callToActionButton)
         
         avatarImageView.translatesAutoresizingMaskIntoConstraints = false
         let padding: CGFloat = 20
         
         NSLayoutConstraint.activate([
-            avatarImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
+            
+            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
+            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
+            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
+            titleLabel.heightAnchor.constraint(equalToConstant: 30),
+            
+            avatarImageView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 30),
             avatarImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             avatarImageView.heightAnchor.constraint(equalToConstant: 120),
             avatarImageView.widthAnchor.constraint(equalToConstant: 120),
@@ -127,6 +137,8 @@ class CompleteUserDetailsViewController: UIViewController {
     
     @objc func callToActionButtonTapped() {
         
+        showLoadingView(message: "Uakualnianie informacji")
+        
         guard let email = UserDefaults.standard.object(forKey: Setup.kEmail) as? String else { return }
         print("🟠 email from UserDefault is: \(email)")
         
@@ -150,6 +162,7 @@ class CompleteUserDetailsViewController: UIViewController {
         self.databaseManager.addNewUserToDatabase(id: userID, userData: userData, avatarImageData: avatarData) { success in
             if success {
                 self.loginManager.userIsLoggedIn.onNext(true)
+                self.dismissLoadingView()
             }
         }
         
