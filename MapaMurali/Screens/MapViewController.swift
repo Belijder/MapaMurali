@@ -60,7 +60,6 @@ class MapViewController: UIViewController {
         addLastEditedMuralObserver()
         addMapPinButtonTappedObserver()
         bindClusteredCollectionView()
-        clusteredMuralsObserver()
         
         setMapConstraints()
         configureMapView()
@@ -196,18 +195,6 @@ class MapViewController: UIViewController {
         })
         .disposed(by: bag)
     }
-    
-    private func clusteredMuralsObserver() {
-        clusteredMurals
-            .subscribe(onNext: { murals in
-                if murals.isEmpty {
-                    UIView.animate(withDuration: 0.25) { self.clusteredCollectionView.alpha = 0.0 }
-                } else {
-                    UIView.animate(withDuration: 0.25) { self.clusteredCollectionView.alpha = 1.0 }
-                }
-            })
-            .disposed(by: bag)
-    }
 }
 
 //MARK: - Extensions
@@ -271,6 +258,7 @@ extension MapViewController: MKMapViewDelegate {
         }
         
         if let clusterAnnotation = annotation as? MKClusterAnnotation {
+            UIView.animate(withDuration: 0.1) { self.clusteredCollectionView.alpha = 1.0 }
             var murals = [Mural]()
             for annotation in clusterAnnotation.memberAnnotations {
                 if let mural = databaseManager.murals.first(where: { $0.docRef == annotation.title }) {
@@ -284,6 +272,7 @@ extension MapViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
         print("Odtapnięto \(view)")
         clusteredMurals.onNext([])
+        UIView.animate(withDuration: 0.1) { self.clusteredCollectionView.alpha = 0.0 }
     }
 }
 
