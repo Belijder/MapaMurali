@@ -87,6 +87,8 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
     
     //MARK: - Logic
     private func validateAuth() {
+        guard databaseManager.currentUser == nil else { return }
+        
         if FirebaseAuth.Auth.auth().currentUser == nil {
             print("Validation IF User verification status: \(Auth.auth().currentUser?.isEmailVerified)")
             let destVC = SingInViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
@@ -100,7 +102,14 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
             if FirebaseAuth.Auth.auth().currentUser?.isEmailVerified == false {
                 loginManager.reloadUserStatus { success in
                     if success {
-                        return
+                        if self.databaseManager.currentUser == nil {
+                            print("🟠 Found nil in current user data on validation auth proccess.")
+                            let destVC = CompleteUserDetailsViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
+                            destVC.modalPresentationStyle = .fullScreen
+                            self.present(destVC, animated: false)
+                        } else {
+                            return
+                        }
                     } else {
                         let destVC = VerificationEmailSendViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
                         destVC.modalPresentationStyle = .fullScreen
