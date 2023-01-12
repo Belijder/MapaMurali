@@ -20,6 +20,8 @@ class MuralsCollectionViewController: MMDataLoadingVC {
     var databaseManager: DatabaseManager
     var disposeBag = DisposeBag()
 
+    let searchController = UISearchController()
+    
     var murals: [Mural] = []
     var filteredMurals: [Mural] = []
     
@@ -80,7 +82,6 @@ class MuralsCollectionViewController: MMDataLoadingVC {
     }
     
     func configureSearchController() {
-        let searchController = UISearchController()
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
         searchController.searchBar.placeholder = "Szukaj"
@@ -150,6 +151,16 @@ extension MuralsCollectionViewController: UISearchResultsUpdating, UISearchBarDe
             showEmptyStateView(with: "Nie znaleziono żadnych murali spełniających kryteria wyszukiwania :(", in: view)
         } else {
             hideEmptyStateView(form: view)
+        }
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.isEmpty {
+            if murals.isEmpty {
+                showEmptyStateView(with: "Nie znaleziono żadnych murali spełniających kryteria wyszukiwania :(", in: view)
+            } else {
+                hideEmptyStateView(form: view)
+            }
         }
     }
     
