@@ -33,7 +33,7 @@ class MMUserMuralsCollectionsVC: UIViewController {
     var dataSource: UICollectionViewDiffableDataSource<Section, Mural>!
     
     let collectionTitle = MMTitleLabel(textAlignment: .left, fontSize: 15)
-    let actionButton = MMPlainButton()
+    let actionButton = MMTitleLabel(textAlignment: .right, fontSize: 14)
     let emptyStateLabel = MMBodyLabel(textAlignment: .center)
     
     var murals: [Mural]!
@@ -70,8 +70,9 @@ class MMUserMuralsCollectionsVC: UIViewController {
     
     //MARK: - Set up
     func configureActionButton() {
-        actionButton.configuration?.titleAlignment = .trailing
-        actionButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(actionButtonTapped))
+        actionButton.isUserInteractionEnabled = true
+        actionButton.addGestureRecognizer(tap)
     }
     
     
@@ -95,14 +96,14 @@ class MMUserMuralsCollectionsVC: UIViewController {
         NSLayoutConstraint.activate([
             collectionTitle.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionTitle.topAnchor.constraint(equalTo: view.topAnchor),
-            collectionTitle.heightAnchor.constraint(equalToConstant: 20),
+            collectionTitle.heightAnchor.constraint(equalToConstant: 40),
             
             actionButton.centerYAnchor.constraint(equalTo: collectionTitle.centerYAnchor),
             actionButton.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             actionButton.leadingAnchor.constraint(equalTo: collectionTitle.trailingAnchor),
-            actionButton.heightAnchor.constraint(equalToConstant: 20),
+            actionButton.heightAnchor.constraint(equalToConstant: 40),
             
-            collectionView.topAnchor.constraint(equalTo: collectionTitle.bottomAnchor, constant: 10),
+            collectionView.topAnchor.constraint(equalTo: collectionTitle.bottomAnchor, constant: 0),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.heightAnchor.constraint(equalToConstant: 140),

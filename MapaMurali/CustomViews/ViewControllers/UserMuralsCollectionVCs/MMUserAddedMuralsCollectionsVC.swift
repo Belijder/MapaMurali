@@ -34,7 +34,8 @@ class MMUserAddedMuralsCollectionsVC: MMUserMuralsCollectionsVC {
     
     //MARK: - Set up
     private func configureItems() {
-        self.actionButton.set(color: MMColors.primary, title: "Zarządzaj")
+        self.actionButton.text = "Zarządzaj"
+        self.actionButton.textColor = MMColors.primary
         self.emptyStateLabel.text = "Nie dodałeś jeszcze żadnych murali."
         
     }

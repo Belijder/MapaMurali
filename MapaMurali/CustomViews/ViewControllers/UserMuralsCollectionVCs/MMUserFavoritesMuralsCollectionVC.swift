@@ -36,7 +36,8 @@ class MMUserFavoritesMuralsCollectionVC: MMUserMuralsCollectionsVC {
     
     //MARK: - Set up
     func configureItems() {
-        actionButton.set(color: MMColors.primary, title: "Przeglądaj")
+        self.actionButton.text = "Przeglądaj"
+        self.actionButton.textColor = MMColors.primary
         self.emptyStateLabel.text = "Nie masz jeszcze ulubionych murali."
         
     }
