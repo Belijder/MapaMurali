@@ -11,7 +11,7 @@ class MuralCell: UICollectionViewCell {
     
     static let reuseID = "MuralCell"
     
-    let muralImageView = MMSquareImageView(frame: .zero)
+    var muralImageView = MMSquareImageView(frame: .zero)
     
     override init(frame: CGRect) {
         super.init(frame: frame)

@@ -22,6 +22,10 @@ class MuralsCollectionViewController: MMDataLoadingVC {
 
     let searchController = UISearchController()
     
+    var selectedCell: MuralCell?
+    var selectedCellImageViewSnapshot: UIView?
+    var animator: Animator?
+    
     var murals: [Mural] = []
     var filteredMurals: [Mural] = []
     
@@ -120,12 +124,26 @@ class MuralsCollectionViewController: MMDataLoadingVC {
 //MARK: - Extensions
 extension MuralsCollectionViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        showLoadingView(message: nil)
         let muralItem = isSearching ? filteredMurals[indexPath.item] : murals[indexPath.item]
-        let destVC = MuralDetailsViewController(muralItem: muralItem, databaseManager: databaseManager)
-        destVC.title = muralItem.adress
-        let navControler = UINavigationController(rootViewController: destVC)
-        navControler.modalPresentationStyle = .fullScreen
-        self.present(navControler, animated: true)
+        
+        selectedCell = collectionView.cellForItem(at: indexPath) as? MuralCell
+        selectedCellImageViewSnapshot = selectedCell?.muralImageView.snapshotView(afterScreenUpdates: false)
+        
+        let destVC = MuralDetailsViewController(muralItem: muralItem, databaseManager: self.databaseManager)
+        
+        destVC.transitioningDelegate = self
+        destVC.modalPresentationStyle = .fullScreen
+        
+        
+        NetworkManager.shared.downloadImage(from: muralItem.imageURL) { image in
+            DispatchQueue.main.async {
+                destVC.imageView.image = image
+                self.dismissLoadingView()
+                self.present(destVC, animated: true)
+            }
+            
+        }
     }
 }
 
@@ -170,5 +188,34 @@ extension MuralsCollectionViewController: UISearchResultsUpdating, UISearchBarDe
         } else {
             hideEmptyStateView(form: view)
         }
+    }
+}
+
+extension MuralsCollectionViewController: UIViewControllerTransitioningDelegate {
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+
+        guard let muralsCollectionVC = source as? MuralsCollectionViewController,
+              let muralDetailsVC = presented as? MuralDetailsViewController,
+              let selectedCellImageViewSnapshot = selectedCellImageViewSnapshot
+        else {
+            return nil
+            
+        }
+
+        animator = Animator(type: .present, firstViewController: muralsCollectionVC, secondViewController: muralDetailsVC, selectedCellImageSnapshot: selectedCellImageViewSnapshot)
+        
+        return animator
+        
+        
+    }
+    
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        guard let muralDetailsVC = dismissed as? MuralDetailsViewController,
+              let selectedCellImageViewSnapshot = selectedCellImageViewSnapshot
+        else { return nil }
+
+        animator = Animator(type: .dismiss, firstViewController: self, secondViewController: muralDetailsVC, selectedCellImageSnapshot: selectedCellImageViewSnapshot)
+
+        return animator
     }
 }

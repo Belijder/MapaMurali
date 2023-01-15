@@ -87,6 +87,7 @@
 		42EA93A72947C4A9006F3EF0 /* FirebaseDynamicLinks in Frameworks */ = {isa = PBXBuildFile; productRef = 42EA93A62947C4A9006F3EF0 /* FirebaseDynamicLinks */; };
 		42EA93A92948FB87006F3EF0 /* InfoPlistParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EA93A82948FB87006F3EF0 /* InfoPlistParser.swift */; };
 		42EA93AC294DA8AB006F3EF0 /* CompleteUserDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EA93AB294DA8AB006F3EF0 /* CompleteUserDetailsViewController.swift */; };
+		42ECF0732973E6840097C843 /* Animator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42ECF0722973E6840097C843 /* Animator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -165,6 +166,7 @@
 		42EA93A82948FB87006F3EF0 /* InfoPlistParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoPlistParser.swift; sourceTree = "<group>"; };
 		42EA93AA294A4D49006F3EF0 /* MapaMurali.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MapaMurali.entitlements; sourceTree = "<group>"; };
 		42EA93AB294DA8AB006F3EF0 /* CompleteUserDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteUserDetailsViewController.swift; sourceTree = "<group>"; };
+		42ECF0722973E6840097C843 /* Animator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -300,6 +302,7 @@
 				42867B6F2896FC8100E5159F /* LoginManager.swift */,
 				4289AEBF28E2110500C3FFF5 /* DatabaseManager.swift */,
 				42E61C2728F1CF3500D38205 /* NetworkManager.swift */,
+				42ECF0722973E6840097C843 /* Animator.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -554,6 +557,7 @@
 				42824F0629645E6200C33AA5 /* Message.swift in Sources */,
 				427C1A642910E899000E5619 /* MMFavoritesMuralCollectionCell.swift in Sources */,
 				428BD65E28DE30B0000B8D69 /* MMTitleLabel.swift in Sources */,
+				42ECF0732973E6840097C843 /* Animator.swift in Sources */,
 				42618DDE2917BC590052DB76 /* MMPopularCityTableViewCell.swift in Sources */,
 				426E4A0328931180009C8E99 /* MapViewController.swift in Sources */,
 				428BD66528DE3B7B000B8D69 /* UIViewController+Ext.swift in Sources */,

@@ -20,8 +20,10 @@ class MuralDetailsViewController: UIViewController {
     var imageView = MMFullSizeImageView(frame: .zero)
     var containerView = UIView()
     
+    var closeButton = MMCircleButton(color: .white, systemImageName: "xmark")
     var favoriteButton = MMCircleButton(color: MMColors.primary)
     var mapPinButton = MMCircleButton(color: .white, systemImageName: "mappin.and.ellipse")
+    
    
     var authorLabelDescription = MMBodyLabel(textAlignment: .left)
     var authorLabel = MMTitleLabel(textAlignment: .left, fontSize: 15)
@@ -55,7 +57,7 @@ class MuralDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         containerView.addSubviews(mapPinButton, dateLabelDescription, dateLabel, authorLabelDescription, authorLabel, sendEmailWithAuthorButton, userLabelDescription, userView, favoriteCounter, editOrReportMuralButton)
-        view.addSubviews(imageView, containerView, favoriteButton, deleteMuralButton)
+        view.addSubviews(imageView, containerView, favoriteButton, closeButton, deleteMuralButton)
         
         configureViewController()
         checkAuthorPropertyInMuralItem()
@@ -113,7 +115,9 @@ class MuralDetailsViewController: UIViewController {
     
     
     func configureUIElements() {
-        imageView.downloadImage(from: muralItem.imageURL)
+        if imageView.image == nil {
+            imageView.downloadImage(from: muralItem.imageURL)
+        }
         
         mapPinButton.configuration?.baseBackgroundColor = MMColors.primary
         mapPinButton.addTarget(self, action: #selector(mapPinButtonTapped), for: .touchUpInside)
@@ -131,6 +135,8 @@ class MuralDetailsViewController: UIViewController {
         
         favoriteButton.set(systemImageName: vm.favoriteImageName)
         favoriteButton.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
+        
+        configureCloseButton()
         
         favoriteCounter.createFavoriteCounterTextLabel(counter: muralItem.favoritesCount, imagePointSize: 25)
         
@@ -160,6 +166,11 @@ class MuralDetailsViewController: UIViewController {
         } else {
             deleteMuralButton.alpha = 0.0
         }
+    }
+    
+    func configureCloseButton() {
+        closeButton.configuration?.baseBackgroundColor = .clear
+        closeButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
     }
     
     func configureUserView() {
@@ -196,6 +207,11 @@ class MuralDetailsViewController: UIViewController {
             favoriteButton.trailingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: -20),
             favoriteButton.heightAnchor.constraint(equalToConstant: 44),
             favoriteButton.widthAnchor.constraint(equalToConstant: 44),
+            
+            closeButton.topAnchor.constraint(equalTo:  view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            closeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            closeButton.heightAnchor.constraint(equalToConstant: 40),
+            closeButton.widthAnchor.constraint(equalToConstant: 40),
             
             containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -252,7 +268,7 @@ class MuralDetailsViewController: UIViewController {
             editOrReportMuralButton.heightAnchor.constraint(equalToConstant: 44),
             editOrReportMuralButton.widthAnchor.constraint(equalToConstant: 44),
             
-            deleteMuralButton.topAnchor.constraint(equalTo: imageView.topAnchor, constant: 20),
+            deleteMuralButton.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: -40),
             deleteMuralButton.leadingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: 20),
             deleteMuralButton.heightAnchor.constraint(equalToConstant: 44),
             deleteMuralButton.widthAnchor.constraint(equalToConstant: 44)
