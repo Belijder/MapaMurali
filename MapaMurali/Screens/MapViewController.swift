@@ -188,10 +188,8 @@ class MapViewController: UIViewController {
         
         clusteredCollectionView.rx.modelSelected(Mural.self).subscribe(onNext: { mural in
             let destVC = MuralDetailsViewController(muralItem: mural, databaseManager: self.databaseManager)
-            destVC.title = mural.adress
-            let navControler = UINavigationController(rootViewController: destVC)
-            navControler.modalPresentationStyle = .fullScreen
-            self.present(navControler, animated: true)
+            destVC.modalPresentationStyle = .fullScreen
+            self.present(destVC, animated: true)
         })
         .disposed(by: bag)
     }
@@ -247,12 +245,9 @@ extension MapViewController: MKMapViewDelegate {
             guard let docRef = annotation.title else { return }
             guard let index = databaseManager.murals.firstIndex(where: { $0.docRef == docRef }) else { return }
             let muralItem = databaseManager.murals[index]
-            let vc = MuralDetailsViewController(muralItem: muralItem, databaseManager: databaseManager)
-            vc.title = muralItem.adress
-            let nc = UINavigationController(rootViewController: vc)
-            
-            nc.modalPresentationStyle = .fullScreen
-            self.present(nc, animated: true) {
+            let destVC = MuralDetailsViewController(muralItem: muralItem, databaseManager: databaseManager)
+            destVC.modalPresentationStyle = .fullScreen
+            self.present(destVC, animated: true) {
                 self.map.deselectAnnotation(view.annotation, animated: true)
             }
         }

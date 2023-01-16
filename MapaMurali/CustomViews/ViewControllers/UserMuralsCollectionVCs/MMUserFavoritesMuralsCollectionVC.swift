@@ -54,10 +54,8 @@ class MMUserFavoritesMuralsCollectionVC: MMUserMuralsCollectionsVC {
     //MARK: - Extensions
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let destVC = MuralDetailsViewController(muralItem: murals[indexPath.row], databaseManager: databaseManager)
-        destVC.title = murals[indexPath.row].adress
-        let navControler = UINavigationController(rootViewController: destVC)
-        navControler.modalPresentationStyle = .fullScreen
-        self.present(navControler, animated: true)
+        destVC.modalPresentationStyle = .fullScreen
+        self.present(destVC, animated: true)
 
     }
 }

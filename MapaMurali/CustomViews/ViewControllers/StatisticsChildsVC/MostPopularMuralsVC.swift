@@ -86,10 +86,8 @@ class MostPopularMuralsVC: UIViewController {
         
         collectionView.rx.modelSelected(Mural.self).subscribe(onNext: { mural in
             let destVC = MuralDetailsViewController(muralItem: mural, databaseManager: self.statisticsViewModel.databaseManager)
-            destVC.title = mural.adress
-            let navControler = UINavigationController(rootViewController: destVC)
-            navControler.modalPresentationStyle = .fullScreen
-            self.present(navControler, animated: true)
+            destVC.modalPresentationStyle = .fullScreen
+            self.present(destVC, animated: true)
         }).disposed(by: disposeBag)
     }
     
