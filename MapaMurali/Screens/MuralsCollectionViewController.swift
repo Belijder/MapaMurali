@@ -82,6 +82,8 @@ class MuralsCollectionViewController: MMDataLoadingVC {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MuralCell.reuseID, for: indexPath) as! MuralCell
             cell.set(imageURL: mural.thumbnailURL)
             
+            NetworkManager.shared.downloadImage(from: mural.imageURL) { _ in }
+            
             return cell
         })
     }
