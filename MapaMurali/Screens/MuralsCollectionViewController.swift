@@ -24,6 +24,7 @@ class MuralsCollectionViewController: MMDataLoadingVC {
     
     var selectedCell: MuralCell?
     var selectedCellImageViewSnapshot: UIView?
+    var windowSnapshot: UIView?
     var animator: Animator?
     
     var murals: [Mural] = []
@@ -129,6 +130,7 @@ extension MuralsCollectionViewController: UICollectionViewDelegate {
         
         selectedCell = collectionView.cellForItem(at: indexPath) as? MuralCell
         selectedCellImageViewSnapshot = selectedCell?.muralImageView.snapshotView(afterScreenUpdates: false)
+        windowSnapshot = view.window?.snapshotView(afterScreenUpdates: false)
         
         let destVC = MuralDetailsViewController(muralItem: muralItem, databaseManager: self.databaseManager)
         
@@ -196,13 +198,13 @@ extension MuralsCollectionViewController: UIViewControllerTransitioningDelegate 
 
         guard let muralsCollectionVC = source as? MuralsCollectionViewController,
               let muralDetailsVC = presented as? MuralDetailsViewController,
-              let selectedCellImageViewSnapshot = selectedCellImageViewSnapshot
+              let selectedCellImageViewSnapshot = selectedCellImageViewSnapshot,
+              let windowSnapshot = windowSnapshot
         else {
             return nil
-            
         }
 
-        animator = Animator(type: .present, firstViewController: muralsCollectionVC, secondViewController: muralDetailsVC, selectedCellImageSnapshot: selectedCellImageViewSnapshot)
+        animator = Animator(type: .present, firstViewController: muralsCollectionVC, secondViewController: muralDetailsVC, selectedCellImageSnapshot: selectedCellImageViewSnapshot, windowSnapshot: windowSnapshot)
         
         return animator
         
@@ -211,10 +213,11 @@ extension MuralsCollectionViewController: UIViewControllerTransitioningDelegate 
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         guard let muralDetailsVC = dismissed as? MuralDetailsViewController,
-              let selectedCellImageViewSnapshot = selectedCellImageViewSnapshot
+              let selectedCellImageViewSnapshot = selectedCellImageViewSnapshot,
+              let windowSnapshot = windowSnapshot
         else { return nil }
 
-        animator = Animator(type: .dismiss, firstViewController: self, secondViewController: muralDetailsVC, selectedCellImageSnapshot: selectedCellImageViewSnapshot)
+        animator = Animator(type: .dismiss, firstViewController: self, secondViewController: muralDetailsVC, selectedCellImageSnapshot: selectedCellImageViewSnapshot, windowSnapshot: windowSnapshot)
 
         return animator
     }
