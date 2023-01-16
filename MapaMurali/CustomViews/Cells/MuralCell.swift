@@ -27,7 +27,7 @@ class MuralCell: UICollectionViewCell {
         muralImageView.pinToEdges(of: self)
     }
     
-    func set(imageURL: String) {
-        muralImageView.downloadImage(fromURL: imageURL)
+    func set(imageURL: String, imageType: ImageType, docRef: String) {
+        muralImageView.downloadImage(fromURL: imageURL, imageType: imageType, docRef: docRef)
     }
 }

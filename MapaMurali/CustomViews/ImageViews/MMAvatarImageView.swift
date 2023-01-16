@@ -30,8 +30,8 @@ class MMAvatarImageView: UIImageView {
         translatesAutoresizingMaskIntoConstraints = false
     }
     
-    func setImage(from url: String) {
-        NetworkManager.shared.downloadImage(from: url) { [weak self] image in
+    func setImage(from url: String, userID: String) {
+        NetworkManager.shared.downloadImage(from: url, imageType: .avatar, name: userID) { [weak self] image in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.layer.cornerRadius = self.bounds.width / 2.0

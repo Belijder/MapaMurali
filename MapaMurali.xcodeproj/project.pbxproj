@@ -88,6 +88,7 @@
 		42EA93A92948FB87006F3EF0 /* InfoPlistParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EA93A82948FB87006F3EF0 /* InfoPlistParser.swift */; };
 		42EA93AC294DA8AB006F3EF0 /* CompleteUserDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EA93AB294DA8AB006F3EF0 /* CompleteUserDetailsViewController.swift */; };
 		42ECF0732973E6840097C843 /* Animator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42ECF0722973E6840097C843 /* Animator.swift */; };
+		42ECF075297588E80097C843 /* PersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42ECF074297588E80097C843 /* PersistenceManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -167,6 +168,7 @@
 		42EA93AA294A4D49006F3EF0 /* MapaMurali.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MapaMurali.entitlements; sourceTree = "<group>"; };
 		42EA93AB294DA8AB006F3EF0 /* CompleteUserDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteUserDetailsViewController.swift; sourceTree = "<group>"; };
 		42ECF0722973E6840097C843 /* Animator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animator.swift; sourceTree = "<group>"; };
+		42ECF074297588E80097C843 /* PersistenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -303,6 +305,7 @@
 				4289AEBF28E2110500C3FFF5 /* DatabaseManager.swift */,
 				42E61C2728F1CF3500D38205 /* NetworkManager.swift */,
 				42ECF0722973E6840097C843 /* Animator.swift */,
+				42ECF074297588E80097C843 /* PersistenceManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -585,6 +588,7 @@
 				42618DE1291FDACC0052DB76 /* MMUserMuralsCollectionsVC.swift in Sources */,
 				42E61C2E28F2ED6400D38205 /* Constants.swift in Sources */,
 				42867B69289590BD00E5159F /* UserAccountViewController.swift in Sources */,
+				42ECF075297588E80097C843 /* PersistenceManager.swift in Sources */,
 				42D9EA2529260E0000A7A9DC /* EditMuralViewController.swift in Sources */,
 				428CEADA29214070006BC964 /* MMUserFavoritesMuralsCollectionVC.swift in Sources */,
 			);

@@ -92,7 +92,7 @@ class UserAccountViewController: MMDataLoadingVC {
         }
         
         self.usernameAndAvatar.username.text = user.displayName
-        self.usernameAndAvatar.avatarView.setImage(from: user.avatarURL)
+        self.usernameAndAvatar.avatarView.setImage(from: user.avatarURL, userID: user.id)
     }
     
     func configureCollectionsViews() {

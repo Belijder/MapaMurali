@@ -116,7 +116,7 @@ class MuralDetailsViewController: UIViewController {
     
     func configureUIElements() {
         if imageView.image == nil {
-            imageView.downloadImage(from: muralItem.imageURL)
+            imageView.downloadImage(from: muralItem.imageURL, imageType: .fullSize, docRef: muralItem.docRef)
         }
         
         mapPinButton.configuration?.baseBackgroundColor = MMColors.primary
@@ -179,7 +179,7 @@ class MuralDetailsViewController: UIViewController {
                 switch result {
                 case .success(let user):
                     self.userView.username.text = user.displayName
-                    self.userView.avatarView.setImage(from: user.avatarURL)
+                    self.userView.avatarView.setImage(from: user.avatarURL, userID: user.id)
                     
                     let tap = UITapGestureRecognizer(target: self, action: #selector(self.userViewTapped))
                     self.userView.isUserInteractionEnabled = true

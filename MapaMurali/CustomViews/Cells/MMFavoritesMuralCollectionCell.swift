@@ -36,7 +36,7 @@ class MMFavoritesMuralCollectionCell: UICollectionViewCell {
     
     
     func set(mural: Mural) {
-        muralImageView.downloadImage(fromURL: mural.thumbnailURL)
+        muralImageView.downloadImage(fromURL: mural.thumbnailURL, imageType: .thumbnail, docRef: mural.docRef)
         favoritesCounter.createFavoriteCounterTextLabel(counter: mural.favoritesCount, imagePointSize: 16)
     }
     

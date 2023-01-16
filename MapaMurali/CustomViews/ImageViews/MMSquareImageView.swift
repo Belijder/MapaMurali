@@ -26,8 +26,8 @@ class MMSquareImageView: UIImageView {
         translatesAutoresizingMaskIntoConstraints = false
     }
     
-    func downloadImage(fromURL url: String) {
-        NetworkManager.shared.downloadImage(from: url) { [weak self] image in
+    func downloadImage(fromURL url: String, imageType: ImageType, docRef: String) {
+        NetworkManager.shared.downloadImage(from: url, imageType: imageType, name: docRef) { [weak self] image in
             guard let self = self else { return }
             
             guard let image = image else { return }

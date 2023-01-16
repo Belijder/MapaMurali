@@ -18,7 +18,7 @@ class EditMuralViewController: AddNewItemViewController {
         super.init(databaseManager: databaseManager)
         self.mural = mural
         
-        NetworkManager.shared.downloadImage(from: mural.imageURL) { image in
+        NetworkManager.shared.downloadImage(from: mural.imageURL, imageType: .fullSize, name: mural.docRef) { image in
             DispatchQueue.main.async {
                 self.selectedImageView.image = image
                 self.selectedImageView.didSelectedImage()

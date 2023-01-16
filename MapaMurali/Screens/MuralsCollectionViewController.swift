@@ -80,9 +80,9 @@ class MuralsCollectionViewController: MMDataLoadingVC {
         dataSource = UICollectionViewDiffableDataSource<Section, Mural>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, mural) -> UICollectionViewCell? in
             
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MuralCell.reuseID, for: indexPath) as! MuralCell
-            cell.set(imageURL: mural.thumbnailURL)
+            cell.set(imageURL: mural.thumbnailURL, imageType: .thumbnail, docRef: mural.docRef)
             
-            NetworkManager.shared.downloadImage(from: mural.imageURL) { _ in }
+            NetworkManager.shared.downloadImage(from: mural.imageURL, imageType: .fullSize, name: mural.docRef) { _ in }
             
             return cell
         })
@@ -140,7 +140,7 @@ extension MuralsCollectionViewController: UICollectionViewDelegate {
         destVC.modalPresentationStyle = .fullScreen
         
         
-        NetworkManager.shared.downloadImage(from: muralItem.imageURL) { image in
+        NetworkManager.shared.downloadImage(from: muralItem.imageURL, imageType: .fullSize, name: muralItem.docRef) { image in
             DispatchQueue.main.async {
                 destVC.imageView.image = image
                 self.dismissLoadingView()
