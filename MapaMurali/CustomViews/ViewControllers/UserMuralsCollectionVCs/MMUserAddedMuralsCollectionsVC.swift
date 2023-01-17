@@ -50,8 +50,21 @@ class MMUserAddedMuralsCollectionsVC: MMUserMuralsCollectionsVC {
     
     //MARK: - Extensions
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let destVC = MuralDetailsViewController(muralItem: murals[indexPath.row], databaseManager: databaseManager)
+        super.collectionView(collectionView, didSelectItemAt: indexPath)
+        showLoadingView(message: nil)
+        
+        let muralItem = murals[indexPath.row]
+        
+        let destVC = MuralDetailsViewController(muralItem: muralItem, databaseManager: databaseManager)
+        destVC.transitioningDelegate = self
         destVC.modalPresentationStyle = .fullScreen
-        self.present(destVC, animated: true)
+        
+        NetworkManager.shared.downloadImage(from: muralItem.imageURL, imageType: .fullSize, name: muralItem.docRef) { image in
+            DispatchQueue.main.async {
+                destVC.imageView.image = image
+                self.dismissLoadingView()
+                self.present(destVC, animated: true)
+            }
+        }
     }
 }

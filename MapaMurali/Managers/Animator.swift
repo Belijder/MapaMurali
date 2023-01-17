@@ -7,13 +7,20 @@
 
 import UIKit
 
+
+class MMAnimableViewController: MMDataLoadingVC {
+    var selectedCell: MuralCell?
+    var selectedCellImageViewSnapshot: UIView?
+    var windowSnapshot: UIView?
+}
+
 final class Animator: NSObject, UIViewControllerAnimatedTransitioning {
     
     //MARK: - Properities
     static let duration: TimeInterval = 0.5
     
     private let type: PresentationType
-    private let firstViewController: MuralsCollectionViewController
+    private let firstViewController: MMAnimableViewController
     private let secondViewController: MuralDetailsViewController
     private var selectedCellImageViewSnapshot: UIView
     private let firstVCwindowSnapshot: UIView
@@ -21,7 +28,7 @@ final class Animator: NSObject, UIViewControllerAnimatedTransitioning {
     
     
     //MARK: - Initialization
-    init?(type: PresentationType, firstViewController: MuralsCollectionViewController, secondViewController: MuralDetailsViewController, selectedCellImageSnapshot: UIView, windowSnapshot: UIView) {
+    init?(type: PresentationType, firstViewController: MMAnimableViewController, secondViewController: MuralDetailsViewController, selectedCellImageSnapshot: UIView, windowSnapshot: UIView) {
         self.type = type
         self.firstViewController = firstViewController
         self.secondViewController = secondViewController

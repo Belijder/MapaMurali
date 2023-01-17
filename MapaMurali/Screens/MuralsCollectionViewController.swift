@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-class MuralsCollectionViewController: MMDataLoadingVC {
+class MuralsCollectionViewController: MMAnimableViewController {
     
     enum Section {
         case main
@@ -22,9 +22,9 @@ class MuralsCollectionViewController: MMDataLoadingVC {
 
     let searchController = UISearchController()
     
-    var selectedCell: MuralCell?
-    var selectedCellImageViewSnapshot: UIView?
-    var windowSnapshot: UIView?
+//    var selectedCell: MuralCell?
+//    var selectedCellImageViewSnapshot: UIView?
+//    var windowSnapshot: UIView?
     var animator: Animator?
     
     var murals: [Mural] = []
