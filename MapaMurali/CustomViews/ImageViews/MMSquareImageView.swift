@@ -38,5 +38,23 @@ class MMSquareImageView: UIImageView {
             }
         }
     }
+    
+    func downloadImageAndCropItToCircle(fromURL url: String, imageType: ImageType, docRef: String) {
+        NetworkManager.shared.downloadImage(from: url, imageType: imageType, name: docRef) { [weak self] image in
+            guard let self = self else { return }
+            guard let image = image else { return }
+            
+            let thumbnailImage = image.aspectFittedToHeight(50)
+            let circleImage = thumbnailImage.cropImageToCircle()
+            
+            DispatchQueue.main.async {
+                self.image = circleImage
+                self.layer.masksToBounds = true
+                self.layer.borderWidth = 2
+                self.layer.borderColor = MMColors.primary.cgColor
+                self.layer.cornerRadius = 19
+            }
+        }
+    }
 
 }
