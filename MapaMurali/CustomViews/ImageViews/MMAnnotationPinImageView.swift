@@ -29,6 +29,12 @@ class MMAnnotationPinImageView: UIImageView {
         })
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            layer.borderColor = MMColors.primary.cgColor
+        }
+    }
+    
     private func configure() {
         clipsToBounds = true
         translatesAutoresizingMaskIntoConstraints = false
@@ -45,6 +51,10 @@ class MMAnnotationPinImageView: UIImageView {
             
             DispatchQueue.main.async {
                 self.image = circleImage
+                self.layer.masksToBounds = true
+                self.layer.borderWidth = 2
+                self.layer.borderColor = MMColors.primary.cgColor
+                self.layer.cornerRadius = 19
             }
         }
         dataTask.resume()
