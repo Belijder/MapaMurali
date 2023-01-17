@@ -9,9 +9,13 @@ import UIKit
 
 
 class MMAnimableViewController: MMDataLoadingVC {
-    var selectedCell: MuralCell?
+    var selectedCell: AnimatorCellProtocol?
     var selectedCellImageViewSnapshot: UIView?
     var windowSnapshot: UIView?
+}
+
+protocol AnimatorCellProtocol: AnyObject {
+    var muralImageView: MMSquareImageView { get set }
 }
 
 final class Animator: NSObject, UIViewControllerAnimatedTransitioning {

@@ -7,11 +7,10 @@
 
 import UIKit
 
-class MMFavoritesMuralCollectionCell: UICollectionViewCell {
-    
+class MMFavoritesMuralCollectionCell: UICollectionViewCell, AnimatorCellProtocol { 
     static let identifier = "MMFavoritesMuralCollectionCell"
     
-    let muralImageView = MMSquareImageView(frame: .zero)
+    var muralImageView = MMSquareImageView(frame: .zero)
     var favoritesCounter = MMTitleLabel(textAlignment: .center, fontSize: 16)
     
     override init(frame: CGRect) {

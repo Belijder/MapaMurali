@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MuralCell: UICollectionViewCell {
+class MuralCell: UICollectionViewCell, AnimatorCellProtocol {
     
     static let reuseID = "MuralCell"
     
