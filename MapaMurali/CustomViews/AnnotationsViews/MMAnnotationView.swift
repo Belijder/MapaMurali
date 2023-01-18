@@ -8,7 +8,7 @@
 import UIKit
 import MapKit
 
-final class MMAnnotationView: MKAnnotationView {
+final class MMAnnotationView: MKAnnotationView, AnimatorCellProtocol {
     
     static let reuseIdentifier = "MMAnnotationReuseID"
     

@@ -263,13 +263,27 @@ extension MapViewController: MKMapViewDelegate {
         guard let annotation = view.annotation else { return }
         
         if let annotation = annotation as? MKPointAnnotation {
+            showLoadingView(message: nil)
             guard let docRef = annotation.title else { return }
             guard let index = databaseManager.murals.firstIndex(where: { $0.docRef == docRef }) else { return }
             let muralItem = databaseManager.murals[index]
-            let destVC = MuralDetailsViewController(muralItem: muralItem, databaseManager: databaseManager)
+            
+            self.selectedCell = view as? MMAnnotationView
+            self.selectedCellImageViewSnapshot = self.selectedCell?.muralImageView.snapshotView(afterScreenUpdates: false)
+            self.windowSnapshot = self.view.window?.snapshotView(afterScreenUpdates: false)
+            
+            let destVC = MuralDetailsViewController(muralItem: muralItem, databaseManager: self.databaseManager)
             destVC.modalPresentationStyle = .fullScreen
-            self.present(destVC, animated: true) {
-                self.map.deselectAnnotation(view.annotation, animated: true)
+            destVC.transitioningDelegate = self
+            
+            NetworkManager.shared.downloadImage(from: muralItem.imageURL, imageType: .fullSize, name: muralItem.docRef) { image in
+                DispatchQueue.main.async {
+                    destVC.imageView.image = image
+                    self.dismissLoadingView()
+                    self.present(destVC, animated: true) {
+                        self.map.deselectAnnotation(view.annotation, animated: true)
+                    }
+                }
             }
         }
         
@@ -300,6 +314,10 @@ extension MapViewController: UIViewControllerTransitioningDelegate {
               let selectedCellImageViewSnapshot = selectedCellImageViewSnapshot,
               let windowSnapshot = windowSnapshot
         else {
+            print("muralsCollectionVC: \(source)")
+            print("muralDetailsVC: \(presented)")
+            print("selectedCellImageViewSnapshot: \(selectedCellImageViewSnapshot)")
+            print("windowSnapshot: \(windowSnapshot)")
             return nil
         }
 
