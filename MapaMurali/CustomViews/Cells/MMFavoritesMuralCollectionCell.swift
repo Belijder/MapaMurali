@@ -20,7 +20,7 @@ class MMFavoritesMuralCollectionCell: UICollectionViewCell, AnimatorCellProtocol
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        muralImageView.roundCorners(corners: [.topLeft, .topRight], radius: 20)
+        muralImageView.roundCorners(corners: [.topLeft, .topRight], radius: RadiusValue.muralCellRadiusValue)
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -40,7 +40,7 @@ class MMFavoritesMuralCollectionCell: UICollectionViewCell, AnimatorCellProtocol
     }
     
     private func configure() {
-        contentView.layer.cornerRadius = 20
+        contentView.layer.cornerRadius = RadiusValue.muralCellRadiusValue
         contentView.layer.backgroundColor = UIColor.tertiarySystemBackground.cgColor
         addSubviews(muralImageView, favoritesCounter)
         

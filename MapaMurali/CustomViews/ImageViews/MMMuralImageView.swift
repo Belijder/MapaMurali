@@ -25,7 +25,7 @@ class MMMuralImageView: UIImageView {
         
         placeholderView.translatesAutoresizingMaskIntoConstraints = false
         
-        layer.cornerRadius = 20
+        layer.cornerRadius = RadiusValue.muralCellRadiusValue
         clipsToBounds = true
         layer.borderWidth = 2
         layer.borderColor = UIColor.secondaryLabel.cgColor

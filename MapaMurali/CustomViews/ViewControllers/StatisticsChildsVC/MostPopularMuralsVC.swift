@@ -86,6 +86,7 @@ class MostPopularMuralsVC: MMAnimableViewController {
         
         collectionView.rx.itemSelected.subscribe(onNext: { index in
             self.selectedCell = self.collectionView.cellForItem(at: index) as? MMFavoritesMuralCollectionCell
+            self.cellShape = .circle(radius: RadiusValue.muralCellRadiusValue)
             self.setSnapshotsForAnimation()
         })
         .disposed(by: disposeBag)

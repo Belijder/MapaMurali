@@ -94,7 +94,7 @@ class MuralDetailsViewController: UIViewController {
     
     func configureContainerView() {
         containerView.backgroundColor = UIColor.systemBackground
-        containerView.layer.cornerRadius = 30
+        containerView.layer.cornerRadius = 20
         containerView.layer.shadowColor = UIColor.systemBackground.cgColor
         containerView.layer.shadowOffset = CGSize(width: 0, height: -4)
         containerView.layer.shadowRadius = 4

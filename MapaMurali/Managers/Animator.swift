@@ -19,16 +19,18 @@ final class Animator: NSObject, UIViewControllerAnimatedTransitioning {
     private let type: PresentationType
     private let firstViewController: MMAnimableViewController
     private let secondViewController: MuralDetailsViewController
+    private let cellShape: CellShape
     private var selectedCellImageViewSnapshot: UIView
     private let firstVCwindowSnapshot: UIView
     private let cellImageViewRect: CGRect
     
     
     //MARK: - Initialization
-    init?(type: PresentationType, firstViewController: MMAnimableViewController, secondViewController: MuralDetailsViewController, selectedCellImageSnapshot: UIView, windowSnapshot: UIView) {
+    init?(type: PresentationType, firstViewController: MMAnimableViewController, secondViewController: MuralDetailsViewController, selectedCellImageSnapshot: UIView, windowSnapshot: UIView, cellShape: CellShape) {
         self.type = type
         self.firstViewController = firstViewController
         self.secondViewController = secondViewController
+        self.cellShape = cellShape
         self.selectedCellImageViewSnapshot = selectedCellImageSnapshot
         firstVCwindowSnapshot = windowSnapshot
         
@@ -169,4 +171,10 @@ enum PresentationType {
     var isPresenting: Bool {
         return self == .present
     }
+}
+
+enum CellShape {
+    case circle(radius: CGFloat)
+    case square
+    case roundedCorners(radius: CGFloat)
 }

@@ -31,3 +31,8 @@ enum Setup {
     static let kPassword = "Password"
     static var shouldOpenMailApp = false
 }
+
+enum RadiusValue {
+    static let mapPinRadiusValue: CGFloat = 19
+    static let muralCellRadiusValue: CGFloat = 20
+}

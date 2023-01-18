@@ -125,6 +125,7 @@ extension MuralsCollectionViewController: UICollectionViewDelegate {
 
         let muralItem = isSearching ? filteredMurals[indexPath.item] : murals[indexPath.item]
         selectedCell = collectionView.cellForItem(at: indexPath) as? MuralCell
+        cellShape = .square
         setSnapshotsForAnimation()
         prepereAndPresentDetailVCWithAnimation(mural: muralItem, databaseManager: databaseManager)
     }

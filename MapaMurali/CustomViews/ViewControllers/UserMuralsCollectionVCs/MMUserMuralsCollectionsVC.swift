@@ -139,6 +139,7 @@ extension MMUserMuralsCollectionsVC: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         selectedCell = collectionView.cellForItem(at: indexPath) as? MuralCell
+        cellShape = .roundedCorners(radius: RadiusValue.muralCellRadiusValue)
         setSnapshotsForAnimation()
     }
 }

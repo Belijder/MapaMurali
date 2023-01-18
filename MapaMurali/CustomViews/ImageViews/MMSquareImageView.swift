@@ -52,7 +52,7 @@ class MMSquareImageView: UIImageView {
                 self.layer.masksToBounds = true
                 self.layer.borderWidth = 2
                 self.layer.borderColor = MMColors.primary.cgColor
-                self.layer.cornerRadius = 19
+                self.layer.cornerRadius = RadiusValue.mapPinRadiusValue
             }
         }
     }
