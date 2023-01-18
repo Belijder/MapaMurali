@@ -103,7 +103,7 @@ class MuralsCollectionViewController: MMAnimableViewController {
     
     //MARK: - Actions
     @objc func dismissVC() {
-        self.navigationController?.popViewController(animated: true)
+        navigationController?.dismiss(animated: true)
     }
     
     //MARK: - Binding

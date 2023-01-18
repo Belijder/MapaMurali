@@ -88,8 +88,11 @@ class MostActivUsersVC: UIViewController {
             destVC.title = user.displayName
             destVC.murals = userAddedMural
             
-            self.navigationController?.navigationBar.tintColor = MMColors.primary
-            self.navigationController?.pushViewController(destVC, animated: true)
+            let navControler = UINavigationController(rootViewController: destVC)
+            navControler.modalPresentationStyle = .fullScreen
+            navControler.navigationBar.tintColor = MMColors.primary
+            self.present(navControler, animated: true)
+            
         }).disposed(by: disposeBag)
     }
     

@@ -314,8 +314,10 @@ class MuralDetailsViewController: UIViewController {
         destVC.title = "Dodane przez \(userView.username.text ?? "użytkownika")"
         destVC.murals = usersMural
         
-        self.navigationController?.navigationBar.tintColor = MMColors.primary
-        self.navigationController?.pushViewController(destVC, animated: true)
+        let navControler = UINavigationController(rootViewController: destVC)
+        navControler.modalPresentationStyle = .fullScreen
+        navControler.navigationBar.tintColor = MMColors.primary
+        present(navControler, animated: true)
     }
     
     
