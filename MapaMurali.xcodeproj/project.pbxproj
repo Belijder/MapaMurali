@@ -61,6 +61,7 @@
 		429A021B28CFCC7100CD6862 /* MMPlainButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429A021A28CFCC7100CD6862 /* MMPlainButton.swift */; };
 		429A021D28CFCF4600CD6862 /* UIView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429A021C28CFCF4600CD6862 /* UIView+Ext.swift */; };
 		429A022028CFD0E000CD6862 /* MMBodyLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429A021F28CFD0E000CD6862 /* MMBodyLabel.swift */; };
+		42A5C70D2977E51500B3893C /* MMAnimableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A5C70C2977E51500B3893C /* MMAnimableViewController.swift */; };
 		42D9EA1F2921581C00A7A9DC /* MMFilledButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9EA1E2921581C00A7A9DC /* MMFilledButton.swift */; };
 		42D9EA212922CD8D00A7A9DC /* ManageUserAddedMuralsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9EA202922CD8D00A7A9DC /* ManageUserAddedMuralsVC.swift */; };
 		42D9EA232922D1EA00A7A9DC /* MMUserAddedMuralTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9EA222922D1EA00A7A9DC /* MMUserAddedMuralTableViewCell.swift */; };
@@ -141,6 +142,7 @@
 		429A021A28CFCC7100CD6862 /* MMPlainButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMPlainButton.swift; sourceTree = "<group>"; };
 		429A021C28CFCF4600CD6862 /* UIView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Ext.swift"; sourceTree = "<group>"; };
 		429A021F28CFD0E000CD6862 /* MMBodyLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMBodyLabel.swift; sourceTree = "<group>"; };
+		42A5C70C2977E51500B3893C /* MMAnimableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMAnimableViewController.swift; sourceTree = "<group>"; };
 		42D9EA1E2921581C00A7A9DC /* MMFilledButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMFilledButton.swift; sourceTree = "<group>"; };
 		42D9EA202922CD8D00A7A9DC /* ManageUserAddedMuralsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageUserAddedMuralsVC.swift; sourceTree = "<group>"; };
 		42D9EA222922D1EA00A7A9DC /* MMUserAddedMuralTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMUserAddedMuralTableViewCell.swift; sourceTree = "<group>"; };
@@ -416,6 +418,7 @@
 				42D9EA26292C1A6F00A7A9DC /* StatisticsChildsVC */,
 				42E18CB628D7A8FE0068414E /* MMDataLoadingVC.swift */,
 				428BD66228DE353B000B8D69 /* MMAlertVC.swift */,
+				42A5C70C2977E51500B3893C /* MMAnimableViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -555,6 +558,7 @@
 				4283BAB428D606B100A54F0F /* MMCircleButton.swift in Sources */,
 				42E61C2828F1CF3500D38205 /* NetworkManager.swift in Sources */,
 				42E61C3B28FAC0C500D38205 /* User.swift in Sources */,
+				42A5C70D2977E51500B3893C /* MMAnimableViewController.swift in Sources */,
 				42E61C3528F31DD800D38205 /* MuralCell.swift in Sources */,
 				429A021B28CFCC7100CD6862 /* MMPlainButton.swift in Sources */,
 				42824F0629645E6200C33AA5 /* Message.swift in Sources */,

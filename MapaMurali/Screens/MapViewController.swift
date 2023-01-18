@@ -16,8 +16,6 @@ class MapViewController: MMAnimableViewController {
     //MARK: - Properties
     var databaseManager: DatabaseManager
     
-    var animator: Animator?
-    
     let map = MKMapView()
     let locationManager = CLLocationManager()
     
@@ -189,28 +187,13 @@ class MapViewController: MMAnimableViewController {
             .disposed(by: bag)
         
         clusteredCollectionView.rx.itemSelected.subscribe(onNext: { index in
-            print("🟡 Item Selected subsriber run")
             self.selectedCell = self.clusteredCollectionView.cellForItem(at: index) as? MMFavoritesMuralCollectionCell
-            self.selectedCellImageViewSnapshot = self.selectedCell?.muralImageView.snapshotView(afterScreenUpdates: false)
-            self.windowSnapshot = self.view.window?.snapshotView(afterScreenUpdates: false)
+            self.setSnapshotsForAnimation()
         })
         .disposed(by: bag)
         
         clusteredCollectionView.rx.modelSelected(Mural.self).subscribe(onNext: { mural in
-            print("🟡 Model Selected subsriber run")
-            self.showLoadingView(message: nil)
-            
-            let destVC = MuralDetailsViewController(muralItem: mural, databaseManager: self.databaseManager)
-            destVC.modalPresentationStyle = .fullScreen
-            destVC.transitioningDelegate = self
-            
-            NetworkManager.shared.downloadImage(from: mural.imageURL, imageType: .fullSize, name: mural.docRef) { image in
-                DispatchQueue.main.async {
-                    destVC.imageView.image = image
-                    self.dismissLoadingView()
-                    self.present(destVC, animated: true)
-                }
-            }
+            self.prepereAndPresentDetailVCWithAnimation(mural: mural, databaseManager: self.databaseManager)
         })
         .disposed(by: bag)
     }
@@ -218,9 +201,7 @@ class MapViewController: MMAnimableViewController {
 
 //MARK: - Extensions
 extension MapViewController: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-
-    }
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) { }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print(error)
@@ -305,36 +286,3 @@ extension MapViewController: MKMapViewDelegate {
         UIView.animate(withDuration: 0.1) { self.clusteredCollectionView.alpha = 0.0 }
     }
 }
-
-extension MapViewController: UIViewControllerTransitioningDelegate {
-    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-
-        guard let muralsCollectionVC = source as? MMAnimableViewController,
-              let muralDetailsVC = presented as? MuralDetailsViewController,
-              let selectedCellImageViewSnapshot = selectedCellImageViewSnapshot,
-              let windowSnapshot = windowSnapshot
-        else {
-            print("muralsCollectionVC: \(source)")
-            print("muralDetailsVC: \(presented)")
-            print("selectedCellImageViewSnapshot: \(selectedCellImageViewSnapshot)")
-            print("windowSnapshot: \(windowSnapshot)")
-            return nil
-        }
-
-        animator = Animator(type: .present, firstViewController: muralsCollectionVC, secondViewController: muralDetailsVC, selectedCellImageSnapshot: selectedCellImageViewSnapshot, windowSnapshot: windowSnapshot)
-        
-        return animator
-    }
-    
-    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        guard let muralDetailsVC = dismissed as? MuralDetailsViewController,
-              let selectedCellImageViewSnapshot = selectedCellImageViewSnapshot,
-              let windowSnapshot = windowSnapshot
-        else { return nil }
-
-        animator = Animator(type: .dismiss, firstViewController: self, secondViewController: muralDetailsVC, selectedCellImageSnapshot: selectedCellImageViewSnapshot, windowSnapshot: windowSnapshot)
-
-        return animator
-    }
-}
-

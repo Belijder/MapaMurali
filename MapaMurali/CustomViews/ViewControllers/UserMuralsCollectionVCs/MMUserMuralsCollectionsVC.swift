@@ -40,9 +40,6 @@ class MMUserMuralsCollectionsVC: MMAnimableViewController {
     
     var databaseManager: DatabaseManager!
     
-    var animator: Animator?
-    
-    
     //MARK: - Initialization
     init(collectionTitle: String, murals: [Mural], databaseManager: DatabaseManager) {
         super.init(nibName: nil, bundle: nil)
@@ -142,37 +139,6 @@ extension MMUserMuralsCollectionsVC: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         selectedCell = collectionView.cellForItem(at: indexPath) as? MuralCell
-        selectedCellImageViewSnapshot = selectedCell?.muralImageView.snapshotView(afterScreenUpdates: false)
-        windowSnapshot = view.window?.snapshotView(afterScreenUpdates: false)
-    }
-}
-
-extension MMUserMuralsCollectionsVC: UIViewControllerTransitioningDelegate {
-    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-
-        guard let collectionVC = source as? MMAnimableViewController,
-              let muralDetailsVC = presented as? MuralDetailsViewController,
-              let selectedCellImageViewSnapshot = selectedCellImageViewSnapshot,
-              let windowSnapshot = windowSnapshot
-        else {
-            return nil
-        }
-
-        animator = Animator(type: .present, firstViewController: collectionVC, secondViewController: muralDetailsVC, selectedCellImageSnapshot: selectedCellImageViewSnapshot, windowSnapshot: windowSnapshot)
-        
-        return animator
-        
-        
-    }
-    
-    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        guard let muralDetailsVC = dismissed as? MuralDetailsViewController,
-              let selectedCellImageViewSnapshot = selectedCellImageViewSnapshot,
-              let windowSnapshot = windowSnapshot
-        else { return nil }
-
-        animator = Animator(type: .dismiss, firstViewController: self, secondViewController: muralDetailsVC, selectedCellImageSnapshot: selectedCellImageViewSnapshot, windowSnapshot: windowSnapshot)
-
-        return animator
+        setSnapshotsForAnimation()
     }
 }

@@ -1,0 +1,66 @@
+//
+//  MMAnimableViewController.swift
+//  MapaMurali
+//
+//  Created by Jakub Zajda on 18/01/2023.
+//
+
+import UIKit
+
+class MMAnimableViewController: MMDataLoadingVC {
+    
+    var selectedCell: AnimatorCellProtocol?
+    var selectedCellImageViewSnapshot: UIView?
+    var windowSnapshot: UIView?
+    
+    var animator: Animator?
+    
+    func setSnapshotsForAnimation() {
+        self.selectedCellImageViewSnapshot = self.selectedCell?.muralImageView.snapshotView(afterScreenUpdates: false)
+        self.windowSnapshot = self.view.window?.snapshotView(afterScreenUpdates: false)
+    }
+    
+    func prepereAndPresentDetailVCWithAnimation(mural: Mural, databaseManager: DatabaseManager) {
+        self.showLoadingView(message: nil)
+        
+        let destVC = MuralDetailsViewController(muralItem: mural, databaseManager: databaseManager)
+        destVC.modalPresentationStyle = .fullScreen
+        destVC.transitioningDelegate = self
+        
+        NetworkManager.shared.downloadImage(from: mural.imageURL, imageType: .fullSize, name: mural.docRef) { image in
+            DispatchQueue.main.async {
+                destVC.imageView.image = image
+                self.dismissLoadingView()
+                self.present(destVC, animated: true)
+            }
+        }
+    }
+}
+
+extension MMAnimableViewController: UIViewControllerTransitioningDelegate {
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+
+        guard let muralsCollectionVC = source as? MMAnimableViewController,
+              let muralDetailsVC = presented as? MuralDetailsViewController,
+              let selectedCellImageViewSnapshot = selectedCellImageViewSnapshot,
+              let windowSnapshot = windowSnapshot
+        else {
+            return nil
+        }
+
+        animator = Animator(type: .present, firstViewController: muralsCollectionVC, secondViewController: muralDetailsVC, selectedCellImageSnapshot: selectedCellImageViewSnapshot, windowSnapshot: windowSnapshot)
+        
+        return animator
+    }
+    
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        guard let muralDetailsVC = dismissed as? MuralDetailsViewController,
+              let selectedCellImageViewSnapshot = selectedCellImageViewSnapshot,
+              let windowSnapshot = windowSnapshot
+        else { return nil }
+
+        animator = Animator(type: .dismiss, firstViewController: self, secondViewController: muralDetailsVC, selectedCellImageSnapshot: selectedCellImageViewSnapshot, windowSnapshot: windowSnapshot)
+
+        return animator
+    }
+}

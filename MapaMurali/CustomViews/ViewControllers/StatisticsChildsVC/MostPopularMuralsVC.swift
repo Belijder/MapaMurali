@@ -11,8 +11,6 @@ import RxRelay
 
 class MostPopularMuralsVC: MMAnimableViewController {
     
-    var animator: Animator?
-    
     //MARK: - Initialization
     init(viewModel: StatisticsViewModel) {
         super.init(nibName: nil, bundle: nil)
@@ -87,28 +85,13 @@ class MostPopularMuralsVC: MMAnimableViewController {
             .disposed(by: disposeBag)
         
         collectionView.rx.itemSelected.subscribe(onNext: { index in
-            print("🟡 Item Selected subsriber run")
             self.selectedCell = self.collectionView.cellForItem(at: index) as? MMFavoritesMuralCollectionCell
-            self.selectedCellImageViewSnapshot = self.selectedCell?.muralImageView.snapshotView(afterScreenUpdates: false)
-            self.windowSnapshot = self.view.window?.snapshotView(afterScreenUpdates: false)
+            self.setSnapshotsForAnimation()
         })
         .disposed(by: disposeBag)
         
         collectionView.rx.modelSelected(Mural.self).subscribe(onNext: { mural in
-            print("🟡 Model Selected subsriber run")
-            self.showLoadingView(message: nil)
-            
-            let destVC = MuralDetailsViewController(muralItem: mural, databaseManager: self.statisticsViewModel.databaseManager)
-            destVC.modalPresentationStyle = .fullScreen
-            destVC.transitioningDelegate = self
-            
-            NetworkManager.shared.downloadImage(from: mural.imageURL, imageType: .fullSize, name: mural.docRef) { image in
-                DispatchQueue.main.async {
-                    destVC.imageView.image = image
-                    self.dismissLoadingView()
-                    self.present(destVC, animated: true)
-                }
-            }
+            self.prepereAndPresentDetailVCWithAnimation(mural: mural, databaseManager: self.statisticsViewModel.databaseManager)
         }).disposed(by: disposeBag)
     }
     
@@ -120,32 +103,3 @@ class MostPopularMuralsVC: MMAnimableViewController {
             .disposed(by: disposeBag)
     }
 }
-
-extension MostPopularMuralsVC: UIViewControllerTransitioningDelegate {
-    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-
-        guard let muralsCollectionVC = source as? MMAnimableViewController,
-              let muralDetailsVC = presented as? MuralDetailsViewController,
-              let selectedCellImageViewSnapshot = selectedCellImageViewSnapshot,
-              let windowSnapshot = windowSnapshot
-        else {
-            return nil
-        }
-
-        animator = Animator(type: .present, firstViewController: muralsCollectionVC, secondViewController: muralDetailsVC, selectedCellImageSnapshot: selectedCellImageViewSnapshot, windowSnapshot: windowSnapshot)
-        
-        return animator
-    }
-    
-    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        guard let muralDetailsVC = dismissed as? MuralDetailsViewController,
-              let selectedCellImageViewSnapshot = selectedCellImageViewSnapshot,
-              let windowSnapshot = windowSnapshot
-        else { return nil }
-
-        animator = Animator(type: .dismiss, firstViewController: self, secondViewController: muralDetailsVC, selectedCellImageSnapshot: selectedCellImageViewSnapshot, windowSnapshot: windowSnapshot)
-
-        return animator
-    }
-}
-
