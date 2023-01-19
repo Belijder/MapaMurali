@@ -84,7 +84,8 @@ class MostActivUsersVC: UIViewController {
             }
             .disposed(by: disposeBag)
         
-        usersTableView.rx.modelSelected(User.self).subscribe(onNext: { user in
+        usersTableView.rx.modelSelected(User.self).subscribe(onNext: { [weak self] user in
+            guard let self = self else { return }
             let userAddedMural = self.statisticsViewModel.databaseManager.murals.filter { $0.addedBy == user.id }
             
             let destVC = MuralsCollectionViewController(databaseManager: self.statisticsViewModel.databaseManager)
@@ -101,7 +102,8 @@ class MostActivUsersVC: UIViewController {
     
     private func addUserObserver() {
         statisticsViewModel.mostActivUsers
-            .subscribe(onNext: { users in
+            .subscribe(onNext: { [weak self] users in
+                guard let self = self else { return }
                 self.users.accept(users)
             })
             .disposed(by: disposeBag)

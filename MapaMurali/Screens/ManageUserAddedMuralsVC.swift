@@ -76,7 +76,8 @@ class ManageUserAddedMuralsVC: MMDataLoadingVC {
             .disposed(by: disposeBag)
         
         muralsTableView.rx.modelSelected(Mural.self)
-            .subscribe(onNext: { mural in
+            .subscribe(onNext: { [weak self] mural in
+                guard let self = self else { return }
                 let destVC = MuralDetailsViewController(muralItem: mural, databaseManager: self.databaseManager)
                 destVC.modalPresentationStyle = .fullScreen
                 self.present(destVC, animated: true)
@@ -86,7 +87,8 @@ class ManageUserAddedMuralsVC: MMDataLoadingVC {
     
     func addDatabaseMuralsObserver() {
         databaseManager.muralItems
-            .subscribe(onNext: { murals in
+            .subscribe(onNext: { [weak self] murals in
+                guard let self = self else { return }
                 let userAddedMurals = murals.filter { $0.addedBy == self.databaseManager.currentUser?.id }
                 self.userAddedMurals = userAddedMurals
             })

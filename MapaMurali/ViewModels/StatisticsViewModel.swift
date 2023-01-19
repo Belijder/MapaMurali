@@ -74,7 +74,9 @@ class StatisticsViewModel {
     //MARK: - Binding
     func addMuralObserver() {
         databaseManager.muralItems
-            .subscribe(onNext: { murals in
+            .subscribe(onNext: { [weak self] murals in
+                guard let self = self else { return }
+                
                 self.createMostPopularMuralsArray(from: murals)
                 self.createPopularCitiesArray(from: murals)
             })
@@ -83,7 +85,8 @@ class StatisticsViewModel {
     
     func addUsersObserver() {
         databaseManager.observableUsersItem
-            .subscribe(onNext: { users in
+            .subscribe(onNext: { [weak self] users in
+                guard let self = self else { return }
                 self.mostActivUsers.onNext(users)
             })
             .disposed(by: disposeBag)

@@ -136,7 +136,8 @@ class MapViewController: MMAnimableViewController {
     //MARK: - Binding
     func addMuralsItemsObserver() {
         databaseManager.muralItems
-            .subscribe(onNext: { murals in
+            .subscribe(onNext: { [weak self] murals in
+                guard let self = self else { return }
                 for mural in murals {
                     if !self.map.annotations.contains(where: { $0.title == mural.docRef }) {
                         let pin = MKPointAnnotation()
@@ -153,7 +154,9 @@ class MapViewController: MMAnimableViewController {
     
     func addLastDeletedMuralObserwer() {
         databaseManager.lastDeletedMuralID
-            .subscribe(onNext: { muralID in
+            .subscribe(onNext: { [weak self] muralID in
+                guard let self = self else { return }
+                
                 guard let annottionToRemove = self.map.annotations.first(where: { $0.title == muralID }) else { return }
                 self.map.removeAnnotation(annottionToRemove)
             })
@@ -162,7 +165,8 @@ class MapViewController: MMAnimableViewController {
     
     func addLastEditedMuralObserver() {
         databaseManager.lastEditedMuralID
-            .subscribe(onNext: { mural in
+            .subscribe(onNext: { [weak self] mural in
+                guard let self = self else { return }
                 self.databaseManager.murals.removeAll(where: { $0.docRef == mural.docRef })
                 
                 guard let annottionToRemove = self.map.annotations.first(where: { $0.title == mural.docRef }) else { return }
@@ -175,7 +179,9 @@ class MapViewController: MMAnimableViewController {
     
     func addMapPinButtonTappedObserver() {
         databaseManager.mapPinButtonTappedOnMural
-            .subscribe(onNext: { mural in
+            .subscribe(onNext: { [weak self] mural in
+                guard let self = self else { return }
+                
                 self.setMapRegion(with: CLLocationCoordinate2D(latitude: mural.latitude, longitude: mural.longitude))
             })
             .disposed(by: disposeBag)
@@ -190,14 +196,16 @@ class MapViewController: MMAnimableViewController {
             }
             .disposed(by: disposeBag)
         
-        clusteredCollectionView.rx.itemSelected.subscribe(onNext: { index in
+        clusteredCollectionView.rx.itemSelected.subscribe(onNext: { [weak self ]index in
+            guard let self = self else { return }
             self.selectedCell = self.clusteredCollectionView.cellForItem(at: index) as? MMFavoritesMuralCollectionCell
             self.cellShape = .roundedCorners(radius: 20)
             self.setSnapshotsForAnimation()
         })
         .disposed(by: disposeBag)
         
-        clusteredCollectionView.rx.modelSelected(Mural.self).subscribe(onNext: { mural in
+        clusteredCollectionView.rx.modelSelected(Mural.self).subscribe(onNext: { [weak self] mural in
+            guard let self = self else { return }
             self.prepereAndPresentDetailVCWithAnimation(mural: mural, databaseManager: self.databaseManager)
         })
         .disposed(by: disposeBag)

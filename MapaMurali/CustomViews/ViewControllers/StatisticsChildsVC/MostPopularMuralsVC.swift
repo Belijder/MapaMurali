@@ -91,14 +91,16 @@ class MostPopularMuralsVC: MMAnimableViewController {
             }
             .disposed(by: disposeBag)
         
-        collectionView.rx.itemSelected.subscribe(onNext: { index in
+        collectionView.rx.itemSelected.subscribe(onNext: { [weak self] index in
+            guard let self = self else { return }
             self.selectedCell = self.collectionView.cellForItem(at: index) as? MMFavoritesMuralCollectionCell
             self.cellShape = .circle(radius: RadiusValue.muralCellRadiusValue)
             self.setSnapshotsForAnimation()
         })
         .disposed(by: disposeBag)
         
-        collectionView.rx.modelSelected(Mural.self).subscribe(onNext: { mural in
+        collectionView.rx.modelSelected(Mural.self).subscribe(onNext: { [weak self] mural in
+            guard let self = self else { return }
             self.prepereAndPresentDetailVCWithAnimation(mural: mural, databaseManager: self.statisticsViewModel.databaseManager)
         }).disposed(by: disposeBag)
     }

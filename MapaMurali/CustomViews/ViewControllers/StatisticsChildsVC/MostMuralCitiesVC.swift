@@ -84,7 +84,9 @@ class MostMuralCitiesVC: UIViewController {
             }
             .disposed(by: disposeBag)
         
-        citiesTableView.rx.modelSelected(PopularCity.self).subscribe(onNext: { city in
+        citiesTableView.rx.modelSelected(PopularCity.self).subscribe(onNext: { [weak self] city in
+            guard let self = self else { return }
+            
             let murals = self.statisticsViewModel.databaseManager.murals.filter { $0.city == city.name }
             
             let destVC = MuralsCollectionViewController(databaseManager: self.statisticsViewModel.databaseManager)
@@ -100,7 +102,8 @@ class MostMuralCitiesVC: UIViewController {
     
     private func addCitiesObserver() {
         statisticsViewModel.mostMuralCities
-            .subscribe(onNext: { cities in
+            .subscribe(onNext: { [weak self] cities in
+                guard let self = self else { return }
                 self.cities.accept(cities)
             })
             .disposed(by: disposeBag)

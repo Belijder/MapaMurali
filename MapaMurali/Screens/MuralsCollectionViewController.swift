@@ -114,7 +114,8 @@ class MuralsCollectionViewController: MMAnimableViewController {
     func addMuralsObserver() {
         if title == "Przeglądaj" {
             databaseManager.muralItems
-                .subscribe(onNext: { murals in
+                .subscribe(onNext: { [weak self] murals in
+                    guard let self = self else { return }
                     self.murals = murals
                     self.updateData(on: self.murals)
                 })

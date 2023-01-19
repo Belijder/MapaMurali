@@ -152,7 +152,8 @@ class VerificationEmailSendViewController: UIViewController {
     
     func addMagicLinkSubscriber() {
         loginManager.recivedMagicLink
-            .subscribe(onNext: { link in
+            .subscribe(onNext: { [weak self] link in
+                guard let self = self else { return }
                 print("🟠 Magic link reviced. Opening CompleteUserDetailsVC")
                 let destVC = CompleteUserDetailsViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
                 destVC.modalPresentationStyle = .fullScreen

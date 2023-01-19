@@ -145,7 +145,8 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
     //MARK: - Biding
     func addMapPinButtonTappedObserver() {
         databaseManager.mapPinButtonTappedOnMural
-            .subscribe(onNext: { _ in
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self else { return }
                 self.selectedIndex = 0
             })
             .disposed(by: disposeBag)
@@ -153,7 +154,8 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
     
     func addUserLoginObserver() {
         loginManager.userIsLoggedIn
-            .subscribe(onNext: { value in
+            .subscribe(onNext: { [weak self] value in
+                guard let self = self else { return }
                 if value == true {
                     self.selectedViewController = self.viewControllers?[0]
                     self.databaseManager.fetchCurrenUserData()

@@ -309,7 +309,8 @@ class UserAccountViewController: MMDataLoadingVC {
     
     func addCurrentUserSubscriber() {
         databaseManager.currentUserPublisher
-            .subscribe(onNext: { user in
+            .subscribe(onNext: { [weak self] user in
+                guard let self = self else { return }
                 self.configureUsernameAndAvatarView()
             })
             .disposed(by: disposeBag)
@@ -317,7 +318,8 @@ class UserAccountViewController: MMDataLoadingVC {
     
     func addUserLoginObserver() {
         loginManager.userIsLoggedIn
-            .subscribe(onNext: { value in
+            .subscribe(onNext: { [weak self] value in
+                guard let self = self else { return }
                 if value == false {
                     self.validateAuth()
                 }

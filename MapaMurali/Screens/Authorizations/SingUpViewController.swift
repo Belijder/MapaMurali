@@ -297,7 +297,8 @@ class SingUpViewController: UIViewController {
     //MARK: - Binding
     func addSingInObserver() {
         loginManager.userIsLoggedIn
-            .subscribe(onNext: { value in
+            .subscribe(onNext: { [weak self] value in
+                guard let self = self else { return }
                 if value == true {
                     self.navigationController?.dismiss(animated: true)
                 }

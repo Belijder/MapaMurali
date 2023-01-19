@@ -371,7 +371,9 @@ class MuralDetailsViewController: UIViewController {
     //MARK: - Binding
     func addFavoriteObserver() {
         vm.isUserFavorite
-            .subscribe(onNext: { value in
+            .subscribe(onNext: { [weak self] value in
+                guard let self = self else { return }
+                
                 switch value {
                 case true:
                     self.favoriteButton.set(systemImageName: "heart.fill")

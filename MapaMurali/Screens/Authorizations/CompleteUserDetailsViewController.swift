@@ -177,7 +177,8 @@ class CompleteUserDetailsViewController: MMDataLoadingVC {
     //MARK: - Bindings
     func addSingInObserver() {
         loginManager.userIsLoggedIn
-            .subscribe(onNext: { value in
+            .subscribe(onNext: { [weak self] value in
+                guard let self = self else { return }
                 if value == true {
                     self.view.window?.rootViewController?.dismiss(animated: true)
                 }
