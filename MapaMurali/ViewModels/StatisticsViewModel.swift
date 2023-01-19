@@ -10,9 +10,10 @@ import RxSwift
 
 class StatisticsViewModel {
     
+    //MARK: - Properties
     let databaseManager: DatabaseManager
     
-    let disposeBag = DisposeBag()
+    var disposeBag = DisposeBag()
     
     var mostPopularMurals = BehaviorSubject<[Mural]>(value: [])
     var mostActivUsers = BehaviorSubject<[User]>(value: [])
@@ -20,12 +21,18 @@ class StatisticsViewModel {
     
     var popularCities = [PopularCity]()
     
+    //MARK: - Initialization
     init(databaseManager: DatabaseManager) {
         self.databaseManager = databaseManager
         addMuralObserver()
         addUsersObserver()
     }
     
+    deinit {
+        disposeBag = DisposeBag()
+    }
+    
+    //MARK: - Logic
     func createMostPopularMuralsArray(from murals: [Mural]) {
         let sortedMurals = murals.sorted(by: { $0.favoritesCount > $1.favoritesCount })
         var bestMurals = [Mural]()
@@ -64,6 +71,7 @@ class StatisticsViewModel {
         self.mostMuralCities.onNext(sortedPopularCities)
     }
     
+    //MARK: - Binding
     func addMuralObserver() {
         databaseManager.muralItems
             .subscribe(onNext: { murals in

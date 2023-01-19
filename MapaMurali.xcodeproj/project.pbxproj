@@ -92,6 +92,19 @@
 		42ECF075297588E80097C843 /* PersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42ECF074297588E80097C843 /* PersistenceManager.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		42D9DF572979737D008D8663 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		4200210C28E9B0E000394299 /* MMAnnotationPinImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMAnnotationPinImageView.swift; sourceTree = "<group>"; };
 		42618DD32914312D0052DB76 /* StatisticsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewModel.swift; sourceTree = "<group>"; };
@@ -446,6 +459,7 @@
 				426E49F728931180009C8E99 /* Sources */,
 				426E49F828931180009C8E99 /* Frameworks */,
 				426E49F928931180009C8E99 /* Resources */,
+				42D9DF572979737D008D8663 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

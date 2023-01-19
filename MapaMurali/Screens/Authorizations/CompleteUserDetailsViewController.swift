@@ -14,7 +14,7 @@ class CompleteUserDetailsViewController: MMDataLoadingVC {
     
     let loginManager: LoginManager
     let databaseManager: DatabaseManager
-    var bag = DisposeBag()
+    var disposeBag = DisposeBag()
     
     private let titleLabel = MMTitleLabel(textAlignment: .left, fontSize: 20)
     private let avatarImageView = MMAvatarImageView(frame: .zero)
@@ -34,6 +34,10 @@ class CompleteUserDetailsViewController: MMDataLoadingVC {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        disposeBag = DisposeBag()
     }
     
     
@@ -178,7 +182,7 @@ class CompleteUserDetailsViewController: MMDataLoadingVC {
                     self.view.window?.rootViewController?.dismiss(animated: true)
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 

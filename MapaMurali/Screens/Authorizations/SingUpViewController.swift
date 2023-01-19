@@ -14,7 +14,7 @@ class SingUpViewController: UIViewController {
     //MARK: - Properties
     let loginManager: LoginManager
     let databaseManager: DatabaseManager
-    var bag = DisposeBag()
+    var disposeBag = DisposeBag()
     
     private let titleLabel = MMTitleLabel(textAlignment: .left, fontSize: 20)
     
@@ -39,6 +39,10 @@ class SingUpViewController: UIViewController {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        disposeBag = DisposeBag()
     }
     
     //MARK: - Live cicle
@@ -298,7 +302,7 @@ class SingUpViewController: UIViewController {
                     self.navigationController?.dismiss(animated: true)
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 

@@ -12,7 +12,7 @@ import RxRelay
 class MostMuralCitiesVC: UIViewController {
     
     //MARK: - Properities
-    let disposeBag = DisposeBag()
+    var disposeBag = DisposeBag()
     let cities = BehaviorRelay<[PopularCity]>(value: [])
     var statisticsViewModel: StatisticsViewModel!
     
@@ -37,6 +37,10 @@ class MostMuralCitiesVC: UIViewController {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        disposeBag = DisposeBag()
     }
     
     //MARK: - Live Cicle

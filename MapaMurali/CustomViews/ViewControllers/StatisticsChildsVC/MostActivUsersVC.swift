@@ -21,6 +21,10 @@ class MostActivUsersVC: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        disposeBag = DisposeBag()
+    }
+    
     //MARK: - Live Cicle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,12 +32,11 @@ class MostActivUsersVC: UIViewController {
         addUserObserver()
         bindTableView()
         titleLabel.text = "Najaktywniejsi użytkownicy"
-    
     }
     
     
     //MARK: - Properities
-    let disposeBag = DisposeBag()
+    var disposeBag = DisposeBag()
     let users = BehaviorRelay<[User]>(value: [])
     var statisticsViewModel: StatisticsViewModel!
     

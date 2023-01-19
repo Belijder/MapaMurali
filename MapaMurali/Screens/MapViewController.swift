@@ -23,7 +23,7 @@ class MapViewController: MMAnimableViewController {
     var mapIsLocatingUser = true
     var clusteredMurals = PublishSubject<[Mural]>()
     
-    private var bag = DisposeBag()
+    private var disposeBag = DisposeBag()
     
     lazy var clusteredCollectionView: UICollectionView = {
         let padding: CGFloat = 20
@@ -50,6 +50,10 @@ class MapViewController: MMAnimableViewController {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        disposeBag = DisposeBag()
     }
     
     //MARK: - Live cicle
@@ -144,7 +148,7 @@ class MapViewController: MMAnimableViewController {
                     }
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     func addLastDeletedMuralObserwer() {
@@ -153,7 +157,7 @@ class MapViewController: MMAnimableViewController {
                 guard let annottionToRemove = self.map.annotations.first(where: { $0.title == muralID }) else { return }
                 self.map.removeAnnotation(annottionToRemove)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     func addLastEditedMuralObserver() {
@@ -166,7 +170,7 @@ class MapViewController: MMAnimableViewController {
                 
                 self.databaseManager.murals.append(mural)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     func addMapPinButtonTappedObserver() {
@@ -174,7 +178,7 @@ class MapViewController: MMAnimableViewController {
             .subscribe(onNext: { mural in
                 self.setMapRegion(with: CLLocationCoordinate2D(latitude: mural.latitude, longitude: mural.longitude))
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     private func bindClusteredCollectionView() {
@@ -184,19 +188,19 @@ class MapViewController: MMAnimableViewController {
                                         cellType: MMFavoritesMuralCollectionCell.self)) { indexPath, mural, cell in
                 cell.set(mural: mural)
             }
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         clusteredCollectionView.rx.itemSelected.subscribe(onNext: { index in
             self.selectedCell = self.clusteredCollectionView.cellForItem(at: index) as? MMFavoritesMuralCollectionCell
             self.cellShape = .roundedCorners(radius: 20)
             self.setSnapshotsForAnimation()
         })
-        .disposed(by: bag)
+        .disposed(by: disposeBag)
         
         clusteredCollectionView.rx.modelSelected(Mural.self).subscribe(onNext: { mural in
             self.prepereAndPresentDetailVCWithAnimation(mural: mural, databaseManager: self.databaseManager)
         })
-        .disposed(by: bag)
+        .disposed(by: disposeBag)
     }
 }
 
@@ -272,5 +276,6 @@ extension MapViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
         print("Odtapnięto \(view)")
         clusteredMurals.onNext([])
+        self.clusteredCollectionView.alpha = 0
     }
 }

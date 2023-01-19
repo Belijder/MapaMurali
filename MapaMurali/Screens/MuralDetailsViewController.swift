@@ -15,7 +15,7 @@ class MuralDetailsViewController: UIViewController {
     var muralItem: Mural!
     var databaseManager: DatabaseManager!
     var vm: MuralDetailsViewModel
-    var bag = DisposeBag()
+    var disposeBag = DisposeBag()
     
     var imageView = MMFullSizeImageView(frame: .zero)
     var containerView = UIView()
@@ -51,6 +51,10 @@ class MuralDetailsViewController: UIViewController {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        disposeBag = DisposeBag()
     }
     
     //MARK: - Live cicle
@@ -376,7 +380,7 @@ class MuralDetailsViewController: UIViewController {
                 }
                 self.favoriteCounter.createFavoriteCounterTextLabel(counter: self.vm.counterValue, imagePointSize: 25)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     func addLastEditedMuralsObserver() {
@@ -391,7 +395,7 @@ class MuralDetailsViewController: UIViewController {
                     self.checkAuthorPropertyInMuralItem()
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 

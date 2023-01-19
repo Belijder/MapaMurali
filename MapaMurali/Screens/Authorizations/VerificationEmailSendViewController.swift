@@ -23,13 +23,17 @@ class VerificationEmailSendViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        disposeBag = DisposeBag()
+    }
+    
     
     //MARK: - Properties
     
     let loginManager: LoginManager
     let databaseManager: DatabaseManager
     
-    let bag = DisposeBag()
+    var disposeBag = DisposeBag()
     
     let titleLabel = MMTitleLabel(textAlignment: .center, fontSize: 25)
     let mailImageView = UIImageView()
@@ -155,6 +159,6 @@ class VerificationEmailSendViewController: UIViewController {
                 destVC.navigationController?.isNavigationBarHidden = true
                 self.present(destVC, animated: false)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }

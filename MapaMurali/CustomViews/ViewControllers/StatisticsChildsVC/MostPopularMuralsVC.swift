@@ -11,28 +11,9 @@ import RxRelay
 
 class MostPopularMuralsVC: MMAnimableViewController {
     
-    //MARK: - Initialization
-    init(viewModel: StatisticsViewModel) {
-        super.init(nibName: nil, bundle: nil)
-        self.statisticsViewModel = viewModel
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    //MARK: - Live Cicle
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        layoutUIElements()
-        addMuralObserver()
-        bindCollectionView()
-        titleLabel.text = "Najpopularniejsze Murale"
-    }
-    
-    
     //MARK: - Properities
-    let disposeBag = DisposeBag()
+    var disposeBag = DisposeBag()
+    
     let murals = BehaviorRelay<[Mural]>(value: [])
     var statisticsViewModel: StatisticsViewModel!
     
@@ -51,6 +32,32 @@ class MostPopularMuralsVC: MMAnimableViewController {
         collectionView.layer.cornerRadius = 20
         return collectionView
     }()
+    
+    
+    //MARK: - Initialization
+    init(viewModel: StatisticsViewModel) {
+        super.init(nibName: nil, bundle: nil)
+        self.statisticsViewModel = viewModel
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+        
+    }
+    
+    deinit {
+        disposeBag = DisposeBag()
+    }
+    
+    
+    //MARK: - Live Cicle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        layoutUIElements()
+        addMuralObserver()
+        bindCollectionView()
+        titleLabel.text = "Najpopularniejsze Murale"
+    }
     
     
     //MARK: - Set up

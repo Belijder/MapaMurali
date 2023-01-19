@@ -15,7 +15,7 @@ class SingInViewController: UIViewController {
     //MARK: - Properties
     var loginManager: LoginManager
     let databaseManager: DatabaseManager
-    var bag = DisposeBag()
+    var disposeBag = DisposeBag()
     
     private let logoImage = UIImageView(image: MMImages.violetLogo)
     private let titleLabel = MMTitleLabel(textAlignment: .left, fontSize: 20)
@@ -37,6 +37,10 @@ class SingInViewController: UIViewController {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        disposeBag = DisposeBag()
     }
 
     //MARK: - Live cicle
@@ -234,7 +238,7 @@ class SingInViewController: UIViewController {
                     self.view.window?.rootViewController?.dismiss(animated: true)
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 

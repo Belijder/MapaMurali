@@ -16,7 +16,7 @@ class ManageUserAddedMuralsVC: MMDataLoadingVC {
     
     var muralsTableView: UITableView!
     
-    let disposeBag = DisposeBag()
+    var disposeBag = DisposeBag()
     var observableMurals = BehaviorRelay<[Mural]>(value: [])
     
     var userAddedMurals: [Mural] {
@@ -34,6 +34,10 @@ class ManageUserAddedMuralsVC: MMDataLoadingVC {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        disposeBag = DisposeBag()
     }
     
     //MARK: - Live cicle

@@ -50,6 +50,10 @@ class UserAccountViewController: MMDataLoadingVC {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        disposeBag = DisposeBag()
+    }
+    
     //MARK: - Live cicle
     override func viewDidLoad() {
         super.viewDidLoad()
