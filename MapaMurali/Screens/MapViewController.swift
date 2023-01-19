@@ -251,8 +251,10 @@ extension MapViewController: MKMapViewDelegate {
             
             self.selectedCell = view as? MMAnnotationView
             self.cellShape = .circle(radius: RadiusValue.mapPinRadiusValue)
+            self.clusteredCollectionView.alpha = 0.0
             self.setSnapshotsForAnimation()
             self.prepereAndPresentDetailVCWithAnimation(mural: muralItem, databaseManager: databaseManager)
+            mapView.deselectAnnotation(nil, animated: true)
         }
         
         if let clusterAnnotation = annotation as? MKClusterAnnotation {
@@ -270,6 +272,6 @@ extension MapViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
         print("Odtapnięto \(view)")
         clusteredMurals.onNext([])
-        UIView.animate(withDuration: 0.1) { self.clusteredCollectionView.alpha = 0.0 }
+//        UIView.animate(withDuration: 0.1) { self.clusteredCollectionView.alpha = 0.0 }
     }
 }

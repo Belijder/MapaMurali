@@ -18,7 +18,7 @@ class MMAnimableViewController: MMDataLoadingVC {
     
     func setSnapshotsForAnimation() {
         self.selectedCellImageViewSnapshot = self.selectedCell?.muralImageView.snapshotView(afterScreenUpdates: false)
-        self.windowSnapshot = self.view.window?.snapshotView(afterScreenUpdates: false)
+        self.windowSnapshot = self.view.window?.snapshotView(afterScreenUpdates: true)
     }
     
     func prepereAndPresentDetailVCWithAnimation(mural: Mural, databaseManager: DatabaseManager) {

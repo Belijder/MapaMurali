@@ -14,7 +14,7 @@ protocol AnimatorCellProtocol: AnyObject {
 final class Animator: NSObject, UIViewControllerAnimatedTransitioning {
     
     //MARK: - Properities
-    static let duration: TimeInterval = 0.5
+    static let duration: TimeInterval = 3.5
     
     private let type: PresentationType
     private let firstViewController: MMAnimableViewController
@@ -111,7 +111,20 @@ final class Animator: NSObject, UIViewControllerAnimatedTransitioning {
         let muralInfoHidedRect = muralInfoRect.offsetBy(dx: 0, dy: muralInfoRect.size.height)
         
         
-        [selectedCellImageViewSnapshot, controllerImageSnapshot].forEach { $0.frame = isPresenting ? cellImageViewRect : controllerImageViewRect }
+        [selectedCellImageViewSnapshot, controllerImageSnapshot].forEach { snapShot in
+            snapShot.frame = isPresenting ? cellImageViewRect : controllerImageViewRect
+            
+            switch cellShape {
+            case .circle(let radius):
+                snapShot.layer.cornerRadius = isPresenting ? radius : 0
+                snapShot.layer.masksToBounds = true
+            case .square:
+                break
+            case .roundedCorners(let radius):
+                snapShot.layer.cornerRadius = isPresenting ? radius : 0
+                snapShot.layer.masksToBounds = true
+            }
+        }
         
         selectedCellImageViewSnapshot.alpha = isPresenting ? 1 : 0
         [controllerImageSnapshot, closeButtonSnapshot, favoriteButtonSnapshot, mapPinButtonSnapshot, deleteButtonSnapshot].forEach { $0.alpha = isPresenting ? 0 : 1 }
@@ -142,6 +155,18 @@ final class Animator: NSObject, UIViewControllerAnimatedTransitioning {
                 self.selectedCellImageViewSnapshot.alpha = isPresenting ? 0 : 1
                 controllerImageSnapshot.alpha = isPresenting ? 1 : 0
                 muralInfoSnapshot.layer.shadowOffset = isPresenting ? CGSize(width: 0, height: -4) : CGSize(width: 0, height: 0)
+                
+                
+                [self.selectedCellImageViewSnapshot, controllerImageSnapshot].forEach { snapShot in
+                    switch self.cellShape {
+                    case .circle(let radius):
+                        snapShot.layer.cornerRadius = isPresenting ? 0 : radius
+                    case .square:
+                        break
+                    case .roundedCorners(let radius):
+                        snapShot.layer.cornerRadius = isPresenting ? 0 : radius
+                    }
+                }
                 
             }
             
