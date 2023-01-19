@@ -9,6 +9,7 @@ import UIKit
 import MessageUI
 import RxSwift
 import FirebaseAuth
+import StoreKit
 
 class UserAccountViewController: MMDataLoadingVC {
     
@@ -226,7 +227,9 @@ class UserAccountViewController: MMDataLoadingVC {
     //MARK: - Actions
     
     @objc func rateAppButtonTapped() {
-    
+        guard let writeReviewURL = URL(string: "https://apps.apple.com/app/id1659498483?action=write-review")
+               else { fatalError("Expected a valid URL") }
+           UIApplication.shared.open(writeReviewURL, options: [:], completionHandler: nil)
     }
     
     @objc func sendEmail() {

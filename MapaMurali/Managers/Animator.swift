@@ -14,7 +14,7 @@ protocol AnimatorCellProtocol: AnyObject {
 final class Animator: NSObject, UIViewControllerAnimatedTransitioning {
     
     //MARK: - Properities
-    static let duration: TimeInterval = 3.5
+    static let duration: TimeInterval = 0.5
     
     private let type: PresentationType
     private let firstViewController: MMAnimableViewController

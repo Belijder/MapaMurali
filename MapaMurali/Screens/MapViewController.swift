@@ -272,6 +272,5 @@ extension MapViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
         print("Odtapnięto \(view)")
         clusteredMurals.onNext([])
-//        UIView.animate(withDuration: 0.1) { self.clusteredCollectionView.alpha = 0.0 }
     }
 }
