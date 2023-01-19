@@ -141,7 +141,7 @@ extension MuralsCollectionViewController: UISearchResultsUpdating, UISearchBarDe
         }
         
         isSearching = true
-        filteredMurals = databaseManager.murals.filter {
+        filteredMurals = murals.filter {
             $0.adress.lowercased().contains(filter.lowercased()) ||
             $0.author!.lowercased().contains(filter.lowercased()) ||
             $0.addedBy.lowercased().contains(filter.lowercased())

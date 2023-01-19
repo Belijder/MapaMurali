@@ -48,7 +48,11 @@ class MMUserFavoritesMuralsCollectionVC: MMUserMuralsCollectionsVC {
         let destVC = MuralsCollectionViewController(databaseManager: databaseManager)
         destVC.murals = murals
         destVC.title = "Ulubione murale"
-        self.navigationController?.pushViewController(destVC, animated: true)
+        
+        let navControler = UINavigationController(rootViewController: destVC)
+        navControler.modalPresentationStyle = .fullScreen
+        navControler.navigationBar.tintColor = MMColors.primary
+        present(navControler, animated: true)
     }
     
     //MARK: - Extensions

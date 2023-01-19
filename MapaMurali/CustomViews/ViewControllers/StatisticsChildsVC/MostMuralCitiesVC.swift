@@ -87,8 +87,10 @@ class MostMuralCitiesVC: UIViewController {
             destVC.title = city.name
             destVC.murals = murals
             
-            self.navigationController?.navigationBar.tintColor = MMColors.primary
-            self.navigationController?.pushViewController(destVC, animated: true)
+            let navControler = UINavigationController(rootViewController: destVC)
+            navControler.modalPresentationStyle = .fullScreen
+            navControler.navigationBar.tintColor = MMColors.primary
+            self.present(navControler, animated: true)
         }).disposed(by: disposeBag)
     }
     
