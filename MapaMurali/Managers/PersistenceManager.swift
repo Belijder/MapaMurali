@@ -41,7 +41,7 @@ class PersistenceManager {
         }
     }
     
-    func deleteFolder() {
+    func deleteFolderWithMuralImages() {
         guard
             let path = FileManager
                 .default

@@ -193,6 +193,7 @@ class UserAccountViewController: MMDataLoadingVC {
                         self.dismissLoadingView()
                     }
                 }
+                PersistenceManager.instance.deleteFolderWithMuralImages()
             case .failure(let error):
                 self.presentMMAlert(title: "Ups!", message: error.rawValue, buttonTitle: "Ok")
             }
