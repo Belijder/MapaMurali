@@ -9,7 +9,7 @@ import UIKit
 
 class MMSquareImageView: UIImageView {
     
-    let placeholderImage = UIImage(named: "placeholder")
+    let placeholderImage = MMImages.placeholderImage
 
     override init(frame: CGRect) {
         super.init(frame: frame)

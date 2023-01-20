@@ -24,7 +24,7 @@ class MMAnimableViewController: MMDataLoadingVC {
     func prepereAndPresentDetailVCWithAnimation(mural: Mural, databaseManager: DatabaseManager) {
         self.showLoadingView(message: nil)
         
-        let destVC = MuralDetailsViewController(muralItem: mural, databaseManager: databaseManager)
+        let destVC = MuralDetailsViewController(muralItem: mural, databaseManager: databaseManager, presentingVCTitle: self.title)
         destVC.modalPresentationStyle = .fullScreen
         destVC.transitioningDelegate = self
         

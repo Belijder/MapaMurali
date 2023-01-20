@@ -18,10 +18,13 @@ class MuralDetailsViewModel {
     var favoriteImageName = "heart"
     var counterValue: Int
     
-    init(databaseManager: DatabaseManager, muralID: String, counterValue: Int) {
+    let presentingVCTitle: String?
+    
+    init(databaseManager: DatabaseManager, muralID: String, counterValue: Int, presentingVCTitle: String?) {
         self.databaseManager = databaseManager
         self.muralID = muralID
         self.counterValue = counterValue
+        self.presentingVCTitle = presentingVCTitle
         fetchUserData()
     }
     

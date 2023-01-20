@@ -21,6 +21,7 @@ enum MMImages {
     static let mmSignet = UIImage(named: "MMSignet")
     static let violetLogo = UIImage(named: "LogoViolet")
     static let addNewButton = UIImage(named: "addNewButton")
+    static let placeholderImage = UIImage(named: "placeholder")
 }
 
 enum Setup {

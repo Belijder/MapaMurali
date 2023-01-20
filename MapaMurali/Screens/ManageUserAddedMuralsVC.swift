@@ -78,7 +78,7 @@ class ManageUserAddedMuralsVC: MMDataLoadingVC {
         muralsTableView.rx.modelSelected(Mural.self)
             .subscribe(onNext: { [weak self] mural in
                 guard let self = self else { return }
-                let destVC = MuralDetailsViewController(muralItem: mural, databaseManager: self.databaseManager)
+                let destVC = MuralDetailsViewController(muralItem: mural, databaseManager: self.databaseManager, presentingVCTitle: self.title)
                 destVC.modalPresentationStyle = .fullScreen
                 self.present(destVC, animated: true)
             })

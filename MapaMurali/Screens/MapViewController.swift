@@ -231,11 +231,18 @@ extension MapViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
         if let item = annotation as? MKPointAnnotation {
-            let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: MMAnnotationView.reuseIdentifier)
-                ?? MMAnnotationView(annotation: annotation, reuseIdentifier: MMAnnotationView.reuseIdentifier)
             
-            annotationView.annotation = item
+            guard let thumbnailURL = annotation.subtitle,
+                  let docRef = annotation.title else {
+                print("🔴 Error geting url and docRef from annotation")
+                return nil
+            }
+            
+            let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: MMAnnotationView.reuseIdentifier) as? MMAnnotationView
+                ?? MMAnnotationView(annotation: item, reuseIdentifier: MMAnnotationView.reuseIdentifier) as MMAnnotationView
+            
             annotationView.clusteringIdentifier = "muralItemClustered"
+            annotationView.setImage(thumbnailURL: thumbnailURL!, docRef: docRef!)
             
             return annotationView
             

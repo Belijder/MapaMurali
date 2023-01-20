@@ -40,8 +40,8 @@ class MuralDetailsViewController: UIViewController {
     
     
     //MARK: - Initialization
-    init(muralItem: Mural, databaseManager: DatabaseManager) {
-        self.vm = MuralDetailsViewModel(databaseManager: databaseManager, muralID: muralItem.docRef, counterValue: muralItem.favoritesCount)
+    init(muralItem: Mural, databaseManager: DatabaseManager, presentingVCTitle: String?) {
+        self.vm = MuralDetailsViewModel(databaseManager: databaseManager, muralID: muralItem.docRef, counterValue: muralItem.favoritesCount, presentingVCTitle: presentingVCTitle)
         super.init(nibName: nil, bundle: nil)
         self.muralItem = muralItem
         self.databaseManager = databaseManager
@@ -312,16 +312,23 @@ class MuralDetailsViewController: UIViewController {
     }
     
     @objc func userViewTapped() {
-        let usersMural = self.databaseManager.murals.filter { $0.addedBy == muralItem.addedBy }
-        
-        let destVC = MuralsCollectionViewController(databaseManager: self.databaseManager)
-        destVC.title = "Dodane przez \(userView.username.text ?? "użytkownika")"
-        destVC.murals = usersMural
-        
-        let navControler = UINavigationController(rootViewController: destVC)
-        navControler.modalPresentationStyle = .fullScreen
-        navControler.navigationBar.tintColor = MMColors.primary
-        present(navControler, animated: true)
+        guard let title = vm.presentingVCTitle,
+              let username = userView.username.text,
+              title.contains(username)
+            else {
+                let usersMural = self.databaseManager.murals.filter { $0.addedBy == muralItem.addedBy }
+                
+                let destVC = MuralsCollectionViewController(databaseManager: self.databaseManager)
+                destVC.title = "Dodane przez \(userView.username.text ?? "użytkownika")"
+                destVC.murals = usersMural
+                
+                let navControler = UINavigationController(rootViewController: destVC)
+                navControler.modalPresentationStyle = .fullScreen
+                navControler.navigationBar.tintColor = MMColors.primary
+                present(navControler, animated: true)
+                return
+            }
+        self.dismissVC()
     }
     
     
