@@ -53,13 +53,11 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
         
         mapNC.tabBarItem.image = UIImage(systemName: "map")
         collectionNC.tabBarItem.image = UIImage(systemName: "photo.on.rectangle.angled")
-//        addNC.tabBarItem.image = UIImage(systemName: "plus")
         statisticsNC.tabBarItem.image = UIImage(systemName: "list.bullet")
         accountNC.tabBarItem.image = UIImage(systemName: "person")
         
         mapNC.title = "Mapa"
         collectionNC.title = "Murale"
-//        addNC.title = "Dodaj"
         statisticsNC.title = "Statystyki"
         accountNC.title = "Moje konto"
         
@@ -94,15 +92,12 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
         guard databaseManager.currentUser == nil else { return }
         
         if FirebaseAuth.Auth.auth().currentUser == nil {
-//            print("Validation IF User verification status: \(Auth.auth().currentUser?.isEmailVerified)")
             let destVC = SingInViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
             destVC.modalPresentationStyle = .fullScreen
             destVC.navigationController?.navigationBar.tintColor = MMColors.primary
             destVC.navigationController?.navigationBar.backItem?.title = "Zaloguj się"
             present(destVC, animated: false)
         } else {
-//            print("Validation ELSE User verification status: \(Auth.auth().currentUser?.isEmailVerified)")
-//            Present VC with info about verification requirements if needed
             if FirebaseAuth.Auth.auth().currentUser?.isEmailVerified == false {
                 loginManager.reloadUserStatus { success in
                     if success {

@@ -308,7 +308,7 @@ class MuralDetailsViewController: UIViewController {
     @objc func mapPinButtonTapped() {
         print("🟡 Map Pin button tapped.")
         databaseManager.mapPinButtonTappedOnMural.onNext(muralItem)
-        dismissVC()
+        self.view.window!.rootViewController?.dismiss(animated: false, completion: nil)
     }
     
     @objc func userViewTapped() {
