@@ -42,6 +42,16 @@ class MMTitleLabel: UILabel {
         fullString.append(NSAttributedString(string: " \(counter)"))
         
         attributedText = fullString
+    }
+    
+    func createAttributedString(text: String, imageSystemName: String, imagePointSize: CGFloat, color: UIColor) {
+        let imageAttachment = NSTextAttachment()
+        let configuration = UIImage.SymbolConfiguration(pointSize: imagePointSize, weight: .regular)
+        imageAttachment.image = UIImage(systemName: imageSystemName, withConfiguration: configuration)?.withTintColor(color)
+        let fullString = NSMutableAttributedString(string: "")
+        fullString.append(NSAttributedString(attachment: imageAttachment))
+        fullString.append(NSAttributedString(string: " " + text))
         
+        attributedText = fullString
     }
 }

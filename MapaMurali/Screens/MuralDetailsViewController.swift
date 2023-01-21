@@ -14,29 +14,33 @@ class MuralDetailsViewController: UIViewController {
     //MARK: - Properties
     var muralItem: Mural!
     var databaseManager: DatabaseManager!
-    var vm: MuralDetailsViewModel
+    let vm: MuralDetailsViewModel
     var disposeBag = DisposeBag()
     
-    var imageView = MMFullSizeImageView(frame: .zero)
-    var containerView = UIView()
+    let imageView = MMFullSizeImageView(frame: .zero)
+    let containerView = UIView()
     
-    var closeButton = MMCircleButton(color: .white, systemImageName: "xmark")
-    var favoriteButton = MMCircleButton(color: MMColors.primary)
-    var mapPinButton = MMCircleButton(color: .white, systemImageName: "mappin.and.ellipse")
+    let closeButton = MMCircleButton(color: .white, systemImageName: "xmark")
+    let favoriteButton = MMCircleButton(color: MMColors.primary)
+    let mapPinButton = MMCircleButton(color: .white, systemImageName: "mappin.and.ellipse")
     
-   
-    var authorLabelDescription = MMBodyLabel(textAlignment: .left)
-    var authorLabel = MMTitleLabel(textAlignment: .left, fontSize: 15)
-    var sendEmailWithAuthorButton = MMTitleLabel(textAlignment: .left, fontSize: 15)
-    var dateLabelDescription = MMBodyLabel(textAlignment: .left)
-    var dateLabel = MMBodyLabel(textAlignment: .left)
-    var userLabelDescription = MMBodyLabel(textAlignment: .left)
-    var userView = MMUsernameWithAvatarView(imageHeight: 40)
+    let addressLabelDescription = MMBodyLabel(textAlignment: .left)
+    let addressLabel = MMTitleLabel(textAlignment: .left, fontSize: 15)
+    let authorLabelDescription = MMBodyLabel(textAlignment: .left)
+    let authorLabel = MMTitleLabel(textAlignment: .left, fontSize: 15)
     
-    var editOrReportMuralButton = MMCircleButton()
-    var deleteMuralButton = MMCircleButton(color: .systemRed, systemImageName: "trash")
     
-    let favoriteCounter = MMTitleLabel(textAlignment: .center, fontSize: 25)
+    let sendEmailWithAuthorButton = MMTitleLabel(textAlignment: .left, fontSize: 15)
+    let dateLabelDescription = MMBodyLabel(textAlignment: .left)
+    let dateLabel = MMTitleLabel(textAlignment: .left, fontSize: 15)
+    let userLabelDescription = MMBodyLabel(textAlignment: .left)
+    let userView = MMUsernameWithAvatarView(imageHeight: 40)
+    
+    let editOrReportMuralButton = MMTitleLabel(textAlignment: .left, fontSize: 15)
+    let deleteMuralButton = MMCircleButton(color: .systemRed, systemImageName: "trash")
+    
+    let favoriteLabelDescription = MMBodyLabel(textAlignment: .left)
+    let favoriteCounter = MMTitleLabel(textAlignment: .left, fontSize: 25)
     
     
     //MARK: - Initialization
@@ -60,8 +64,8 @@ class MuralDetailsViewController: UIViewController {
     //MARK: - Live cicle
     override func viewDidLoad() {
         super.viewDidLoad()
-        containerView.addSubviews(mapPinButton, dateLabelDescription, dateLabel, authorLabelDescription, authorLabel, sendEmailWithAuthorButton, userLabelDescription, userView, favoriteCounter, editOrReportMuralButton)
-        view.addSubviews(imageView, containerView, favoriteButton, closeButton, deleteMuralButton)
+//        containerView.addSubviews(mapPinButton, dateLabelDescription, dateLabel, authorLabelDescription, authorLabel, addressLabelDescription, addressLabel, sendEmailWithAuthorButton, userLabelDescription, userView, favoriteLabelDescription, favoriteCounter, editOrReportMuralButton)
+//        view.addSubviews(imageView, containerView, favoriteButton, closeButton, deleteMuralButton)
         
         configureViewController()
         checkAuthorPropertyInMuralItem()
@@ -88,17 +92,12 @@ class MuralDetailsViewController: UIViewController {
     //MARK: - Set up
     func configureViewController() {
         view.backgroundColor = .systemBackground
-        navigationController?.isToolbarHidden = false
-        navigationController?.navigationBar.tintColor = MMColors.primary
-        
-        let closeButton = UIBarButtonItem(image: UIImage(systemName: "arrow.backward"), style: .plain, target: self, action: #selector(dismissVC))
-        navigationItem.leftBarButtonItem = closeButton
     }
     
     
     func configureContainerView() {
         containerView.backgroundColor = UIColor.systemBackground
-        containerView.layer.cornerRadius = 20
+        containerView.layer.cornerRadius = 10
         containerView.layer.shadowColor = UIColor.systemBackground.cgColor
         containerView.layer.shadowOffset = CGSize(width: 0, height: -4)
         containerView.layer.shadowRadius = 4
@@ -129,14 +128,19 @@ class MuralDetailsViewController: UIViewController {
         authorLabelDescription.text = muralItem.author?.isEmpty == true ? "Znasz autora?" : "Autor"
         authorLabel.text = muralItem.author
         
-        dateLabelDescription.text = "Data dodania:"
+        addressLabelDescription.text = "Adres"
+        configureAddressLabel()
+        
+        dateLabelDescription.text = "Data dodania"
         dateLabel.text = muralItem.addedDate.convertToDayMonthYearFormat()
         dateLabel.textColor = .white
+        dateLabel.contentMode = .top
         
-        userLabelDescription.text = "Dodano przez:"
+        userLabelDescription.text = "Dodano przez"
         
         configureUserView()
         
+        favoriteLabelDescription.text = "Polubienia"
         favoriteButton.set(systemImageName: vm.favoriteImageName)
         favoriteButton.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
         
@@ -150,16 +154,30 @@ class MuralDetailsViewController: UIViewController {
         configureDeleteButton()
     }
     
+    func configureAddressLabel() {
+        addressLabel.numberOfLines = 2
+        addressLabel.adjustsFontSizeToFitWidth = false
+        
+        if muralItem.adress.count < 25 {
+            addressLabel.text = "\(muralItem.adress),\n\(muralItem.city)"
+        } else {
+            addressLabel.lineBreakMode = .byWordWrapping
+            addressLabel.text = "\(muralItem.adress), \(muralItem.city)"
+        }
+        addressLabel.adjustsFontSizeToFitWidth = false
+    }
     
     func configureEditOrReportMuralButton() {
-        editOrReportMuralButton.set(color: .systemYellow)
-        editOrReportMuralButton.configuration?.baseBackgroundColor = .systemYellow.withAlphaComponent(0.3)
+        editOrReportMuralButton.isUserInteractionEnabled = true
+        editOrReportMuralButton.textColor = .systemYellow
         if muralItem.addedBy == databaseManager.currentUser?.id {
-            editOrReportMuralButton.setImage(UIImage(systemName: "square.and.pencil"), for: .normal)
-            editOrReportMuralButton.addTarget(self, action: #selector(editMural), for: .touchUpInside)
+            editOrReportMuralButton.createAttributedString(text: "Edytuj informacje", imageSystemName: "square.and.pencil", imagePointSize: 15, color: .systemYellow)
+            let tap = UITapGestureRecognizer(target: self, action: #selector(editMural))
+            editOrReportMuralButton.addGestureRecognizer(tap)
         } else {
-            editOrReportMuralButton.setImage(UIImage(systemName: "exclamationmark.bubble"), for: .normal)
-            editOrReportMuralButton.addTarget(self, action: #selector(reportMural), for: .touchUpInside)
+            editOrReportMuralButton.createAttributedString(text: "Zgłoś mural", imageSystemName: "exclamationmark.bubble", imagePointSize: 15, color: .systemYellow)
+            let tap = UITapGestureRecognizer(target: self, action: #selector(reportMural))
+            editOrReportMuralButton.addGestureRecognizer(tap)
         }
     }
     
@@ -199,23 +217,32 @@ class MuralDetailsViewController: UIViewController {
     
     
     func layoutUI() {
+        containerView.addSubviews(mapPinButton, dateLabelDescription, dateLabel, authorLabelDescription, authorLabel, addressLabelDescription, addressLabel, sendEmailWithAuthorButton, userLabelDescription, userView, favoriteLabelDescription, favoriteCounter, editOrReportMuralButton)
+        view.addSubviews(imageView, containerView, favoriteButton, closeButton, deleteMuralButton)
+        
         let horizontalPadding: CGFloat = 30
+        let verticalPadding: CGFloat = 20
         
         NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            imageView.topAnchor.constraint(equalTo: view.topAnchor),
             imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             imageView.widthAnchor.constraint(equalToConstant: view.bounds.width),
             imageView.heightAnchor.constraint(equalToConstant: view.bounds.width / 3 * 4),
             
-            favoriteButton.topAnchor.constraint(equalTo: imageView.topAnchor, constant: 20),
+            favoriteButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             favoriteButton.trailingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: -20),
             favoriteButton.heightAnchor.constraint(equalToConstant: 44),
             favoriteButton.widthAnchor.constraint(equalToConstant: 44),
             
-            closeButton.topAnchor.constraint(equalTo:  view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            closeButton.topAnchor.constraint(equalTo:  view.safeAreaLayoutGuide.topAnchor),
             closeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             closeButton.heightAnchor.constraint(equalToConstant: 40),
             closeButton.widthAnchor.constraint(equalToConstant: 40),
+            
+            deleteMuralButton.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: -40),
+            deleteMuralButton.leadingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: 20),
+            deleteMuralButton.heightAnchor.constraint(equalToConstant: 44),
+            deleteMuralButton.widthAnchor.constraint(equalToConstant: 44),
             
             containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -227,55 +254,65 @@ class MuralDetailsViewController: UIViewController {
             mapPinButton.heightAnchor.constraint(equalToConstant: 64),
             mapPinButton.widthAnchor.constraint(equalToConstant: 64),
             
-            dateLabelDescription.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 10),
-            dateLabelDescription.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 30),
-            dateLabelDescription.heightAnchor.constraint(equalToConstant: 20),
-            dateLabelDescription.widthAnchor.constraint(equalToConstant: 100),
-            
-            dateLabel.centerYAnchor.constraint(equalTo: dateLabelDescription.centerYAnchor),
-            dateLabel.leadingAnchor.constraint(equalTo: dateLabelDescription.trailingAnchor),
-            dateLabel.trailingAnchor.constraint(equalTo: mapPinButton.leadingAnchor, constant: -10),
-            dateLabel.heightAnchor.constraint(equalToConstant: 20),
-            
-            authorLabelDescription.topAnchor.constraint(equalTo: mapPinButton.bottomAnchor, constant: 20),
+            authorLabelDescription.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 20),
             authorLabelDescription.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: horizontalPadding),
             authorLabelDescription.heightAnchor.constraint(equalToConstant: 20),
             authorLabelDescription.widthAnchor.constraint(equalToConstant: 150),
             
             authorLabel.topAnchor.constraint(equalTo: authorLabelDescription.bottomAnchor),
             authorLabel.leadingAnchor.constraint(equalTo: authorLabelDescription.leadingAnchor),
-            authorLabel.heightAnchor.constraint(equalToConstant: 30),
-            authorLabel.widthAnchor.constraint(equalToConstant: view.bounds.size.width / 3 * 2),
+            authorLabel.heightAnchor.constraint(equalToConstant: 20),
+            authorLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -horizontalPadding),
             
             sendEmailWithAuthorButton.topAnchor.constraint(equalTo: authorLabelDescription.bottomAnchor),
             sendEmailWithAuthorButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: horizontalPadding),
             sendEmailWithAuthorButton.heightAnchor.constraint(equalToConstant: 30),
             sendEmailWithAuthorButton.widthAnchor.constraint(equalToConstant: 150),
             
-            userLabelDescription.topAnchor.constraint(equalTo: sendEmailWithAuthorButton.bottomAnchor, constant: 15),
-            userLabelDescription.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: horizontalPadding),
-            userLabelDescription.heightAnchor.constraint(equalToConstant: 30),
-            userLabelDescription.widthAnchor.constraint(equalToConstant: view.bounds.size.width / 3 * 2),
+            addressLabelDescription.topAnchor.constraint(equalTo: authorLabel.bottomAnchor, constant: verticalPadding),
+            addressLabelDescription.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: horizontalPadding),
+            addressLabelDescription.heightAnchor.constraint(equalToConstant: 20),
+            addressLabelDescription.widthAnchor.constraint(equalToConstant: view.bounds.size.width / 2),
             
-            userView.topAnchor.constraint(equalTo: userLabelDescription.bottomAnchor),
-            userView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: horizontalPadding),
+            addressLabel.topAnchor.constraint(equalTo: addressLabelDescription.bottomAnchor),
+            addressLabel.leadingAnchor.constraint(equalTo: addressLabelDescription.leadingAnchor),
+            addressLabel.heightAnchor.constraint(equalToConstant: 40),
+            addressLabel.widthAnchor.constraint(equalToConstant: view.bounds.size.width / 2),
+            
+            dateLabelDescription.topAnchor.constraint(equalTo: addressLabelDescription.topAnchor),
+            dateLabelDescription.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.bounds.size.width / 3 * 2),
+            dateLabelDescription.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -horizontalPadding),
+            dateLabelDescription.heightAnchor.constraint(equalToConstant: 20),
+            
+            dateLabel.topAnchor.constraint(equalTo: addressLabel.topAnchor, constant: 1),
+            dateLabel.leadingAnchor.constraint(equalTo: dateLabelDescription.leadingAnchor),
+            dateLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -horizontalPadding),
+            dateLabel.heightAnchor.constraint(equalToConstant: 20),
+            
+            userLabelDescription.topAnchor.constraint(equalTo: addressLabel.bottomAnchor, constant: verticalPadding),
+            userLabelDescription.leadingAnchor.constraint(equalTo: addressLabel.leadingAnchor),
+            userLabelDescription.widthAnchor.constraint(equalToConstant: view.bounds.size.width / 2),
+            userLabelDescription.heightAnchor.constraint(equalToConstant: 20),
+            
+            userView.topAnchor.constraint(equalTo: userLabelDescription.bottomAnchor, constant: 5),
+            userView.leadingAnchor.constraint(equalTo: userLabelDescription.leadingAnchor),
             userView.heightAnchor.constraint(equalToConstant: 40),
-            userView.widthAnchor.constraint(equalToConstant: view.bounds.size.width / 3 * 2),
+            userView.widthAnchor.constraint(equalToConstant: view.bounds.size.width / 2),
             
-            favoriteCounter.centerYAnchor.constraint(equalTo: authorLabel.centerYAnchor),
-            favoriteCounter.centerXAnchor.constraint(equalTo: mapPinButton.centerXAnchor),
-            favoriteCounter.widthAnchor.constraint(equalToConstant: 50),
-            favoriteCounter.heightAnchor.constraint(equalToConstant: 50),
+            favoriteLabelDescription.topAnchor.constraint(equalTo: userLabelDescription.topAnchor),
+            favoriteLabelDescription.leadingAnchor.constraint(equalTo: dateLabelDescription.leadingAnchor),
+            favoriteLabelDescription.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -horizontalPadding),
+            favoriteLabelDescription.heightAnchor.constraint(equalToConstant: 20),
             
-            editOrReportMuralButton.centerYAnchor.constraint(equalTo: userView.centerYAnchor),
-            editOrReportMuralButton.centerXAnchor.constraint(equalTo: mapPinButton.centerXAnchor),
-            editOrReportMuralButton.heightAnchor.constraint(equalToConstant: 44),
-            editOrReportMuralButton.widthAnchor.constraint(equalToConstant: 44),
+            favoriteCounter.leadingAnchor.constraint(equalTo: favoriteLabelDescription.leadingAnchor),
+            favoriteCounter.topAnchor.constraint(equalTo: favoriteLabelDescription.bottomAnchor),
+            favoriteCounter.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -horizontalPadding),
+            favoriteCounter.heightAnchor.constraint(equalToConstant: 40),
             
-            deleteMuralButton.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: -40),
-            deleteMuralButton.leadingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: 20),
-            deleteMuralButton.heightAnchor.constraint(equalToConstant: 44),
-            deleteMuralButton.widthAnchor.constraint(equalToConstant: 44)
+            editOrReportMuralButton.leadingAnchor.constraint(equalTo: userLabelDescription.leadingAnchor),
+            editOrReportMuralButton.topAnchor.constraint(equalTo: userView.bottomAnchor, constant: verticalPadding + 10),
+            editOrReportMuralButton.heightAnchor.constraint(equalToConstant: 20),
+            editOrReportMuralButton.widthAnchor.constraint(equalToConstant: 200)
         ])
     }
     
@@ -337,7 +374,8 @@ class MuralDetailsViewController: UIViewController {
             let mail = MFMailComposeViewController()
             mail.mailComposeDelegate = self
             mail.setToRecipients(["mapamurali@gmail.com"])
-            mail.setMessageBody("<p>Znam autora tego muralu -> (ID: \(muralItem.docRef)). /n /n Autorem jest: </p>", isHTML: true)
+            mail.setSubject("Zgłoszenie autora muralu: \(muralItem.docRef)")
+            mail.setMessageBody("<p>Znam autora tego muralu. Autorem jest: </p>", isHTML: true)
             present(mail, animated: true)
         } else {
             presentMMAlert(title: "Nie można wysłać maila", message: "Sprawdź czy masz skonfugurowanego klienta pocztowego i spróbuj ponownie. ", buttonTitle: "Ok")

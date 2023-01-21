@@ -269,7 +269,7 @@ class UserAccountViewController: MMDataLoadingVC {
             switch result {
             case.success(let terms):
                 guard let url = URL(string: terms.privacyPolicy) else {
-                    self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: MMError.failedToGetLegalTerms.rawValue, buttonTitle: "Ok")
+                    self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: MMError.failedToGetPolicyPrivacy.rawValue, buttonTitle: "Ok")
                     return
                 }
                 self.presentSafariVC(with: url)

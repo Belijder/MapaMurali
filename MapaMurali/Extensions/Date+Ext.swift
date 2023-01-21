@@ -9,6 +9,9 @@ import Foundation
 
 extension Date {
     func convertToDayMonthYearFormat() -> String {
-        return formatted(.dateTime.day().month().year())
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "pl_PL")
+        dateFormatter.dateFormat = "dd MMM yyyy"
+        return dateFormatter.string(from: self)
     }
 }
