@@ -30,7 +30,7 @@ class AddNewItemViewController: MMDataLoadingVC {
     var removeImageButtonHeightConstraint: NSLayoutConstraint!
     var removeImageButtonWidthConstraint: NSLayoutConstraint!
     
-    var selectedImageViewTopAnchorConstant: CGFloat = 80
+    var selectedImageViewTopAnchorConstant: CGFloat = 60
     
     
     //MARK: - Inicialization
@@ -187,12 +187,38 @@ class AddNewItemViewController: MMDataLoadingVC {
     }
     
     func actionSheetCameraButtonTapped() {
-        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+        let cameraAuthorizationStatus = AVCaptureDevice.authorizationStatus(for: .video)
+        
+        switch cameraAuthorizationStatus {
+        case .authorized:
             showLoadingView(message: "Uzyskiwanie dostępu do aparatu...")
             let imagePickerController = UIImagePickerController()
             imagePickerController.delegate = self
             imagePickerController.sourceType = .camera
             self.present(imagePickerController, animated: true)
+        case .denied:
+            presentMMAlert(title: "Brak dostępu", message: "Aby zrobić zdjęcie musisz wyrazić zgodę na używanie aparatu. Przejdź do Ustawienia > Mapa Murali i wyraź zgodę na używanie aparatu.", buttonTitle: "Ok")
+        case .restricted:
+            presentMMAlert(title: "Brak dostępu", message: "Aby zrobić zdjęcie musisz wyrazić zgodę na używanie aparatu. Przejdź do Ustawienia > Mapa Murali i wyraź zgodę na używanie aparatu.", buttonTitle: "Ok")
+        case .notDetermined:
+            AVCaptureDevice.requestAccess(for: .video) { granted in
+                if granted {
+                    print("Access granted")
+                    DispatchQueue.main.async {
+                        self.showLoadingView(message: "Uzyskiwanie dostępu do aparatu...")
+                        let imagePickerController = UIImagePickerController()
+                        imagePickerController.delegate = self
+                        imagePickerController.sourceType = .camera
+                        self.present(imagePickerController, animated: true)
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        self.presentMMAlert(title: "Brak dostępu", message: "Aby zrobić zdjęcie musisz wyrazić zgodę na używanie aparatu. Przejdź do Ustawienia > Mapa Murali i wyraź zgodę na używanie aparatu.", buttonTitle: "Ok")
+                    }
+                }
+            }
+        @unknown default:
+            break
         }
     }
     

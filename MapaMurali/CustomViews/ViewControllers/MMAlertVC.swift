@@ -46,7 +46,7 @@ class MMAlertVC: UIViewController {
         titleLabel.text = alertTitle ?? "Coś poszło nie tak."
         
         messageLabel.text = alertMessage ?? "Nie mogliśmy ukończyć tego żądania"
-        messageLabel.numberOfLines = 4
+        messageLabel.numberOfLines = 5
         
         actionButton.setTitle(buttonTitle ?? "Ok", for: .normal)
         actionButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
@@ -58,7 +58,7 @@ class MMAlertVC: UIViewController {
         NSLayoutConstraint.activate([
             containerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             containerView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            containerView.heightAnchor.constraint(equalToConstant: 220),
+            containerView.heightAnchor.constraint(equalToConstant: 240),
             containerView.widthAnchor.constraint(equalToConstant: 280),
             
             titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: padding),

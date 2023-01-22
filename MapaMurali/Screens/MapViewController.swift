@@ -76,10 +76,13 @@ class MapViewController: MMAnimableViewController {
         locationManager.requestLocation()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        locationManager.requestWhenInUseAuthorization()
+    }
+    
     //MARK: - Set up
     func configureLocationManager() {
         locationManager.delegate = self
-        locationManager.requestAlwaysAuthorization()
     }
     
     func configureMapView() {
@@ -218,11 +221,31 @@ extension MapViewController: CLLocationManagerDelegate {
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print(error)
+        let nsError = error as NSError
+        if nsError.code == 1 {
+            self.presentMMAlert(title: "Brak uprawnień", message: "Aby wyświetlić murale na mapie musisz wyrazić zgodę na używanie Twojej lokalizacji. Przejdź do Ustawienia > MapaMurali i wyraź zgodę.", buttonTitle: "Ok")
+        }
     }
 
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        if status == .authorizedAlways {
+        switch status {
+        case .notDetermined:
+            manager.requestWhenInUseAuthorization()
+        case .restricted:
+            manager.requestWhenInUseAuthorization()
+        case .denied:
+            self.presentMMAlert(title: "Brak uprawnień", message: "Aby wyświetlić murale na mapie musisz wyrazić zgodę na używanie Twojej lokalizacji. Przejdź do Ustawienia > MapaMurali i wyraź zgodę.", buttonTitle: "Ok")
+        case .authorizedAlways:
             locationManager.requestLocation()
+            self.view.window!.rootViewController?.dismiss(animated: true, completion: nil)
+        case .authorizedWhenInUse:
+            locationManager.requestLocation()
+            self.view.window!.rootViewController?.dismiss(animated: true, completion: nil)
+        case .authorized:
+            locationManager.requestLocation()
+            self.view.window!.rootViewController?.dismiss(animated: true, completion: nil)
+        @unknown default:
+            break
         }
     }
 }
