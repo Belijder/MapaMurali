@@ -209,6 +209,7 @@ class AddNewItemViewController: MMDataLoadingVC {
                         let imagePickerController = UIImagePickerController()
                         imagePickerController.delegate = self
                         imagePickerController.sourceType = .camera
+                        imagePickerController.showsCameraControls = true
                         self.present(imagePickerController, animated: true)
                     }
                 } else {
@@ -228,6 +229,7 @@ class AddNewItemViewController: MMDataLoadingVC {
             let imagePickerController = UIImagePickerController()
             imagePickerController.delegate = self
             imagePickerController.sourceType = .photoLibrary
+            
             self.present(imagePickerController, animated: true)
         }
     }
@@ -335,22 +337,17 @@ extension AddNewItemViewController: UIImagePickerControllerDelegate, UINavigatio
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         self.dismissLoadingView()
         
-        var image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
-        
-        if let imageToCheck = image {
-            if imageToCheck.size.width > imageToCheck.size.height {
-                let verticalImage = imageToCheck.cropImageToVerticalRectangle()
-                image = verticalImage
-            }
-        }
-        
+        let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
+
         let compressedImage = image?.jpegData(compressionQuality: 0.3)
         
         selectedImageView.image = UIImage(data: compressedImage!)
+        selectedImageView.contentMode = .center
+        selectedImageView.contentMode = .scaleAspectFill
         
         self.vm.fullSizeImageData = compressedImage
         
-        let resizedImage = image?.aspectFittedToHeight(140)
+        let resizedImage = image?.aspectFittedToHeight(240)
         
         let thumbnailData = resizedImage?.jpegData(compressionQuality: 0.3)
         self.vm.thumbnailImageData = thumbnailData

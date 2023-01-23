@@ -68,31 +68,4 @@ extension UIImage {
         
         return croppedImage
     }
-    
-    func cropImageToVerticalRectangle() -> UIImage {
-        let sourceImage = self
-        
-        let sideLenght = min(sourceImage.size.width, sourceImage.size.height)
-        
-        let sourceSize = sourceImage.size
-        
-        let widthLenght = (sourceSize.height / 4) * 3
-        let xOffset = (sourceSize.width - sideLenght) / 2.0
-        let yOffset = (sourceSize.height - sideLenght) / 2.0
-        
-        let cropRect = CGRect(x: xOffset, y: yOffset, width: widthLenght, height: sourceImage.size.height).integral
-        
-        let sourceCGImage = sourceImage.cgImage!
-        let croppedCGImage = sourceCGImage.cropping(to: cropRect)!
-        
-        let croppedImage = UIImage(
-            cgImage: croppedCGImage,
-            scale: sourceImage.imageRendererFormat.scale,
-            orientation: sourceImage.imageOrientation
-        )
-        
-        return croppedImage
-    }
-    
-    
 }

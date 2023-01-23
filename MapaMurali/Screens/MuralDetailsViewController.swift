@@ -122,6 +122,8 @@ class MuralDetailsViewController: UIViewController {
             imageView.downloadImage(from: muralItem.imageURL, imageType: .fullSize, docRef: muralItem.docRef)
         }
         
+        imageView.contentMode = .scaleAspectFill
+        
         mapPinButton.configuration?.baseBackgroundColor = MMColors.primary
         mapPinButton.addTarget(self, action: #selector(mapPinButtonTapped), for: .touchUpInside)
         
