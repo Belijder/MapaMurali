@@ -19,7 +19,6 @@
 		426E4A0128931180009C8E99 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426E4A0028931180009C8E99 /* SceneDelegate.swift */; };
 		426E4A0328931180009C8E99 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426E4A0228931180009C8E99 /* MapViewController.swift */; };
 		426E4A0828931184009C8E99 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 426E4A0728931184009C8E99 /* Assets.xcassets */; };
-		426E4A0B28931184009C8E99 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 426E4A0928931184009C8E99 /* LaunchScreen.storyboard */; };
 		427BD5AA28EB6063005F686A /* MMAnnotationClusterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BD5A928EB6063005F686A /* MMAnnotationClusterView.swift */; };
 		427C1A642910E899000E5619 /* MMFavoritesMuralCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427C1A632910E899000E5619 /* MMFavoritesMuralCollectionCell.swift */; };
 		427CAB5528E60D3200DA7247 /* AddNewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427CAB5428E60D3200DA7247 /* AddNewViewModel.swift */; };
@@ -119,7 +118,6 @@
 		426E4A0028931180009C8E99 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		426E4A0228931180009C8E99 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		426E4A0728931184009C8E99 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		426E4A0A28931184009C8E99 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		426E4A0C28931184009C8E99 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		427BD5A928EB6063005F686A /* MMAnnotationClusterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMAnnotationClusterView.swift; sourceTree = "<group>"; };
 		427C1A632910E899000E5619 /* MMFavoritesMuralCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMFavoritesMuralCollectionCell.swift; sourceTree = "<group>"; };
@@ -246,7 +244,6 @@
 				42867B6528958FDC00E5159F /* Screens */,
 				42867B7128998A3200E5159F /* GoogleService-Info.plist */,
 				426E4A0728931184009C8E99 /* Assets.xcassets */,
-				426E4A0928931184009C8E99 /* LaunchScreen.storyboard */,
 				426E4A0C28931184009C8E99 /* Info.plist */,
 			);
 			path = MapaMurali;
@@ -524,7 +521,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				426E4A0B28931184009C8E99 /* LaunchScreen.storyboard in Resources */,
 				426E4A0828931184009C8E99 /* Assets.xcassets in Resources */,
 				42867B7228998A3200E5159F /* GoogleService-Info.plist in Resources */,
 			);
@@ -613,17 +609,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		426E4A0928931184009C8E99 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				426E4A0A28931184009C8E99 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		426E4A0D28931184009C8E99 /* Debug */ = {
@@ -756,7 +741,6 @@
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Musimy mieć dostęp do Twojej lokalizacji, aby móc pokazywać Ci wspaniałe murale w Twojej okolicy!";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Musimy mieć dostęp do Twojej lokalizacji, aby móc pokazywać Ci wspaniałe murale w Twojej okolicy!";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
@@ -791,7 +775,6 @@
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Musimy mieć dostęp do Twojej lokalizacji, aby móc pokazywać Ci wspaniałe murale w Twojej okolicy!";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Musimy mieć dostęp do Twojej lokalizacji, aby móc pokazywać Ci wspaniałe murale w Twojej okolicy!";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;

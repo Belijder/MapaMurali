@@ -70,7 +70,6 @@ class DatabaseManager {
     init() {
         fetchMuralItemsFromDatabase()
         fetchMostActivUsers()
-//        fetchCurrenUserData()
     }
     
     //MARK: - Create
@@ -141,22 +140,20 @@ class DatabaseManager {
     //MARK: - Read
     func fetchCurrenUserData() {
         guard let userID = Auth.auth().currentUser?.uid else { return }
-        print("🟠 User verification status: \(Auth.auth().currentUser?.isEmailVerified)")
         fetchUserFromDatabase(id: userID) { result in
             switch result {
             case .success(let user):
                 self.currentUser = user
-                print("🟡 Current User Data Fetched from Database.")
-            case .failure(let error):
-                print("🔴 Error to fetch curren user data from Database. Error: \(error)")
+            case .failure(_):
+                break
             }
         }
     }
     
     func fetchMuralItemsFromDatabase() {
         db.collection(CollectionName.murals.rawValue).getDocuments { querySnapshot, error in
-            if let error = error {
-                print("NIE UDAŁO SIĘ POBRAĆ MURALI Z BAZY DANYCH. ERROR: \(error.localizedDescription)")
+            if error != nil {
+                return
             } else {
                 for document in querySnapshot!.documents {
                     let docRef = self.db.collection(CollectionName.murals.rawValue).document(document.documentID)
@@ -164,9 +161,8 @@ class DatabaseManager {
                         switch result {
                         case .success(let mural):
                             self.murals.append(mural)
-                            print(self.muralItems)
                         case .failure(_):
-                            print("FAILED TO GET DOCUMENT: \(document.documentID)")
+                            break
                         }
                     }
                 }
@@ -181,8 +177,8 @@ class DatabaseManager {
             switch result {
             case .success(let mural):
                 self.murals.append(mural)
-            case .failure(let error):
-                print("🔴 Error when try to decode mural with id: \(muralID) from Database. ERROR: \(error)")
+            case .failure(_):
+                break
             }
         }
     }
@@ -196,8 +192,8 @@ class DatabaseManager {
     
     func fetchMostActivUsers() {
         db.collection(CollectionName.users.rawValue).order(by: "muralsAdded").limit(to: 10).getDocuments { querySnapshot, error in
-            if let error = error {
-                print("🔴 Error to fetch most activ users from Database: \(error)")
+            if error != nil {
+                return
             } else {
                 for doc in querySnapshot!.documents {
                     let docRef = self.db.collection(CollectionName.users.rawValue).document(doc.documentID)
@@ -205,12 +201,11 @@ class DatabaseManager {
                         switch result {
                         case .success(let user):
                             self.users.append(user)
-                        case .failure(let error):
-                            print("🔴 Error to fetch user with id \(doc.documentID): \(error)")
+                        case .failure(_):
+                            break
                         }
                     }
                 }
-                print("🟡 Most Activ users Added")
             }
         }
     }
@@ -272,10 +267,12 @@ class DatabaseManager {
             muralDocRef.updateData([
                 "favoritesCount": FieldValue.increment(Int64(1))
             ]) { error in
+                
                 guard error == nil else {
                     completion(false)
                     return
                 }
+                
                 self.currentUser?.favoritesMurals.append(muralID)
                 
                 if let muralIndex = self.murals.firstIndex(where: { $0.docRef == muralID }) {
@@ -304,10 +301,12 @@ class DatabaseManager {
             muralDocRef.updateData([
                 "favoritesCount": FieldValue.increment(Int64(-1))
             ]) { error in
+                
                 guard error == nil else {
                     completion(false)
                     return
                 }
+                
                 self.currentUser?.favoritesMurals.removeAll(where: { $0 == muralID })
                 
                 if let muralIndex = self.murals.firstIndex(where: { $0.docRef == muralID }) {
@@ -324,8 +323,8 @@ class DatabaseManager {
         let muralDocRef = db.collection(CollectionName.murals.rawValue).document(id)
         
         muralDocRef.delete(completion: { error in
-            if let error = error {
-                print("🔴 Error when try to delete document from database. DocumentID: \(id). ERROR: \(error)")
+            if error != nil {
+                return
             } else { 
                 self.removeImageFromStorage(imageType: .fullSize, docRef: id) { _ in
                     self.removeImageFromStorage(imageType: .thumbnail, docRef: id) { _ in
@@ -345,27 +344,25 @@ class DatabaseManager {
     
     func removeImageFromStorage(imageType: ImageType, docRef: String, completion: @escaping (Bool) -> Void) {
         let imageRef = storageRef.child("\(imageType.rawValue + docRef).jpg")
+        
         imageRef.delete { error in
-            if let error = error {
-                print("🔴 Error when try to delete image from Storage. Image reference: \(imageRef). ERROR: \(error)")
+            if error != nil {
+                return
             } else {
-                print("🟢 Success to delete image from Storage. Image reference: \(imageRef).")
                 completion(true)
             }
         }
     }
     
     func removeAllUserData(userID: String, completion: @escaping (Result<Bool, MMError>) -> Void) {
-        print("🟡 The removeAllUserData function has been run")
         removeUserProfile(userID: userID) { result in
             switch result {
             case .success(_):
-                self.removeImageFromStorage(imageType: .avatar, docRef: userID) { _ in
-                    print("🟢 Avatar image removed from storage.")
-                }
+                self.removeImageFromStorage(imageType: .avatar, docRef: userID) { _ in }
                 self.removeAllUserAddedMurals(userID: userID) { result in
                     switch result {
                     case .success(_):
+                        self.currentUser = nil
                         completion(.success(true))
                     case .failure(let error):
                         completion(.failure(error))
@@ -378,7 +375,6 @@ class DatabaseManager {
     }
     
     func removeAllUserAddedMurals(userID: String, completion: @escaping (Result<Bool, MMError>) -> Void) {
-        print("🟡 The removeAllUserAddedMurals function has been run")
         var removedMuralCounter = 0 {
             didSet {
                 if removedMuralCounter == userAddedMurals.count {
@@ -390,7 +386,6 @@ class DatabaseManager {
         let userAddedMurals = murals.filter { $0.addedBy == userID }
         
         guard userAddedMurals.count > 0 else {
-            print("🟡 User has no murals added.")
             completion(.success(true))
             return
         }
@@ -401,10 +396,8 @@ class DatabaseManager {
                     if let index = self.murals.firstIndex(where: { $0.docRef == mural.docRef}) {
                         self.murals.remove(at: index)
                     }
-                    print("🟢 Successfuly removed mural from Database.")
                     removedMuralCounter += 1
                 } else {
-                    print("🔴 Error when try to remove mural from Database. DocRef: \(mural.docRef)")
                     removedMuralCounter += 1
                 }
             }
@@ -412,15 +405,12 @@ class DatabaseManager {
     }
     
     func removeUserProfile(userID: String, completion: @escaping (Result<Bool, MMError>) -> Void) {
-        print("🟡 The removeUserProfile function has been run")
         let userProfileRef = db.collection(CollectionName.users.rawValue).document(userID)
         
         userProfileRef.delete { error in
-            if let error = error {
-                print("🔴 Error when try to delete userAccount. ERROR: \(error)")
+            if error != nil {
                 completion(.failure(MMError.defaultError))
             } else {
-                print("🟢 Successfuly removed user profile from Database.")
                 completion(.success(true))
             }
         }

@@ -144,14 +144,15 @@ class CompleteUserDetailsViewController: MMDataLoadingVC {
         showLoadingView(message: "Uakualnianie informacji")
         
         guard let email = UserDefaults.standard.object(forKey: Setup.kEmail) as? String else { return }
-        print("🟠 email from UserDefault is: \(email)")
         
         guard let avatarData = avatarImage else {
+            dismissLoadingView()
             presentMMAlert(title: "Dodaj avatar", message: "Dodaj avatar do swojego konta.", buttonTitle: "Ok")
             return
         }
         
         guard let userID = loginManager.currentUserID else {
+            dismissLoadingView()
             presentMMAlert(title: "Ups", message: "Coś poszło nie tak. Nie udało się utworzyć konta. Spróbuj ponownie za chwilę.", buttonTitle: "Ok")
             return
         }

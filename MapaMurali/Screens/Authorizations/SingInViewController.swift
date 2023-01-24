@@ -52,8 +52,6 @@ class SingInViewController: UIViewController {
         layoutUI()
         addSingInObserver()
         createDissmisKeyboardTapGesture()
-        
-        emailTextField.becomeFirstResponder()
     }
     
     override func viewWillAppear(_ animated: Bool) {

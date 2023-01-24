@@ -240,8 +240,19 @@ class AddNewItemViewController: MMDataLoadingVC {
     }
     
     @objc func localizationButtonTapped() {
-        locationManager.requestLocation()
-        showLoadingView(message: "Pobieranie lokalizacji...")
+        let status = locationManager.authorizationStatus
+        print(status.rawValue)
+        switch status {
+        case .notDetermined:
+            locationManager.requestWhenInUseAuthorization()
+        case .restricted, .denied:
+            self.presentMMAlert(title: "Brak uprawnień", message: "Aby ustalić adres musisz wyrazić zgodę na używanie Twojej lokalizacji. Przejdź do: Ustawienia > MapaMurali i wyraź zgodę.", buttonTitle: "Ok")
+        case .authorizedAlways, .authorizedWhenInUse, .authorized:
+            locationManager.requestLocation()
+            showLoadingView(message: "Pobieranie lokalizacji...")
+        @unknown default:
+            break
+        }
     }
     
     @objc func callToActionButtonTapped() {
@@ -412,6 +423,31 @@ extension AddNewItemViewController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print(error)
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .notDetermined:
+            print("🟡 CLAuthorizationStatus is: notDetermined")
+            if databaseManager.currentUser != nil {
+                manager.requestWhenInUseAuthorization()
+            }
+        case .restricted:
+            print("🟡 CLAuthorizationStatus is: restricted")
+            if databaseManager.currentUser != nil {
+                manager.requestWhenInUseAuthorization()
+            }
+        case .denied:
+            print("🟡 CLAuthorizationStatus is: denied")
+            self.presentMMAlert(title: "Brak uprawnień", message: "Aby wyświetlić murale na mapie musisz wyrazić zgodę na używanie Twojej lokalizacji. Przejdź do Ustawienia > MapaMurali i wyraź zgodę.", buttonTitle: "Ok")
+        case .authorizedAlways, .authorizedWhenInUse, .authorized:
+            print("🟡 CLAuthorizationStatus is: authorizedAlways")
+            locationManager.requestLocation()
+            showLoadingView(message: "Pobieranie lokalizacji...")
+            self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
+        @unknown default:
+            break
+        }
     }
 }
 

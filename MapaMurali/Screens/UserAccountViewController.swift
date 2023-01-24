@@ -167,7 +167,7 @@ class UserAccountViewController: MMDataLoadingVC {
     
     //MARK: - Logic
     @objc func logOut() {
-        loginManager.singOut()
+        loginManager.signOut()
         presentLoginScreen()
     }
     

@@ -66,18 +66,17 @@ class MapViewController: MMAnimableViewController {
         bindClusteredCollectionView()
         
         setMapConstraints()
+        configureLocationManager()
         configureMapView()
         setupUserTrackingButton()
-        configureLocationManager()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        locationManager.requestLocation()
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        locationManager.requestWhenInUseAuthorization()
+        super.viewDidAppear(animated)
     }
     
     //MARK: - Set up
@@ -89,8 +88,7 @@ class MapViewController: MMAnimableViewController {
         map.delegate = self
         map.showsUserLocation = true
         map.pointOfInterestFilter = .excludingAll
-        map.userTrackingMode = .followWithHeading
-        setMapRegion(with: map.userLocation.coordinate)
+        map.userTrackingMode = .none
     }
     
     func setMapConstraints() {
@@ -118,9 +116,9 @@ class MapViewController: MMAnimableViewController {
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 5
         button.tintColor = MMColors.violetDark
+    
         button.translatesAutoresizingMaskIntoConstraints = false
         map.addSubview(button)
-        map.userTrackingMode = .follow
 
         NSLayoutConstraint.activate([button.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
                                      button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10)
@@ -217,33 +215,29 @@ class MapViewController: MMAnimableViewController {
 
 //MARK: - Extensions
 extension MapViewController: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) { }
-
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print(error)
-        let nsError = error as NSError
-        if nsError.code == 1 {
-            self.presentMMAlert(title: "Brak uprawnień", message: "Aby wyświetlić murale na mapie musisz wyrazić zgodę na używanie Twojej lokalizacji. Przejdź do Ustawienia > MapaMurali i wyraź zgodę.", buttonTitle: "Ok")
-        }
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        print("Location was updated.")
+        guard let location = locations.first else { return }
+        setMapRegion(with: location.coordinate)
+        print("Map region was set.")
     }
+
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) { }
 
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
         case .notDetermined:
-            manager.requestWhenInUseAuthorization()
-        case .restricted:
-            manager.requestWhenInUseAuthorization()
-        case .denied:
-            self.presentMMAlert(title: "Brak uprawnień", message: "Aby wyświetlić murale na mapie musisz wyrazić zgodę na używanie Twojej lokalizacji. Przejdź do Ustawienia > MapaMurali i wyraź zgodę.", buttonTitle: "Ok")
-        case .authorizedAlways:
+            print("🟡 CLAuthorizationStatus is: notDetermined")
+            if databaseManager.currentUser != nil {
+                manager.requestWhenInUseAuthorization()
+            }
+        case .restricted, .denied :
+            print("🟡 CLAuthorizationStatus is: denied or restricted")
+            break
+        case .authorizedAlways, .authorizedWhenInUse, .authorized:
+            print("🟡 CLAuthorizationStatus is: authorizedAlways or authorizedWhenInUse or authorized")
             locationManager.requestLocation()
-            self.view.window!.rootViewController?.dismiss(animated: true, completion: nil)
-        case .authorizedWhenInUse:
-            locationManager.requestLocation()
-            self.view.window!.rootViewController?.dismiss(animated: true, completion: nil)
-        case .authorized:
-            locationManager.requestLocation()
-            self.view.window!.rootViewController?.dismiss(animated: true, completion: nil)
+            self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
         @unknown default:
             break
         }
@@ -251,6 +245,7 @@ extension MapViewController: CLLocationManagerDelegate {
 }
 
 extension MapViewController: MKMapViewDelegate {
+    
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
         if let item = annotation as? MKPointAnnotation {
@@ -316,4 +311,26 @@ extension MapViewController: MKMapViewDelegate {
         clusteredMurals.onNext([])
         self.clusteredCollectionView.alpha = 0
     }
+    
+    func mapView(_ mapView: MKMapView, didChange mode: MKUserTrackingMode, animated: Bool) {
+        let status = locationManager.authorizationStatus
+        switch status {
+        case .notDetermined:
+            print("🟡 CLAuthorizationStatus after mode change is: notDetermined")
+            if databaseManager.currentUser != nil {
+                locationManager.requestWhenInUseAuthorization()
+            }
+        case .restricted, .denied :
+            print("🟡 CLAuthorizationStatus is after mode change: denied or restricted")
+            self.presentMMAlert(title: "Brak uprawnień", message: "Aby wyświetlić swoją lokalizację na mapie musisz wyrazić zgodę na używanie Twojej lokalizacji. Przejdź do Ustawienia > MapaMurali i wyraź zgodę.", buttonTitle: "Ok")
+            if map.userTrackingMode != .none {
+                map.userTrackingMode = .none
+            }
+        case .authorizedAlways, .authorizedWhenInUse, .authorized:
+            break
+        @unknown default:
+            break
+        }
+    }
+
 }
