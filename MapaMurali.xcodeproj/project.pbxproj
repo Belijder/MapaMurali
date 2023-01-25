@@ -740,6 +740,8 @@
 				INFOPLIST_KEY_NSCameraUsageDescription = "Musisz wyrazić zgodę na wykorzystanie aparatu, aby móc dodać zdjęcie.";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Musimy mieć dostęp do Twojej lokalizacji, aby móc pokazywać Ci wspaniałe murale w Twojej okolicy!";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Musimy mieć dostęp do Twojej lokalizacji, aby móc pokazywać Ci wspaniałe murale w Twojej okolicy!";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Aby dodać zdjęcie pochodzące z biblioteki zdjęć musisz wyrazić zgodę na dostęp do biblioteki.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Aby dodać zdjęcie pochodzące z biblioteki zdjęć musisz wyrazić zgodę na dostęp do biblioteki.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -774,6 +776,8 @@
 				INFOPLIST_KEY_NSCameraUsageDescription = "Musisz wyrazić zgodę na wykorzystanie aparatu, aby móc dodać zdjęcie.";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Musimy mieć dostęp do Twojej lokalizacji, aby móc pokazywać Ci wspaniałe murale w Twojej okolicy!";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Musimy mieć dostęp do Twojej lokalizacji, aby móc pokazywać Ci wspaniałe murale w Twojej okolicy!";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Aby dodać zdjęcie pochodzące z biblioteki zdjęć musisz wyrazić zgodę na dostęp do biblioteki.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Aby dodać zdjęcie pochodzące z biblioteki zdjęć musisz wyrazić zgodę na dostęp do biblioteki.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

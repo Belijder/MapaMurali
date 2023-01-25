@@ -8,6 +8,8 @@
 import UIKit
 import AVFoundation
 import CoreLocation
+import Photos
+import PhotosUI
 
 class AddNewItemViewController: MMDataLoadingVC {
     
@@ -195,10 +197,9 @@ class AddNewItemViewController: MMDataLoadingVC {
             let imagePickerController = UIImagePickerController()
             imagePickerController.delegate = self
             imagePickerController.sourceType = .camera
-            self.present(imagePickerController, animated: true)
-        case .denied:
-            presentMMAlert(title: "Brak dostępu", message: "Aby zrobić zdjęcie musisz wyrazić zgodę na używanie aparatu. Przejdź do Ustawienia > Mapa Murali i wyraź zgodę na używanie aparatu.", buttonTitle: "Ok")
-        case .restricted:
+            imagePickerController.showsCameraControls = true
+            self.present(imagePickerController, animated: true, completion: dismissLoadingView)
+        case .denied, .restricted:
             presentMMAlert(title: "Brak dostępu", message: "Aby zrobić zdjęcie musisz wyrazić zgodę na używanie aparatu. Przejdź do Ustawienia > Mapa Murali i wyraź zgodę na używanie aparatu.", buttonTitle: "Ok")
         case .notDetermined:
             AVCaptureDevice.requestAccess(for: .video) { granted in
@@ -210,7 +211,7 @@ class AddNewItemViewController: MMDataLoadingVC {
                         imagePickerController.delegate = self
                         imagePickerController.sourceType = .camera
                         imagePickerController.showsCameraControls = true
-                        self.present(imagePickerController, animated: true)
+                        self.present(imagePickerController, animated: true, completion: self.dismissLoadingView)
                     }
                 } else {
                     DispatchQueue.main.async {
@@ -223,14 +224,14 @@ class AddNewItemViewController: MMDataLoadingVC {
         }
     }
     
-    func actionSheetLibraryButtonTapped() {
+    private func actionSheetLibraryButtonTapped() {
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
             showLoadingView(message: "Otwieranie albumu ze zdjęciami...")
             let imagePickerController = UIImagePickerController()
             imagePickerController.delegate = self
             imagePickerController.sourceType = .photoLibrary
-            
-            self.present(imagePickerController, animated: true)
+
+            self.present(imagePickerController, animated: true, completion: dismissLoadingView)
         }
     }
     
@@ -346,7 +347,6 @@ class AddNewItemViewController: MMDataLoadingVC {
 extension AddNewItemViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        self.dismissLoadingView()
         
         let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
 
@@ -372,7 +372,6 @@ extension AddNewItemViewController: UIImagePickerControllerDelegate, UINavigatio
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         print("🟡 Cancel button tapped in UIImagePickerController")
         dismiss(animated: true, completion: nil)
-        self.dismissLoadingView()
     }
 }
 
@@ -486,5 +485,13 @@ extension AddNewItemViewController: DatabaseManagerDelegate {
         dismissLoadingView()
         self.presentMMAlert(title: errortitle, message: errorMessage, buttonTitle: "Ok")
     }
+}
 
+extension AddNewItemViewController: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        
+    }
+    
+    
+    
 }
