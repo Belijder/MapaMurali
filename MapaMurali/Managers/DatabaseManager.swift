@@ -60,17 +60,14 @@ class DatabaseManager {
         didSet {
             if let user = currentUser {
                 currentUserPublisher.onNext(user)
+                if murals.isEmpty { fetchMuralItemsFromDatabase() }
+                if users.isEmpty { fetchMostActivUsers() }
             }
         }
     }
     
     weak var delegate: DatabaseManagerDelegate?
     
-    //MARK: - Initialization
-    init() {
-        fetchMuralItemsFromDatabase()
-        fetchMostActivUsers()
-    }
     
     //MARK: - Create
     func addNewUserToDatabase(id: String, userData: [String : Any], avatarImageData: Data, completion: @escaping (Bool) -> Void) {

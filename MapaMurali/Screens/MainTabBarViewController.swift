@@ -89,7 +89,15 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
     
     //MARK: - Logic
     private func validateAuth() {
-        guard databaseManager.currentUser == nil else { return }
+        print("🟠 validateAuth triggered!")
+        guard databaseManager.currentUser == nil else {
+            if databaseManager.currentUser!.displayName.isEmpty {
+                let destVC = CompleteUserDetailsViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
+                destVC.modalPresentationStyle = .fullScreen
+                self.present(destVC, animated: false)
+            }
+            return
+        }
         
         if FirebaseAuth.Auth.auth().currentUser == nil {
             let destVC = SingInViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
