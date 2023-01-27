@@ -13,9 +13,9 @@ import RxCocoa
 class SingInViewController: UIViewController {
     
     //MARK: - Properties
-    var loginManager: LoginManager
-    let databaseManager: DatabaseManager
-    var disposeBag = DisposeBag()
+    private var loginManager: LoginManager
+    private let databaseManager: DatabaseManager
+    private var disposeBag = DisposeBag()
     
     private let logoImage = UIImageView(image: MMImages.violetLogo)
     private let titleLabel = MMTitleLabel(textAlignment: .left, fontSize: 20)
@@ -28,7 +28,7 @@ class SingInViewController: UIViewController {
     private let resetPasswordButton = MMBodyLabel(textAlignment: .center)
     
     
-    //MARK: - Inicialization
+    //MARK: - Initialization
     init(loginManager: LoginManager, databaseManager: DatabaseManager) {
         self.loginManager = loginManager
         self.databaseManager = databaseManager
@@ -54,10 +54,12 @@ class SingInViewController: UIViewController {
         createDissmisKeyboardTapGesture()
     }
     
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         loginManager.checkIfUserIsLogged()
     }
+    
     
     override func viewDidLayoutSubviews() {
         emailTextField.styleTextFieldWithBottomBorder(color: MMColors.violetDark)
@@ -66,9 +68,7 @@ class SingInViewController: UIViewController {
     
     
     //MARK: - Set up
-    
-    func configureUIElements() {
-        
+    private func configureUIElements() {
         logoImage.contentMode = .scaleAspectFit
         
         titleLabel.text = "Logowanie"
@@ -76,13 +76,11 @@ class SingInViewController: UIViewController {
         
         emailTextField.delegate = self
         emailTextField.tag = 1
-        emailTextField.textColor = .white
         emailTextField.returnKeyType = .next
         emailTextField.attributedPlaceholder = NSAttributedString(string: "e-mail",
                                                                   attributes: [NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.5)])
         passwordTextField.delegate = self
         passwordTextField.tag = 2
-        passwordTextField.textColor = .white
         passwordTextField.returnKeyType = .done
         passwordTextField.attributedPlaceholder = NSAttributedString(string: "hasło",
                                                                   attributes: [NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.5)])
@@ -101,59 +99,49 @@ class SingInViewController: UIViewController {
         resetPasswordButton.addGestureRecognizer(resetPasswordTap)
     }
     
-    func layoutUI() {
+    
+    private func layoutUI() {
         view.addSubviews(logoImage, titleLabel, emailTextField, passwordTextField, singInButton, registerButton, resetPasswordButton)
         logoImage.translatesAutoresizingMaskIntoConstraints = false
         
         let padding: CGFloat = 20
 
+        [titleLabel, emailTextField, passwordTextField, singInButton, registerButton, resetPasswordButton].forEach { element in
+            element.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding).isActive = true
+            element.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding).isActive = true
+        }
+        
+        [emailTextField, passwordTextField, singInButton].forEach { $0.heightAnchor.constraint(equalToConstant: 50).isActive = true }
+        
         NSLayoutConstraint.activate([
-            
             logoImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             logoImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             logoImage.heightAnchor.constraint(equalToConstant: 40),
             logoImage.widthAnchor.constraint(equalToConstant: 216),
             
             titleLabel.topAnchor.constraint(equalTo: logoImage.bottomAnchor, constant: 40),
-            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
             titleLabel.heightAnchor.constraint(equalToConstant: 35),
             
             emailTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
-            emailTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-            emailTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
-            emailTextField.heightAnchor.constraint(equalToConstant: 50),
-
             passwordTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: padding),
-            passwordTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-            passwordTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
-            passwordTextField.heightAnchor.constraint(equalToConstant: 50),
-
             singInButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: padding),
-            singInButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-            singInButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
-            singInButton.heightAnchor.constraint(equalToConstant: 50),
             
             registerButton.topAnchor.constraint(equalTo: singInButton.bottomAnchor, constant: 30),
-            registerButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-            registerButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
             registerButton.heightAnchor.constraint(equalToConstant: 20),
             
             resetPasswordButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -padding),
-            resetPasswordButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-            resetPasswordButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
             resetPasswordButton.heightAnchor.constraint(equalToConstant: 20)
         ])
     }
     
-    func createDissmisKeyboardTapGesture() {
+    
+    private func createDissmisKeyboardTapGesture() {
         let tap = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
         view.addGestureRecognizer(tap)
     }
     
     //MARK: - Logic
-    
-    func validateFields() -> Message? {
+    private func validateFields() -> Message? {
         if emailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" ||
             passwordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
             return Message(title: "Uzupełnij pola", body: "Aby się zalogować musisz wypełnić pola z adresem email i hasłem.")
@@ -169,7 +157,7 @@ class SingInViewController: UIViewController {
     }
     
     //MARK: - Actions
-    @objc func tryToSingIn(sender: UIButton!) {
+    @objc private func tryToSingIn(sender: UIButton!) {
         let faildMessage = validateFields()
         if faildMessage != nil {
             presentMMAlert(title: faildMessage!.title, message: faildMessage!.body, buttonTitle: "Ok")
@@ -186,7 +174,7 @@ class SingInViewController: UIViewController {
         }
     }
     
-    @objc func singUpButtonPressed(sender: UIButton!) {
+    @objc private func singUpButtonPressed(sender: UIButton!) {
         let singUpVC = SingUpViewController(loginManager: loginManager, databaseManager: databaseManager)
         singUpVC.modalPresentationStyle = .fullScreen
         singUpVC.navigationController?.isNavigationBarHidden = false
@@ -195,7 +183,7 @@ class SingInViewController: UIViewController {
         self.present(singUpVC, animated: true)
     }
     
-    @objc func resetPasswordButtonTapped() {
+    @objc private func resetPasswordButtonTapped() {
         print("🟡 Reset password button Tapped")
         
         let alert = UIAlertController(title: "Zresetuj hasło",
@@ -213,8 +201,7 @@ class SingInViewController: UIViewController {
             guard let email = alert.textFields![0].text else {
                 return
             }
-            
-            // Zresetuj hasło
+
             self.loginManager.resetPasswordFor(email: email) { result in
                 switch result {
                 case .success(_):
@@ -223,14 +210,14 @@ class SingInViewController: UIViewController {
                     self.presentMMAlert(title: "Ups coś poszło nie tak.", message: error.rawValue, buttonTitle: "Ok")
                 }
             }
-            
         })
         
         present(alert, animated: true)
     }
     
+    
     //MARK: - Binding
-    func addSingInObserver() {
+    private func addSingInObserver() {
         loginManager.userIsLoggedIn
             .subscribe(onNext: { [weak self] value in
                 guard let self = self else { return }

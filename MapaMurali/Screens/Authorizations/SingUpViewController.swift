@@ -12,12 +12,11 @@ import RxSwift
 class SingUpViewController: UIViewController {
     
     //MARK: - Properties
-    let loginManager: LoginManager
-    let databaseManager: DatabaseManager
-    var disposeBag = DisposeBag()
+    private let loginManager: LoginManager
+    private let databaseManager: DatabaseManager
+    private var disposeBag = DisposeBag()
     
     private let titleLabel = MMTitleLabel(textAlignment: .left, fontSize: 20)
-    
     private let emailTextField = MMTextField(placeholder: "email", type: .email)
     private let passwordTextField = MMTextField(placeholder: "hasło", type: .password)
     private let confirmPasswordTextField = MMTextField(placeholder: "powtórz hasło", type: .password)
@@ -45,6 +44,7 @@ class SingUpViewController: UIViewController {
         disposeBag = DisposeBag()
     }
     
+    
     //MARK: - Live cicle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,42 +55,38 @@ class SingUpViewController: UIViewController {
         createDissmisKeyboardTapGesture()
     }
     
+    
     override func viewDidLayoutSubviews() {
         emailTextField.styleTextFieldWithBottomBorder(color: MMColors.violetDark)
         passwordTextField.styleTextFieldWithBottomBorder(color: MMColors.violetDark)
         confirmPasswordTextField.styleTextFieldWithBottomBorder(color: MMColors.violetDark)
-        
     }
     
     
     //MARK: - Set up
-    func configureViewController() {
+    private func configureViewController() {
         view.backgroundColor = MMColors.orangeDark
         navigationController?.isNavigationBarHidden = true
     }
     
     
-    func configureUIElements() {
+    private func configureUIElements() {
         titleLabel.text = "Załóż konto"
         titleLabel.textColor = MMColors.violetDark
         
-        emailTextField.delegate = self
+        [emailTextField, passwordTextField, confirmPasswordTextField].forEach { $0.delegate = self }
+        
         emailTextField.tag = 1
         emailTextField.returnKeyType = .next
-        emailTextField.textColor = .white
         emailTextField.attributedPlaceholder = NSAttributedString(string: "e-mail",
                                                                   attributes: [NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.5)])
         
-        
-        passwordTextField.delegate = self
         passwordTextField.tag = 2
         passwordTextField.returnKeyType = .next
-        passwordTextField.textColor = .white
         passwordTextField.attributedPlaceholder = NSAttributedString(string: "hasło",
                                                                      attributes: [NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.5)])
-        confirmPasswordTextField.delegate = self
+        
         confirmPasswordTextField.tag = 3
-        confirmPasswordTextField.textColor = .white
         confirmPasswordTextField.returnKeyType = .done
         confirmPasswordTextField.attributedPlaceholder = NSAttributedString(string: "powtórz hasło",
                                                                             attributes: [NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.5)])
@@ -106,7 +102,8 @@ class SingUpViewController: UIViewController {
         returnToLogInButton.createStringWithUnderlinedTextForRegistracionForm(plainText: "Masz już konto?", textToUnderline: "Zaloguj się")
     }
     
-    func setUpLegalTermsSwitches() {
+    
+    private func setUpLegalTermsSwitches() {
         acceptTermOfUseLabel.createStringWithUnderlinedTextForRegistracionForm(plainText: "Akceptuję", textToUnderline: "Regulamin")
         acceptTermOfUseLabel.textColor = MMColors.violetLight
         
@@ -127,7 +124,7 @@ class SingUpViewController: UIViewController {
     }
     
     
-    func layoutUI() {
+    private func layoutUI() {
         view.addSubviews(titleLabel, emailTextField, passwordTextField, confirmPasswordTextField, acceptTermOfUseLabel, acceptTermOfUseToggle, acceptPrivacyPolicyLabel, acceptPrivacyPolicyToggle, singUpButton, returnToLogInButton)
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -136,66 +133,50 @@ class SingUpViewController: UIViewController {
         
         let padding: CGFloat = 20
         
+        [titleLabel, emailTextField, passwordTextField, confirmPasswordTextField, acceptTermOfUseLabel, acceptPrivacyPolicyLabel, singUpButton, returnToLogInButton].forEach { element in
+            NSLayoutConstraint.activate([
+                element.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
+                element.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding)
+            ])
+        }
+        
+        [emailTextField, passwordTextField, confirmPasswordTextField, singUpButton].forEach {
+                $0.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        }
+        
+        [titleLabel, acceptTermOfUseLabel, acceptTermOfUseToggle, acceptPrivacyPolicyLabel, acceptPrivacyPolicyToggle].forEach {
+            $0.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        }
+        
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: padding),
-            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
-            titleLabel.heightAnchor.constraint(equalToConstant: 30),
-            
             emailTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: padding),
-            emailTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-            emailTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
-            emailTextField.heightAnchor.constraint(equalToConstant: 50),
-            
             passwordTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: padding),
-            passwordTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-            passwordTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
-            passwordTextField.heightAnchor.constraint(equalToConstant: 50),
-            
             confirmPasswordTextField.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: padding),
-            confirmPasswordTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-            confirmPasswordTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
-            confirmPasswordTextField.heightAnchor.constraint(equalToConstant: 50),
             
             acceptTermOfUseLabel.topAnchor.constraint(equalTo: confirmPasswordTextField.bottomAnchor, constant: 30),
-            acceptTermOfUseLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-            acceptTermOfUseLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
-            acceptTermOfUseLabel.heightAnchor.constraint(equalToConstant: 30),
-            
             acceptTermOfUseToggle.centerYAnchor.constraint(equalTo: acceptTermOfUseLabel.centerYAnchor),
             acceptTermOfUseToggle.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
-            acceptTermOfUseToggle.heightAnchor.constraint(equalToConstant: 30),
             
             acceptPrivacyPolicyLabel.topAnchor.constraint(equalTo: acceptTermOfUseToggle.bottomAnchor, constant: padding),
-            acceptPrivacyPolicyLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-            acceptPrivacyPolicyLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
-            acceptPrivacyPolicyLabel.heightAnchor.constraint(equalToConstant: 30),
-            
             acceptPrivacyPolicyToggle.centerYAnchor.constraint(equalTo: acceptPrivacyPolicyLabel.centerYAnchor),
             acceptPrivacyPolicyToggle.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
-            acceptPrivacyPolicyToggle.heightAnchor.constraint(equalToConstant: 30),
             
             singUpButton.topAnchor.constraint(equalTo: acceptPrivacyPolicyToggle.bottomAnchor, constant: padding),
-            singUpButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-            singUpButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
-            singUpButton.heightAnchor.constraint(equalToConstant: 50),
-            
             returnToLogInButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -padding),
-            returnToLogInButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-            returnToLogInButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
             returnToLogInButton.heightAnchor.constraint(equalToConstant: 20)
         ])
     }
     
     
     //MARK: - Logic
-    func createDissmisKeyboardTapGesture() {
+    private func createDissmisKeyboardTapGesture() {
         let tap = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
         view.addGestureRecognizer(tap)
     }
     
-    func validateFields() -> Message? {
-
+    
+    private func validateFields() -> Message? {
         if emailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" ||
             passwordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" ||
             confirmPasswordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
@@ -227,7 +208,7 @@ class SingUpViewController: UIViewController {
     
     
     //MARK: - Actions
-    @objc func singUpButtonTapped() {
+    @objc private func singUpButtonTapped() {
         let errorMessage = validateFields()
         if errorMessage != nil {
             presentMMAlert(title: errorMessage!.title, message: errorMessage!.body, buttonTitle: "Ok")
@@ -237,7 +218,6 @@ class SingUpViewController: UIViewController {
         let cleanedEmail = emailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         let cleanedPassword = passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
 
-        
         loginManager.checkIfEmailIsNOTAlreadyRegistered(email: cleanedEmail) { success, error in
             if let error = error {
                 self.presentMMAlert(title: "Ups...", message: error.rawValue, buttonTitle: "Ok")
@@ -258,7 +238,8 @@ class SingUpViewController: UIViewController {
         }
     }
     
-    @objc func termOfUseLabelTapped() {
+    
+    @objc private func termOfUseLabelTapped() {
         databaseManager.fetchLegalTerms { result in
             switch result {
             case.success(let terms):
@@ -273,7 +254,8 @@ class SingUpViewController: UIViewController {
         }
     }
     
-    @objc func privacyPolicyLabelTapped() {
+    
+    @objc private func privacyPolicyLabelTapped() {
         databaseManager.fetchLegalTerms { result in
             switch result {
             case.success(let terms):
@@ -289,13 +271,13 @@ class SingUpViewController: UIViewController {
     }
     
     
-    @objc func returnToSingInView() {
+    @objc private func returnToSingInView() {
         self.dismiss(animated: true)
     }
     
     
     //MARK: - Binding
-    func addSingInObserver() {
+    private func addSingInObserver() {
         loginManager.userIsLoggedIn
             .subscribe(onNext: { [weak self] value in
                 guard let self = self else { return }
@@ -306,6 +288,7 @@ class SingUpViewController: UIViewController {
             .disposed(by: disposeBag)
     }
 }
+
 
 //MARK: - Extensions
 extension SingUpViewController: UITextFieldDelegate {

@@ -7,25 +7,24 @@
 
 import UIKit
 import RxSwift
+import Photos
 
 class CompleteUserDetailsViewController: MMDataLoadingVC {
     
     //MARK: - Properties
-    
-    let loginManager: LoginManager
-    let databaseManager: DatabaseManager
-    var disposeBag = DisposeBag()
+    private let loginManager: LoginManager
+    private let databaseManager: DatabaseManager
+    private var disposeBag = DisposeBag()
     
     private let titleLabel = MMTitleLabel(textAlignment: .left, fontSize: 20)
     private let avatarImageView = MMAvatarImageView(frame: .zero)
     private let nickNameTextField = MMTextField(placeholder: "nazwa użytkownika", type: .custom)
     private let callToActionButton = MMFilledButton(foregroundColor: .white, backgroundColor: MMColors.violetDark, title: "Zaczynamy!")
     
-    var avatarImage: Data?
+    private var avatarImage: Data?
     
     
     //MARK: - Initialization
-    
     init(loginManager: LoginManager, databaseManager: DatabaseManager) {
         self.loginManager = loginManager
         self.databaseManager = databaseManager
@@ -42,27 +41,27 @@ class CompleteUserDetailsViewController: MMDataLoadingVC {
     
     
     //MARK: - Live cicle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewController()
         configureUIElements()
         layoutUI()
         addSingInObserver()
-        
     }
+    
     
     override func viewDidLayoutSubviews() {
         nickNameTextField.styleTextFieldWithBottomBorder(color: MMColors.violetDark)
     }
     
+    
     //MARK: - Set up
-    func configureViewController() {
+    private func configureViewController() {
         view.backgroundColor = MMColors.orangeDark
-        title = "Uzupełnij informacje"
     }
     
-    func configureUIElements() {
+    
+    private func configureUIElements() {
         titleLabel.text = "Uzupełnij informacje"
         titleLabel.textColor = MMColors.violetDark
         
@@ -73,14 +72,13 @@ class CompleteUserDetailsViewController: MMDataLoadingVC {
         callToActionButton.addTarget(self, action: #selector(callToActionButtonTapped), for: .touchUpInside)
     }
     
-    func layoutUI() {
+    private func layoutUI() {
         view.addSubviews(titleLabel, avatarImageView, nickNameTextField, callToActionButton)
         
         avatarImageView.translatesAutoresizingMaskIntoConstraints = false
         let padding: CGFloat = 20
         
         NSLayoutConstraint.activate([
-            
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
             titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
@@ -96,7 +94,6 @@ class CompleteUserDetailsViewController: MMDataLoadingVC {
             nickNameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
             nickNameTextField.heightAnchor.constraint(equalToConstant: 50),
             
-            
             callToActionButton.topAnchor.constraint(equalTo: nickNameTextField.bottomAnchor, constant: padding),
             callToActionButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
             callToActionButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
@@ -105,11 +102,8 @@ class CompleteUserDetailsViewController: MMDataLoadingVC {
     }
     
     
-    //MARK: - Logic
-    
     //MARK: - Actions
-    
-    @objc func avatarImageViewTapped() {
+    @objc private func avatarImageViewTapped() {
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         actionSheet.addAction(UIAlertAction(title: "Zrób zdjęcie", style: .default) { _ in self.actionSheetCameraButtonTapped() })
         actionSheet.addAction(UIAlertAction(title: "Wybierz z galerii", style: .default) { _ in self.actionSheetLibraryButtonTapped() })
@@ -118,18 +112,44 @@ class CompleteUserDetailsViewController: MMDataLoadingVC {
     }
     
     
-    func actionSheetCameraButtonTapped() {
-        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+    private func actionSheetCameraButtonTapped() {
+        let cameraAuthorizationStatus = AVCaptureDevice.authorizationStatus(for: .video)
+        
+        switch cameraAuthorizationStatus {
+        case .authorized:
+            showLoadingView(message: "Uzyskiwanie dostępu do aparatu...")
             let imagePickerController = UIImagePickerController()
             imagePickerController.delegate = self
-            imagePickerController.allowsEditing = true
             imagePickerController.sourceType = .camera
-            self.present(imagePickerController, animated: true)
+            imagePickerController.showsCameraControls = true
+            self.present(imagePickerController, animated: true, completion: dismissLoadingView)
+        case .denied, .restricted:
+            presentMMAlert(title: "Brak dostępu", message: "Aby zrobić zdjęcie musisz wyrazić zgodę na używanie aparatu. Przejdź do Ustawienia > Mapa Murali i wyraź zgodę na używanie aparatu.", buttonTitle: "Ok")
+        case .notDetermined:
+            AVCaptureDevice.requestAccess(for: .video) { granted in
+                if granted {
+                    print("Access granted")
+                    DispatchQueue.main.async {
+                        self.showLoadingView(message: "Uzyskiwanie dostępu do aparatu...")
+                        let imagePickerController = UIImagePickerController()
+                        imagePickerController.delegate = self
+                        imagePickerController.sourceType = .camera
+                        imagePickerController.showsCameraControls = true
+                        self.present(imagePickerController, animated: true, completion: self.dismissLoadingView)
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        self.presentMMAlert(title: "Brak dostępu", message: "Aby zrobić zdjęcie musisz wyrazić zgodę na używanie aparatu. Przejdź do Ustawienia > Mapa Murali i wyraź zgodę na używanie aparatu.", buttonTitle: "Ok")
+                    }
+                }
+            }
+        @unknown default:
+            break
         }
     }
     
     
-    func actionSheetLibraryButtonTapped() {
+    private func actionSheetLibraryButtonTapped() {
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
             let imagePickerController = UIImagePickerController()
             imagePickerController.delegate = self
@@ -139,12 +159,10 @@ class CompleteUserDetailsViewController: MMDataLoadingVC {
         }
     }
     
-    @objc func callToActionButtonTapped() {
-        
+    @objc private func callToActionButtonTapped() {
         showLoadingView(message: "Uakualnianie informacji")
         
         guard let email = UserDefaults.standard.object(forKey: Setup.kEmail) as? String else { return }
-        
         guard let avatarData = avatarImage else {
             dismissLoadingView()
             presentMMAlert(title: "Dodaj avatar", message: "Dodaj avatar do swojego konta.", buttonTitle: "Ok")
@@ -157,13 +175,13 @@ class CompleteUserDetailsViewController: MMDataLoadingVC {
             return
         }
         
-            var userData = [String : Any]()
-            userData["id"] = userID
-            userData["displayName"] = self.nickNameTextField.text
-            userData["email"] = email
-            userData["muralsAdded"] = 0
-            userData["favoritesMurals"] = [String]()
-            
+        var userData = [String : Any]()
+        userData["id"] = userID
+        userData["displayName"] = self.nickNameTextField.text
+        userData["email"] = email
+        userData["muralsAdded"] = 0
+        userData["favoritesMurals"] = [String]()
+        
         self.databaseManager.addNewUserToDatabase(id: userID, userData: userData, avatarImageData: avatarData) { success in
             if success {
                 self.databaseManager.fetchCurrenUserData()
@@ -171,12 +189,11 @@ class CompleteUserDetailsViewController: MMDataLoadingVC {
                 self.dismissLoadingView()
             }
         }
-        
     }
     
     
     //MARK: - Bindings
-    func addSingInObserver() {
+    private func addSingInObserver() {
         loginManager.userIsLoggedIn
             .subscribe(onNext: { [weak self] value in
                 guard let self = self else { return }
@@ -187,6 +204,7 @@ class CompleteUserDetailsViewController: MMDataLoadingVC {
             .disposed(by: disposeBag)
     }
 }
+
 
 //MARK: - Extensions
 extension CompleteUserDetailsViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
