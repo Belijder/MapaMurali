@@ -12,18 +12,19 @@ import RxRelay
 class ManageUserAddedMuralsVC: MMDataLoadingVC {
     
     //MARK: - Properties
-    let databaseManager: DatabaseManager
+    private let databaseManager: DatabaseManager
     
-    var muralsTableView: UITableView!
+    private var muralsTableView: UITableView!
     
-    var disposeBag = DisposeBag()
-    var observableMurals = BehaviorRelay<[Mural]>(value: [])
+    private var disposeBag = DisposeBag()
+    private var observableMurals = BehaviorRelay<[Mural]>(value: [])
     
-    var userAddedMurals: [Mural] {
+    private var userAddedMurals: [Mural] {
         didSet {
             self.observableMurals.accept(userAddedMurals)
         }
     }
+    
     
     //MARK: - Inicialization
     init(databaseManager: DatabaseManager, userAddedMurals: [Mural]) {
@@ -39,6 +40,7 @@ class ManageUserAddedMuralsVC: MMDataLoadingVC {
     deinit {
         disposeBag = DisposeBag()
     }
+    
     
     //MARK: - Live cicle
     override func viewDidLoad() {
@@ -56,8 +58,10 @@ class ManageUserAddedMuralsVC: MMDataLoadingVC {
         }
         
     }
+    
+    
     //MARK: - Set up
-    func configureMuralTableView() {
+    private func configureMuralTableView() {
         muralsTableView = UITableView(frame: view.bounds)
         view.addSubview(muralsTableView)
         muralsTableView.delegate = self
@@ -67,7 +71,7 @@ class ManageUserAddedMuralsVC: MMDataLoadingVC {
     
     
     //MARK: - Biding
-    func bindTableView() {
+    private func bindTableView() {
         observableMurals
             .bind(to: muralsTableView.rx.items(cellIdentifier: MMUserAddedMuralTableViewCell.identifire, cellType: MMUserAddedMuralTableViewCell.self)) { (row, mural, cell) in
                 cell.set(from: mural)
@@ -85,7 +89,8 @@ class ManageUserAddedMuralsVC: MMDataLoadingVC {
             .disposed(by: disposeBag)
     }
     
-    func addDatabaseMuralsObserver() {
+    
+    private func addDatabaseMuralsObserver() {
         databaseManager.muralItems
             .subscribe(onNext: { [weak self] murals in
                 guard let self = self else { return }
@@ -95,6 +100,8 @@ class ManageUserAddedMuralsVC: MMDataLoadingVC {
             .disposed(by: disposeBag)
     }
 }
+
+
 //MARK: - Extensions
 extension ManageUserAddedMuralsVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -107,7 +114,6 @@ extension ManageUserAddedMuralsVC: UITableViewDelegate {
         
         let editAction = UIContextualAction(style: .normal, title: "Edytuj") { _, _, completed in
             print("🟡 Edit Swipe Action Tapped")
-
             let destVC = EditMuralViewController(mural: self.userAddedMurals[indexPath.row], databaseManager: self.databaseManager)
             let navControler = UINavigationController(rootViewController: destVC)
             navControler.modalPresentationStyle = .fullScreen
@@ -117,9 +123,7 @@ extension ManageUserAddedMuralsVC: UITableViewDelegate {
         }
 
         let deleteAction = UIContextualAction(style: .destructive, title: "Usuń") { _, _, completed in
-
             print("🟡 Remove Swipe Action Tapped")
-
             self.databaseManager.removeMural(for: muralID) { success in
                 if success == true {
                     print("🟢 Mural was succesfully deleted from database.")

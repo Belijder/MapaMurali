@@ -10,7 +10,7 @@ import UIKit
 class EditMuralViewController: AddNewItemViewController {
    
     //MARK: - Properties
-        var mural: Mural!
+    var mural: Mural!
     
     
     //MARK: - Initialization
@@ -37,12 +37,14 @@ class EditMuralViewController: AddNewItemViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
     //MARK: - Live cicle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavigationController()
         removeImageButton.removeFromSuperview()
     }
+    
     
     //MARK: - Set up
     func configureNavigationController() {
@@ -55,7 +57,6 @@ class EditMuralViewController: AddNewItemViewController {
     
     //MARK: - Actions
     override func callToActionButtonTapped() {
-        
         self.showLoadingView(message: "Zapisywanie zmian...")
         
         print("🟡 Save edited mural tapped")
@@ -83,13 +84,11 @@ class EditMuralViewController: AddNewItemViewController {
             
             self.databaseManager.updateMuralInformations(id: self.mural.docRef, data: data)
         }
-        
-        
     }
     
     override func cameraImageViewTapped() { }
     
-    @objc func dismissVC() {
+    @objc private func dismissVC() {
         self.dismiss(animated: true, completion: nil)
     }
 }

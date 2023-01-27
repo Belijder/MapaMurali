@@ -10,14 +10,26 @@ import UIKit
 class StatisticsViewController: UIViewController {
 
     //MARK: - Properties
-    let vm: StatisticsViewModel
+    private let vm: StatisticsViewModel
     
-    let scrollView = UIScrollView()
-    let contentView = UIView()
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
     
-    let mostPopularMuralsCollectionView = UIView()
-    let mostActivUsersView = UIView()
-    let mostMuralCitiesView = UIView()
+    private let mostPopularMuralsCollectionView = UIView()
+    private let mostActivUsersView = UIView()
+    private let mostMuralCitiesView = UIView()
+    
+    
+    //MARK: - Inicialization
+    init(databaseManager: DatabaseManager) {
+        self.vm = StatisticsViewModel(databaseManager: databaseManager)
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     
     //MARK: - Live cicle
     override func viewDidLoad() {
@@ -30,6 +42,7 @@ class StatisticsViewController: UIViewController {
         
     }
     
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.prefersLargeTitles = false
@@ -37,33 +50,29 @@ class StatisticsViewController: UIViewController {
     
     
     //MARK: - Set up
-    func layoutUI() {
-        
+    private func layoutUI() {
         contentView.addSubviews(mostPopularMuralsCollectionView, mostActivUsersView, mostMuralCitiesView)
-        mostPopularMuralsCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        mostActivUsersView.translatesAutoresizingMaskIntoConstraints = false
-        mostMuralCitiesView.translatesAutoresizingMaskIntoConstraints = false
+        
+        [mostPopularMuralsCollectionView, mostActivUsersView, mostMuralCitiesView].forEach { element in
+            element.translatesAutoresizingMaskIntoConstraints = false
+            element.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20).isActive = true
+            element.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20).isActive = true
+        }
         
         NSLayoutConstraint.activate([
             mostPopularMuralsCollectionView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
-            mostPopularMuralsCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            mostPopularMuralsCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             mostPopularMuralsCollectionView.heightAnchor.constraint(equalToConstant: 230),
             
             mostActivUsersView.topAnchor.constraint(equalTo: mostPopularMuralsCollectionView.bottomAnchor, constant: 30),
-            mostActivUsersView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            mostActivUsersView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             mostActivUsersView.heightAnchor.constraint(equalToConstant: 190),
             
             mostMuralCitiesView.topAnchor.constraint(equalTo: mostActivUsersView.bottomAnchor, constant: 30),
-            mostMuralCitiesView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            mostMuralCitiesView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             mostMuralCitiesView.heightAnchor.constraint(equalToConstant: 190)
-            
         ])
     }
     
-    func configureScrollView() {
+    
+    private func configureScrollView() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         scrollView.pinToEdges(of: view)
@@ -77,28 +86,19 @@ class StatisticsViewController: UIViewController {
 
     }
     
-    func configureCollectionsView() {
+    
+    private func configureCollectionsView() {
         add(childVC: MostPopularMuralsVC(viewModel: vm), to: mostPopularMuralsCollectionView)
         add(childVC: MostActivUsersVC(viewModel: vm), to: mostActivUsersView)
         add(childVC: MostMuralCitiesVC(viewModel: vm), to: mostMuralCitiesView)
     }
     
+    
     //MARK: -  Logic
-    func add(childVC: UIViewController, to containerView: UIView) {
+    private func add(childVC: UIViewController, to containerView: UIView) {
         addChild(childVC)
         containerView.addSubview(childVC.view)
         childVC.view.frame = containerView.bounds
         childVC.didMove(toParent: self)
     }
-    
-    //MARK: - Inicialization
-    init(databaseManager: DatabaseManager) {
-        self.vm = StatisticsViewModel(databaseManager: databaseManager)
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
 }

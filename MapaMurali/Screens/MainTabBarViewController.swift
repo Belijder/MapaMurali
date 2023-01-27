@@ -13,12 +13,12 @@ import CoreLocation
 class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
     
     //MARK: - Properties
-    var loginManager: LoginManager
-    var databaseManager: DatabaseManager
-    var disposeBag = DisposeBag()
+    private let loginManager: LoginManager
+    private let databaseManager: DatabaseManager
+    private var disposeBag = DisposeBag()
 
-    //MARK: - Initialization
     
+    //MARK: - Initialization
     init(loginManager: LoginManager, databaseManager: DatabaseManager) {
         self.loginManager = loginManager
         self.databaseManager = databaseManager
@@ -127,7 +127,8 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
         }
     }
     
-    func setupMiddleButton() {
+    
+    private func setupMiddleButton() {
         let middleButton = UIButton(frame: CGRect(x: self.tabBar.frame.midX - 30, y: -10, width: 60, height: 60))
         
         middleButton.setBackgroundImage(MMImages.addNewButton, for: .normal)
@@ -141,9 +142,11 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
         self.view.layoutIfNeeded()
     }
     
+    
     @objc func addNewItemButtonAction() {
         self.selectedIndex = 2
     }
+    
     
     //MARK: - Biding
     func addMapPinButtonTappedObserver() {
@@ -154,6 +157,7 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
             })
             .disposed(by: disposeBag)
     }
+    
     
     func addUserLoginObserver() {
         loginManager.userIsLoggedIn

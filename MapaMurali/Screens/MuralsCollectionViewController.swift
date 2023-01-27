@@ -15,18 +15,18 @@ class MuralsCollectionViewController: MMAnimableViewController {
     }
     
     //MARK: - Properties
-    var collectionView: UICollectionView!
-    var dataSource: UICollectionViewDiffableDataSource<Section, Mural>!
-    var databaseManager: DatabaseManager
-    var disposeBag = DisposeBag()
+    private var collectionView: UICollectionView!
+    private var dataSource: UICollectionViewDiffableDataSource<Section, Mural>!
+    private let searchController = UISearchController()
+    
+    private let databaseManager: DatabaseManager
+    private var disposeBag = DisposeBag()
 
-    let searchController = UISearchController()
-    
     var murals: [Mural] = []
-    var filteredMurals: [Mural] = []
+    private var filteredMurals: [Mural] = []
     
+    private var isSearching = false
     
-    var isSearching = false
     
     //MARK: - Initialization
     init(databaseManager: DatabaseManager) {
@@ -41,6 +41,7 @@ class MuralsCollectionViewController: MMAnimableViewController {
     deinit {
         disposeBag = DisposeBag()
     }
+    
     
     //MARK: - Live cicle
     override func viewDidLoad() {
@@ -63,11 +64,11 @@ class MuralsCollectionViewController: MMAnimableViewController {
             }
         }
         updateData(on: murals)
-        
     }
     
+    
     //MARK: - Set up
-    func configureCollectionView() {
+    private func configureCollectionView() {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: UIHelper.createThreeColumnFlowLayout(in: view))
         view.addSubview(collectionView)
         collectionView.delegate = self
@@ -75,7 +76,8 @@ class MuralsCollectionViewController: MMAnimableViewController {
         collectionView.register(MuralCell.self, forCellWithReuseIdentifier: MuralCell.reuseID)
     }
     
-    func configureDataSource() {
+    
+    private func configureDataSource() {
         dataSource = UICollectionViewDiffableDataSource<Section, Mural>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, mural) -> UICollectionViewCell? in
             
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MuralCell.reuseID, for: indexPath) as! MuralCell
@@ -87,7 +89,8 @@ class MuralsCollectionViewController: MMAnimableViewController {
         })
     }
     
-    func configureSearchController() {
+    
+    private func configureSearchController() {
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
         searchController.searchBar.placeholder = "Szukaj"
@@ -95,8 +98,9 @@ class MuralsCollectionViewController: MMAnimableViewController {
         navigationItem.searchController = searchController
     }
     
+    
     //MARK: - Logic
-    func updateData(on murals: [Mural]) {
+    private func updateData(on murals: [Mural]) {
         var snapshot = NSDiffableDataSourceSnapshot<Section, Mural>()
         snapshot.appendSections([.main])
         snapshot.appendItems(murals)
@@ -105,13 +109,15 @@ class MuralsCollectionViewController: MMAnimableViewController {
         }
     }
     
+    
     //MARK: - Actions
-    @objc func dismissVC() {
+    @objc private func dismissVC() {
         navigationController?.dismiss(animated: true)
     }
     
+    
     //MARK: - Binding
-    func addMuralsObserver() {
+    private func addMuralsObserver() {
         if title == "Przeglądaj" {
             databaseManager.muralItems
                 .subscribe(onNext: { [weak self] murals in
@@ -124,7 +130,8 @@ class MuralsCollectionViewController: MMAnimableViewController {
     }
 }
 
-//MARK: - Extensions
+
+//MARK: - Ext: UICollectionViewDelegate
 extension MuralsCollectionViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 
@@ -136,6 +143,8 @@ extension MuralsCollectionViewController: UICollectionViewDelegate {
     }
 }
 
+
+//MARK: - Ext: UISearchResultsUpdating
 extension MuralsCollectionViewController: UISearchResultsUpdating, UISearchBarDelegate {
     func updateSearchResults(for searchController: UISearchController) {
         guard let filter = searchController.searchBar.text, !filter.isEmpty else {
@@ -162,6 +171,7 @@ extension MuralsCollectionViewController: UISearchResultsUpdating, UISearchBarDe
         }
     }
     
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty {
             if murals.isEmpty {
@@ -171,6 +181,7 @@ extension MuralsCollectionViewController: UISearchResultsUpdating, UISearchBarDe
             }
         }
     }
+    
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         if murals.isEmpty {

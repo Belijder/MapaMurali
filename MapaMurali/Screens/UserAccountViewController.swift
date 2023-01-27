@@ -14,28 +14,28 @@ import StoreKit
 class UserAccountViewController: MMDataLoadingVC {
     
     //MARK: - Properties
-    var loginManager: LoginManager
-    let databaseManager: DatabaseManager
+    private let loginManager: LoginManager
+    private let databaseManager: DatabaseManager
     
-    var disposeBag = DisposeBag()
+    private var disposeBag = DisposeBag()
     
-    var userAddedMurals = [Mural]()
-    var userFavoriteMurals = [Mural]()
+    private var userAddedMurals = [Mural]()
+    private var userFavoriteMurals = [Mural]()
     
-    let scrollView = UIScrollView()
-    let contentView = UIView()
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
     
-    let usernameAndAvatar = MMUsernameWithAvatarView(imageHeight: 100)
+    private let usernameAndAvatar = MMUsernameWithAvatarView(imageHeight: 100)
     
-    let userAddedMuralsCollectionView = UIView()
-    let userFavoriteMuralsCollectionView = UIView()
+    private let userAddedMuralsCollectionView = UIView()
+    private let userFavoriteMuralsCollectionView = UIView()
     
-    let rateAppButton = MMFilledButton(foregroundColor: MMColors.secondary, backgroundColor: .secondarySystemBackground, title: "Oceń aplikację!")
-    let sendMessageButton = MMFilledButton(foregroundColor: MMColors.secondary, backgroundColor: .secondarySystemBackground, title: "Napisz do nas!")
-    let showTermOfUseButton = MMFilledButton(foregroundColor: MMColors.secondary, backgroundColor: .secondarySystemBackground, title: "Regulamin")
-    let showPrivacyPolicyButton = MMFilledButton(foregroundColor: MMColors.secondary, backgroundColor: .secondarySystemBackground, title: "Polityka Prywatności")
-    let logOutButton = MMFilledButton(foregroundColor: .white, backgroundColor: .systemRed, title: "Wyloguj się")
-    let deleteAccountAndDataButton = MMPlainButton(color: .systemRed, title: "Usuń konto i dane")
+    private let rateAppButton = MMFilledButton(foregroundColor: MMColors.secondary, backgroundColor: .secondarySystemBackground, title: "Oceń aplikację!")
+    private let sendMessageButton = MMFilledButton(foregroundColor: MMColors.secondary, backgroundColor: .secondarySystemBackground, title: "Napisz do nas!")
+    private let showTermOfUseButton = MMFilledButton(foregroundColor: MMColors.secondary, backgroundColor: .secondarySystemBackground, title: "Regulamin")
+    private let showPrivacyPolicyButton = MMFilledButton(foregroundColor: MMColors.secondary, backgroundColor: .secondarySystemBackground, title: "Polityka Prywatności")
+    private let logOutButton = MMFilledButton(foregroundColor: .white, backgroundColor: .systemRed, title: "Wyloguj się")
+    private let deleteAccountAndDataButton = MMPlainButton(color: .systemRed, title: "Usuń konto i dane")
 
     
     //MARK: - Initialization
@@ -54,6 +54,7 @@ class UserAccountViewController: MMDataLoadingVC {
         disposeBag = DisposeBag()
     }
     
+    
     //MARK: - Live cicle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,13 +70,15 @@ class UserAccountViewController: MMDataLoadingVC {
         configureCollectionsViews()
     }
     
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureUsernameAndAvatarView()
     }
     
+    
     //MARK: - Set up
-    func setupScrollView() {
+    private func setupScrollView() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         scrollView.pinToEdges(of: view)
@@ -88,7 +91,8 @@ class UserAccountViewController: MMDataLoadingVC {
         ])
     }
     
-    func configureUsernameAndAvatarView() {
+    
+    private func configureUsernameAndAvatarView() {
         self.usernameAndAvatar.username.font = UIFont.systemFont(ofSize: 30, weight: .bold)
         
         guard let user = databaseManager.currentUser else {
@@ -100,7 +104,8 @@ class UserAccountViewController: MMDataLoadingVC {
         self.usernameAndAvatar.avatarView.setImage(from: user.avatarURL, userID: user.id)
     }
     
-    func configureCollectionsViews() {
+    
+    private func configureCollectionsViews() {
         add(childVC: MMUserAddedMuralsCollectionsVC(collectionName: "Dodane przez Ciebie",
                                                     murals: [],
                                                     databaseManager: databaseManager), to: self.userAddedMuralsCollectionView)
@@ -110,7 +115,8 @@ class UserAccountViewController: MMDataLoadingVC {
                                                        databaseManager: databaseManager), to: userFavoriteMuralsCollectionView)
     }
     
-    func configureButtons() {
+    
+    private func configureButtons() {
         showTermOfUseButton.addTarget(self, action: #selector(showTermOfUse), for: .touchUpInside)
         showPrivacyPolicyButton.addTarget(self, action: #selector(showPrivacyPolicy), for: .touchUpInside)
         rateAppButton.addTarget(self, action: #selector(rateAppButtonTapped), for: .touchUpInside)
@@ -166,19 +172,21 @@ class UserAccountViewController: MMDataLoadingVC {
     }
     
     //MARK: - Logic
-    @objc func logOut() {
+    @objc private func logOut() {
         loginManager.signOut()
         presentLoginScreen()
     }
     
-    func presentLoginScreen() {
+    
+    private func presentLoginScreen() {
         let destVC = SingInViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
         destVC.modalPresentationStyle = .fullScreen
         destVC.navigationController?.navigationBar.tintColor = MMColors.primary
         present(destVC, animated: false)
     }
     
-    func deleteAcountAndData(password: String) {
+    
+    private func deleteAcountAndData(password: String) {
         showLoadingView(message: "Trwa usuwanie konta")
         print("🟡 Delete account button in alert tapped.")
         loginManager.deleteAccount(password: password) { result in
@@ -188,7 +196,7 @@ class UserAccountViewController: MMDataLoadingVC {
                     switch result {
                     case .success(_):
                         print("🟢 All user data was removed from database. This should be last print.")
-                        print("Current user is: \(Auth.auth().currentUser?.uid)")
+                        print("Current user is: \(String(describing: Auth.auth().currentUser?.uid))")
                         self.loginManager.userIsLoggedIn.onNext(false)
                         self.dismissLoadingView()
                     case .failure(let error):
@@ -204,6 +212,7 @@ class UserAccountViewController: MMDataLoadingVC {
         }
     }
     
+    
     private func validateAuth() {
         if FirebaseAuth.Auth.auth().currentUser == nil {
             let destVC = SingInViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
@@ -211,17 +220,11 @@ class UserAccountViewController: MMDataLoadingVC {
             destVC.navigationController?.navigationBar.tintColor = MMColors.primary
             destVC.navigationController?.navigationBar.backItem?.title = "Zaloguj się"
             present(destVC, animated: false)
-        } else {
-            //Present VC with info about verification requirements if needed
-//            if FirebaseAuth.Auth.auth().currentUser?.isEmailVerified == false {
-//                let destVC = VerificationEmailSendViewController(loginManager: loginManager, databaseManager: databaseManager)
-//                destVC.modalPresentationStyle = .fullScreen
-//                present(destVC, animated: false)
-//            }
         }
     }
     
-    func add(childVC: UIViewController, to containerView: UIView) {
+    
+    private func add(childVC: UIViewController, to containerView: UIView) {
         addChild(childVC)
         containerView.addSubview(childVC.view)
         childVC.view.frame = containerView.bounds
@@ -230,14 +233,14 @@ class UserAccountViewController: MMDataLoadingVC {
     
     
     //MARK: - Actions
-    
-    @objc func rateAppButtonTapped() {
+    @objc private func rateAppButtonTapped() {
         guard let writeReviewURL = URL(string: "https://apps.apple.com/app/id1659498483?action=write-review")
                else { fatalError("Expected a valid URL") }
            UIApplication.shared.open(writeReviewURL, options: [:], completionHandler: nil)
     }
     
-    @objc func sendEmail() {
+    
+    @objc private func sendEmail() {
         if MFMailComposeViewController.canSendMail() {
             let mail = MFMailComposeViewController()
             mail.mailComposeDelegate = self
@@ -249,7 +252,8 @@ class UserAccountViewController: MMDataLoadingVC {
         }
     }
     
-    @objc func showTermOfUse() {
+    
+    @objc private func showTermOfUse() {
         databaseManager.fetchLegalTerms { result in
             switch result {
             case.success(let terms):
@@ -264,7 +268,8 @@ class UserAccountViewController: MMDataLoadingVC {
         }
     }
     
-    @objc func showPrivacyPolicy() {
+    
+    @objc private func showPrivacyPolicy() {
         databaseManager.fetchLegalTerms { result in
             switch result {
             case.success(let terms):
@@ -305,9 +310,9 @@ class UserAccountViewController: MMDataLoadingVC {
         present(alert, animated: true)
     }
     
-    //MARK: - Binding
     
-    func addCurrentUserSubscriber() {
+    //MARK: - Binding
+    private func addCurrentUserSubscriber() {
         databaseManager.currentUserPublisher
             .subscribe(onNext: { [weak self] user in
                 guard let self = self else { return }
@@ -316,7 +321,8 @@ class UserAccountViewController: MMDataLoadingVC {
             .disposed(by: disposeBag)
     }
     
-    func addUserLoginObserver() {
+    
+    private func addUserLoginObserver() {
         loginManager.userIsLoggedIn
             .subscribe(onNext: { [weak self] value in
                 guard let self = self else { return }
@@ -327,6 +333,7 @@ class UserAccountViewController: MMDataLoadingVC {
             .disposed(by: disposeBag)
     }
 }
+
 
 //MARK: - Extensions
 extension UserAccountViewController: MFMailComposeViewControllerDelegate {

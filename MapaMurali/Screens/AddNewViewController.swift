@@ -14,11 +14,10 @@ import PhotosUI
 class AddNewItemViewController: MMDataLoadingVC {
     
     //MARK: - Properties
-    let locationManager = CLLocationManager()
-    let geoCoder = CLGeocoder()
-    var vm = AddNewViewModel()
-
-    var databaseManager: DatabaseManager
+    private let locationManager = CLLocationManager()
+    private let geoCoder = CLGeocoder()
+    let vm = AddNewViewModel()
+    let databaseManager: DatabaseManager
     
     let selectedImageView = MMMuralImageView(frame: .zero)
     let removeImageButton = MMCircleButton(color: .label, systemImageName: "xmark")
@@ -27,10 +26,10 @@ class AddNewItemViewController: MMDataLoadingVC {
     let authorTextField = MMTextField(placeholder: "Jeśli znasz, podaj autorów.", type: .custom)
     let callToActionBatton = MMTintedButton(color: MMColors.primary, title: "Dodaj mural")
     
-    var selectedImageViewWidthConstraint: NSLayoutConstraint!
-    var selectedImageViewHeightConstraint: NSLayoutConstraint!
-    var removeImageButtonHeightConstraint: NSLayoutConstraint!
-    var removeImageButtonWidthConstraint: NSLayoutConstraint!
+    private var selectedImageViewWidthConstraint: NSLayoutConstraint!
+    private var selectedImageViewHeightConstraint: NSLayoutConstraint!
+    private var removeImageButtonHeightConstraint: NSLayoutConstraint!
+    private var removeImageButtonWidthConstraint: NSLayoutConstraint!
     
     var selectedImageViewTopAnchorConstant: CGFloat = 60
     
@@ -50,7 +49,6 @@ class AddNewItemViewController: MMDataLoadingVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        view.addSubviews(selectedImageView, removeImageButton, adressTextField, cityTextField, authorTextField, callToActionBatton)
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -117,6 +115,8 @@ class AddNewItemViewController: MMDataLoadingVC {
     
     
     private func layoutUI() {
+        view.addSubviews(selectedImageView, removeImageButton, adressTextField, cityTextField, authorTextField, callToActionBatton)
+        
         selectedImageView.translatesAutoresizingMaskIntoConstraints = false
         
         let horizontalPadding: CGFloat = 20
@@ -163,14 +163,14 @@ class AddNewItemViewController: MMDataLoadingVC {
         ])
     }
     
-    //MARK: - Logic
     
-    func createDissmisKeyboardTapGesture() {
+    //MARK: - Logic
+    private func createDissmisKeyboardTapGesture() {
         let tap = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
         view.addGestureRecognizer(tap)
     }
     
-    func cleanUpFields() {
+    private func cleanUpFields() {
         selectedImageView.removeImage()
         adressTextField.text = ""
         cityTextField.text = ""
@@ -178,8 +178,8 @@ class AddNewItemViewController: MMDataLoadingVC {
         removeImageButton.alpha = 0
     }
     
-    //MARK: - Actions
     
+    //MARK: - Actions
     @objc func cameraImageViewTapped() {
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         actionSheet.addAction(UIAlertAction(title: "Zrób zdjęcie", style: .default) { _ in self.actionSheetCameraButtonTapped() })
@@ -188,7 +188,8 @@ class AddNewItemViewController: MMDataLoadingVC {
         present(actionSheet, animated: true)
     }
     
-    func actionSheetCameraButtonTapped() {
+    
+    private func actionSheetCameraButtonTapped() {
         let cameraAuthorizationStatus = AVCaptureDevice.authorizationStatus(for: .video)
         
         switch cameraAuthorizationStatus {
@@ -224,6 +225,7 @@ class AddNewItemViewController: MMDataLoadingVC {
         }
     }
     
+    
     private func actionSheetLibraryButtonTapped() {
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
             showLoadingView(message: "Otwieranie albumu ze zdjęciami...")
@@ -235,12 +237,14 @@ class AddNewItemViewController: MMDataLoadingVC {
         }
     }
     
-    @objc func removeImageButtonTapped() {
+    
+    @objc private func removeImageButtonTapped() {
         selectedImageView.removeImage()
         removeImageButton.alpha = 0.0
     }
     
-    @objc func localizationButtonTapped() {
+    
+    @objc private func localizationButtonTapped() {
         let status = locationManager.authorizationStatus
         print(status.rawValue)
         switch status {
@@ -256,8 +260,8 @@ class AddNewItemViewController: MMDataLoadingVC {
         }
     }
     
+    
     @objc func callToActionButtonTapped() {
-        
         guard let fullSizeImageData = self.vm.fullSizeImageData, let thumbnailImageData = self.vm.thumbnailImageData else {
             self.presentMMAlert(title: "Nie można załadować zdjęcia.", message: "Wybierz lub zrób inne zdjęcie i spróbuj ponownie.", buttonTitle: "Ok")
             return
@@ -291,13 +295,15 @@ class AddNewItemViewController: MMDataLoadingVC {
 
 
     //MARK: - Biding
-    @objc func keyboardWillShow(notification: Notification) {
+    @objc private func keyboardWillShow(notification: Notification) {
         self.keyboardAnimationControl(notification, keyboardIsShowing: true)
     }
     
-    @objc func keyboardWillHide(notification: Notification) {
+    
+    @objc private func keyboardWillHide(notification: Notification) {
         self.keyboardAnimationControl(notification, keyboardIsShowing: false)
     }
+    
     
     private func keyboardAnimationControl(_ notification: Notification, keyboardIsShowing: Bool) {
         let userInfo = notification.userInfo!
@@ -343,11 +349,9 @@ class AddNewItemViewController: MMDataLoadingVC {
     }
 }
 
-//MARK: - Extensions
+//MARK: - Ext: UIImagePickerControllerDelegate
 extension AddNewItemViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        
         let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
 
         let compressedImage = image?.jpegData(compressionQuality: 0.3)
@@ -375,8 +379,9 @@ extension AddNewItemViewController: UIImagePickerControllerDelegate, UINavigatio
     }
 }
 
-extension AddNewItemViewController: UITextFieldDelegate {
 
+//MARK: - Ext: UITextFieldDelegate
+extension AddNewItemViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if let nextField = textField.superview?.viewWithTag(textField.tag + 1) as? UITextField {
             nextField.becomeFirstResponder()
@@ -387,8 +392,9 @@ extension AddNewItemViewController: UITextFieldDelegate {
     }
 }
 
+
+//MARK: - Ext: CLLocationManagerDelegate
 extension AddNewItemViewController: CLLocationManagerDelegate {
-    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let lastLocation = locations.last?.coordinate else {
             self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: MMError.locationRetrivalFaild.rawValue, buttonTitle: "Ok")
@@ -420,9 +426,9 @@ extension AddNewItemViewController: CLLocationManagerDelegate {
         }
     }
     
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print(error)
-    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) { }
+    
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
@@ -440,21 +446,27 @@ extension AddNewItemViewController: CLLocationManagerDelegate {
             print("🟡 CLAuthorizationStatus is: denied")
             self.presentMMAlert(title: "Brak uprawnień", message: "Aby wyświetlić murale na mapie musisz wyrazić zgodę na używanie Twojej lokalizacji. Przejdź do Ustawienia > MapaMurali i wyraź zgodę.", buttonTitle: "Ok")
         case .authorizedAlways, .authorizedWhenInUse, .authorized:
-            print("🟡 CLAuthorizationStatus is: authorizedAlways")
+            print("🟡 CLAuthorizationStatus in Add New VC is: authorizedAlways")
             locationManager.requestLocation()
             showLoadingView(message: "Pobieranie lokalizacji...")
-            self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
+            
+            if title != "Edytuj mural" {
+                self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
+            }
+            
         @unknown default:
             break
         }
     }
 }
 
+//MARK: - Ext: DatabaseManagerDelegate
 extension AddNewItemViewController: DatabaseManagerDelegate {
     func failedToEditMuralData(errorMessage: String) {
         dismissLoadingView()
         self.presentMMAlert(title: "Nie udało się zaktualizować danych.", message: errorMessage, buttonTitle: "Ok")
     }
+    
     
     func successToEditMuralData(muralID: String, data: EditedDataForMural) {
         if let index = databaseManager.murals.firstIndex(where: { $0.docRef == muralID }) {
@@ -473,25 +485,17 @@ extension AddNewItemViewController: DatabaseManagerDelegate {
         self.dismiss(animated: true)
     }
     
+    
     func successToAddNewItem(muralID: String) {
         dismissLoadingView()
         self.databaseManager.fetchMuralfromDatabase(with: muralID)
         self.presentMMAlert(title: "Udało się!", message: "Twój mural został dodany! Dzięki za pomoc w tworzeniu naszej mapy!", buttonTitle: "Ok")
         self.cleanUpFields()
-
     }
+    
     
     func failedToAddNewItem(errortitle: String, errorMessage: String) {
         dismissLoadingView()
         self.presentMMAlert(title: errortitle, message: errorMessage, buttonTitle: "Ok")
     }
-}
-
-extension AddNewItemViewController: PHPickerViewControllerDelegate {
-    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        
-    }
-    
-    
-    
 }

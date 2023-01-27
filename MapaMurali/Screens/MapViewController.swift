@@ -14,18 +14,15 @@ import QuartzCore
 class MapViewController: MMAnimableViewController {
     
     //MARK: - Properties
-    var databaseManager: DatabaseManager
+    private let databaseManager: DatabaseManager
     
-    let map = MKMapView()
-    let locationManager = CLLocationManager()
-    
-    var userLocation: CLLocationCoordinate2D?
-    var mapIsLocatingUser = true
-    var clusteredMurals = PublishSubject<[Mural]>()
-    
+    private let map = MKMapView()
+    private let locationManager = CLLocationManager()
+
+    private var clusteredMurals = PublishSubject<[Mural]>()
     private var disposeBag = DisposeBag()
     
-    lazy var clusteredCollectionView: UICollectionView = {
+    lazy private var clusteredCollectionView: UICollectionView = {
         let padding: CGFloat = 20
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: 120, height: 160)
@@ -41,7 +38,6 @@ class MapViewController: MMAnimableViewController {
     }()
     
    
-    
     //MARK: - Initialization
     init(databaseManager: DatabaseManager) {
         self.databaseManager = databaseManager
@@ -56,6 +52,7 @@ class MapViewController: MMAnimableViewController {
         disposeBag = DisposeBag()
     }
     
+    
     //MARK: - Live cicle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,43 +62,34 @@ class MapViewController: MMAnimableViewController {
         addMapPinButtonTappedObserver()
         bindClusteredCollectionView()
         
-        setMapConstraints()
+        layoutUI()
         configureLocationManager()
         configureMapView()
         setupUserTrackingButton()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-    }
     
     //MARK: - Set up
-    func configureLocationManager() {
+    private func configureLocationManager() {
         locationManager.delegate = self
     }
     
-    func configureMapView() {
+    
+    private func configureMapView() {
         map.delegate = self
         map.showsUserLocation = true
         map.pointOfInterestFilter = .excludingAll
         map.userTrackingMode = .none
     }
     
-    func setMapConstraints() {
+    
+    private func layoutUI() {
         view.addSubviews(map, clusteredCollectionView)
-        map.translatesAutoresizingMaskIntoConstraints = false
         clusteredCollectionView.translatesAutoresizingMaskIntoConstraints = false
         
+        map.pinToEdges(of: self.view)
+        
         NSLayoutConstraint.activate([
-            map.topAnchor.constraint(equalTo: self.view.topAnchor),
-            map.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-            map.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            map.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            
             clusteredCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
             clusteredCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             clusteredCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
@@ -109,7 +97,8 @@ class MapViewController: MMAnimableViewController {
         ])
     }
     
-    func setupUserTrackingButton() {
+    
+    private func setupUserTrackingButton() {
         let button = MKUserTrackingButton(mapView: map)
         button.layer.backgroundColor = MMColors.orangeDark.cgColor
         button.layer.borderColor = MMColors.orangeLight.cgColor
@@ -125,8 +114,9 @@ class MapViewController: MMAnimableViewController {
         ])
     }
     
+    
     //MARK: - Logic
-    func setMapRegion(with coordinate: CLLocationCoordinate2D) {
+    private func setMapRegion(with coordinate: CLLocationCoordinate2D) {
         let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: coordinate.latitude,
                                                                        longitude: coordinate.longitude),
                                                                        span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
@@ -135,7 +125,7 @@ class MapViewController: MMAnimableViewController {
 
     
     //MARK: - Binding
-    func addMuralsItemsObserver() {
+    private func addMuralsItemsObserver() {
         databaseManager.muralItems
             .subscribe(onNext: { [weak self] murals in
                 guard let self = self else { return }
@@ -153,7 +143,8 @@ class MapViewController: MMAnimableViewController {
             .disposed(by: disposeBag)
     }
     
-    func addLastDeletedMuralObserwer() {
+    
+    private func addLastDeletedMuralObserwer() {
         databaseManager.lastDeletedMuralID
             .subscribe(onNext: { [weak self] muralID in
                 guard let self = self else { return }
@@ -164,7 +155,8 @@ class MapViewController: MMAnimableViewController {
             .disposed(by: disposeBag)
     }
     
-    func addLastEditedMuralObserver() {
+    
+    private func addLastEditedMuralObserver() {
         databaseManager.lastEditedMuralID
             .subscribe(onNext: { [weak self] mural in
                 guard let self = self else { return }
@@ -178,7 +170,8 @@ class MapViewController: MMAnimableViewController {
             .disposed(by: disposeBag)
     }
     
-    func addMapPinButtonTappedObserver() {
+    
+    private func addMapPinButtonTappedObserver() {
         databaseManager.mapPinButtonTappedOnMural
             .subscribe(onNext: { [weak self] mural in
                 guard let self = self else { return }
@@ -187,6 +180,7 @@ class MapViewController: MMAnimableViewController {
             })
             .disposed(by: disposeBag)
     }
+    
     
     private func bindClusteredCollectionView() {
         clusteredMurals
@@ -213,7 +207,7 @@ class MapViewController: MMAnimableViewController {
     }
 }
 
-//MARK: - Extensions
+//MARK: - Ext: CLLocationManagerDelegate
 extension MapViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         print("Location was updated.")
@@ -243,11 +237,9 @@ extension MapViewController: CLLocationManagerDelegate {
         }
     }
 }
-
+//MARK: - Ext: MKMapViewDelegate
 extension MapViewController: MKMapViewDelegate {
-    
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        
         if let item = annotation as? MKPointAnnotation {
             
             guard let thumbnailURL = annotation.subtitle,
@@ -265,17 +257,16 @@ extension MapViewController: MKMapViewDelegate {
             return annotationView
             
         } else if let cluster = annotation as? MKClusterAnnotation {
-            
             let clusterView = mapView.dequeueReusableAnnotationView(withIdentifier: MMAnnotationClusterView.reuseIdentifier)
                 ?? MMAnnotationClusterView(annotation: annotation, reuseIdentifier: MMAnnotationClusterView.reuseIdentifier)
             
             clusterView.annotation = cluster
-            
             return clusterView
         } else {
             return nil
         }
     }
+    
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         print("Tapnięto \(view)")
@@ -306,11 +297,13 @@ extension MapViewController: MKMapViewDelegate {
         }
     }
     
+    
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
         print("Odtapnięto \(view)")
         clusteredMurals.onNext([])
         self.clusteredCollectionView.alpha = 0
     }
+    
     
     func mapView(_ mapView: MKMapView, didChange mode: MKUserTrackingMode, animated: Bool) {
         let status = locationManager.authorizationStatus
@@ -332,5 +325,4 @@ extension MapViewController: MKMapViewDelegate {
             break
         }
     }
-
 }
