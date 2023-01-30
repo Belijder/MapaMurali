@@ -8,7 +8,6 @@
 import UIKit
 
 enum UIHelper {
-    
     static func createThreeColumnFlowLayout(in view: UIView) -> UICollectionViewFlowLayout {
         let width = view.bounds.width
         let padding: CGFloat = 6

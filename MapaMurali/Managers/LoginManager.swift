@@ -18,6 +18,7 @@ class LoginManager {
     var userIsLoggedIn = BehaviorSubject<Bool>(value: false)
     var recivedMagicLink = PublishSubject<String>()
     
+    
     //MARK: - Sign in
     func singIn(email: String, password: String, completion: @escaping (Message?) -> Void) {
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
@@ -33,6 +34,7 @@ class LoginManager {
         }
     }
     
+    
     func handleFirebaseError(_ error: NSError) -> Message {
         switch error.code {
         case 17011:
@@ -45,6 +47,7 @@ class LoginManager {
             return Message(title: "Ups! Coś poszło nie tak.", body: error.localizedDescription)
         }
     }
+    
     
     func resetPasswordFor(email: String, completion: @escaping (Result<Bool, MMError>) -> Void) {
         checkIfEmailIsNOTAlreadyRegistered(email: email) { mailIsNotRegistered, error in
@@ -159,6 +162,7 @@ class LoginManager {
         }
     }
     
+    
     func deleteAccount(password: String, completion: @escaping (Result<String, MMError>) -> Void) {
         //Check if user exist.
         guard let user = Auth.auth().currentUser else {
@@ -188,6 +192,7 @@ class LoginManager {
             }
         }
     }
+    
     
     func reauthenticateUser(password: String, completion: @escaping (Result<Bool, Error>) -> Void) {
         let user = Auth.auth().currentUser

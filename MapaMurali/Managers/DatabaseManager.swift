@@ -33,8 +33,8 @@ enum CollectionName: String {
 class DatabaseManager {
     
     //MARK: - Properties
-    let storageRef = Storage.storage().reference()
-    let db = Firestore.firestore()
+    private let storageRef = Storage.storage().reference()
+    private let db = Firestore.firestore()
     
     var muralItems = BehaviorSubject<[Mural]>(value: [])
     var lastDeletedMuralID = BehaviorSubject<String>(value: "")
@@ -47,6 +47,7 @@ class DatabaseManager {
             muralItems.onNext(murals)
         }
     }
+    
     var users = [User]() {
         didSet {
             let sortedUsers = users.sorted { $0.muralsAdded > $1.muralsAdded }
@@ -85,6 +86,7 @@ class DatabaseManager {
         }
     }
     
+    
     func addNewItemToDatabase(itemData: [String : Any], fullSizeImageData: Data, thumbnailData: Data) {
         let newItemRef = db.collection(CollectionName.murals.rawValue).document()
         newItemRef.setData(itemData) { error in
@@ -108,6 +110,7 @@ class DatabaseManager {
         }
     }
     
+    
     func addImageToStorage(docRef: DocumentReference, imageData: Data, imageType: ImageType, completion: @escaping (Bool) -> Void) {
         let ref = storageRef.child("\(imageType.rawValue + docRef.documentID).jpg")
         ref.putData(imageData) { result in
@@ -119,15 +122,13 @@ class DatabaseManager {
                 ref.downloadURL { url, error in
                     guard let url = url else {
                         //ERROR Przy pobieraniu URL
-                        print(error ?? "ERROR Przy pobieraniu URL")
+                        print(error ?? "ERROR Retrieving URL")
                         return
                     }
                     docRef.updateData(["\(fieldKey)URL" : url.absoluteString])
                     completion(true)
                 }
-                
             case .failure(_):
-                //ERROR PRZY UPLOADZIE ZDJĘCIA DO STORAGE
                 break
             }
         }
@@ -146,6 +147,7 @@ class DatabaseManager {
             }
         }
     }
+    
     
     func fetchMuralItemsFromDatabase() {
         db.collection(CollectionName.murals.rawValue).getDocuments { querySnapshot, error in
@@ -167,6 +169,7 @@ class DatabaseManager {
         }
     }
     
+    
     func fetchMuralfromDatabase(with muralID: String) {
         let docRef = db.collection(CollectionName.murals.rawValue).document(muralID)
         
@@ -180,12 +183,14 @@ class DatabaseManager {
         }
     }
     
+    
     func fetchUserFromDatabase(id: String, completion: @escaping (Result<User, Error>) -> Void) {
         let docRef = db.collection(CollectionName.users.rawValue).document(id)
         docRef.getDocument(as: User.self) { result in
            completion(result)
         }
     }
+    
     
     func fetchMostActivUsers() {
         db.collection(CollectionName.users.rawValue).order(by: "muralsAdded").limit(to: 10).getDocuments { querySnapshot, error in
@@ -208,6 +213,7 @@ class DatabaseManager {
             }
         }
     }
+    
     
     func fetchLegalTerms(completion: @escaping (Result<LegalTerms, MMError>) -> Void) {
         let docRef = db.collection(CollectionName.legalTerms.rawValue).document("lZqycsOSTXAUMSQJMZTW")
@@ -236,10 +242,10 @@ class DatabaseManager {
                 self.delegate?.failedToEditMuralData(errorMessage: MMError.failedToEditMuralData.rawValue)
             } else {
                 self.delegate?.successToEditMuralData(muralID: id, data: data)
-                
             }
         }
     }
+    
     
     func changeNumberOfMuralsAddedByUser(by value: Int64) {
         guard let userID = Auth.auth().currentUser?.uid else { return }
@@ -317,6 +323,7 @@ class DatabaseManager {
         }
     }
     
+    
     //MARK: - Delete
     func removeMural(for id: String, completion: @escaping (Bool) -> Void) {
         let muralDocRef = db.collection(CollectionName.murals.rawValue).document(id)
@@ -353,6 +360,7 @@ class DatabaseManager {
         }
     }
     
+    
     func removeAllUserData(userID: String, completion: @escaping (Result<Bool, MMError>) -> Void) {
         removeUserProfile(userID: userID) { result in
             switch result {
@@ -372,6 +380,7 @@ class DatabaseManager {
             }
         }
     }
+    
     
     func removeAllUserAddedMurals(userID: String, completion: @escaping (Result<Bool, MMError>) -> Void) {
         var removedMuralCounter = 0 {
@@ -402,6 +411,7 @@ class DatabaseManager {
             }
         }
     }
+    
     
     func removeUserProfile(userID: String, completion: @escaping (Result<Bool, MMError>) -> Void) {
         let userProfileRef = db.collection(CollectionName.users.rawValue).document(userID)

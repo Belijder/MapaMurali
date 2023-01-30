@@ -17,12 +17,14 @@ enum MMColors {
     static let orangeLight = UIColor(named: "OrangeLight")!
 }
 
+
 enum MMImages {
     static let mmSignet = UIImage(named: "MMSignet")
     static let violetLogo = UIImage(named: "LogoViolet")
     static let addNewButton = UIImage(named: "addNewButton")
     static let placeholderImage = UIImage(named: "placeholder")
 }
+
 
 enum Setup {
     static let kFirebaseOpenAppScheme = "FirebaseOpenAppScheme"
@@ -32,6 +34,7 @@ enum Setup {
     static let kPassword = "Password"
     static var shouldOpenMailApp = false
 }
+
 
 enum RadiusValue {
     static let mapPinRadiusValue: CGFloat = 19

@@ -11,13 +11,14 @@ import UIKit
 class PersistenceManager {
     
     static let instance = PersistenceManager()
-    
     private let folderName = "MapaMurali_Images"
     
+    //MARK: - Initialization
     init() {
         createFolderIfNeeded()
     }
     
+    //MARK: - Logic
     func createFolderIfNeeded() {
         guard
             let path = FileManager
@@ -41,6 +42,7 @@ class PersistenceManager {
         }
     }
     
+    
     func deleteFolderWithMuralImages() {
         guard
             let path = FileManager
@@ -60,14 +62,13 @@ class PersistenceManager {
         }
     }
     
+    
     func saveImage(image: UIImage, imageType: ImageType, name: String) {
-        
         guard let data = image.jpegData(compressionQuality: 1.0),
               let path = getPathForImage(imageType: imageType, name: name) else {
             print("🔴 Error getting data.")
             return
         }
-        
         
         do {
             try data.write(to: path)
@@ -76,6 +77,7 @@ class PersistenceManager {
             print("🔴 Error saveing image: \(String(imageType.rawValue.dropLast())+name).jpg to cachesDirectory.")
         }
     }
+    
     
     func getImage(imageType: ImageType, name: String) -> UIImage? {
         guard let path = getPathForImage(imageType: imageType, name: name)?.path,
@@ -86,6 +88,7 @@ class PersistenceManager {
         
         return UIImage(contentsOfFile: path)
     }
+    
     
     func deleteImage(imageType: ImageType, name: String) {
         
@@ -102,6 +105,7 @@ class PersistenceManager {
             print("Error deleting image. \(error)")
         }
     }
+    
     
     private func getPathForImage(imageType: ImageType, name: String) -> URL? {
         

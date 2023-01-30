@@ -8,7 +8,6 @@
 import UIKit
 
 extension UIImage {
-    
     func aspectFittedToHeight(_ newHeight: CGFloat) -> UIImage {
         let scale = newHeight / self.size.height
         let newWidth = self.size.width * scale
@@ -19,6 +18,7 @@ extension UIImage {
             self.draw(in: CGRect(origin: .zero, size: newSize))
         }
     }
+    
     
     func cropImageToCircle() -> UIImage {
         let sourceImage = self
@@ -46,6 +46,7 @@ extension UIImage {
         
         return circleCroppedImage
     }
+    
     
     func cropImageToSquare() -> UIImage {
         let sourceImage = self

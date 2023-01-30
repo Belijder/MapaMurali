@@ -17,6 +17,7 @@ class NetworkManager {
     let cache = NSCache<NSString, UIImage>()
     let decoder = JSONDecoder()
     
+    
     func downloadImage(from urlString: String, imageType: ImageType, name: String, completed: @escaping (UIImage?) -> Void) {
         let cacheKey = NSString(string: urlString)
         

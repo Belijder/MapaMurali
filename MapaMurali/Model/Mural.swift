@@ -22,6 +22,7 @@ struct Mural: Codable, Hashable {
     var favoritesCount: Int
 }
 
+
 struct EditedDataForMural {
     let location: CLLocationCoordinate2D
     let address: String
