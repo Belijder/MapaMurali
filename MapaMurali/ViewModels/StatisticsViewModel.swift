@@ -12,15 +12,13 @@ class StatisticsViewModel {
     
     //MARK: - Properties
     let databaseManager: DatabaseManager
-    
     var disposeBag = DisposeBag()
     
     var mostPopularMurals = BehaviorSubject<[Mural]>(value: [])
     var mostActivUsers = BehaviorSubject<[User]>(value: [])
     var mostMuralCities = BehaviorSubject<[PopularCity]>(value: [])
     
-    var popularCities = [PopularCity]()
-    
+
     //MARK: - Initialization
     init(databaseManager: DatabaseManager) {
         self.databaseManager = databaseManager
@@ -32,8 +30,9 @@ class StatisticsViewModel {
         disposeBag = DisposeBag()
     }
     
+    
     //MARK: - Logic
-    func createMostPopularMuralsArray(from murals: [Mural]) {
+    private func createMostPopularMuralsArray(from murals: [Mural]) {
         let sortedMurals = murals.sorted(by: { $0.favoritesCount > $1.favoritesCount })
         var bestMurals = [Mural]()
         
@@ -45,11 +44,10 @@ class StatisticsViewModel {
         } else {
             mostPopularMurals.onNext(sortedMurals)
         }
-    
-       
     }
     
-    func createPopularCitiesArray(from murals: [Mural]) {
+    
+    private func createPopularCitiesArray(from murals: [Mural]) {
         var citiesNames = [String]()
         
         for mural in murals {
@@ -71,8 +69,9 @@ class StatisticsViewModel {
         self.mostMuralCities.onNext(sortedPopularCities)
     }
     
+    
     //MARK: - Binding
-    func addMuralObserver() {
+    private func addMuralObserver() {
         databaseManager.muralItems
             .subscribe(onNext: { [weak self] murals in
                 guard let self = self else { return }
@@ -83,7 +82,8 @@ class StatisticsViewModel {
             .disposed(by: disposeBag)
     }
     
-    func addUsersObserver() {
+    
+    private func addUsersObserver() {
         databaseManager.observableUsersItem
             .subscribe(onNext: { [weak self] users in
                 guard let self = self else { return }

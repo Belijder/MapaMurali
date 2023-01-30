@@ -11,14 +11,14 @@ import RxSwift
 
 class MuralDetailsViewModel {
     
-    let databaseManager: DatabaseManager
-    var currentUserItem: User?
-    let muralID: String
-    var isUserFavorite = BehaviorSubject(value: false)
+    private let databaseManager: DatabaseManager
+    private var currentUserItem: User?
+    private let muralID: String
+    private(set) var isUserFavorite = BehaviorSubject(value: false)
     var favoriteImageName = "heart"
-    var counterValue: Int
-    
+    private(set) var counterValue: Int
     let presentingVCTitle: String?
+    
     
     init(databaseManager: DatabaseManager, muralID: String, counterValue: Int, presentingVCTitle: String?) {
         self.databaseManager = databaseManager
@@ -28,25 +28,30 @@ class MuralDetailsViewModel {
         fetchUserData()
     }
     
-    func fetchUserData() {
-        guard let uid = Auth.auth().currentUser?.uid else {
-            print("🔴 Falied to get user uid from database.")
+    
+    private func fetchUserData() {
+        guard let currentUser = databaseManager.currentUser else {
+            guard let uid = Auth.auth().currentUser?.uid else { return }
+            
+            databaseManager.fetchUserFromDatabase(id: uid) { [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success(let user):
+                    self.currentUserItem = user
+                    self.isFavorite(muralID: self.muralID)
+                case .failure(_):
+                   break
+                }
+            }
             return
         }
         
-        databaseManager.fetchUserFromDatabase(id: uid) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let user):
-                self.currentUserItem = user
-                self.isFavorite(muralID: self.muralID)
-            case .failure(let error):
-                print("🔴 Falied to get user info from database. Error: \(error).")
-            }
-        }
+        currentUserItem = currentUser
+        isFavorite(muralID: muralID)
     }
     
-    func isFavorite(muralID: String) {
+    
+    private func isFavorite(muralID: String) {
         guard let user = currentUserItem else { return }
         if user.favoritesMurals.contains(muralID) {
             isUserFavorite.onNext(true)
@@ -57,10 +62,7 @@ class MuralDetailsViewModel {
     
     
     func favoriteButtonTapped() {
-        guard let user = currentUserItem else {
-            print("🔴 User Item not exists.")
-            return
-        }
+        guard let user = currentUserItem else { return }
         
         do {
             if try isUserFavorite.value() == false {
@@ -70,7 +72,6 @@ class MuralDetailsViewModel {
                         self.isUserFavorite.onNext(true)
                         
                     } else {
-                        // Something went wrong with adding to favorites
                         return
                     }
                 }
@@ -80,13 +81,12 @@ class MuralDetailsViewModel {
                         self.counterValue -= 1
                         self.isUserFavorite.onNext(false)
                     } else {
-                        // Something went wrong with removeing from favorites
                         return
                     }
                 }
             }
         } catch {
-            print("🔴 Failed to read values of isUserFavorite. Error: \(error)")
+            return
         }
     }
 }

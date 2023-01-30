@@ -17,6 +17,7 @@ class AddNewViewModel {
     var adress: String?
     var city: String?
     
+    
     func getCoordinate(addressString: String, completion: @escaping (CLLocationCoordinate2D, NSError?) -> Void) {
         let geocoder = CLGeocoder()
         geocoder.geocodeAddressString(addressString) { placemarks, error in
@@ -28,14 +29,12 @@ class AddNewViewModel {
                     return
                 }
             }
-            
             completion(kCLLocationCoordinate2DInvalid, error as NSError?)
         }
     }
     
     
     func createDataforDatabase(author: String?, location: CLLocationCoordinate2D) throws -> [String : Any] {
-
         guard let adress = adress,
               let city = city,
               let user = Auth.auth().currentUser?.uid else {

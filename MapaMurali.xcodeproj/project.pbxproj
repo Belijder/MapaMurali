@@ -27,7 +27,6 @@
 		42824F042964378200C33AA5 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42824F032964378100C33AA5 /* Utilities.swift */; };
 		42824F0629645E6200C33AA5 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42824F0529645E6200C33AA5 /* Message.swift */; };
 		42824F082966FA1300C33AA5 /* MMEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42824F072966FA1300C33AA5 /* MMEmptyStateView.swift */; };
-		4283A6FE293B95DC00EDFEB5 /* EditMuralViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4283A6FD293B95DC00EDFEB5 /* EditMuralViewModel.swift */; };
 		4283A700293CA7D600EDFEB5 /* LegalTerms.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4283A6FF293CA7D600EDFEB5 /* LegalTerms.swift */; };
 		4283BAB028D5E24A00A54F0F /* MMMuralImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4283BAAF28D5E24A00A54F0F /* MMMuralImageView.swift */; };
 		4283BAB228D5E45800A54F0F /* MMMuralPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4283BAB128D5E45800A54F0F /* MMMuralPlaceholderView.swift */; };
@@ -127,7 +126,6 @@
 		42824F032964378100C33AA5 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		42824F0529645E6200C33AA5 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		42824F072966FA1300C33AA5 /* MMEmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMEmptyStateView.swift; sourceTree = "<group>"; };
-		4283A6FD293B95DC00EDFEB5 /* EditMuralViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMuralViewModel.swift; sourceTree = "<group>"; };
 		4283A6FF293CA7D600EDFEB5 /* LegalTerms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegalTerms.swift; sourceTree = "<group>"; };
 		4283BAAF28D5E24A00A54F0F /* MMMuralImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMMuralImageView.swift; sourceTree = "<group>"; };
 		4283BAB128D5E45800A54F0F /* MMMuralPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMMuralPlaceholderView.swift; sourceTree = "<group>"; };
@@ -264,7 +262,6 @@
 			isa = PBXGroup;
 			children = (
 				427CAB5428E60D3200DA7247 /* AddNewViewModel.swift */,
-				4283A6FD293B95DC00EDFEB5 /* EditMuralViewModel.swift */,
 				42E61C3E29053F0400D38205 /* MuralDetailsViewModel.swift */,
 				42618DD32914312D0052DB76 /* StatisticsViewModel.swift */,
 			);
@@ -580,7 +577,6 @@
 				428BD66528DE3B7B000B8D69 /* UIViewController+Ext.swift in Sources */,
 				429A021528CFADD200CD6862 /* UITextField+Ext.swift in Sources */,
 				4283BAB028D5E24A00A54F0F /* MMMuralImageView.swift in Sources */,
-				4283A6FE293B95DC00EDFEB5 /* EditMuralViewModel.swift in Sources */,
 				4283BAB228D5E45800A54F0F /* MMMuralPlaceholderView.swift in Sources */,
 				42E61C3228F3191A00D38205 /* UIHelper.swift in Sources */,
 				42D9EA1F2921581C00A7A9DC /* MMFilledButton.swift in Sources */,
