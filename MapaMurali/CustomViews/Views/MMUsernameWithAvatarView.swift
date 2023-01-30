@@ -8,10 +8,13 @@
 import UIKit
 
 class MMUsernameWithAvatarView: UIView {
-
+    
+    //MARK: - Properties
     let avatarView = MMAvatarImageView(frame: .zero)
     let username = MMTitleLabel(textAlignment: .left, fontSize: 15)
     
+    
+    //MARK: - Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -25,6 +28,8 @@ class MMUsernameWithAvatarView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+    //MARK: - Set up
     func configure(imageHeight: CGFloat) {
         translatesAutoresizingMaskIntoConstraints = false
         addSubviews(avatarView, username)

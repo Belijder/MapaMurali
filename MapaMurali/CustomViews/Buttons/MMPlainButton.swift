@@ -9,6 +9,7 @@ import UIKit
 
 class MMPlainButton: UIButton {
 
+    //MARK: - Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
@@ -23,11 +24,14 @@ class MMPlainButton: UIButton {
         set(color: color, title: title)
     }
     
+    
+    //MARK: - Set up
     func configure() {
         configuration = .plain()
         configuration?.cornerStyle = .medium
         translatesAutoresizingMaskIntoConstraints = false
     }
+    
     
     final func set(color: UIColor, title: String) {
         configuration?.baseForegroundColor = color
@@ -35,5 +39,4 @@ class MMPlainButton: UIButton {
         configuration?.title = title
         configuration?.buttonSize = .small
     }
-
 }

@@ -9,6 +9,7 @@ import UIKit
 
 class MMAnimableViewController: MMDataLoadingVC {
     
+    //MARK: - Properties
     var selectedCell: AnimatorCellProtocol?
     var selectedCellImageViewSnapshot: UIView?
     var windowSnapshot: UIView?
@@ -16,10 +17,13 @@ class MMAnimableViewController: MMDataLoadingVC {
     var animator: Animator?
     var cellShape: CellShape?
     
+    
+    //MARK: - Logic
     func setSnapshotsForAnimation() {
         self.selectedCellImageViewSnapshot = self.selectedCell?.muralImageView.snapshotView(afterScreenUpdates: false)
         self.windowSnapshot = self.view.window?.snapshotView(afterScreenUpdates: true)
     }
+    
     
     func prepereAndPresentDetailVCWithAnimation(mural: Mural, databaseManager: DatabaseManager) {
         self.showLoadingView(message: nil)
@@ -38,6 +42,7 @@ class MMAnimableViewController: MMDataLoadingVC {
     }
 }
 
+//MARK: - Extensions
 extension MMAnimableViewController: UIViewControllerTransitioningDelegate {
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
 
@@ -54,6 +59,7 @@ extension MMAnimableViewController: UIViewControllerTransitioningDelegate {
         
         return animator
     }
+    
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         guard let muralDetailsVC = dismissed as? MuralDetailsViewController,

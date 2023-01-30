@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4200210D28E9B0E000394299 /* MMAnnotationPinImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4200210C28E9B0E000394299 /* MMAnnotationPinImageView.swift */; };
 		42618DD42914312D0052DB76 /* StatisticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42618DD32914312D0052DB76 /* StatisticsViewModel.swift */; };
 		42618DD6291655720052DB76 /* MMUsersTableViewInTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42618DD5291655720052DB76 /* MMUsersTableViewInTableViewCell.swift */; };
 		42618DD829165A0D0052DB76 /* MMMostActivUsersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42618DD729165A0D0052DB76 /* MMMostActivUsersCell.swift */; };
@@ -104,7 +103,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		4200210C28E9B0E000394299 /* MMAnnotationPinImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMAnnotationPinImageView.swift; sourceTree = "<group>"; };
 		42618DD32914312D0052DB76 /* StatisticsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewModel.swift; sourceTree = "<group>"; };
 		42618DD5291655720052DB76 /* MMUsersTableViewInTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMUsersTableViewInTableViewCell.swift; sourceTree = "<group>"; };
 		42618DD729165A0D0052DB76 /* MMMostActivUsersCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMMostActivUsersCell.swift; sourceTree = "<group>"; };
@@ -283,7 +281,6 @@
 				4283BAAF28D5E24A00A54F0F /* MMMuralImageView.swift */,
 				42E61C3C29045AAC00D38205 /* MMAvatarImageView.swift */,
 				4283BAB128D5E45800A54F0F /* MMMuralPlaceholderView.swift */,
-				4200210C28E9B0E000394299 /* MMAnnotationPinImageView.swift */,
 				42E61C2528F1CE1D00D38205 /* MMFullSizeImageView.swift */,
 				42E61C3628F3200800D38205 /* MMSquareImageView.swift */,
 			);
@@ -538,7 +535,6 @@
 				42E61C3028F3143100D38205 /* MuralsCollectionViewController.swift in Sources */,
 				42E61C2228F1AE0600D38205 /* MuralDetailsViewController.swift in Sources */,
 				4289AEC828E216C200C3FFF5 /* Mural.swift in Sources */,
-				4200210D28E9B0E000394299 /* MMAnnotationPinImageView.swift in Sources */,
 				4289AEC028E2110500C3FFF5 /* DatabaseManager.swift in Sources */,
 				42867B6B28959CE400E5159F /* SingInViewController.swift in Sources */,
 				42867B80289C4CC600E5159F /* SingUpViewController.swift in Sources */,

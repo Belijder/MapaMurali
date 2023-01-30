@@ -10,9 +10,10 @@ import UIKit
 class MuralCell: UICollectionViewCell, AnimatorCellProtocol {
     
     static let reuseID = "MuralCell"
-    
     var muralImageView = MMSquareImageView(frame: .zero)
     
+    
+    //MARK: - Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
@@ -22,12 +23,15 @@ class MuralCell: UICollectionViewCell, AnimatorCellProtocol {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure() {
+    
+    //MARK: - Set up
+    private func configure() {
         addSubview(muralImageView)
         muralImageView.pinToEdges(of: self)
     }
     
-    func set(imageURL: String, imageType: ImageType, docRef: String) {
+    
+    final func set(imageURL: String, imageType: ImageType, docRef: String) {
         muralImageView.downloadImage(fromURL: imageURL, imageType: imageType, docRef: docRef)
     }
 }

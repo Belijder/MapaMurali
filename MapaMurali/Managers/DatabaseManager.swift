@@ -197,7 +197,9 @@ class DatabaseManager {
                     docRef.getDocument(as: User.self) { result in
                         switch result {
                         case .success(let user):
-                            self.users.append(user)
+                            if user.muralsAdded > 0 {
+                                self.users.append(user)
+                            }
                         case .failure(_):
                             break
                         }

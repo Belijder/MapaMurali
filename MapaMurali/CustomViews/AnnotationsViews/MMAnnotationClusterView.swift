@@ -20,14 +20,29 @@ final class MMAnnotationClusterView: MKAnnotationView {
         }
     }
     
-    //MARK: - Live cicle
+    
+    //MARK: - Initialization
+    override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
+        super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
+        
+        displayPriority = .defaultHigh
+        collisionMode = .circle
+        centerOffset = CGPoint(x: 0, y: -frame.size.height / 2)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
+    //MARK: - Logic
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
             drawAnnotationView(for: self.annotation)
         }
     }
     
-    //MARK: - Logic
+    
     func drawAnnotationView(for annotation: MKAnnotation?) {
         if let annotation = annotation as? MKClusterAnnotation {
             
@@ -48,18 +63,5 @@ final class MMAnnotationClusterView: MKAnnotationView {
                 text.draw(in: rect, withAttributes: attributes)
             })
         }
-    }
-    
-    //MARK: - Initialization
-    override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
-        super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
-        
-        displayPriority = .defaultHigh
-        collisionMode = .circle
-        centerOffset = CGPoint(x: 0, y: -frame.size.height / 2)
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }

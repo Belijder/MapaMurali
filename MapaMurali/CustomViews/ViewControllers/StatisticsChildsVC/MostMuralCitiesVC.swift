@@ -12,13 +12,12 @@ import RxRelay
 class MostMuralCitiesVC: UIViewController {
     
     //MARK: - Properities
-    var disposeBag = DisposeBag()
-    let cities = BehaviorRelay<[PopularCity]>(value: [])
-    var statisticsViewModel: StatisticsViewModel!
+    private var disposeBag = DisposeBag()
+    private let cities = BehaviorRelay<[PopularCity]>(value: [])
+    private var statisticsViewModel: StatisticsViewModel!
+    private let titleLabel = MMTitleLabel(textAlignment: .left, fontSize: 15)
     
-    let titleLabel = MMTitleLabel(textAlignment: .left, fontSize: 15)
-    
-    lazy var citiesTableView: UITableView = {
+    lazy private var citiesTableView: UITableView = {
         let tableView = UITableView()
         tableView.register(MMPopularCityTableViewCell.self, forCellReuseIdentifier: MMPopularCityTableViewCell.identifier)
         tableView.showsVerticalScrollIndicator = false
@@ -29,6 +28,7 @@ class MostMuralCitiesVC: UIViewController {
         return tableView
     }()
 
+    
     //MARK: - Initialization
     init(viewModel: StatisticsViewModel) {
         super.init(nibName: nil, bundle: nil)
@@ -42,6 +42,7 @@ class MostMuralCitiesVC: UIViewController {
     deinit {
         disposeBag = DisposeBag()
     }
+    
     
     //MARK: - Live Cicle
     override func viewDidLoad() {
@@ -61,7 +62,6 @@ class MostMuralCitiesVC: UIViewController {
         let padding: CGFloat = 10
         
         NSLayoutConstraint.activate([
-            
             titleLabel.topAnchor.constraint(equalTo: view.topAnchor),
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -99,6 +99,7 @@ class MostMuralCitiesVC: UIViewController {
             self.present(navControler, animated: true)
         }).disposed(by: disposeBag)
     }
+    
     
     private func addCitiesObserver() {
         statisticsViewModel.mostMuralCities

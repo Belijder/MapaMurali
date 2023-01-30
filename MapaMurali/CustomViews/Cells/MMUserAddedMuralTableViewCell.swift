@@ -10,11 +10,12 @@ import UIKit
 class MMUserAddedMuralTableViewCell: UITableViewCell {
     
     static let identifire = "MMUserAddedMuralTableViewCell"
-    
     let muralImageView = MMSquareImageView(frame: .zero)
-    let adressLabel = MMTitleLabel(textAlignment: .left, fontSize: 15)
-    let dateLabel = MMBodyLabel(textAlignment: .left)
+    private let adressLabel = MMTitleLabel(textAlignment: .left, fontSize: 15)
+    private let dateLabel = MMBodyLabel(textAlignment: .left)
     
+    
+    //MARK: - Initialization
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configure()
@@ -24,6 +25,8 @@ class MMUserAddedMuralTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+    //MARK: - Set up
     private func configure() {
         contentView.backgroundColor = .systemBackground
         contentView.addSubviews(muralImageView, adressLabel, dateLabel)
@@ -45,10 +48,9 @@ class MMUserAddedMuralTableViewCell: UITableViewCell {
             dateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
             dateLabel.topAnchor.constraint(equalTo: muralImageView.centerYAnchor),
             dateLabel.heightAnchor.constraint(equalToConstant: 15)
-            
         ])
-        
     }
+    
     
     func set(from mural: Mural) {
         muralImageView.downloadImage(fromURL: mural.thumbnailURL, imageType: .thumbnail, docRef: mural.docRef)
@@ -56,6 +58,4 @@ class MMUserAddedMuralTableViewCell: UITableViewCell {
         dateLabel.font = UIFont.systemFont(ofSize: 10)
         dateLabel.text = "Data dodania: \(mural.addedDate.convertToDayMonthYearFormat())"
     }
-
-
 }

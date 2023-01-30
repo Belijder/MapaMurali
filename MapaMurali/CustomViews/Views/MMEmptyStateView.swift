@@ -10,13 +10,11 @@ import UIKit
 class MMEmptyStateView: UIView {
     
     //MARK: - Properties
-    
-    let messageLabel = MMTitleLabel(textAlignment: .center, fontSize: 20)
-    let signetImageView = UIImageView()
+    private let messageLabel = MMTitleLabel(textAlignment: .center, fontSize: 20)
+    private let signetImageView = UIImageView()
     
     
     //MARK: - Initialization
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
@@ -31,14 +29,14 @@ class MMEmptyStateView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - Set up
     
+    //MARK: - Set up
     private func configure() {
         addSubviews(messageLabel, signetImageView)
         configureMessageLabel()
         configureSignetImageView()
-        
     }
+    
     
     private func configureMessageLabel() {
         messageLabel.numberOfLines = 4
@@ -52,6 +50,7 @@ class MMEmptyStateView: UIView {
         ])
     }
     
+    
     private func configureSignetImageView() {
         signetImageView.image = MMImages.mmSignet
         signetImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -62,9 +61,5 @@ class MMEmptyStateView: UIView {
             signetImageView.widthAnchor.constraint(equalToConstant: 195),
             signetImageView.heightAnchor.constraint(equalToConstant: 210)
         ])
-        
     }
-    
-    
-    
 }

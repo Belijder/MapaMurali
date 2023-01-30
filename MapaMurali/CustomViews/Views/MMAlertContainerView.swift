@@ -18,12 +18,12 @@ class MMAlertContainerView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
     private func configure() {
         backgroundColor = .systemBackground
         layer.cornerRadius = 16
         layer.borderWidth = 2
         layer.borderColor = MMColors.primary.cgColor
         translatesAutoresizingMaskIntoConstraints = false
-        
     }
 }

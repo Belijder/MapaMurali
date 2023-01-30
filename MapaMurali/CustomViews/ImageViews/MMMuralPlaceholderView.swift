@@ -10,8 +10,10 @@ import UIKit
 class MMMuralPlaceholderView: UIView {
     
     let cameraImage = UIImageView()
-    let label = MMBodyLabel(textAlignment: .center)
+    private let label = MMBodyLabel(textAlignment: .center)
 
+    
+    //MARK: - Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubviews(cameraImage, label)
@@ -23,6 +25,8 @@ class MMMuralPlaceholderView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+    //MARK: - Set up
     private func configure() {
         cameraImage.translatesAutoresizingMaskIntoConstraints = false
         cameraImage.image = UIImage(systemName: "camera.viewfinder")
@@ -40,7 +44,6 @@ class MMMuralPlaceholderView: UIView {
             label.topAnchor.constraint(equalTo: cameraImage.bottomAnchor, constant: 10),
             label.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             label.heightAnchor.constraint(equalToConstant: 60)
-        
         ])
     }
 }

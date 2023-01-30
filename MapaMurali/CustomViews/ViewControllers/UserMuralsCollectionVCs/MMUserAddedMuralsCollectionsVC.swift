@@ -18,6 +18,7 @@ class MMUserAddedMuralsCollectionsVC: MMUserMuralsCollectionsVC {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
     //MARK: - Live cicle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,13 +33,14 @@ class MMUserAddedMuralsCollectionsVC: MMUserMuralsCollectionsVC {
         updateData(on: murals)
     }
     
+    
     //MARK: - Set up
     private func configureItems() {
         self.actionButton.text = "Zarządzaj"
         self.actionButton.textColor = MMColors.primary
         self.emptyStateLabel.text = "Nie dodałeś jeszcze żadnych murali."
-        
     }
+    
     
     //MARK: - Actions
     override func actionButtonTapped() {
@@ -47,6 +49,7 @@ class MMUserAddedMuralsCollectionsVC: MMUserMuralsCollectionsVC {
         destVC.title = "Zarządzaj muralami"
         self.navigationController?.pushViewController(destVC, animated: true)
     }
+    
     
     //MARK: - Extensions
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

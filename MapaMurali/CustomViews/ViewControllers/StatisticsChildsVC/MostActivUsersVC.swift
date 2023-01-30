@@ -10,7 +10,25 @@ import RxSwift
 import RxRelay
 
 class MostActivUsersVC: UIViewController {
+    
+    //MARK: - Properities
+    private var disposeBag = DisposeBag()
+    private let users = BehaviorRelay<[User]>(value: [])
+    private var statisticsViewModel: StatisticsViewModel!
+    private let titleLabel = MMTitleLabel(textAlignment: .left, fontSize: 15)
+    
+    lazy private var usersTableView: UITableView = {
+        let tableView = UITableView()
+        tableView.register(MMMostActivUsersCell.self, forCellReuseIdentifier: MMMostActivUsersCell.identifier)
+        tableView.showsVerticalScrollIndicator = false
+        tableView.delegate = self
+        tableView.backgroundColor = .secondarySystemBackground
+        tableView.layer.cornerRadius = 20
+        tableView.separatorColor = .clear
+        return tableView
+    }()
 
+    
     //MARK: - Initialization
     init(viewModel: StatisticsViewModel) {
         super.init(nibName: nil, bundle: nil)
@@ -25,6 +43,7 @@ class MostActivUsersVC: UIViewController {
         disposeBag = DisposeBag()
     }
     
+    
     //MARK: - Live Cicle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,25 +52,6 @@ class MostActivUsersVC: UIViewController {
         bindTableView()
         titleLabel.text = "Najaktywniejsi użytkownicy"
     }
-    
-    
-    //MARK: - Properities
-    var disposeBag = DisposeBag()
-    let users = BehaviorRelay<[User]>(value: [])
-    var statisticsViewModel: StatisticsViewModel!
-    
-    let titleLabel = MMTitleLabel(textAlignment: .left, fontSize: 15)
-    
-    lazy var usersTableView: UITableView = {
-        let tableView = UITableView()
-        tableView.register(MMMostActivUsersCell.self, forCellReuseIdentifier: MMMostActivUsersCell.identifier)
-        tableView.showsVerticalScrollIndicator = false
-        tableView.delegate = self
-        tableView.backgroundColor = .secondarySystemBackground
-        tableView.layer.cornerRadius = 20
-        tableView.separatorColor = .clear
-        return tableView
-    }()
     
 
     //MARK: - Set up
@@ -62,7 +62,6 @@ class MostActivUsersVC: UIViewController {
         let padding: CGFloat = 10
         
         NSLayoutConstraint.activate([
-            
             titleLabel.topAnchor.constraint(equalTo: view.topAnchor),
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -100,6 +99,7 @@ class MostActivUsersVC: UIViewController {
         }).disposed(by: disposeBag)
     }
     
+    
     private func addUserObserver() {
         statisticsViewModel.mostActivUsers
             .subscribe(onNext: { [weak self] users in
@@ -109,6 +109,7 @@ class MostActivUsersVC: UIViewController {
             .disposed(by: disposeBag)
     }
 }
+
 
 //MARK: - Extensions
 extension MostActivUsersVC: UITableViewDelegate {

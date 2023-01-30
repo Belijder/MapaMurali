@@ -18,12 +18,13 @@ class MMUserFavoritesMuralsCollectionVC: MMUserMuralsCollectionsVC {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
     //MARK: - Live cicle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureItems()
-
     }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -34,13 +35,15 @@ class MMUserFavoritesMuralsCollectionVC: MMUserMuralsCollectionsVC {
         }
     }
     
+    
     //MARK: - Set up
-    func configureItems() {
+    private func configureItems() {
         self.actionButton.text = "Przeglądaj"
         self.actionButton.textColor = MMColors.primary
         self.emptyStateLabel.text = "Nie masz jeszcze ulubionych murali."
         
     }
+    
     
     //MARK: - Actions
     override func actionButtonTapped() {
@@ -54,6 +57,7 @@ class MMUserFavoritesMuralsCollectionVC: MMUserMuralsCollectionsVC {
         navControler.navigationBar.tintColor = MMColors.primary
         present(navControler, animated: true)
     }
+    
     
     //MARK: - Extensions
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

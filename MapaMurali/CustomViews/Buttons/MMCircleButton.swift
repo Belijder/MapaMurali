@@ -9,6 +9,7 @@ import UIKit
 
 class MMCircleButton: UIButton {
 
+    //MARK: - Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
@@ -29,11 +30,14 @@ class MMCircleButton: UIButton {
         set(color: color)
     }
     
+    
+    //MARK: - Set up
     private func configure() {
         configuration = .filled()
         configuration?.cornerStyle = .capsule
         translatesAutoresizingMaskIntoConstraints = false
     }
+    
     
     final func set(color: UIColor) {
         configuration?.baseBackgroundColor = .systemBackground.withAlphaComponent(0.3)
@@ -41,8 +45,8 @@ class MMCircleButton: UIButton {
         configuration?.imagePadding = 4
     }
     
+    
     final func set(systemImageName: String) {
         configuration?.image = UIImage(systemName: systemImageName)
     }
-    
 }

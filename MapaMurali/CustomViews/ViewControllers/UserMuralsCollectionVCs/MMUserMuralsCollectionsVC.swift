@@ -37,8 +37,8 @@ class MMUserMuralsCollectionsVC: MMAnimableViewController {
     let emptyStateLabel = MMBodyLabel(textAlignment: .center)
     
     var murals: [Mural]!
-    
     var databaseManager: DatabaseManager!
+    
     
     //MARK: - Initialization
     init(collectionTitle: String, murals: [Mural], databaseManager: DatabaseManager) {
@@ -52,6 +52,7 @@ class MMUserMuralsCollectionsVC: MMAnimableViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    
     //MARK: - Live cicle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,15 +68,16 @@ class MMUserMuralsCollectionsVC: MMAnimableViewController {
         }
     }
     
+    
     //MARK: - Set up
-    func configureActionButton() {
+    private func configureActionButton() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(actionButtonTapped))
         actionButton.isUserInteractionEnabled = true
         actionButton.addGestureRecognizer(tap)
     }
     
     
-    func configureDataSoure() {
+    private func configureDataSoure() {
         dataSource = UICollectionViewDiffableDataSource<Section, Mural>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, mural) -> UICollectionViewCell? in
             
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MuralCell.reuseID, for: indexPath) as! MuralCell
@@ -86,7 +88,7 @@ class MMUserMuralsCollectionsVC: MMAnimableViewController {
     }
     
 
-    func layoutUIElements() {
+    private func layoutUIElements() {
         view.addSubviews(collectionTitle, actionButton, collectionView)
         collectionView.addSubview(emptyStateLabel)
         
@@ -114,6 +116,7 @@ class MMUserMuralsCollectionsVC: MMAnimableViewController {
         ])
     }
     
+    
     //MARK: - Actions
     @objc func actionButtonTapped() {}
     
@@ -130,6 +133,7 @@ class MMUserMuralsCollectionsVC: MMAnimableViewController {
         }
     }
 }
+
 
 //MARK: - Extensions
 extension MMUserMuralsCollectionsVC: UICollectionViewDelegate {

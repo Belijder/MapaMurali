@@ -10,10 +10,11 @@ import UIKit
 class MMMostActivUsersCell: UITableViewCell {
 
     static let identifier = "MMMostActivUsersCell"
+    private let usernameWithAvatar = MMUsernameWithAvatarView(imageHeight: 40)
+    private let userAddedMuralsCounter = MMTitleLabel(textAlignment: .right, fontSize: 20)
     
-    var usernameWithAvatar = MMUsernameWithAvatarView(imageHeight: 40)
-    var userAddedMuralsCounter = MMTitleLabel(textAlignment: .right, fontSize: 20)
     
+    //MARK: - Initialization
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configure()
@@ -23,13 +24,16 @@ class MMMostActivUsersCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+    //MARK: - Set up
     func set(user: User) {
         usernameWithAvatar.username.text = user.displayName
         usernameWithAvatar.avatarView.setImage(from: user.avatarURL, userID: user.id)
         userAddedMuralsCounter.text = "\(user.muralsAdded)"
     }
     
-    func configure() {
+    
+    private func configure() {
         contentView.addSubviews(usernameWithAvatar, userAddedMuralsCounter)
         contentView.backgroundColor = .secondarySystemBackground
         

@@ -11,6 +11,7 @@ class MMSquareImageView: UIImageView {
     
     let placeholderImage = MMImages.placeholderImage
 
+    //MARK: - Initializaton
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
@@ -20,11 +21,14 @@ class MMSquareImageView: UIImageView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure() {
+    
+    //MARK: - Set up
+    private func configure() {
         clipsToBounds = true
         image = placeholderImage
         translatesAutoresizingMaskIntoConstraints = false
     }
+    
     
     func downloadImage(fromURL url: String, imageType: ImageType, docRef: String) {
         NetworkManager.shared.downloadImage(from: url, imageType: imageType, name: docRef) { [weak self] image in
@@ -38,6 +42,7 @@ class MMSquareImageView: UIImageView {
             }
         }
     }
+    
     
     func downloadImageAndCropItToCircle(fromURL url: String, imageType: ImageType, docRef: String) {
         NetworkManager.shared.downloadImage(from: url, imageType: imageType, name: docRef) { [weak self] image in
@@ -56,5 +61,4 @@ class MMSquareImageView: UIImageView {
             }
         }
     }
-
 }

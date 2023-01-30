@@ -13,23 +13,23 @@ class MMTextField: UITextField {
         case email, password, custom
     }
 
+    //MARK: - Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
     }
-    
     
     convenience init(placeholder: String, type: TextFieldType) {
         self.init(frame: .zero)
         set(placeholder: placeholder, type: type)
     }
     
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     
+    //MARK: - Set up
     private func configure() {
         translatesAutoresizingMaskIntoConstraints = false
         autocorrectionType = .no
@@ -38,8 +38,8 @@ class MMTextField: UITextField {
         clearButtonMode = .whileEditing
         
         textColor = .label
-        
     }
+    
     
     final func set(placeholder: String, type: TextFieldType) {
         self.placeholder = placeholder

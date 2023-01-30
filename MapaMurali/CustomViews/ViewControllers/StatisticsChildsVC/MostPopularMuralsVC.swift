@@ -12,14 +12,14 @@ import RxRelay
 class MostPopularMuralsVC: MMAnimableViewController {
     
     //MARK: - Properities
-    var disposeBag = DisposeBag()
+    private var disposeBag = DisposeBag()
     
-    let murals = BehaviorRelay<[Mural]>(value: [])
-    var statisticsViewModel: StatisticsViewModel!
+    private let murals = BehaviorRelay<[Mural]>(value: [])
+    private var statisticsViewModel: StatisticsViewModel!
     
-    let titleLabel = MMTitleLabel(textAlignment: .left, fontSize: 15)
+    private let titleLabel = MMTitleLabel(textAlignment: .left, fontSize: 15)
     
-    lazy var collectionView: UICollectionView = {
+    lazy private var collectionView: UICollectionView = {
         let padding: CGFloat = 20
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: 120, height: 160)
@@ -42,7 +42,6 @@ class MostPopularMuralsVC: MMAnimableViewController {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-        
     }
     
     deinit {
@@ -61,14 +60,13 @@ class MostPopularMuralsVC: MMAnimableViewController {
     
     
     //MARK: - Set up
-    func layoutUIElements() {
+    private func layoutUIElements() {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubviews(titleLabel, collectionView)
         
         let padding: CGFloat = 10
         
         NSLayoutConstraint.activate([
-            
             titleLabel.topAnchor.constraint(equalTo: view.topAnchor),
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -80,6 +78,7 @@ class MostPopularMuralsVC: MMAnimableViewController {
             collectionView.heightAnchor.constraint(equalToConstant: 200)
         ])
     }
+    
     
     //MARK: - Biding
     private func bindCollectionView() {
@@ -105,7 +104,7 @@ class MostPopularMuralsVC: MMAnimableViewController {
         }).disposed(by: disposeBag)
     }
     
-    func addMuralObserver() {
+    private func addMuralObserver() {
         statisticsViewModel.mostPopularMurals
             .subscribe(onNext: { murals in
                 self.murals.accept(murals)

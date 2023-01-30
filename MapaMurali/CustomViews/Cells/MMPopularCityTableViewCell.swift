@@ -10,10 +10,11 @@ import UIKit
 class MMPopularCityTableViewCell: UITableViewCell {
 
     static let identifier = "MMPopularCityTableViewCell"
+    private let cityName = MMTitleLabel(textAlignment: .left, fontSize: 15)
+    private let muralsCount = MMTitleLabel(textAlignment: .right, fontSize: 20)
     
-    let cityName = MMTitleLabel(textAlignment: .left, fontSize: 15)
-    let muralsCount = MMTitleLabel(textAlignment: .right, fontSize: 20)
     
+    //MARK: - Initialization
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configure()
@@ -23,10 +24,13 @@ class MMPopularCityTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+    //MARK: - Set up
     func set(city: PopularCity) {
         cityName.text = city.name
         muralsCount.text = "\(city.muralsCount)"
     }
+    
     
     private func configure() {
         contentView.backgroundColor = .secondarySystemBackground
@@ -45,5 +49,4 @@ class MMPopularCityTableViewCell: UITableViewCell {
             muralsCount.leadingAnchor.constraint(equalTo: cityName.trailingAnchor, constant: 20)
         ])
     }
-    
 }

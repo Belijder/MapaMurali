@@ -9,6 +9,7 @@ import UIKit
 
 class MMTitleLabel: UILabel {
 
+    //MARK: - Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
@@ -22,9 +23,10 @@ class MMTitleLabel: UILabel {
         self.init(frame: .zero)
         self.textAlignment = textAlignment
         self.font = UIFont.systemFont(ofSize: fontSize, weight: .bold)
-        
     }
     
+    
+    //MARK: - Set up
     private func configure() {
         textColor = .label
         adjustsFontSizeToFitWidth = true
@@ -43,6 +45,7 @@ class MMTitleLabel: UILabel {
         
         attributedText = fullString
     }
+    
     
     func createAttributedString(text: String, imageSystemName: String, imagePointSize: CGFloat, color: UIColor) {
         let imageAttachment = NSTextAttachment()

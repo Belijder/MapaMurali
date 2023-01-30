@@ -9,6 +9,7 @@ import UIKit
 
 class MMFilledButton: UIButton {
 
+    //MARK: - Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
@@ -23,16 +24,18 @@ class MMFilledButton: UIButton {
         set(foregroundColor: foregroundColor, backgroundColor: backgroundColor, title: title)
     }
     
-    func configure() {
+    
+    //MARK: - Set up
+    private func configure() {
         configuration = .filled()
         configuration?.cornerStyle = .medium
         translatesAutoresizingMaskIntoConstraints = false
     }
+    
     
     final func set(foregroundColor: UIColor, backgroundColor: UIColor, title: String) {
         configuration?.baseForegroundColor = foregroundColor
         configuration?.baseBackgroundColor = backgroundColor
         configuration?.title = title
     }
-
 }

@@ -9,8 +9,9 @@ import UIKit
 
 class MMAvatarImageView: UIImageView {
     
-    var placeholderImage: UIImage!
+    private var placeholderImage: UIImage!
 
+    //MARK: - Initializaton
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
@@ -20,7 +21,9 @@ class MMAvatarImageView: UIImageView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure() {
+    
+    //MARK: - Set up
+    private func configure() {
         let configuration = UIImage.SymbolConfiguration(weight: .thin)
         placeholderImage = UIImage(systemName: "person.crop.circle", withConfiguration: configuration)
         
@@ -29,6 +32,7 @@ class MMAvatarImageView: UIImageView {
         clipsToBounds = true
         translatesAutoresizingMaskIntoConstraints = false
     }
+    
     
     func setImage(from url: String, userID: String) {
         NetworkManager.shared.downloadImage(from: url, imageType: .avatar, name: userID) { [weak self] image in

@@ -9,6 +9,7 @@ import UIKit
 
 class MMTintedButton: UIButton {
 
+    //MARK: - Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
@@ -23,18 +24,18 @@ class MMTintedButton: UIButton {
         set(color: color, title: title)
     }
     
-    func configure() {
+    
+    //MARK: - Set up
+    private func configure() {
         configuration = .tinted()
         configuration?.cornerStyle = .medium
         translatesAutoresizingMaskIntoConstraints = false
     }
     
+    
     final func set(color: UIColor, title: String) {
         configuration?.baseForegroundColor = color
         configuration?.baseBackgroundColor = color
         configuration?.title = title
-    }
-    
-    
-    
+    } 
 }

@@ -11,6 +11,7 @@ class MMDataLoadingVC: UIViewController {
     
     var containerView: UIView!
     
+    
     func showLoadingView(message: String?) {
         containerView = UIView(frame: view.bounds)
         view.addSubview(containerView)
@@ -46,6 +47,7 @@ class MMDataLoadingVC: UIViewController {
         activityIndicator.startAnimating()
     }
     
+    
     func dismissLoadingView() {
         if view.contains(containerView) {
             self.containerView.removeFromSuperview()
@@ -60,6 +62,7 @@ class MMDataLoadingVC: UIViewController {
         view.addSubview(emptyStateView)
     }
     
+    
     func hideEmptyStateView(form view: UIView) {
         let subviews = view.subviews
         
@@ -71,7 +74,4 @@ class MMDataLoadingVC: UIViewController {
             }
         }
     }
-    
-    
-
 }

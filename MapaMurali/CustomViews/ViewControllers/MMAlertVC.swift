@@ -10,14 +10,14 @@ import UIKit
 class MMAlertVC: UIViewController {
     
     //MARK: - Properties
-    let containerView = MMAlertContainerView()
-    let titleLabel = MMTitleLabel(textAlignment: .center, fontSize: 20)
-    let messageLabel = MMBodyLabel(textAlignment: .center)
-    let actionButton = MMTintedButton(color: MMColors.primary, title: "Ok")
+    private let containerView = MMAlertContainerView()
+    private let titleLabel = MMTitleLabel(textAlignment: .center, fontSize: 20)
+    private let messageLabel = MMBodyLabel(textAlignment: .center)
+    private let actionButton = MMTintedButton(color: MMColors.primary, title: "Ok")
     
-    var alertTitle: String?
-    var alertMessage: String?
-    var buttonTitle: String?
+    private var alertTitle: String?
+    private var alertMessage: String?
+    private var buttonTitle: String?
     
     //MARK: - Initialization
     init(title: String, message: String, buttonTitle: String) {
@@ -31,6 +31,7 @@ class MMAlertVC: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
     //MARK: - Live cicle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,8 +42,9 @@ class MMAlertVC: UIViewController {
 
     }
     
+    
     //MARK: - Set up
-    func configure() {
+    private func configure() {
         titleLabel.text = alertTitle ?? "Coś poszło nie tak."
         
         messageLabel.text = alertMessage ?? "Nie mogliśmy ukończyć tego żądania"
@@ -52,7 +54,8 @@ class MMAlertVC: UIViewController {
         actionButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
     }
     
-    func layoutUI() {
+    
+    private func layoutUI() {
         let padding: CGFloat = 20
         
         NSLayoutConstraint.activate([
@@ -78,10 +81,9 @@ class MMAlertVC: UIViewController {
         ])
     }
     
+    
     //MARK: - Actions
     @objc func dismissVC() {
         self.dismiss(animated: true)
     }
-    
-   
 }

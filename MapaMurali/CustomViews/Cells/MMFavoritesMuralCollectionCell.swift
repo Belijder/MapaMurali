@@ -7,26 +7,17 @@
 
 import UIKit
 
-class MMFavoritesMuralCollectionCell: UICollectionViewCell, AnimatorCellProtocol { 
+class MMFavoritesMuralCollectionCell: UICollectionViewCell, AnimatorCellProtocol {
+    
     static let identifier = "MMFavoritesMuralCollectionCell"
-    
     var muralImageView = MMSquareImageView(frame: .zero)
-    var favoritesCounter = MMTitleLabel(textAlignment: .center, fontSize: 16)
+    private var favoritesCounter = MMTitleLabel(textAlignment: .center, fontSize: 16)
     
+    
+    //MARK: - Initialiation
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        muralImageView.roundCorners(corners: [.topLeft, .topRight], radius: RadiusValue.muralCellRadiusValue)
-    }
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
-            contentView.layer.backgroundColor = UIColor.tertiarySystemBackground.cgColor
-        }
     }
     
     required init?(coder: NSCoder) {
@@ -34,16 +25,31 @@ class MMFavoritesMuralCollectionCell: UICollectionViewCell, AnimatorCellProtocol
     }
     
     
+    //MARK: - Live cicle
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        muralImageView.roundCorners(corners: [.topLeft, .topRight], radius: RadiusValue.muralCellRadiusValue)
+    }
+    
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            contentView.layer.backgroundColor = UIColor.tertiarySystemBackground.cgColor
+        }
+    }
+    
+
+    //MARK: - Set up
     func set(mural: Mural) {
         muralImageView.downloadImage(fromURL: mural.thumbnailURL, imageType: .thumbnail, docRef: mural.docRef)
         favoritesCounter.createFavoriteCounterTextLabel(counter: mural.favoritesCount, imagePointSize: 16)
     }
     
+    
     private func configure() {
         contentView.layer.cornerRadius = RadiusValue.muralCellRadiusValue
         contentView.layer.backgroundColor = UIColor.tertiarySystemBackground.cgColor
         addSubviews(muralImageView, favoritesCounter)
-        
         
         let padding: CGFloat = 0
         
@@ -59,6 +65,4 @@ class MMFavoritesMuralCollectionCell: UICollectionViewCell, AnimatorCellProtocol
             favoritesCounter.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
-    
-  
 }

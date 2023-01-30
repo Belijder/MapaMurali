@@ -11,6 +11,7 @@ class MMMuralImageView: UIImageView {
     
     let placeholderView = MMMuralPlaceholderView()
 
+    //MARK: - Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
@@ -20,6 +21,8 @@ class MMMuralImageView: UIImageView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    
+    //MARK: - Set up
     private func configure() {
         addSubviews(placeholderView)
         
@@ -37,6 +40,8 @@ class MMMuralImageView: UIImageView {
         ])
     }
     
+    
+    //MARK: - Logic
     func didSelectedImage() {
         placeholderView.alpha = 0.0
         layer.borderColor = MMColors.primary.cgColor
@@ -47,5 +52,4 @@ class MMMuralImageView: UIImageView {
         layer.borderColor = UIColor.secondaryLabel.cgColor
         placeholderView.alpha = 1.0
     }
-    
 }

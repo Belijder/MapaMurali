@@ -14,6 +14,7 @@ final class MMAnnotationView: MKAnnotationView, AnimatorCellProtocol {
     static let reuseIdentifier = "MMAnnotationReuseID"
     var muralImageView = MMSquareImageView(frame: .zero)
 
+    
     //MARK: - Initialization
     override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
@@ -24,6 +25,7 @@ final class MMAnnotationView: MKAnnotationView, AnimatorCellProtocol {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
     //MARK: - Logic
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
@@ -31,12 +33,13 @@ final class MMAnnotationView: MKAnnotationView, AnimatorCellProtocol {
         }
     }
     
+    
     private func setupUI() {
         backgroundColor = .clear
-        
         addSubview(muralImageView)
         muralImageView.frame = bounds
     }
+    
     
     func setImage(thumbnailURL: String, docRef: String) {
         frame = CGRect(x: 0, y: 0, width: 50, height: 50)

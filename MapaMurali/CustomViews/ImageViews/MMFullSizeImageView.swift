@@ -9,6 +9,7 @@ import UIKit
 
 class MMFullSizeImageView: UIImageView {
 
+    //MARK: - Initializaton
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
@@ -18,9 +19,12 @@ class MMFullSizeImageView: UIImageView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure() {
+    
+    //MARK: - Set up
+    private func configure() {
         translatesAutoresizingMaskIntoConstraints = false
     }
+    
     
     func downloadImage(from url: String, imageType: ImageType, docRef: String) {
         NetworkManager.shared.downloadImage(from: url, imageType: imageType, name: docRef) { [weak self] image in

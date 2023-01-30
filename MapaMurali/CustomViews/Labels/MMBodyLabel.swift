@@ -9,6 +9,7 @@ import UIKit
 
 class MMBodyLabel: UILabel {
 
+    //MARK: - Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
@@ -23,6 +24,8 @@ class MMBodyLabel: UILabel {
         self.textAlignment = textAlignment
     }
     
+    
+    //MARK: - Set up
     private func configure() {
         textColor = .secondaryLabel
         font = UIFont.systemFont(ofSize: 15)
@@ -33,6 +36,7 @@ class MMBodyLabel: UILabel {
         translatesAutoresizingMaskIntoConstraints = false
     }
     
+
     func createStringWithUnderlinedTextForRegistracionForm(plainText: String, textToUnderline: String) {
         let underlinedText = NSMutableAttributedString(string: textToUnderline)
         underlinedText.addAttribute(.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: NSRange(location: 0, length: textToUnderline.count))
@@ -43,5 +47,4 @@ class MMBodyLabel: UILabel {
         
         attributedText = fullString
     }
-    
 }
