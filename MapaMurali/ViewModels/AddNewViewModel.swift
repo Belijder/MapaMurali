@@ -14,7 +14,7 @@ class AddNewViewModel {
     var fullSizeImageData: Data?
     var thumbnailImageData: Data?
     var currentLocation: CLLocation?
-    var adress: String?
+    var address: String?
     var city: String?
     
     
@@ -35,7 +35,7 @@ class AddNewViewModel {
     
     
     func createDataforDatabase(author: String?, location: CLLocationCoordinate2D) throws -> [String : Any] {
-        guard let adress = adress,
+        guard let address = address,
               let city = city,
               let user = Auth.auth().currentUser?.uid else {
             print("Error when try to create data for Database")
@@ -45,7 +45,7 @@ class AddNewViewModel {
         var data: [String : Any] = [:]
         data["longitude"] = location.longitude
         data["latitude"] = location.latitude
-        data["adress"] = adress
+        data["address"] = address
         data["city"] = city
         data["author"] = author
         data["addedBy"] = user

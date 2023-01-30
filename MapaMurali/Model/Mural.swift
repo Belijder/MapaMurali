@@ -12,7 +12,7 @@ struct Mural: Codable, Hashable {
     let docRef: String
     var longitude: Double
     var latitude: Double
-    var adress: String
+    var address: String
     var city: String
     var author: String?
     let addedBy: String

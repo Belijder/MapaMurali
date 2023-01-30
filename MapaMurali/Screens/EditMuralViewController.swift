@@ -26,7 +26,7 @@ class EditMuralViewController: AddNewItemViewController {
             }
         }
 
-        self.adressTextField.text = mural.adress
+        self.addressTextField.text = mural.address
         self.cityTextField.text = mural.city
         self.authorTextField.text = mural.author
         self.callToActionBatton.set(color: MMColors.primary, title: "Zapisz zmiany")
@@ -61,15 +61,15 @@ class EditMuralViewController: AddNewItemViewController {
         
         print("🟡 Save edited mural tapped")
         
-        vm.adress = adressTextField.text
+        vm.address = addressTextField.text
         vm.city = cityTextField.text
         
-        guard let adress = vm.adress, let city = vm.city else {
+        guard let address = vm.address, let city = vm.city else {
             self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: MMError.invalidAddress.rawValue, buttonTitle: "Ok")
             return
         }
         
-        let addressString = "\(adress), \(city)"
+        let addressString = "\(address), \(city)"
         
         vm.getCoordinate(addressString: addressString) { location, error in
             if error != nil {
@@ -78,7 +78,7 @@ class EditMuralViewController: AddNewItemViewController {
             }
             
             let data = EditedDataForMural(location: location,
-                                          address: adress,
+                                          address: address,
                                           city: city,
                                           author: self.authorTextField.text ?? "")
             

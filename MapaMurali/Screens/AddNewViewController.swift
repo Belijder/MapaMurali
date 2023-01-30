@@ -21,7 +21,7 @@ class AddNewItemViewController: MMDataLoadingVC {
     
     let selectedImageView = MMMuralImageView(frame: .zero)
     let removeImageButton = MMCircleButton(color: .label, systemImageName: "xmark")
-    let adressTextField = MMTextField(placeholder: "Wpisz adres muralu", type: .custom)
+    let addressTextField = MMTextField(placeholder: "Wpisz adres muralu", type: .custom)
     let cityTextField = MMTextField(placeholder: "Miasto", type: .custom)
     let authorTextField = MMTextField(placeholder: "Jeśli znasz, podaj autorów.", type: .custom)
     let callToActionBatton = MMTintedButton(color: MMColors.primary, title: "Dodaj mural")
@@ -67,7 +67,7 @@ class AddNewItemViewController: MMDataLoadingVC {
     
  
     override func viewDidLayoutSubviews() {
-        adressTextField.styleTextFieldWithBottomBorder(color: MMColors.primary)
+        addressTextField.styleTextFieldWithBottomBorder(color: MMColors.primary)
         cityTextField.styleTextFieldWithBottomBorder(color: MMColors.primary)
         authorTextField.styleTextFieldWithBottomBorder(color: MMColors.primary)
     }
@@ -94,14 +94,14 @@ class AddNewItemViewController: MMDataLoadingVC {
     
     
     private func configureTextFields() {
-        adressTextField.delegate = self
-        adressTextField.tag = 1
-        adressTextField.returnKeyType = .next
+        addressTextField.delegate = self
+        addressTextField.tag = 1
+        addressTextField.returnKeyType = .next
         
         let localizationButton = MMCircleButton(color: MMColors.primary, systemImageName: "location.circle.fill")
-        localizationButton.frame = CGRect(x: adressTextField.frame.size.width - 25, y: 25, width: 25, height: 25)
-        adressTextField.rightView = localizationButton
-        adressTextField.rightViewMode = .always
+        localizationButton.frame = CGRect(x: addressTextField.frame.size.width - 25, y: 25, width: 25, height: 25)
+        addressTextField.rightView = localizationButton
+        addressTextField.rightViewMode = .always
         localizationButton.addTarget(self, action: #selector(localizationButtonTapped), for: .touchUpInside)
         
         cityTextField.delegate = self
@@ -115,7 +115,7 @@ class AddNewItemViewController: MMDataLoadingVC {
     
     
     private func layoutUI() {
-        view.addSubviews(selectedImageView, removeImageButton, adressTextField, cityTextField, authorTextField, callToActionBatton)
+        view.addSubviews(selectedImageView, removeImageButton, addressTextField, cityTextField, authorTextField, callToActionBatton)
         
         selectedImageView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -141,12 +141,12 @@ class AddNewItemViewController: MMDataLoadingVC {
             removeImageButton.topAnchor.constraint(equalTo: selectedImageView.topAnchor, constant: 10),
             removeImageButton.trailingAnchor.constraint(equalTo: selectedImageView.trailingAnchor, constant: -10),
             
-            adressTextField.topAnchor.constraint(equalTo: selectedImageView.bottomAnchor, constant: verticalPadding + 10),
-            adressTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: horizontalPadding),
-            adressTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -horizontalPadding),
-            adressTextField.heightAnchor.constraint(equalToConstant: height),
+            addressTextField.topAnchor.constraint(equalTo: selectedImageView.bottomAnchor, constant: verticalPadding + 10),
+            addressTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: horizontalPadding),
+            addressTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -horizontalPadding),
+            addressTextField.heightAnchor.constraint(equalToConstant: height),
             
-            cityTextField.topAnchor.constraint(equalTo: adressTextField.bottomAnchor, constant: verticalPadding),
+            cityTextField.topAnchor.constraint(equalTo: addressTextField.bottomAnchor, constant: verticalPadding),
             cityTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: horizontalPadding),
             cityTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -horizontalPadding),
             cityTextField.heightAnchor.constraint(equalToConstant: height),
@@ -172,7 +172,7 @@ class AddNewItemViewController: MMDataLoadingVC {
     
     private func cleanUpFields() {
         selectedImageView.removeImage()
-        adressTextField.text = ""
+        addressTextField.text = ""
         cityTextField.text = ""
         authorTextField.text = ""
         removeImageButton.alpha = 0
@@ -267,15 +267,15 @@ class AddNewItemViewController: MMDataLoadingVC {
             return
         }
         
-        vm.adress = adressTextField.text
+        vm.address = addressTextField.text
         vm.city = cityTextField.text
         
-        guard let adress = vm.adress, let city = vm.city else {
+        guard let address = vm.address, let city = vm.city else {
             self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: MMError.invalidAddress.rawValue, buttonTitle: "Ok")
             return
         }
         
-        let addressString = "\(adress), \(city)"
+        let addressString = "\(address), \(city)"
         
         vm.getCoordinate(addressString: addressString) { location, error in
             if error != nil {
@@ -418,9 +418,9 @@ extension AddNewItemViewController: CLLocationManagerDelegate {
                 return
             }
             
-            self.adressTextField.text = "\(streetName) \(streetNumber)"
+            self.addressTextField.text = "\(streetName) \(streetNumber)"
             self.cityTextField.text = cityName
-            self.vm.adress = "\(streetName) \(streetNumber)"
+            self.vm.address = "\(streetName) \(streetNumber)"
             self.vm.city = cityName
             self.dismissLoadingView()
         }
@@ -476,7 +476,7 @@ extension AddNewItemViewController: DatabaseManagerDelegate {
             mural.latitude = data.location.latitude
             mural.author = data.author
             mural.city = data.city
-            mural.adress = data.address
+            mural.address = data.address
             
             databaseManager.lastEditedMuralID.onNext(mural)
         }

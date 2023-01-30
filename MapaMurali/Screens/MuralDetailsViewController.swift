@@ -147,11 +147,11 @@ class MuralDetailsViewController: UIViewController {
         addressLabel.numberOfLines = 2
         addressLabel.adjustsFontSizeToFitWidth = false
         
-        if muralItem.adress.count < 25 {
-            addressLabel.text = "\(muralItem.adress),\n\(muralItem.city)"
+        if muralItem.address.count < 25 {
+            addressLabel.text = "\(muralItem.address),\n\(muralItem.city)"
         } else {
             addressLabel.lineBreakMode = .byWordWrapping
-            addressLabel.text = "\(muralItem.adress), \(muralItem.city)"
+            addressLabel.text = "\(muralItem.address), \(muralItem.city)"
         }
         addressLabel.adjustsFontSizeToFitWidth = false
     }
@@ -442,9 +442,9 @@ class MuralDetailsViewController: UIViewController {
         databaseManager.lastEditedMuralID
             .subscribe(onNext: { editedMural in
                 if editedMural.docRef == self.muralItem.docRef {
-                    self.muralItem.adress = editedMural.adress
+                    self.muralItem.address = editedMural.address
                     self.muralItem.city = editedMural.city
-                    self.title = editedMural.adress
+                    self.title = editedMural.address
                     self.muralItem.author = editedMural.author
                     self.authorLabel.text = editedMural.author
                     self.checkAuthorPropertyInMuralItem()

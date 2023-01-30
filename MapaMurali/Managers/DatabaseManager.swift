@@ -232,7 +232,7 @@ class DatabaseManager {
     func updateMuralInformations(id: String, data: EditedDataForMural) {
         let muralRef = db.collection(CollectionName.murals.rawValue).document(id)
         muralRef.updateData([
-            "adress": data.address,
+            "address": data.address,
             "city": data.city,
             "latitude": data.location.latitude,
             "longitude": data.location.longitude,

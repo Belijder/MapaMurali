@@ -11,7 +11,7 @@ class MMUserAddedMuralTableViewCell: UITableViewCell {
     
     static let identifire = "MMUserAddedMuralTableViewCell"
     let muralImageView = MMSquareImageView(frame: .zero)
-    private let adressLabel = MMTitleLabel(textAlignment: .left, fontSize: 15)
+    private let addressLabel = MMTitleLabel(textAlignment: .left, fontSize: 15)
     private let dateLabel = MMBodyLabel(textAlignment: .left)
     
     
@@ -29,7 +29,7 @@ class MMUserAddedMuralTableViewCell: UITableViewCell {
     //MARK: - Set up
     private func configure() {
         contentView.backgroundColor = .systemBackground
-        contentView.addSubviews(muralImageView, adressLabel, dateLabel)
+        contentView.addSubviews(muralImageView, addressLabel, dateLabel)
         
         let padding: CGFloat = 20
         
@@ -39,10 +39,10 @@ class MMUserAddedMuralTableViewCell: UITableViewCell {
             muralImageView.heightAnchor.constraint(equalToConstant: 80),
             muralImageView.widthAnchor.constraint(equalToConstant: 80),
             
-            adressLabel.leadingAnchor.constraint(equalTo: muralImageView.trailingAnchor, constant: padding),
-            adressLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
-            adressLabel.bottomAnchor.constraint(equalTo: muralImageView.centerYAnchor),
-            adressLabel.heightAnchor.constraint(equalToConstant: 20),
+            addressLabel.leadingAnchor.constraint(equalTo: muralImageView.trailingAnchor, constant: padding),
+            addressLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
+            addressLabel.bottomAnchor.constraint(equalTo: muralImageView.centerYAnchor),
+            addressLabel.heightAnchor.constraint(equalToConstant: 20),
             
             dateLabel.leadingAnchor.constraint(equalTo: muralImageView.trailingAnchor, constant: padding),
             dateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
@@ -54,7 +54,7 @@ class MMUserAddedMuralTableViewCell: UITableViewCell {
     
     func set(from mural: Mural) {
         muralImageView.downloadImage(fromURL: mural.thumbnailURL, imageType: .thumbnail, docRef: mural.docRef)
-        adressLabel.text = mural.adress
+        addressLabel.text = mural.address
         dateLabel.font = UIFont.systemFont(ofSize: 10)
         dateLabel.text = "Data dodania: \(mural.addedDate.convertToDayMonthYearFormat())"
     }
