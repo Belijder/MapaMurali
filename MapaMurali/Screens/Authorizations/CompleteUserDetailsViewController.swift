@@ -121,8 +121,9 @@ class CompleteUserDetailsViewController: MMDataLoadingVC {
             let imagePickerController = UIImagePickerController()
             imagePickerController.delegate = self
             imagePickerController.sourceType = .camera
+            imagePickerController.allowsEditing = true
             imagePickerController.showsCameraControls = true
-            self.present(imagePickerController, animated: true, completion: dismissLoadingView)
+            self.present(imagePickerController, animated: true, completion: self.dismissLoadingView)
         case .denied, .restricted:
             presentMMAlert(title: "Brak dostępu", message: "Aby zrobić zdjęcie musisz wyrazić zgodę na używanie aparatu. Przejdź do Ustawienia > Mapa Murali i wyraź zgodę na używanie aparatu.", buttonTitle: "Ok")
         case .notDetermined:
@@ -163,9 +164,17 @@ class CompleteUserDetailsViewController: MMDataLoadingVC {
         showLoadingView(message: "Uakualnianie informacji")
         
         guard let email = UserDefaults.standard.object(forKey: Setup.kEmail) as? String else { return }
+        
         guard let avatarData = avatarImage else {
             dismissLoadingView()
             presentMMAlert(title: "Dodaj avatar", message: "Dodaj avatar do swojego konta.", buttonTitle: "Ok")
+            return
+        }
+        
+        guard let nickname = nickNameTextField.text,
+              nickname.count > 2 else {
+            dismissLoadingView()
+            presentMMAlert(title: "Zbyt krótko!", message: "Nazwa użytkownika musi posiadać minimum trzy znaki.", buttonTitle: "Ok")
             return
         }
         
@@ -184,7 +193,7 @@ class CompleteUserDetailsViewController: MMDataLoadingVC {
         
         self.databaseManager.addNewUserToDatabase(id: userID, userData: userData, avatarImageData: avatarData) { success in
             if success {
-                self.databaseManager.fetchCurrenUserData()
+                try? self.databaseManager.fetchCurrenUserData()
                 self.loginManager.userIsLoggedIn.onNext(true)
                 self.dismissLoadingView()
             }

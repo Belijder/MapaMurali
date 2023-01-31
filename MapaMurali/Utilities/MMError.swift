@@ -24,4 +24,6 @@ enum MMError: String, Error {
     
     case accountNotExist = "Konto o podanym mailu nie istnieje. Załóż konto."
     case failedToSendPasswordResset = "Nie udało się wysłać prośby o zresetowanie hasła. Sprawdź połączenie z internetem i spróbuj ponownie"
+    
+    case failedToFetchCurrentUserData
 }

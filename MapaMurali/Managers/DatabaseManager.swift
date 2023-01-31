@@ -136,8 +136,8 @@ class DatabaseManager {
     
     
     //MARK: - Read
-    func fetchCurrenUserData() {
-        guard let userID = Auth.auth().currentUser?.uid else { return }
+    func fetchCurrenUserData() throws {
+        guard let userID = Auth.auth().currentUser?.uid else { throw MMError.failedToFetchCurrentUserData }
         fetchUserFromDatabase(id: userID) { result in
             switch result {
             case .success(let user):
@@ -154,6 +154,7 @@ class DatabaseManager {
             if error != nil {
                 return
             } else {
+                self.murals = []
                 for document in querySnapshot!.documents {
                     let docRef = self.db.collection(CollectionName.murals.rawValue).document(document.documentID)
                     docRef.getDocument(as: Mural.self) { result in
