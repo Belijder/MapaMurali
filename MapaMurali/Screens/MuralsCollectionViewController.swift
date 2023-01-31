@@ -83,7 +83,7 @@ class MuralsCollectionViewController: MMAnimableViewController {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MuralCell.reuseID, for: indexPath) as! MuralCell
             cell.set(imageURL: mural.thumbnailURL, imageType: .thumbnail, docRef: mural.docRef)
             
-            NetworkManager.shared.downloadImage(from: mural.imageURL, imageType: .fullSize, name: mural.docRef) { _ in }
+            ImagesManager.shared.downloadImage(from: mural.imageURL, imageType: .fullSize, name: mural.docRef) { _ in }
             
             return cell
         })

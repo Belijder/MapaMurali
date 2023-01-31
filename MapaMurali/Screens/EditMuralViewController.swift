@@ -18,7 +18,7 @@ class EditMuralViewController: AddNewItemViewController {
         super.init(databaseManager: databaseManager)
         self.mural = mural
         
-        NetworkManager.shared.downloadImage(from: mural.imageURL, imageType: .fullSize, name: mural.docRef) { image in
+        ImagesManager.shared.downloadImage(from: mural.imageURL, imageType: .fullSize, name: mural.docRef) { image in
             DispatchQueue.main.async {
                 self.selectedImageView.image = image
                 self.selectedImageView.didSelectedImage()
@@ -86,7 +86,9 @@ class EditMuralViewController: AddNewItemViewController {
         }
     }
     
+    
     override func cameraImageViewTapped() { }
+    
     
     @objc private func dismissVC() {
         self.dismiss(animated: true, completion: nil)

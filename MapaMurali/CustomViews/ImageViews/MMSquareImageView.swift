@@ -31,7 +31,7 @@ class MMSquareImageView: UIImageView {
     
     
     func downloadImage(fromURL url: String, imageType: ImageType, docRef: String) {
-        NetworkManager.shared.downloadImage(from: url, imageType: imageType, name: docRef) { [weak self] image in
+        ImagesManager.shared.downloadImage(from: url, imageType: imageType, name: docRef) { [weak self] image in
             guard let self = self else { return }
             
             guard let image = image else { return }
@@ -45,7 +45,7 @@ class MMSquareImageView: UIImageView {
     
     
     func downloadImageAndCropItToCircle(fromURL url: String, imageType: ImageType, docRef: String) {
-        NetworkManager.shared.downloadImage(from: url, imageType: imageType, name: docRef) { [weak self] image in
+        ImagesManager.shared.downloadImage(from: url, imageType: imageType, name: docRef) { [weak self] image in
             guard let self = self else { return }
             guard let image = image else { return }
             

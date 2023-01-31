@@ -27,7 +27,7 @@ class MMFullSizeImageView: UIImageView {
     
     
     func downloadImage(from url: String, imageType: ImageType, docRef: String) {
-        NetworkManager.shared.downloadImage(from: url, imageType: imageType, name: docRef) { [weak self] image in
+        ImagesManager.shared.downloadImage(from: url, imageType: imageType, name: docRef) { [weak self] image in
             guard let self = self else { return }
             DispatchQueue.main.async { self.image = image }
         }

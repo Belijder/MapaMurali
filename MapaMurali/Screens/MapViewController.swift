@@ -281,7 +281,21 @@ extension MapViewController: MKMapViewDelegate {
             self.cellShape = .circle(radius: RadiusValue.mapPinRadiusValue)
             self.clusteredCollectionView.alpha = 0.0
             self.setSnapshotsForAnimation()
-            self.prepereAndPresentDetailVCWithAnimation(mural: muralItem, databaseManager: databaseManager)
+            
+            self.showLoadingView(message: nil)
+            let destVC = MuralDetailsViewController(muralItem: muralItem, databaseManager: databaseManager, presentingVCTitle: self.title)
+            destVC.modalPresentationStyle = .fullScreen
+            destVC.transitioningDelegate = self
+            
+            ImagesManager.shared.downloadImage(from: muralItem.imageURL, imageType: .fullSize, name: muralItem.docRef) { image in
+                DispatchQueue.main.async {
+                    destVC.imageView.image = image
+                    self.dismissLoadingView()
+                    self.present(destVC, animated: true)
+                }
+                print("🔵 Zdjęcie pobrane")
+            }
+            
             mapView.deselectAnnotation(nil, animated: true)
         }
         

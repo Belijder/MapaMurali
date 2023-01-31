@@ -32,11 +32,21 @@ class MMAnimableViewController: MMDataLoadingVC {
         destVC.modalPresentationStyle = .fullScreen
         destVC.transitioningDelegate = self
         
-        NetworkManager.shared.downloadImage(from: mural.imageURL, imageType: .fullSize, name: mural.docRef) { image in
-            DispatchQueue.main.async {
+        do {
+            try ImagesManager.shared.fetchDownsampledImageFromDirectory(from: mural.imageURL, imageType: .fullSize, name: mural.docRef, uiImageSize: destVC.imageView.bounds.size, completed: { image in
                 destVC.imageView.image = image
                 self.dismissLoadingView()
                 self.present(destVC, animated: true)
+                print("🔵 Zdjęcie downsamplowane")
+            })
+        } catch {
+            ImagesManager.shared.downloadImage(from: mural.imageURL, imageType: .fullSize, name: mural.docRef) { image in
+                DispatchQueue.main.async {
+                    destVC.imageView.image = image
+                    self.dismissLoadingView()
+                    self.present(destVC, animated: true)
+                }
+                print("🔵 Zdjęcie pobrane")
             }
         }
     }

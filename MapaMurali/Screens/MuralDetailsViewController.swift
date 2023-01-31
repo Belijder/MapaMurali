@@ -17,7 +17,7 @@ class MuralDetailsViewController: UIViewController {
     private let vm: MuralDetailsViewModel
     private var disposeBag = DisposeBag()
     
-    let imageView = MMFullSizeImageView(frame: .zero)
+    let imageView = MMFullSizeImageView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width / 3 * 4))
     let containerView = UIView()
     
     let closeButton = MMCircleButton(color: .white, systemImageName: "xmark")

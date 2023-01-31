@@ -70,7 +70,7 @@
 		42E18CB928DB98EA0068414E /* UIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E18CB828DB98EA0068414E /* UIImage+Ext.swift */; };
 		42E61C2228F1AE0600D38205 /* MuralDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C2128F1AE0600D38205 /* MuralDetailsViewController.swift */; };
 		42E61C2628F1CE1D00D38205 /* MMFullSizeImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C2528F1CE1D00D38205 /* MMFullSizeImageView.swift */; };
-		42E61C2828F1CF3500D38205 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C2728F1CF3500D38205 /* NetworkManager.swift */; };
+		42E61C2828F1CF3500D38205 /* ImagesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C2728F1CF3500D38205 /* ImagesManager.swift */; };
 		42E61C2A28F2DC7800D38205 /* Date+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C2928F2DC7800D38205 /* Date+Ext.swift */; };
 		42E61C2E28F2ED6400D38205 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C2D28F2ED6400D38205 /* Constants.swift */; };
 		42E61C3028F3143100D38205 /* MuralsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E61C2F28F3143100D38205 /* MuralsCollectionViewController.swift */; };
@@ -161,7 +161,7 @@
 		42E18CB828DB98EA0068414E /* UIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ext.swift"; sourceTree = "<group>"; };
 		42E61C2128F1AE0600D38205 /* MuralDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuralDetailsViewController.swift; sourceTree = "<group>"; };
 		42E61C2528F1CE1D00D38205 /* MMFullSizeImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMFullSizeImageView.swift; sourceTree = "<group>"; };
-		42E61C2728F1CF3500D38205 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		42E61C2728F1CF3500D38205 /* ImagesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesManager.swift; sourceTree = "<group>"; };
 		42E61C2928F2DC7800D38205 /* Date+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Ext.swift"; sourceTree = "<group>"; };
 		42E61C2D28F2ED6400D38205 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		42E61C2F28F3143100D38205 /* MuralsCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuralsCollectionViewController.swift; sourceTree = "<group>"; };
@@ -309,7 +309,7 @@
 			children = (
 				42867B6F2896FC8100E5159F /* LoginManager.swift */,
 				4289AEBF28E2110500C3FFF5 /* DatabaseManager.swift */,
-				42E61C2728F1CF3500D38205 /* NetworkManager.swift */,
+				42E61C2728F1CF3500D38205 /* ImagesManager.swift */,
 				42ECF0722973E6840097C843 /* Animator.swift */,
 				42ECF074297588E80097C843 /* PersistenceManager.swift */,
 			);
@@ -559,7 +559,7 @@
 				42618DD6291655720052DB76 /* MMUsersTableViewInTableViewCell.swift in Sources */,
 				42E61C3928FAC03C00D38205 /* MMUsernameWithAvatarView.swift in Sources */,
 				4283BAB428D606B100A54F0F /* MMCircleButton.swift in Sources */,
-				42E61C2828F1CF3500D38205 /* NetworkManager.swift in Sources */,
+				42E61C2828F1CF3500D38205 /* ImagesManager.swift in Sources */,
 				42E61C3B28FAC0C500D38205 /* User.swift in Sources */,
 				42A5C70D2977E51500B3893C /* MMAnimableViewController.swift in Sources */,
 				42E61C3528F31DD800D38205 /* MuralCell.swift in Sources */,

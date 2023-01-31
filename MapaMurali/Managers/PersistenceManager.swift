@@ -107,7 +107,7 @@ class PersistenceManager {
     }
     
     
-    private func getPathForImage(imageType: ImageType, name: String) -> URL? {
+    func getPathForImage(imageType: ImageType, name: String) -> URL? {
         
         let imageTypeString = String(imageType.rawValue.dropLast())
         
