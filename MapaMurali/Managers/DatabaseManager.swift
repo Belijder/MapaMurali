@@ -87,6 +87,23 @@ class DatabaseManager {
     }
     
     
+    func updateUserData(id: String, data: [String : Any], avatarImageData: Data, completion: @escaping (Bool) -> Void) {
+        let userRef = db.collection(CollectionName.users.rawValue).document(id)
+        userRef.updateData(data) { error in
+            if let error = error {
+                print("🔴 Error upading user data. ERROR: \(error.localizedDescription)")
+                completion(false)
+            } else {
+                self.removeImageFromStorage(imageType: .avatar, docRef: id) { _ in
+                    self.addImageToStorage(docRef: userRef, imageData: avatarImageData, imageType: .avatar) { _ in
+                        completion(true)
+                    }
+                }
+            }
+        }
+    }
+    
+    
     func addNewItemToDatabase(itemData: [String : Any], fullSizeImageData: Data, thumbnailData: Data) {
         let newItemRef = db.collection(CollectionName.murals.rawValue).document()
         newItemRef.setData(itemData) { error in

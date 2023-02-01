@@ -46,6 +46,7 @@
 		4289AEC328E211B200C3FFF5 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 4289AEC228E211B200C3FFF5 /* FirebaseFirestore */; };
 		4289AEC528E211B200C3FFF5 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4289AEC428E211B200C3FFF5 /* FirebaseFirestoreSwift */; };
 		4289AEC828E216C200C3FFF5 /* Mural.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4289AEC728E216C200C3FFF5 /* Mural.swift */; };
+		428A42E6298A8C27005D6EFD /* EditUserDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428A42E5298A8C27005D6EFD /* EditUserDetailsViewController.swift */; };
 		428BD65E28DE30B0000B8D69 /* MMTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428BD65D28DE30B0000B8D69 /* MMTitleLabel.swift */; };
 		428BD66128DE322A000B8D69 /* MMAlertContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428BD66028DE322A000B8D69 /* MMAlertContainerView.swift */; };
 		428BD66328DE353B000B8D69 /* MMAlertVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428BD66228DE353B000B8D69 /* MMAlertVC.swift */; };
@@ -137,6 +138,7 @@
 		42867B7F289C4CC600E5159F /* SingUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingUpViewController.swift; sourceTree = "<group>"; };
 		4289AEBF28E2110500C3FFF5 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		4289AEC728E216C200C3FFF5 /* Mural.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mural.swift; sourceTree = "<group>"; };
+		428A42E5298A8C27005D6EFD /* EditUserDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserDetailsViewController.swift; sourceTree = "<group>"; };
 		428BD65D28DE30B0000B8D69 /* MMTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMTitleLabel.swift; sourceTree = "<group>"; };
 		428BD66028DE322A000B8D69 /* MMAlertContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMAlertContainerView.swift; sourceTree = "<group>"; };
 		428BD66228DE353B000B8D69 /* MMAlertVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMAlertVC.swift; sourceTree = "<group>"; };
@@ -252,6 +254,7 @@
 				42867B7F289C4CC600E5159F /* SingUpViewController.swift */,
 				42824F01295C64C000C33AA5 /* VerificationEmailSendViewController.swift */,
 				42EA93AB294DA8AB006F3EF0 /* CompleteUserDetailsViewController.swift */,
+				428A42E5298A8C27005D6EFD /* EditUserDetailsViewController.swift */,
 			);
 			path = Authorizations;
 			sourceTree = "<group>";
@@ -559,6 +562,7 @@
 				42618DD6291655720052DB76 /* MMUsersTableViewInTableViewCell.swift in Sources */,
 				42E61C3928FAC03C00D38205 /* MMUsernameWithAvatarView.swift in Sources */,
 				4283BAB428D606B100A54F0F /* MMCircleButton.swift in Sources */,
+				428A42E6298A8C27005D6EFD /* EditUserDetailsViewController.swift in Sources */,
 				42E61C2828F1CF3500D38205 /* ImagesManager.swift in Sources */,
 				42E61C3B28FAC0C500D38205 /* User.swift in Sources */,
 				42A5C70D2977E51500B3893C /* MMAnimableViewController.swift in Sources */,

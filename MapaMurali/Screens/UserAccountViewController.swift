@@ -58,8 +58,7 @@ class UserAccountViewController: MMDataLoadingVC {
     //MARK: - Live cicle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
-        self.title = "Moje konto"
+        configureViewController()
         
         addUserLoginObserver()
         addCurrentUserSubscriber()
@@ -78,6 +77,15 @@ class UserAccountViewController: MMDataLoadingVC {
     
     
     //MARK: - Set up
+    private func configureViewController() {
+        view.backgroundColor = .systemBackground
+        navigationController?.navigationBar.tintColor = MMColors.primary
+        self.title = "Moje konto"
+        let editButton = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: #selector(editButtonTapped))
+        navigationItem.rightBarButtonItem = editButton
+    }
+    
+    
     private func setupScrollView() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
@@ -233,6 +241,15 @@ class UserAccountViewController: MMDataLoadingVC {
     
     
     //MARK: - Actions
+    @objc private func editButtonTapped() {
+        print("Edit ButtonT apped")
+        let destVC = EditUserDetailsViewController(avatar: usernameAndAvatar.avatarView.image,
+                                                   nickname: usernameAndAvatar.username.text ?? "",
+                                                   databaseManager: databaseManager,
+                                                   loginManager: loginManager)
+        self.navigationController?.pushViewController(destVC, animated: true)
+    }
+    
     @objc private func rateAppButtonTapped() {
         guard let writeReviewURL = URL(string: "https://apps.apple.com/app/id1659498483?action=write-review")
                else { fatalError("Expected a valid URL") }

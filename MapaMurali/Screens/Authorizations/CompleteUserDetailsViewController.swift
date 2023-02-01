@@ -13,15 +13,15 @@ class CompleteUserDetailsViewController: MMDataLoadingVC {
     
     //MARK: - Properties
     private let loginManager: LoginManager
-    private let databaseManager: DatabaseManager
+    let databaseManager: DatabaseManager
     private var disposeBag = DisposeBag()
     
-    private let titleLabel = MMTitleLabel(textAlignment: .left, fontSize: 20)
-    private let avatarImageView = MMAvatarImageView(frame: .zero)
-    private let nickNameTextField = MMTextField(placeholder: "nazwa użytkownika", type: .custom)
-    private let callToActionButton = MMFilledButton(foregroundColor: .white, backgroundColor: MMColors.violetDark, title: "Zaczynamy!")
+    let titleLabel = MMTitleLabel(textAlignment: .left, fontSize: 20)
+    let avatarImageView = MMAvatarImageView(frame: .zero)
+    let nickNameTextField = MMTextField(placeholder: "nazwa użytkownika", type: .custom)
+    let callToActionButton = MMFilledButton(foregroundColor: .white, backgroundColor: MMColors.violetDark, title: "Zaczynamy!")
     
-    private var avatarImage: Data?
+    var avatarImage: Data?
     
     
     //MARK: - Initialization
@@ -160,7 +160,7 @@ class CompleteUserDetailsViewController: MMDataLoadingVC {
         }
     }
     
-    @objc private func callToActionButtonTapped() {
+    @objc func callToActionButtonTapped() {
         showLoadingView(message: "Uakualnianie informacji")
         
         guard let email = UserDefaults.standard.object(forKey: Setup.kEmail) as? String else { return }
