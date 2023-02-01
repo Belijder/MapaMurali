@@ -81,7 +81,7 @@ class MuralsCollectionViewController: MMAnimableViewController {
         dataSource = UICollectionViewDiffableDataSource<Section, Mural>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, mural) -> UICollectionViewCell? in
             
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MuralCell.reuseID, for: indexPath) as! MuralCell
-            cell.set(imageURL: mural.thumbnailURL, imageType: .thumbnail, docRef: mural.docRef)
+            cell.set(imageURL: mural.thumbnailURL, imageType: .thumbnail, docRef: mural.docRef, uiImageViewSize: cell.bounds.size)
             
             ImagesManager.shared.downloadImage(from: mural.imageURL, imageType: .fullSize, name: mural.docRef) { _ in }
             

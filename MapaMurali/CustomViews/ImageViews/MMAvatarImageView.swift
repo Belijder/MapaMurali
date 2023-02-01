@@ -34,12 +34,22 @@ class MMAvatarImageView: UIImageView {
     }
     
     
-    func setImage(from url: String, userID: String) {
-        ImagesManager.shared.downloadImage(from: url, imageType: .avatar, name: userID) { [weak self] image in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                self.layer.cornerRadius = self.bounds.width / 2.0
-                self.image = image
+    func setImage(from url: String, userID: String, uiImageSize: CGSize) {
+        do {
+            try ImagesManager.shared.fetchDownsampledImageFromDirectory(from: url, imageType: .avatar, name: userID, uiImageSize: uiImageSize, completed: { [weak self] image in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    self.layer.cornerRadius = self.bounds.width / 2.0
+                    self.image = image
+                }
+            })
+        } catch {
+            ImagesManager.shared.downloadImage(from: url, imageType: .avatar, name: userID) { [weak self] image in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    self.layer.cornerRadius = self.bounds.width / 2.0
+                    self.image = image
+                }
             }
         }
     }

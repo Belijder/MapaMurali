@@ -53,7 +53,7 @@ class MMUserAddedMuralTableViewCell: UITableViewCell {
     
     
     func set(from mural: Mural) {
-        muralImageView.downloadImage(fromURL: mural.thumbnailURL, imageType: .thumbnail, docRef: mural.docRef)
+        muralImageView.downloadImage(fromURL: mural.thumbnailURL, imageType: .thumbnail, docRef: mural.docRef, uiImageViewSize: CGSize(width: 80, height: 80))
         addressLabel.text = mural.address
         dateLabel.font = UIFont.systemFont(ofSize: 10)
         dateLabel.text = "Data dodania: \(mural.addedDate.convertToDayMonthYearFormat())"

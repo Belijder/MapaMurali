@@ -18,11 +18,24 @@ class EditMuralViewController: AddNewItemViewController {
         super.init(databaseManager: databaseManager)
         self.mural = mural
         
-        ImagesManager.shared.downloadImage(from: mural.imageURL, imageType: .fullSize, name: mural.docRef) { image in
-            DispatchQueue.main.async {
+        do {
+            try ImagesManager.shared.fetchDownsampledImageFromDirectory(from: mural.imageURL,
+                                                                        imageType: .fullSize,
+                                                                        name: mural.docRef,
+                                                                        uiImageSize: CGSize(width: 300, height: 400),
+                                                                        completed: { [weak self] image in
+                guard let self = self else { return }
                 self.selectedImageView.image = image
                 self.selectedImageView.didSelectedImage()
                 self.removeImageButton.alpha = 1.0
+            })
+        } catch {
+            ImagesManager.shared.downloadImage(from: mural.imageURL, imageType: .fullSize, name: mural.docRef) { image in
+                DispatchQueue.main.async {
+                    self.selectedImageView.image = image
+                    self.selectedImageView.didSelectedImage()
+                    self.removeImageButton.alpha = 1.0
+                }
             }
         }
 

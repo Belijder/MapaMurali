@@ -45,6 +45,6 @@ final class MMAnnotationView: MKAnnotationView, AnimatorCellProtocol {
         frame = CGRect(x: 0, y: 0, width: 50, height: 50)
         canShowCallout = false
 
-        muralImageView.downloadImageAndCropItToCircle(fromURL: thumbnailURL, imageType: .thumbnail, docRef: docRef)
+        muralImageView.downloadImageAndCropItToCircle(fromURL: thumbnailURL, imageType: .thumbnail, docRef: docRef, uiImageViewSize: CGSize(width: 50, height: 50))
     }
 }

@@ -31,7 +31,7 @@ class MuralCell: UICollectionViewCell, AnimatorCellProtocol {
     }
     
     
-    final func set(imageURL: String, imageType: ImageType, docRef: String) {
-        muralImageView.downloadImage(fromURL: imageURL, imageType: imageType, docRef: docRef)
+    final func set(imageURL: String, imageType: ImageType, docRef: String, uiImageViewSize: CGSize) {
+        muralImageView.downloadImage(fromURL: imageURL, imageType: imageType, docRef: docRef, uiImageViewSize: uiImageViewSize)
     }
 }

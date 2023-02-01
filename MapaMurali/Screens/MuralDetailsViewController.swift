@@ -193,7 +193,7 @@ class MuralDetailsViewController: UIViewController {
                 switch result {
                 case .success(let user):
                     self.userView.username.text = user.displayName
-                    self.userView.avatarView.setImage(from: user.avatarURL, userID: user.id)
+                    self.userView.avatarView.setImage(from: user.avatarURL, userID: user.id, uiImageSize: CGSize(width: 40, height: 40))
                     
                     let tap = UITapGestureRecognizer(target: self, action: #selector(self.userViewTapped))
                     self.userView.isUserInteractionEnabled = true

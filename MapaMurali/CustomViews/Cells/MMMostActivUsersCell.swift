@@ -28,7 +28,7 @@ class MMMostActivUsersCell: UITableViewCell {
     //MARK: - Set up
     func set(user: User) {
         usernameWithAvatar.username.text = user.displayName
-        usernameWithAvatar.avatarView.setImage(from: user.avatarURL, userID: user.id)
+        usernameWithAvatar.avatarView.setImage(from: user.avatarURL, userID: user.id, uiImageSize: CGSize(width: 40, height: 40))
         userAddedMuralsCounter.text = "\(user.muralsAdded)"
     }
     

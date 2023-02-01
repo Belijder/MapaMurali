@@ -40,8 +40,8 @@ class MMFavoritesMuralCollectionCell: UICollectionViewCell, AnimatorCellProtocol
     
 
     //MARK: - Set up
-    func set(mural: Mural) {
-        muralImageView.downloadImage(fromURL: mural.thumbnailURL, imageType: .thumbnail, docRef: mural.docRef)
+    func set(mural: Mural, uiImageViewSize: CGSize) {
+        muralImageView.downloadImage(fromURL: mural.thumbnailURL, imageType: .thumbnail, docRef: mural.docRef, uiImageViewSize: uiImageViewSize)
         favoritesCounter.createFavoriteCounterTextLabel(counter: mural.favoritesCount, imagePointSize: 16)
     }
     

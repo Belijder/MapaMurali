@@ -187,7 +187,7 @@ class MapViewController: MMAnimableViewController {
             .bind(to:
                 clusteredCollectionView.rx.items(cellIdentifier: MMFavoritesMuralCollectionCell.identifier,
                                         cellType: MMFavoritesMuralCollectionCell.self)) { indexPath, mural, cell in
-                cell.set(mural: mural)
+                cell.set(mural: mural, uiImageViewSize: CGSize(width: 120, height: 120))
             }
             .disposed(by: disposeBag)
         
