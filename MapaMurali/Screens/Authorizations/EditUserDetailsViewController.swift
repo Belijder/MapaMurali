@@ -9,13 +9,7 @@ import UIKit
 
 class EditUserDetailsViewController: CompleteUserDetailsViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        titleLabel.text = "Edytuj informacje"
-        callToActionButton.setTitle("Uaktualnij", for: .normal)
-    }
-    
-    
+    //MARK: - Initialization
     init(avatar: UIImage?, nickname: String, databaseManager: DatabaseManager, loginManager: LoginManager) {
         super.init(loginManager: loginManager, databaseManager: databaseManager)
         
@@ -34,6 +28,15 @@ class EditUserDetailsViewController: CompleteUserDetailsViewController {
     }
     
     
+    //MARK: - Live cicle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        titleLabel.text = "Edytuj informacje"
+        callToActionButton.setTitle("Uaktualnij", for: .normal)
+    }
+    
+    
+    //MARK: - Actions
     override func callToActionButtonTapped() {
         print("🟡 Update Data button tapped.")
         showLoadingView(message: "Uakualnianie informacji")
@@ -83,5 +86,4 @@ class EditUserDetailsViewController: CompleteUserDetailsViewController {
             }
         }
     }
-
 }
