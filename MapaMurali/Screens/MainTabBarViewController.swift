@@ -182,9 +182,6 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
                 guard let self = self else { return }
                 if value == true {
                     self.selectedViewController = self.viewControllers?[0]
-//                    if self.databaseManager.currentUser == nil {
-//                        try? self.databaseManager.fetchCurrenUserData()
-//                    }
                 }
             })
             .disposed(by: disposeBag)

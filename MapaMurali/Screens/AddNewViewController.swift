@@ -447,10 +447,10 @@ extension AddNewItemViewController: CLLocationManagerDelegate {
             self.presentMMAlert(title: "Brak uprawnień", message: "Aby wyświetlić murale na mapie musisz wyrazić zgodę na używanie Twojej lokalizacji. Przejdź do Ustawienia > MapaMurali i wyraź zgodę.", buttonTitle: "Ok")
         case .authorizedAlways, .authorizedWhenInUse, .authorized:
             print("🟡 CLAuthorizationStatus in Add New VC is: authorizedAlways")
-            locationManager.requestLocation()
-            showLoadingView(message: "Pobieranie lokalizacji...")
-            
+
             if title != "Edytuj mural" {
+                locationManager.requestLocation()
+                showLoadingView(message: "Pobieranie lokalizacji...")
                 self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
             }
             
