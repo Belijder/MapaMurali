@@ -78,19 +78,16 @@ class SingUpViewController: UIViewController {
         
         emailTextField.tag = 1
         emailTextField.returnKeyType = .next
-        emailTextField.textContentType = .emailAddress
         emailTextField.attributedPlaceholder = NSAttributedString(string: "e-mail",
                                                                   attributes: [NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.5)])
         
         passwordTextField.tag = 2
         passwordTextField.returnKeyType = .next
-        passwordTextField.textContentType = .newPassword
         passwordTextField.attributedPlaceholder = NSAttributedString(string: "hasło",
                                                                      attributes: [NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.5)])
         
         confirmPasswordTextField.tag = 3
         confirmPasswordTextField.returnKeyType = .done
-        confirmPasswordTextField.textContentType = .newPassword
         confirmPasswordTextField.attributedPlaceholder = NSAttributedString(string: "powtórz hasło",
                                                                             attributes: [NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.5)])
         

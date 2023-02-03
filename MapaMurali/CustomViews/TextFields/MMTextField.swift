@@ -36,6 +36,7 @@ class MMTextField: UITextField {
         spellCheckingType = .no
         borderStyle = .none
         clearButtonMode = .whileEditing
+        textContentType = .oneTimeCode
         
         textColor = .label
     }
