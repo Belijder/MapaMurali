@@ -153,14 +153,15 @@ class DatabaseManager {
     
     
     //MARK: - Read
-    func fetchCurrenUserData() throws {
+    func fetchCurrenUserData(completion: @escaping (Bool) -> Void) throws {
         guard let userID = Auth.auth().currentUser?.uid else { throw MMError.failedToFetchCurrentUserData }
         fetchUserFromDatabase(id: userID) { result in
             switch result {
             case .success(let user):
                 self.currentUser = user
+                completion(true)
             case .failure(_):
-                break
+                completion(false)
             }
         }
     }

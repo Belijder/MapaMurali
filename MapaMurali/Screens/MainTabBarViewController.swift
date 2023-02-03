@@ -110,7 +110,6 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
                 loginManager.reloadUserStatus { success in
                     if success {
                         if self.databaseManager.currentUser == nil {
-                            print("🟠 Found nil in current user data on validation auth proccess.")
                             let destVC = CompleteUserDetailsViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
                             destVC.modalPresentationStyle = .fullScreen
                             self.present(destVC, animated: false)
@@ -119,6 +118,24 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
                         }
                     } else {
                         let destVC = VerificationEmailSendViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
+                        destVC.modalPresentationStyle = .fullScreen
+                        self.present(destVC, animated: false)
+                    }
+                }
+            } else {
+                if databaseManager.currentUser == nil {
+                    do {
+                        try databaseManager.fetchCurrenUserData() { success in
+                            if success {
+                                self.validateAuth()
+                            } else {
+                                let destVC = CompleteUserDetailsViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
+                                destVC.modalPresentationStyle = .fullScreen
+                                self.present(destVC, animated: false)
+                            }
+                        }
+                    } catch {
+                        let destVC = SingInViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
                         destVC.modalPresentationStyle = .fullScreen
                         self.present(destVC, animated: false)
                     }
@@ -165,7 +182,9 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
                 guard let self = self else { return }
                 if value == true {
                     self.selectedViewController = self.viewControllers?[0]
-                    try? self.databaseManager.fetchCurrenUserData()
+//                    if self.databaseManager.currentUser == nil {
+//                        try? self.databaseManager.fetchCurrenUserData()
+//                    }
                 }
             })
             .disposed(by: disposeBag)

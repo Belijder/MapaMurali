@@ -193,9 +193,10 @@ class CompleteUserDetailsViewController: MMDataLoadingVC {
         
         self.databaseManager.addNewUserToDatabase(id: userID, userData: userData, avatarImageData: avatarData) { success in
             if success {
-                try? self.databaseManager.fetchCurrenUserData()
-                self.loginManager.userIsLoggedIn.onNext(true)
-                self.dismissLoadingView()
+                try? self.databaseManager.fetchCurrenUserData() { _ in
+                    self.loginManager.userIsLoggedIn.onNext(true)
+                    self.dismissLoadingView()
+                }
             }
         }
     }

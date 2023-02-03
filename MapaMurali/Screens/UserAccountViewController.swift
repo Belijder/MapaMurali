@@ -42,7 +42,6 @@ class UserAccountViewController: MMDataLoadingVC {
     init(loginManager: LoginManager, databaseManager: DatabaseManager) {
         self.loginManager = loginManager
         self.databaseManager = databaseManager
-        if databaseManager.currentUser == nil { try? databaseManager.fetchCurrenUserData() }
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -105,7 +104,7 @@ class UserAccountViewController: MMDataLoadingVC {
         self.usernameAndAvatar.username.font = UIFont.systemFont(ofSize: 30, weight: .bold)
         
         guard let user = databaseManager.currentUser else {
-            try? databaseManager.fetchCurrenUserData()
+            try? databaseManager.fetchCurrenUserData() { _ in }
             return
         }
         
