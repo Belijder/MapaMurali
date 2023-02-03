@@ -182,6 +182,7 @@ class UserAccountViewController: MMDataLoadingVC {
     //MARK: - Logic
     @objc private func logOut() {
         loginManager.signOut()
+        databaseManager.currentUser = nil
         presentLoginScreen()
     }
     
