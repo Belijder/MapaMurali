@@ -31,6 +31,7 @@ class EditUserDetailsViewController: CompleteUserDetailsViewController {
     //MARK: - Live cicle
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.navigationBar.tintColor = MMColors.violetDark
         titleLabel.text = "Edytuj informacje"
         callToActionButton.setTitle("Uaktualnij", for: .normal)
     }

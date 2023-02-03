@@ -72,6 +72,7 @@ class UserAccountViewController: MMDataLoadingVC {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.navigationBar.tintColor = MMColors.orangeDark
         configureUsernameAndAvatarView()
     }
     
