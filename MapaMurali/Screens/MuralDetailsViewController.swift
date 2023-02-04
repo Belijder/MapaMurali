@@ -444,7 +444,7 @@ class MuralDetailsViewController: UIViewController {
                 if editedMural.docRef == self.muralItem.docRef {
                     self.muralItem.address = editedMural.address
                     self.muralItem.city = editedMural.city
-                    self.title = editedMural.address
+                    self.addressLabel.text = "\(editedMural.address), \(editedMural.city)"
                     self.muralItem.author = editedMural.author
                     self.authorLabel.text = editedMural.author
                     self.checkAuthorPropertyInMuralItem()
