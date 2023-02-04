@@ -184,8 +184,6 @@ class SingInViewController: UIViewController {
     }
     
     @objc private func resetPasswordButtonTapped() {
-        print("🟡 Reset password button Tapped")
-        
         let alert = UIAlertController(title: "Zresetuj hasło",
                                       message: "Aby zresetować hasło podaj adres mailowy, którego został użyto podczas zakładania konta.",
                                       preferredStyle: .alert)

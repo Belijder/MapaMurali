@@ -143,7 +143,6 @@ class MapViewController: MMAnimableViewController {
                         pin.subtitle = mural.thumbnailURL
                         pin.coordinate = CLLocationCoordinate2D(latitude: mural.latitude, longitude: mural.longitude)
                         self.map.addAnnotation(pin)
-                        print("Dodano mural")
                     }
                 }
             })
@@ -232,10 +231,8 @@ class MapViewController: MMAnimableViewController {
 //MARK: - Ext: CLLocationManagerDelegate
 extension MapViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        print("Location was updated.")
         guard let location = locations.first else { return }
         setMapRegion(with: location.coordinate)
-        print("Map region was set.")
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) { }
@@ -243,15 +240,12 @@ extension MapViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
         case .notDetermined:
-            print("🟡 CLAuthorizationStatus is: notDetermined")
             if databaseManager.currentUser != nil {
                 manager.requestWhenInUseAuthorization()
             }
         case .restricted, .denied :
-            print("🟡 CLAuthorizationStatus is: denied or restricted")
             break
         case .authorizedAlways, .authorizedWhenInUse, .authorized:
-            print("🟡 CLAuthorizationStatus is: authorizedAlways or authorizedWhenInUse or authorized")
             locationManager.requestLocation()
             self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
         @unknown default:
@@ -266,7 +260,6 @@ extension MapViewController: MKMapViewDelegate {
             
             guard let thumbnailURL = annotation.subtitle,
                   let docRef = annotation.title else {
-                print("🔴 Error geting url and docRef from annotation")
                 return nil
             }
             
@@ -291,7 +284,6 @@ extension MapViewController: MKMapViewDelegate {
     
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        print("Tapnięto \(view)")
         guard let annotation = view.annotation else { return }
         
         if let annotation = annotation as? MKPointAnnotation {
@@ -315,7 +307,6 @@ extension MapViewController: MKMapViewDelegate {
                     self.dismissLoadingView()
                     self.present(destVC, animated: true)
                 }
-                print("🔵 Zdjęcie pobrane")
             }
             
             mapView.deselectAnnotation(nil, animated: true)
@@ -335,7 +326,6 @@ extension MapViewController: MKMapViewDelegate {
     
     
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
-        print("Odtapnięto \(view)")
         clusteredMurals = []
         self.clusteredCollectionView.alpha = 0
     }
@@ -345,12 +335,10 @@ extension MapViewController: MKMapViewDelegate {
         let status = locationManager.authorizationStatus
         switch status {
         case .notDetermined:
-            print("🟡 CLAuthorizationStatus after mode change is: notDetermined")
             if databaseManager.currentUser != nil {
                 locationManager.requestWhenInUseAuthorization()
             }
         case .restricted, .denied :
-            print("🟡 CLAuthorizationStatus is after mode change: denied or restricted")
             self.presentMMAlert(title: "Brak uprawnień", message: "Aby wyświetlić swoją lokalizację na mapie musisz wyrazić zgodę na używanie Twojej lokalizacji. Przejdź do Ustawienia > MapaMurali i wyraź zgodę.", buttonTitle: "Ok")
             if map.userTrackingMode != .none {
                 map.userTrackingMode = .none

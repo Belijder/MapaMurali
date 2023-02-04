@@ -89,7 +89,6 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
     
     //MARK: - Logic
     private func validateAuth() {
-        print("🟠 validateAuth triggered!")
         guard databaseManager.currentUser == nil else {
             if databaseManager.currentUser!.displayName.isEmpty {
                 let destVC = CompleteUserDetailsViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)

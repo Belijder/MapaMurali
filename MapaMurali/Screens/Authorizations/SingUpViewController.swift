@@ -230,7 +230,6 @@ class SingUpViewController: UIViewController {
             }
             
             self.loginManager.singUp(email: cleanedEmail, password: cleanedPassword) { uid in
-                print("🟠 UID is: \(uid)")
                 let destVC = VerificationEmailSendViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
                 destVC.modalPresentationStyle = .fullScreen
                 self.present(destVC, animated: true)

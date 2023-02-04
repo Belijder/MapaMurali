@@ -72,8 +72,6 @@ class EditMuralViewController: AddNewItemViewController {
     override func callToActionButtonTapped() {
         self.showLoadingView(message: "Zapisywanie zmian...")
         
-        print("🟡 Save edited mural tapped")
-        
         vm.address = addressTextField.text
         vm.city = cityTextField.text
         

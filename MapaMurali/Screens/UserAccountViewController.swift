@@ -197,19 +197,16 @@ class UserAccountViewController: MMDataLoadingVC {
     
     private func deleteAcountAndData(password: String) {
         showLoadingView(message: "Trwa usuwanie konta")
-        print("🟡 Delete account button in alert tapped.")
+
         loginManager.deleteAccount(password: password) { result in
             switch result {
             case .success(let userID):
                 self.databaseManager.removeAllUserData(userID: userID) { result in
                     switch result {
                     case .success(_):
-                        print("🟢 All user data was removed from database. This should be last print.")
-                        print("Current user is: \(String(describing: Auth.auth().currentUser?.uid))")
                         self.loginManager.userIsLoggedIn.onNext(false)
                         self.dismissLoadingView()
                     case .failure(let error):
-                        print("🔴 Error on the last step in deleting account. ERROR: \(error.rawValue)")
                         self.validateAuth()
                         self.dismissLoadingView()
                     }
@@ -243,7 +240,6 @@ class UserAccountViewController: MMDataLoadingVC {
     
     //MARK: - Actions
     @objc private func editButtonTapped() {
-        print("Edit ButtonT apped")
         let destVC = EditUserDetailsViewController(avatar: usernameAndAvatar.avatarView.image,
                                                    nickname: usernameAndAvatar.username.text ?? "",
                                                    databaseManager: databaseManager,
@@ -320,7 +316,7 @@ class UserAccountViewController: MMDataLoadingVC {
             guard let password = alert.textFields![0].text else {
                 return
             }
-            print("Password in alert: \(password)")
+            
             self.deleteAcountAndData(password: password)
             
         })

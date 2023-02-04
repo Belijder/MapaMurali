@@ -37,7 +37,6 @@ class MMAnimableViewController: MMDataLoadingVC {
                 destVC.imageView.image = image
                 self.dismissLoadingView()
                 self.present(destVC, animated: true)
-                print("🔵 Zdjęcie downsamplowane")
             })
         } catch {
             ImagesManager.shared.downloadImage(from: mural.imageURL, imageType: .fullSize, name: mural.docRef) { image in
@@ -46,7 +45,6 @@ class MMAnimableViewController: MMDataLoadingVC {
                     self.dismissLoadingView()
                     self.present(destVC, animated: true)
                 }
-                print("🔵 Zdjęcie pobrane")
             }
         }
     }

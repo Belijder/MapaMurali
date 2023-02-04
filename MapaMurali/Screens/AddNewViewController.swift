@@ -205,7 +205,6 @@ class AddNewItemViewController: MMDataLoadingVC {
         case .notDetermined:
             AVCaptureDevice.requestAccess(for: .video) { granted in
                 if granted {
-                    print("Access granted")
                     DispatchQueue.main.async {
                         self.showLoadingView(message: "Uzyskiwanie dostępu do aparatu...")
                         let imagePickerController = UIImagePickerController()
@@ -246,7 +245,7 @@ class AddNewItemViewController: MMDataLoadingVC {
     
     @objc private func localizationButtonTapped() {
         let status = locationManager.authorizationStatus
-        print(status.rawValue)
+
         switch status {
         case .notDetermined:
             locationManager.requestWhenInUseAuthorization()
@@ -374,7 +373,6 @@ extension AddNewItemViewController: UIImagePickerControllerDelegate, UINavigatio
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        print("🟡 Cancel button tapped in UIImagePickerController")
         dismiss(animated: true, completion: nil)
     }
 }
@@ -433,27 +431,21 @@ extension AddNewItemViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
         case .notDetermined:
-            print("🟡 CLAuthorizationStatus is: notDetermined")
             if databaseManager.currentUser != nil {
                 manager.requestWhenInUseAuthorization()
             }
         case .restricted:
-            print("🟡 CLAuthorizationStatus is: restricted")
             if databaseManager.currentUser != nil {
                 manager.requestWhenInUseAuthorization()
             }
         case .denied:
-            print("🟡 CLAuthorizationStatus is: denied")
             self.presentMMAlert(title: "Brak uprawnień", message: "Aby wyświetlić murale na mapie musisz wyrazić zgodę na używanie Twojej lokalizacji. Przejdź do Ustawienia > MapaMurali i wyraź zgodę.", buttonTitle: "Ok")
         case .authorizedAlways, .authorizedWhenInUse, .authorized:
-            print("🟡 CLAuthorizationStatus in Add New VC is: authorizedAlways")
-
             if title != "Edytuj mural" {
                 locationManager.requestLocation()
                 showLoadingView(message: "Pobieranie lokalizacji...")
                 self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
             }
-            
         @unknown default:
             break
         }

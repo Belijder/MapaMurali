@@ -31,14 +31,7 @@ class PersistenceManager {
         }
         
         if !FileManager.default.fileExists(atPath: path) {
-            do {
-                try FileManager.default.createDirectory(atPath: path, withIntermediateDirectories: true)
-                print("🟢 Success creating folder: \(folderName) in caches directory.")
-            } catch let error {
-                print("🔴 Error creating folder in caches directory. \(error)")
-            }
-        } else {
-            print("🟡 Folder \(folderName) exists.")
+            try? FileManager.default.createDirectory(atPath: path, withIntermediateDirectories: true)
         }
     }
     
@@ -54,35 +47,23 @@ class PersistenceManager {
             return
         }
         
-        do {
-            try FileManager.default.removeItem(atPath: path)
-            print("🟢 Success deleting Folder \(folderName) from caches directory.")
-        } catch let error {
-            print("🔴 Error deleting Folder: \(folderName) from caches directory. ERROR: \(error)")
-        }
+        try? FileManager.default.removeItem(atPath: path)
     }
     
     
     func saveImage(image: UIImage, imageType: ImageType, name: String) {
         guard let data = image.jpegData(compressionQuality: 1.0),
               let path = getPathForImage(imageType: imageType, name: name) else {
-            print("🔴 Error getting data.")
             return
         }
         
-        do {
-            try data.write(to: path)
-            print("🟢 Success saveing image: \(String(imageType.rawValue.dropLast())+name).jpg to cachesDirectory.")
-        } catch {
-            print("🔴 Error saveing image: \(String(imageType.rawValue.dropLast())+name).jpg to cachesDirectory.")
-        }
+        try? data.write(to: path)
     }
     
     
     func getImage(imageType: ImageType, name: String) -> UIImage? {
         guard let path = getPathForImage(imageType: imageType, name: name)?.path,
               FileManager.default.fileExists(atPath: path) else {
-            print("🔴 Error getting Path ")
             return nil
         }
         
@@ -94,16 +75,10 @@ class PersistenceManager {
         
         guard let path = getPathForImage(imageType: imageType, name: name)?.path,
               FileManager.default.fileExists(atPath: path) else {
-            print("🔴 Error getting Path ")
             return
         }
         
-        do {
-            try FileManager.default.removeItem(atPath: path)
-            print("🟢 Successfully deleted.")
-        } catch let error {
-            print("Error deleting image. \(error)")
-        }
+        try? FileManager.default.removeItem(atPath: path)
     }
     
     
@@ -118,7 +93,6 @@ class PersistenceManager {
                 .first?
                 .appendingPathComponent(folderName)
                 .appendingPathComponent("\(imageTypeString+name).jpg") else {
-            print("🔴 Error getting path to File Manager for path component: \(imageTypeString+name).jpg")
             return nil
         }
         

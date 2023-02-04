@@ -115,7 +115,6 @@ extension ManageUserAddedMuralsVC: UITableViewDelegate {
         let muralID = self.userAddedMurals[indexPath.row].docRef
         
         let editAction = UIContextualAction(style: .normal, title: "Edytuj") { _, _, completed in
-            print("🟡 Edit Swipe Action Tapped")
             let destVC = EditMuralViewController(mural: self.userAddedMurals[indexPath.row], databaseManager: self.databaseManager)
             let navControler = UINavigationController(rootViewController: destVC)
             navControler.modalPresentationStyle = .fullScreen
@@ -125,19 +124,15 @@ extension ManageUserAddedMuralsVC: UITableViewDelegate {
         }
 
         let deleteAction = UIContextualAction(style: .destructive, title: "Usuń") { _, _, completed in
-            print("🟡 Remove Swipe Action Tapped")
             self.databaseManager.removeMural(for: muralID) { success in
                 if success == true {
-                    print("🟢 Mural was succesfully deleted from database.")
                     self.databaseManager.lastDeletedMuralID.onNext(muralID)
                     completed(true)
                 } else {
-                    print("🔴 Try to delete mural from database faild.")
                     completed(false)
                 }
             }
             self.databaseManager.murals.removeAll(where: { $0.docRef == muralID })
-            print("🟡 Mural Was removed from userAddedMurals, and row in tableView has been deleted also.")
         }
 
         editAction.image = UIImage(systemName: "square.and.pencil")

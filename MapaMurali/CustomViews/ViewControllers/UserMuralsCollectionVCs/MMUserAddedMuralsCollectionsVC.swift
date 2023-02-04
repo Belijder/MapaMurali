@@ -45,7 +45,6 @@ class MMUserAddedMuralsCollectionsVC: MMUserMuralsCollectionsVC {
     
     //MARK: - Actions
     override func actionButtonTapped() {
-        print("🟢 Manage User Added Murals Button Tapped!")
         let destVC = ManageUserAddedMuralsVC(databaseManager: databaseManager, userAddedMurals: murals)
         destVC.title = "Zarządzaj muralami"
         self.navigationController?.pushViewController(destVC, animated: true)

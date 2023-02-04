@@ -124,7 +124,6 @@ class LoginManager {
     
     
     func checkIfUserIsLogged() {
-        print("🟠 checkIfUserIsLogged triggered!")
         guard let user = Auth.auth().currentUser else {
             userIsLoggedIn.onNext(false)
             return

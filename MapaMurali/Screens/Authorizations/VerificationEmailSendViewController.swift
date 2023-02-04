@@ -123,7 +123,6 @@ class VerificationEmailSendViewController: UIViewController {
     
     //MARK: - Actions
     @objc private func openMailApp() {
-        print("🟡 Opening Mail App")
         if let url = URL(string: "message://") {
             if UIApplication.shared.canOpenURL(url) {
                 UIApplication.shared.open(url)
@@ -134,7 +133,6 @@ class VerificationEmailSendViewController: UIViewController {
     }
     
     @objc private func resendVerificationMail() {
-        print("🟡 Resending verification email")
         guard let user = Auth.auth().currentUser else {
             presentMMAlert(title: "Ups.", message: "Coś poszło nie tak. Sprawdź połączenie z internetem i spróbuj ponownie.", buttonTitle: "OK")
             return
@@ -147,7 +145,6 @@ class VerificationEmailSendViewController: UIViewController {
         loginManager.recivedMagicLink
             .subscribe(onNext: { [weak self] link in
                 guard let self = self else { return }
-                print("🟠 Magic link reviced. Opening CompleteUserDetailsVC")
                 let destVC = CompleteUserDetailsViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
                 destVC.modalPresentationStyle = .fullScreen
                 destVC.navigationController?.isNavigationBarHidden = true

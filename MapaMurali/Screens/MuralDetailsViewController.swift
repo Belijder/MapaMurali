@@ -199,8 +199,7 @@ class MuralDetailsViewController: UIViewController {
                     self.userView.isUserInteractionEnabled = true
                     self.userView.addGestureRecognizer(tap)
                     
-                case .failure(let error):
-                    print("🔴 Error to fetch users info from Database. Error: \(error)")
+                case .failure(_):
                     self.userView.username.text = "brak nazwy"
                 }
             }
@@ -324,10 +323,7 @@ class MuralDetailsViewController: UIViewController {
     private func deleteMural() {
         self.databaseManager.removeMural(for: muralItem.docRef) { success in
             if success == true {
-                print("🟢 Mural was succesfully deleted from database.")
                 self.databaseManager.lastDeletedMuralID.onNext(self.muralItem.docRef)
-            } else {
-                print("🔴 Try to delete mural from database faild.")
             }
         }
         self.databaseManager.murals.removeAll(where: { $0.docRef == muralItem.docRef })
@@ -347,7 +343,6 @@ class MuralDetailsViewController: UIViewController {
     
     
     @objc private func mapPinButtonTapped() {
-        print("🟡 Map Pin button tapped.")
         databaseManager.mapPinButtonTappedOnMural.onNext(muralItem)
         self.view.window!.rootViewController?.dismiss(animated: false, completion: nil)
     }
@@ -389,7 +384,6 @@ class MuralDetailsViewController: UIViewController {
     
     
     @objc private func editMural() {
-        print("🟡 Edit Mural Button Tapped")
         let destVC = EditMuralViewController(mural: muralItem, databaseManager: self.databaseManager)
         let navControler = UINavigationController(rootViewController: destVC)
         navControler.modalPresentationStyle = .fullScreen
@@ -398,7 +392,6 @@ class MuralDetailsViewController: UIViewController {
     
     
     @objc private func reportMural() {
-        print("🟡 Report Mural Button Tapped")
         if MFMailComposeViewController.canSendMail() {
             let mail = MFMailComposeViewController()
             mail.mailComposeDelegate = self

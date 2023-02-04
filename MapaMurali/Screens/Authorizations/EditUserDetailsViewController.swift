@@ -39,7 +39,6 @@ class EditUserDetailsViewController: CompleteUserDetailsViewController {
     
     //MARK: - Actions
     override func callToActionButtonTapped() {
-        print("🟡 Update Data button tapped.")
         showLoadingView(message: "Uakualnianie informacji")
         
         guard let avatarData = avatarImage else {
@@ -70,8 +69,7 @@ class EditUserDetailsViewController: CompleteUserDetailsViewController {
                 if let image = self.avatarImageView.image {
                     PersistenceManager.instance.saveImage(image: image, imageType: .avatar, name: userID)
                 }
-                print("🟢 User data was successfully update.")
-                
+
                 self.databaseManager.currentUser?.displayName = nickname
                 
                 if self.databaseManager.users.contains(where: { $0.id ==  userID }) {

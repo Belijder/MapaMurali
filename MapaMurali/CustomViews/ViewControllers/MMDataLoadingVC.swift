@@ -68,9 +68,7 @@ class MMDataLoadingVC: UIViewController {
         
         for subview in subviews {
             if subview is MMEmptyStateView {
-                print("🟡 The view contains a subview of type MMEmptyStateView")
                 subview.removeFromSuperview()
-                print("🟡 The subview of type UIView was removed from superView")
             }
         }
     }

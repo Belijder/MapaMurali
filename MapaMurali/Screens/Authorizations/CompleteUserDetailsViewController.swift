@@ -129,7 +129,6 @@ class CompleteUserDetailsViewController: MMDataLoadingVC {
         case .notDetermined:
             AVCaptureDevice.requestAccess(for: .video) { granted in
                 if granted {
-                    print("Access granted")
                     DispatchQueue.main.async {
                         self.showLoadingView(message: "Uzyskiwanie dostępu do aparatu...")
                         let imagePickerController = UIImagePickerController()

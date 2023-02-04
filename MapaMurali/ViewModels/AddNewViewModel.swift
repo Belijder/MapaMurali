@@ -38,7 +38,6 @@ class AddNewViewModel {
         guard let address = address,
               let city = city,
               let user = Auth.auth().currentUser?.uid else {
-            print("Error when try to create data for Database")
             throw MMError.failedToAddToDB
         }
         

@@ -75,12 +75,10 @@ class DatabaseManager {
     func addNewUserToDatabase(id: String, userData: [String : Any], avatarImageData: Data, completion: @escaping (Bool) -> Void) {
         let newUserRef = db.collection("users").document(id)
         newUserRef.setData(userData) { error in
-            if let error = error {
-                print("🔴 Error when try to add new user: \(error)")
+            if error != nil {
                 completion(false)
             } else {
                 self.addImageToStorage(docRef: newUserRef, imageData: avatarImageData, imageType: .avatar) { _ in
-                    print("🟢 New user successfuly added to database.")
                     completion(true)
                 }
             }
@@ -91,8 +89,7 @@ class DatabaseManager {
     func updateUserData(id: String, data: [String : Any], avatarImageData: Data, completion: @escaping (Bool) -> Void) {
         let userRef = db.collection(CollectionName.users.rawValue).document(id)
         userRef.updateData(data) { error in
-            if let error = error {
-                print("🔴 Error upading user data. ERROR: \(error.localizedDescription)")
+            if error != nil {
                 completion(false)
             } else {
                 self.removeImageFromStorage(imageType: .avatar, docRef: id) { _ in
@@ -108,8 +105,7 @@ class DatabaseManager {
     func addNewItemToDatabase(itemData: [String : Any], fullSizeImageData: Data, thumbnailData: Data) {
         let newItemRef = db.collection(CollectionName.murals.rawValue).document()
         newItemRef.setData(itemData) { error in
-            if let error = error {
-                print("Error writing document: \(error)")
+            if error != nil {
                 self.delegate?.failedToAddNewItem(errortitle: "Nie udało się dodać muralu", errorMessage: MMError.failedToAddToDB.rawValue)
             } else {
                 newItemRef.updateData(["docRef" : newItemRef.documentID])
@@ -138,11 +134,7 @@ class DatabaseManager {
             switch result {
             case .success(_):
                 ref.downloadURL { url, error in
-                    guard let url = url else {
-                        //ERROR Przy pobieraniu URL
-                        print(error ?? "ERROR Retrieving URL")
-                        return
-                    }
+                    guard let url = url else { return }
                     docRef.updateData(["\(fieldKey)URL" : url.absoluteString])
                     completion(true)
                 }

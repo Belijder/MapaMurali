@@ -18,8 +18,6 @@ class ImagesManager {
         if let path = persistanceManager.getPathForImage(imageType: imageType, name: name) {
             do {
                 let image = try downsample(imageAt: path, to: uiImageSize)
-                print("🟢 Success to downsample image from persistance Manager.")
-                
                 completed(image)
             } catch let error {
                 throw error
@@ -39,7 +37,6 @@ class ImagesManager {
         
         let imageSourceOptions = [kCGImageSourceShouldCache: false] as CFDictionary
         guard let imageSource = CGImageSourceCreateWithURL(imageURL as CFURL, imageSourceOptions) else {
-            print("Error imageSource is nil")
             throw MMError.defaultError
         }
         
@@ -53,7 +50,6 @@ class ImagesManager {
         ] as CFDictionary
         
         guard let downsampledImage = CGImageSourceCreateThumbnailAtIndex(imageSource, 0, downsampleOptions) else {
-            print("Error downsample image is nil")
             throw MMError.defaultError
         }
         
@@ -86,7 +82,6 @@ class ImagesManager {
                 do {
                     let downSampledimage = try self.downsample(imageAt: url, to: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width / 3 * 4))
                     self.saveDownsampledImageInDirectory(image: downSampledimage!, imageType: imageType, name: name)
-                    print("Image downsamled saved.")
                 } catch  {
                     self.persistanceManager.saveImage(image: image, imageType: imageType, name: name)
                 }

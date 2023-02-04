@@ -30,12 +30,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
-        print("🟠 Magic link userActivity: \(String(describing: userActivity.webpageURL))")
         guard let link = userActivity.webpageURL?.absoluteString else { return }
         loginManager.recivedMagicLink.onNext(link)
     }
  
-
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
         // This occurs shortly after the scene enters the background, or when its session is discarded.
