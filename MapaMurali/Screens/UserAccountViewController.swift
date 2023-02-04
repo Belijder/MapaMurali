@@ -206,7 +206,7 @@ class UserAccountViewController: MMDataLoadingVC {
                     case .success(_):
                         self.loginManager.userIsLoggedIn.onNext(false)
                         self.dismissLoadingView()
-                    case .failure(let error):
+                    case .failure(_):
                         self.validateAuth()
                         self.dismissLoadingView()
                     }
