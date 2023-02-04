@@ -263,7 +263,7 @@ class AddNewItemViewController: MMDataLoadingVC {
     
     @objc func callToActionButtonTapped() {
         guard let fullSizeImageData = self.vm.fullSizeImageData, let thumbnailImageData = self.vm.thumbnailImageData else {
-            self.presentMMAlert(title: "Nie można załadować zdjęcia.", message: "Wybierz lub zrób inne zdjęcie i spróbuj ponownie.", buttonTitle: "Ok")
+            self.presentMMAlert(title: "Brak zdjęcia", message: "Wybierz lub zrób inne zdjęcie i spróbuj ponownie.", buttonTitle: "Ok")
             return
         }
         

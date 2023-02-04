@@ -29,7 +29,8 @@ class MMUserAddedMuralsCollectionsVC: MMUserMuralsCollectionsVC {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         let userAddedMurals = databaseManager.murals.filter { $0.addedBy == databaseManager.currentUser?.id }
-        murals = userAddedMurals
+        let sortedMurals = userAddedMurals.sorted { $0.addedDate > $1.addedDate }
+        murals = sortedMurals
         updateData(on: murals)
     }
     

@@ -21,7 +21,8 @@ class ManageUserAddedMuralsVC: MMDataLoadingVC {
     
     private var userAddedMurals: [Mural] {
         didSet {
-            self.observableMurals.accept(userAddedMurals)
+            let sortedMurals = userAddedMurals.sorted { $0.addedDate > $1.addedDate }
+            self.observableMurals.accept(sortedMurals)
         }
     }
     
@@ -95,7 +96,8 @@ class ManageUserAddedMuralsVC: MMDataLoadingVC {
             .subscribe(onNext: { [weak self] murals in
                 guard let self = self else { return }
                 let userAddedMurals = murals.filter { $0.addedBy == self.databaseManager.currentUser?.id }
-                self.userAddedMurals = userAddedMurals
+                let sortedMurals = userAddedMurals.sorted { $0.addedDate > $1.addedDate }
+                self.userAddedMurals = sortedMurals
             })
             .disposed(by: disposeBag)
     }
