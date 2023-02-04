@@ -39,6 +39,7 @@ class DatabaseManager {
     var muralItems = BehaviorSubject<[Mural]>(value: [])
     var lastDeletedMuralID = BehaviorSubject<String>(value: "")
     var lastEditedMuralID = PublishSubject<Mural>()
+    var lastFavoriteStatusChangeMuralID = PublishSubject<String>()
     var mapPinButtonTappedOnMural = PublishSubject<Mural>()
     var currentUserPublisher = PublishSubject<User>()
     
@@ -298,11 +299,10 @@ class DatabaseManager {
                 }
                 
                 self.currentUser?.favoritesMurals.append(muralID)
-                
                 if let muralIndex = self.murals.firstIndex(where: { $0.docRef == muralID }) {
                     self.murals[muralIndex].favoritesCount += 1
                 }
-                
+                self.lastFavoriteStatusChangeMuralID.onNext(muralID)
                 completion(true)
             }
         }
@@ -332,11 +332,10 @@ class DatabaseManager {
                 }
                 
                 self.currentUser?.favoritesMurals.removeAll(where: { $0 == muralID })
-                
                 if let muralIndex = self.murals.firstIndex(where: { $0.docRef == muralID }) {
                     self.murals[muralIndex].favoritesCount -= 1
                 }
-                
+                self.lastFavoriteStatusChangeMuralID.onNext(muralID)
                 completion(true)
             }
         }

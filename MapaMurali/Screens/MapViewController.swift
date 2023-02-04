@@ -19,7 +19,13 @@ class MapViewController: MMAnimableViewController {
     private let map = MKMapView()
     private let locationManager = CLLocationManager()
 
-    private var clusteredMurals = PublishSubject<[Mural]>()
+    private var clusteredMurals = [Mural]() {
+        didSet {
+            clusteredMuralsPublisher.onNext(clusteredMurals)
+        }
+    }
+    
+    private var clusteredMuralsPublisher = PublishSubject<[Mural]>()
     private var disposeBag = DisposeBag()
     
     lazy private var clusteredCollectionView: UICollectionView = {
@@ -59,6 +65,7 @@ class MapViewController: MMAnimableViewController {
         addMuralsItemsObserver()
         addLastDeletedMuralObserwer()
         addLastEditedMuralObserver()
+        addLastFavoriteStatusChangeObserver()
         addMapPinButtonTappedObserver()
         bindClusteredCollectionView()
         
@@ -171,6 +178,21 @@ class MapViewController: MMAnimableViewController {
     }
     
     
+    private func addLastFavoriteStatusChangeObserver() {
+        databaseManager.lastFavoriteStatusChangeMuralID
+            .subscribe(onNext: { [weak self] id in
+                guard let self = self else { return }
+                if self.clusteredMurals.contains(where: { $0.docRef == id }) {
+                    guard let index = self.clusteredMurals.firstIndex(where: { $0.docRef == id }) else {return }
+                    guard let newMuralData = self.databaseManager.murals.first(where: { $0.docRef == id }) else { return }
+                    self.clusteredMurals.remove(at: index)
+                    self.clusteredMurals.insert(newMuralData, at: index)
+                }
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    
     private func addMapPinButtonTappedObserver() {
         databaseManager.mapPinButtonTappedOnMural
             .subscribe(onNext: { [weak self] mural in
@@ -183,7 +205,7 @@ class MapViewController: MMAnimableViewController {
     
     
     private func bindClusteredCollectionView() {
-        clusteredMurals
+        clusteredMuralsPublisher
             .bind(to:
                 clusteredCollectionView.rx.items(cellIdentifier: MMFavoritesMuralCollectionCell.identifier,
                                         cellType: MMFavoritesMuralCollectionCell.self)) { indexPath, mural, cell in
@@ -307,14 +329,14 @@ extension MapViewController: MKMapViewDelegate {
                     murals.append(mural)
                 }
             }
-            clusteredMurals.onNext(murals)
+            clusteredMurals = murals
         }
     }
     
     
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
         print("Odtapnięto \(view)")
-        clusteredMurals.onNext([])
+        clusteredMurals = []
         self.clusteredCollectionView.alpha = 0
     }
     
