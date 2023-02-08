@@ -162,7 +162,9 @@ class CompleteUserDetailsViewController: MMDataLoadingVC {
     @objc func callToActionButtonTapped() {
         showLoadingView(message: "Uakualnianie informacji")
         
-        guard let email = UserDefaults.standard.object(forKey: Setup.kEmail) as? String else { return }
+        guard let email = UserDefaults.standard.object(forKey: Setup.kEmail) as? String else {
+            return
+        }
         
         guard let avatarData = avatarImage else {
             dismissLoadingView()
@@ -187,6 +189,7 @@ class CompleteUserDetailsViewController: MMDataLoadingVC {
         userData["id"] = userID
         userData["displayName"] = self.nickNameTextField.text
         userData["email"] = email
+        userData["isAdmin"] = false
         userData["muralsAdded"] = 0
         userData["favoritesMurals"] = [String]()
         

@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 55;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4220107A299289D7003389DC /* AdminPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42201079299289D7003389DC /* AdminPanelViewController.swift */; };
 		42618DD42914312D0052DB76 /* StatisticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42618DD32914312D0052DB76 /* StatisticsViewModel.swift */; };
 		42618DD6291655720052DB76 /* MMUsersTableViewInTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42618DD5291655720052DB76 /* MMUsersTableViewInTableViewCell.swift */; };
 		42618DD829165A0D0052DB76 /* MMMostActivUsersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42618DD729165A0D0052DB76 /* MMMostActivUsersCell.swift */; };
@@ -104,6 +105,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		42201079299289D7003389DC /* AdminPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminPanelViewController.swift; sourceTree = "<group>"; };
 		42618DD32914312D0052DB76 /* StatisticsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewModel.swift; sourceTree = "<group>"; };
 		42618DD5291655720052DB76 /* MMUsersTableViewInTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMUsersTableViewInTableViewCell.swift; sourceTree = "<group>"; };
 		42618DD729165A0D0052DB76 /* MMMostActivUsersCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMMostActivUsersCell.swift; sourceTree = "<group>"; };
@@ -303,6 +305,7 @@
 				42867B68289590BD00E5159F /* UserAccountViewController.swift */,
 				42E61C2128F1AE0600D38205 /* MuralDetailsViewController.swift */,
 				42D9EA202922CD8D00A7A9DC /* ManageUserAddedMuralsVC.swift */,
+				42201079299289D7003389DC /* AdminPanelViewController.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -490,7 +493,7 @@
 				};
 			};
 			buildConfigurationList = 426E49F628931180009C8E99 /* Build configuration list for PBXProject "MapaMurali" */;
-			compatibilityVersion = "Xcode 13.0";
+			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -563,6 +566,7 @@
 				42E61C3928FAC03C00D38205 /* MMUsernameWithAvatarView.swift in Sources */,
 				4283BAB428D606B100A54F0F /* MMCircleButton.swift in Sources */,
 				428A42E6298A8C27005D6EFD /* EditUserDetailsViewController.swift in Sources */,
+				4220107A299289D7003389DC /* AdminPanelViewController.swift in Sources */,
 				42E61C2828F1CF3500D38205 /* ImagesManager.swift in Sources */,
 				42E61C3B28FAC0C500D38205 /* User.swift in Sources */,
 				42A5C70D2977E51500B3893C /* MMAnimableViewController.swift in Sources */,
@@ -664,6 +668,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -714,9 +719,11 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -729,10 +736,11 @@
 				CODE_SIGN_ENTITLEMENTS = MapaMurali/MapaMurali.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 3FACLSXXJM;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MapaMurali/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Musisz wyrazić zgodę na wykorzystanie aparatu, aby móc dodać zdjęcie.";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Musimy mieć dostęp do Twojej lokalizacji, aby móc pokazywać Ci wspaniałe murale w Twojej okolicy!";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Musimy mieć dostęp do Twojej lokalizacji, aby móc pokazywać Ci wspaniałe murale w Twojej okolicy!";
@@ -742,15 +750,18 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jakubzajda.MapaMurali;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -765,10 +776,11 @@
 				CODE_SIGN_ENTITLEMENTS = MapaMurali/MapaMurali.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 3FACLSXXJM;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MapaMurali/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Musisz wyrazić zgodę na wykorzystanie aparatu, aby móc dodać zdjęcie.";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Musimy mieć dostęp do Twojej lokalizacji, aby móc pokazywać Ci wspaniałe murale w Twojej okolicy!";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Musimy mieć dostęp do Twojej lokalizacji, aby móc pokazywać Ci wspaniałe murale w Twojej okolicy!";
@@ -778,15 +790,18 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jakubzajda.MapaMurali;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;

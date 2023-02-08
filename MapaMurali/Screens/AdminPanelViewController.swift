@@ -1,36 +1,25 @@
 //
-//  ManageUserAddedMuralsViewController.swift
+//  AdminPanelViewController.swift
 //  MapaMurali
 //
-//  Created by Jakub Zajda on 14/11/2022.
+//  Created by Jakub Zajda on 07/02/2023.
 //
 
 import UIKit
 import RxSwift
 import RxRelay
 
-class ManageUserAddedMuralsVC: MMDataLoadingVC {
+class AdminPanelViewController: MMDataLoadingVC {
     
-    //MARK: - Properties
+    // MARK: - Properties
     private let databaseManager: DatabaseManager
-    
     private var muralsTableView: UITableView!
-    
     private var disposeBag = DisposeBag()
-    private var observableMurals = BehaviorRelay<[Mural]>(value: [])
-    
-    private var userAddedMurals: [Mural] {
-        didSet {
-            let sortedMurals = userAddedMurals.sorted { $0.addedDate > $1.addedDate }
-            self.observableMurals.accept(sortedMurals)
-        }
-    }
     
     
-    //MARK: - Inicialization
-    init(databaseManager: DatabaseManager, userAddedMurals: [Mural]) {
+    // MARK: - Initialization
+    init(databaseManager: DatabaseManager) {
         self.databaseManager = databaseManager
-        self.userAddedMurals = userAddedMurals
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -43,24 +32,18 @@ class ManageUserAddedMuralsVC: MMDataLoadingVC {
     }
     
     
-    //MARK: - Live cicle
+    // MARK: - Live cicle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.tintColor = MMColors.primary
         
-        addDatabaseMuralsObserver()
         configureMuralTableView()
         bindTableView()
-        self.observableMurals.accept(userAddedMurals)
-        
-        if userAddedMurals.isEmpty {
-            showEmptyStateView(with: "Nie masz żadnych dodanych murali. Idź na spacer i zrób kilka fotek :)", in: view)
-        }
     }
     
     
-    //MARK: - Set up
+    // MARK: - Set up
     private func configureMuralTableView() {
         muralsTableView = UITableView(frame: view.bounds)
         view.addSubview(muralsTableView)
@@ -72,7 +55,7 @@ class ManageUserAddedMuralsVC: MMDataLoadingVC {
     
     //MARK: - Biding
     private func bindTableView() {
-        observableMurals
+        databaseManager.unreviewedMuralsPublisher
             .bind(to: muralsTableView.rx.items(cellIdentifier: MMUserAddedMuralTableViewCell.identifire, cellType: MMUserAddedMuralTableViewCell.self)) { (row, mural, cell) in
                 cell.set(from: mural)
                 cell.muralImageView.layer.cornerRadius = 10
@@ -91,12 +74,13 @@ class ManageUserAddedMuralsVC: MMDataLoadingVC {
     
     
     private func addDatabaseMuralsObserver() {
-        databaseManager.muralItems
+        databaseManager.unreviewedMuralsPublisher
             .subscribe(onNext: { [weak self] murals in
                 guard let self = self else { return }
-                let userAddedMurals = murals.filter { $0.addedBy == self.databaseManager.currentUser?.id }
-                let sortedMurals = userAddedMurals.sorted { $0.addedDate > $1.addedDate }
-                self.userAddedMurals = sortedMurals
+                
+                if murals.isEmpty {
+                    self.showEmptyStateView(with: "Nie masz żadnych murali do zaakceptowania.", in: self.view)
+                }
             })
             .disposed(by: disposeBag)
     }
@@ -104,25 +88,25 @@ class ManageUserAddedMuralsVC: MMDataLoadingVC {
 
 
 //MARK: - Extensions
-extension ManageUserAddedMuralsVC: UITableViewDelegate {
+extension AdminPanelViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }
     
+    
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-
-        let muralID = self.userAddedMurals[indexPath.row].docRef
+        let muralID = self.databaseManager.unreviewedMurals[indexPath.row].docRef
         
-        let editAction = UIContextualAction(style: .normal, title: "Edytuj") { _, _, completed in
-            let destVC = EditMuralViewController(mural: self.userAddedMurals[indexPath.row], databaseManager: self.databaseManager)
-            let navControler = UINavigationController(rootViewController: destVC)
-            navControler.modalPresentationStyle = .fullScreen
-            self.present(navControler, animated: true)
-
+        let acceptAction = UIContextualAction(style: .normal, title: "Zaakceptuj") { _, _, completed in
+            print("🟢 Mural zaakceptowano.")
+            self.databaseManager.acceptMural(muralID: muralID)
+            
             completed(true)
         }
-
-        let deleteAction = UIContextualAction(style: .destructive, title: "Usuń") { _, _, completed in
+        
+        let rejectAction = UIContextualAction(style: .destructive, title: "Usuń") { _, _, completed in
+            print("🔴 Mural odrzucono.")
+            
             self.databaseManager.removeMural(for: muralID) { success in
                 if success == true {
                     self.databaseManager.lastDeletedMuralID.onNext(muralID)
@@ -132,13 +116,14 @@ extension ManageUserAddedMuralsVC: UITableViewDelegate {
                 }
             }
             self.databaseManager.murals.removeAll(where: { $0.docRef == muralID })
+            self.databaseManager.unreviewedMurals.removeAll { $0.docRef == muralID }
         }
-
-        editAction.image = UIImage(systemName: "square.and.pencil")
-        editAction.backgroundColor = .systemYellow
-        deleteAction.image = UIImage(systemName: "trash")
-
-        let swipeActions = UISwipeActionsConfiguration(actions: [deleteAction, editAction])
+        
+        acceptAction.image = UIImage(systemName: "checkmark")
+        acceptAction.backgroundColor = .systemGreen
+        rejectAction.image = UIImage(systemName: "xmark")
+        
+        let swipeActions = UISwipeActionsConfiguration(actions: [rejectAction, acceptAction])
         return swipeActions
     }
 }

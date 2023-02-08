@@ -50,6 +50,7 @@ class AddNewViewModel {
         data["addedBy"] = user
         data["addedDate"] = Date.now
         data["favoritesCount"] = 0
+        data["reviewStatus"] = 0
         return data
     }
 }

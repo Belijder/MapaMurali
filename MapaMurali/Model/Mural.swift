@@ -20,6 +20,7 @@ struct Mural: Codable, Hashable {
     let imageURL: String
     let thumbnailURL: String
     var favoritesCount: Int
+    var reviewStatus: Int
 }
 
 

@@ -26,6 +26,7 @@ class UserAccountViewController: MMDataLoadingVC {
     private let contentView = UIView()
     
     private let usernameAndAvatar = MMUsernameWithAvatarView(imageHeight: 100)
+    private let openAdminPanelButton = MMTitleLabel(textAlignment: .right, fontSize: 14)
     
     private let userAddedMuralsCollectionView = UIView()
     private let userFavoriteMuralsCollectionView = UIView()
@@ -110,6 +111,12 @@ class UserAccountViewController: MMDataLoadingVC {
         
         self.usernameAndAvatar.username.text = user.displayName
         self.usernameAndAvatar.avatarView.setImage(from: user.avatarURL, userID: user.id, uiImageSize: CGSize(width: 100, height: 100))
+        
+        if user.isAdmin {
+            openAdminPanelButton.alpha = 1.0
+        } else {
+            openAdminPanelButton.alpha = 0.0
+        }
     }
     
     
@@ -125,6 +132,12 @@ class UserAccountViewController: MMDataLoadingVC {
     
     
     private func configureButtons() {
+        openAdminPanelButton.textColor = MMColors.primary
+        openAdminPanelButton.text = "Panel administratora"
+        let tap = UITapGestureRecognizer(target: self, action: #selector(openAdminPanelButtonTapped))
+        openAdminPanelButton.isUserInteractionEnabled = true
+        openAdminPanelButton.addGestureRecognizer(tap)
+        
         showTermOfUseButton.addTarget(self, action: #selector(showTermOfUse), for: .touchUpInside)
         showPrivacyPolicyButton.addTarget(self, action: #selector(showPrivacyPolicy), for: .touchUpInside)
         rateAppButton.addTarget(self, action: #selector(rateAppButtonTapped), for: .touchUpInside)
@@ -135,7 +148,7 @@ class UserAccountViewController: MMDataLoadingVC {
     }
     
     func layoutUI() {
-        contentView.addSubviews(usernameAndAvatar, userAddedMuralsCollectionView, userFavoriteMuralsCollectionView, rateAppButton, sendMessageButton, showTermOfUseButton, showPrivacyPolicyButton, logOutButton, deleteAccountAndDataButton)
+        contentView.addSubviews(usernameAndAvatar, userAddedMuralsCollectionView, openAdminPanelButton, userFavoriteMuralsCollectionView, rateAppButton, sendMessageButton, showTermOfUseButton, showPrivacyPolicyButton, logOutButton, deleteAccountAndDataButton)
         
         userAddedMuralsCollectionView.translatesAutoresizingMaskIntoConstraints = false
         userFavoriteMuralsCollectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -159,6 +172,11 @@ class UserAccountViewController: MMDataLoadingVC {
             usernameAndAvatar.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
             usernameAndAvatar.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
             usernameAndAvatar.heightAnchor.constraint(equalToConstant: 100),
+            
+            openAdminPanelButton.bottomAnchor.constraint(equalTo: usernameAndAvatar.bottomAnchor),
+            openAdminPanelButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
+            openAdminPanelButton.heightAnchor.constraint(equalToConstant: 20),
+            openAdminPanelButton.widthAnchor.constraint(equalToConstant: 300),
             
             userAddedMuralsCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
             userAddedMuralsCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
@@ -239,6 +257,13 @@ class UserAccountViewController: MMDataLoadingVC {
     
     
     //MARK: - Actions
+    @objc private func openAdminPanelButtonTapped() {
+        let destVC = AdminPanelViewController(databaseManager: databaseManager)
+        destVC.title = "Panel administratora"
+        self.navigationController?.pushViewController(destVC, animated: true)
+    }
+    
+    
     @objc private func editButtonTapped() {
         let destVC = EditUserDetailsViewController(avatar: usernameAndAvatar.avatarView.image,
                                                    nickname: usernameAndAvatar.username.text ?? "",

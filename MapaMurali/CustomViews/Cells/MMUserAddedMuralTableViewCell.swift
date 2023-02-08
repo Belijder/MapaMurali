@@ -13,6 +13,7 @@ class MMUserAddedMuralTableViewCell: UITableViewCell {
     let muralImageView = MMSquareImageView(frame: .zero)
     private let addressLabel = MMTitleLabel(textAlignment: .left, fontSize: 15)
     private let dateLabel = MMBodyLabel(textAlignment: .left)
+    private let statusLabel = MMTitleLabel(textAlignment: .right, fontSize: 10)
     
     
     //MARK: - Initialization
@@ -29,7 +30,7 @@ class MMUserAddedMuralTableViewCell: UITableViewCell {
     //MARK: - Set up
     private func configure() {
         contentView.backgroundColor = .systemBackground
-        contentView.addSubviews(muralImageView, addressLabel, dateLabel)
+        contentView.addSubviews(muralImageView, addressLabel, dateLabel, statusLabel)
         
         let padding: CGFloat = 20
         
@@ -47,7 +48,12 @@ class MMUserAddedMuralTableViewCell: UITableViewCell {
             dateLabel.leadingAnchor.constraint(equalTo: muralImageView.trailingAnchor, constant: padding),
             dateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
             dateLabel.topAnchor.constraint(equalTo: muralImageView.centerYAnchor),
-            dateLabel.heightAnchor.constraint(equalToConstant: 15)
+            dateLabel.heightAnchor.constraint(equalToConstant: 15),
+            
+            statusLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 4),
+            statusLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
+            statusLabel.heightAnchor.constraint(equalToConstant: 15),
+            statusLabel.leadingAnchor.constraint(equalTo: muralImageView.trailingAnchor, constant: padding)
         ])
     }
     
@@ -57,5 +63,16 @@ class MMUserAddedMuralTableViewCell: UITableViewCell {
         addressLabel.text = mural.address
         dateLabel.font = UIFont.systemFont(ofSize: 10)
         dateLabel.text = "Data dodania: \(mural.addedDate.convertToDayMonthYearFormat())"
+        
+        switch mural.reviewStatus {
+        case 0:
+            let text = "Czeka na akceptację"
+            statusLabel.createAttributedString(text: text, imageSystemName: "eye", imagePointSize: 10, color: .systemYellow)
+        case 1:
+            let text = "Zaakceptowano"
+            statusLabel.createAttributedString(text: text, imageSystemName: "checkmark", imagePointSize: 10, color: .systemGreen)
+        default:
+            break
+        }
     }
 }

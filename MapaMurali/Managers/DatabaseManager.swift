@@ -49,6 +49,14 @@ class DatabaseManager {
         }
     }
     
+    var unreviewedMurals = [Mural]() {
+        didSet {
+            unreviewedMuralsPublisher.onNext(unreviewedMurals)
+        }
+    }
+    
+    var unreviewedMuralsPublisher = BehaviorSubject<[Mural]>(value: [])
+    
     var users = [User]() {
         didSet {
             let sortedUsers = users.sorted { $0.muralsAdded > $1.muralsAdded }
@@ -171,7 +179,15 @@ class DatabaseManager {
                     docRef.getDocument(as: Mural.self) { result in
                         switch result {
                         case .success(let mural):
-                            self.murals.append(mural)
+                            if mural.reviewStatus == 1 {
+                                self.murals.append(mural)
+                            } else if mural.reviewStatus == 0 {
+                                self.unreviewedMurals.append(mural)
+                            }
+
+                            if mural.reviewStatus == 0 && mural.addedBy == self.currentUser?.id {
+                                self.murals.append(mural)
+                            }
                         case .failure(_):
                             break
                         }
@@ -189,6 +205,9 @@ class DatabaseManager {
             switch result {
             case .success(let mural):
                 self.murals.append(mural)
+                if mural.reviewStatus == 0 {
+                    self.unreviewedMurals.append(mural)
+                }
             case .failure(_):
                 break
             }
@@ -432,6 +451,27 @@ class DatabaseManager {
             } else {
                 completion(.success(true))
             }
+        }
+    }
+    
+    
+    // MARK: - Admin methods
+    func acceptMural(muralID: String) {
+        let muralRef = db.collection(CollectionName.murals.rawValue).document(muralID)
+        muralRef.updateData([
+            "reviewStatus": 1,
+        ])
+        
+        guard let index = unreviewedMurals.firstIndex(where: { $0.docRef == muralID }) else { return }
+        var acceptedMural = unreviewedMurals[index]
+        unreviewedMurals.remove(at: index)
+        
+        if murals.contains(where: { $0.docRef == acceptedMural.docRef }) {
+            guard let muralIndex = murals.firstIndex(where: { $0.docRef == muralID }) else { return }
+            murals[muralIndex].reviewStatus = 1
+        } else {
+            acceptedMural.reviewStatus = 1
+            murals.append(acceptedMural)
         }
     }
 }

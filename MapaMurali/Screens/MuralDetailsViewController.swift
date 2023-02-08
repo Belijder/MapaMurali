@@ -43,6 +43,8 @@ class MuralDetailsViewController: UIViewController {
     private let favoriteLabelDescription = MMBodyLabel(textAlignment: .left)
     private let favoriteCounter = MMTitleLabel(textAlignment: .left, fontSize: 25)
     
+    private let statusLabel = MMTitleLabel(textAlignment: .left, fontSize: 10)
+    
     
     //MARK: - Initialization
     init(muralItem: Mural, databaseManager: DatabaseManager, presentingVCTitle: String?) {
@@ -137,9 +139,9 @@ class MuralDetailsViewController: UIViewController {
         favoriteCounter.createFavoriteCounterTextLabel(counter: muralItem.favoritesCount, imagePointSize: 25)
         
         configureSendEmailWithAuthorButton()
-        
         configureEditOrReportMuralButton()
         configureDeleteButton()
+        configureStatusLabel()
     }
     
     
@@ -207,8 +209,26 @@ class MuralDetailsViewController: UIViewController {
     }
     
     
+    private func configureStatusLabel() {
+        if databaseManager.currentUser?.id == muralItem.addedBy {
+            switch muralItem.reviewStatus {
+            case 0:
+                let text = "Czeka na akceptację"
+                statusLabel.createAttributedString(text: text, imageSystemName: "eye", imagePointSize: 10, color: .systemYellow)
+            case 1:
+                let text = "Zaakceptowano"
+                statusLabel.createAttributedString(text: text, imageSystemName: "checkmark", imagePointSize: 10, color: .systemGreen)
+            default:
+                break
+            }
+        } else {
+            statusLabel.alpha = 0.0
+        }
+    }
+    
+    
     private func layoutUI() {
-        containerView.addSubviews(mapPinButton, dateLabelDescription, dateLabel, authorLabelDescription, authorLabel, addressLabelDescription, addressLabel, sendEmailWithAuthorButton, userLabelDescription, userView, favoriteLabelDescription, favoriteCounter, editOrReportMuralButton)
+        containerView.addSubviews(mapPinButton, dateLabelDescription, dateLabel, authorLabelDescription, authorLabel, addressLabelDescription, addressLabel, sendEmailWithAuthorButton, userLabelDescription, userView, favoriteLabelDescription, favoriteCounter, editOrReportMuralButton, statusLabel)
         view.addSubviews(imageView, containerView, favoriteButton, closeButton, deleteMuralButton)
         
         let horizontalPadding: CGFloat = 30
@@ -303,7 +323,17 @@ class MuralDetailsViewController: UIViewController {
             editOrReportMuralButton.leadingAnchor.constraint(equalTo: userLabelDescription.leadingAnchor),
             editOrReportMuralButton.topAnchor.constraint(equalTo: userView.bottomAnchor, constant: verticalPadding + 10),
             editOrReportMuralButton.heightAnchor.constraint(equalToConstant: 20),
-            editOrReportMuralButton.widthAnchor.constraint(equalToConstant: 200)
+            editOrReportMuralButton.widthAnchor.constraint(equalToConstant: 200),
+            
+//            statusLabel.bottomAnchor.constraint(equalTo: editOrReportMuralButton.bottomAnchor),
+//            statusLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -horizontalPadding),
+//            statusLabel.heightAnchor.constraint(equalToConstant: 15),
+//            statusLabel.leadingAnchor.constraint(equalTo: editOrReportMuralButton.leadingAnchor, constant: horizontalPadding)
+            
+            statusLabel.centerYAnchor.constraint(equalTo: editOrReportMuralButton.centerYAnchor),
+            statusLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            statusLabel.heightAnchor.constraint(equalToConstant: 15),
+            statusLabel.leadingAnchor.constraint(equalTo: dateLabel.leadingAnchor)
         ])
     }
     
