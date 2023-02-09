@@ -123,9 +123,16 @@ extension ManageUserAddedMuralsVC: UITableViewDelegate {
         }
 
         let deleteAction = UIContextualAction(style: .destructive, title: "Usuń") { _, _, completed in
+            let muralReviewStatus = self.userAddedMurals[indexPath.row].reviewStatus
+            
             self.databaseManager.removeMural(for: muralID) { success in
                 if success == true {
                     self.databaseManager.lastDeletedMuralID.onNext(muralID)
+                    if let userID = self.databaseManager.currentUser?.id {
+                        if muralReviewStatus > 0 {
+                            self.databaseManager.changeNumberOfMuralsAddedBy(user: userID, by: -1)
+                        }
+                    }
                     completed(true)
                 } else {
                     completed(false)

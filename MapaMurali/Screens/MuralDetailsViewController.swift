@@ -354,6 +354,11 @@ class MuralDetailsViewController: UIViewController {
         self.databaseManager.removeMural(for: muralItem.docRef) { success in
             if success == true {
                 self.databaseManager.lastDeletedMuralID.onNext(self.muralItem.docRef)
+                if let userID = self.databaseManager.currentUser?.id {
+                    if self.muralItem.reviewStatus > 0 {
+                        self.databaseManager.changeNumberOfMuralsAddedBy(user: userID, by: -1)
+                    }
+                }
             }
         }
         self.databaseManager.murals.removeAll(where: { $0.docRef == muralItem.docRef })

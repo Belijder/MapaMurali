@@ -61,6 +61,12 @@ class DatabaseManager {
     
     var reportedMuralsPublisher = BehaviorSubject<[Mural]>(value: [])
     
+    var reports = [Report]() {
+        didSet { reportsPublisher.onNext(reports) }
+    }
+    
+    var reportsPublisher = BehaviorSubject<[Report]>(value: [])
+    
     var users = [User]() {
         didSet {
             let sortedUsers = users.sorted { $0.muralsAdded > $1.muralsAdded }
@@ -76,6 +82,9 @@ class DatabaseManager {
                 currentUserPublisher.onNext(user)
                 if murals.isEmpty { fetchMuralItemsFromDatabase() }
                 if users.isEmpty { fetchMostActivUsers() }
+                if user.isAdmin {
+                    fetchReports()
+                }
             }
         }
     }
@@ -123,11 +132,13 @@ class DatabaseManager {
                 newItemRef.updateData(["docRef" : newItemRef.documentID])
                 self.addImageToStorage(docRef: newItemRef, imageData: thumbnailData, imageType: .thumbnail) { _ in
                     self.addImageToStorage(docRef: newItemRef, imageData: fullSizeImageData, imageType: .fullSize) { _ in
-                        self.changeNumberOfMuralsAddedByUser(by: 1)
-                        
-                        if let index = self.users.firstIndex(where: { $0.id == self.currentUser?.id }) {
-                            self.users[index].muralsAdded += 1
-                        }
+//                        if let user = self.currentUser {
+//                            self.changeNumberOfMuralsAddedBy(user: user.id, by: 1)
+//                        }
+//
+//                        if let index = self.users.firstIndex(where: { $0.id == self.currentUser?.id }) {
+//                            self.users[index].muralsAdded += 1
+//                        }
                         
                         self.delegate?.successToAddNewItem(muralID: newItemRef.documentID)
                     }
@@ -288,12 +299,19 @@ class DatabaseManager {
     }
     
     
-    func changeNumberOfMuralsAddedByUser(by value: Int64) {
-        guard let userID = Auth.auth().currentUser?.uid else { return }
-        let docRef = db.collection(CollectionName.users.rawValue).document(userID)
+    func changeNumberOfMuralsAddedBy(user id: String, by value: Int64) {
+        let docRef = db.collection(CollectionName.users.rawValue).document(id)
         docRef.updateData([
             "muralsAdded": FieldValue.increment(value)
-        ])
+        ]) { error in
+            if error != nil {
+                return
+            } else {
+                if let index = self.users.firstIndex(where: { $0.id == id }) {
+                    self.users[index].muralsAdded += Int(value)
+                }
+            }
+        }
     }
     
     
@@ -373,11 +391,11 @@ class DatabaseManager {
             } else { 
                 self.removeImageFromStorage(imageType: .fullSize, docRef: id) { _ in
                     self.removeImageFromStorage(imageType: .thumbnail, docRef: id) { _ in
-                        self.changeNumberOfMuralsAddedByUser(by: -1)
-                        
-                        if let index = self.users.firstIndex(where: { $0.id == self.currentUser?.id }) {
-                            self.users[index].muralsAdded -= 1
-                        }
+//                        self.changeNumberOfMuralsAddedByUser(by: -1)
+//
+//                        if let index = self.users.firstIndex(where: { $0.id == self.currentUser?.id }) {
+//                            self.users[index].muralsAdded -= 1
+//                        }
                         
                         completion(true)
                     }
@@ -491,7 +509,7 @@ class DatabaseManager {
         var data = [String : Any]()
         data["muralID"] = muralID
         data["userID"] = userID
-        data["reporID"] = newReportRef.documentID
+        data["reportID"] = newReportRef.documentID
         data["reportType"] = reportType.rawValue
         newReportRef.setData(data) { error in
             guard error == nil else {
@@ -543,4 +561,26 @@ class DatabaseManager {
         }
     }
     
+    
+    func fetchReports() {
+        db.collection(CollectionName.reports.rawValue).getDocuments { querySnapshot, error in
+            if error != nil {
+                return
+            } else {
+                self.reports = []
+                for document in querySnapshot!.documents {
+                    let reportRef = self.db.collection(CollectionName.reports.rawValue).document(document.documentID)
+                    reportRef.getDocument(as: Report.self) { result in
+                        switch result {
+                        case .success(let report):
+                            self.reports.append(report)
+                            print("🔵 Reports count: \(self.reports.count)")
+                        case .failure(_):
+                            break
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

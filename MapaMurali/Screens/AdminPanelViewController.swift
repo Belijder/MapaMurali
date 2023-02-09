@@ -99,6 +99,8 @@ extension AdminPanelViewController: UITableViewDelegate {
         
         let acceptAction = UIContextualAction(style: .normal, title: "Zaakceptuj") { _, _, completed in
             print("🟢 Mural zaakceptowano.")
+            let userID = self.databaseManager.unreviewedMurals[indexPath.row].addedBy
+            self.databaseManager.changeNumberOfMuralsAddedBy(user: userID, by: 1)
             self.databaseManager.acceptMural(muralID: muralID)
             
             completed(true)
