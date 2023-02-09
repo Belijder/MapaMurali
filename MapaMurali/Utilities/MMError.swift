@@ -26,4 +26,7 @@ enum MMError: String, Error {
     case failedToSendPasswordResset = "Nie udało się wysłać prośby o zresetowanie hasła. Sprawdź połączenie z internetem i spróbuj ponownie"
     
     case failedToFetchCurrentUserData
+    
+    case failedToAddNewReport
+    case failedToChangeMuralReviewStatus
 }

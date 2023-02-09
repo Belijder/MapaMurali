@@ -66,6 +66,7 @@ class MapViewController: MMAnimableViewController {
         addLastDeletedMuralObserwer()
         addLastEditedMuralObserver()
         addLastFavoriteStatusChangeObserver()
+        addLastReportedMuralObserver()
         addMapPinButtonTappedObserver()
         bindClusteredCollectionView()
         
@@ -172,6 +173,18 @@ class MapViewController: MMAnimableViewController {
                 self.map.removeAnnotation(annottionToRemove)
                 
                 self.databaseManager.murals.append(mural)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    
+    private func addLastReportedMuralObserver() {
+        databaseManager.lastReportedMuralID
+            .subscribe(onNext: { [weak self] muralID in
+                guard let self = self else { return }
+                
+                guard let annottionToRemove = self.map.annotations.first(where: { $0.title == muralID }) else { return }
+                self.map.removeAnnotation(annottionToRemove)
             })
             .disposed(by: disposeBag)
     }

@@ -28,6 +28,7 @@ enum CollectionName: String {
     case murals = "murals"
     case users = "users"
     case legalTerms = "legalTerms"
+    case reports = "reports"
 }
 
 class DatabaseManager {
@@ -39,23 +40,26 @@ class DatabaseManager {
     var muralItems = BehaviorSubject<[Mural]>(value: [])
     var lastDeletedMuralID = BehaviorSubject<String>(value: "")
     var lastEditedMuralID = PublishSubject<Mural>()
+    var lastReportedMuralID = PublishSubject<String>()
     var lastFavoriteStatusChangeMuralID = PublishSubject<String>()
     var mapPinButtonTappedOnMural = PublishSubject<Mural>()
     var currentUserPublisher = PublishSubject<User>()
     
     var murals = [Mural]() {
-        didSet {
-            muralItems.onNext(murals)
-        }
+        didSet { muralItems.onNext(murals) }
     }
     
     var unreviewedMurals = [Mural]() {
-        didSet {
-            unreviewedMuralsPublisher.onNext(unreviewedMurals)
-        }
+        didSet { unreviewedMuralsPublisher.onNext(unreviewedMurals) }
     }
     
     var unreviewedMuralsPublisher = BehaviorSubject<[Mural]>(value: [])
+    
+    var reportedMurals = [Mural]() {
+        didSet { reportedMuralsPublisher.onNext(reportedMurals) }
+    }
+    
+    var reportedMuralsPublisher = BehaviorSubject<[Mural]>(value: [])
     
     var users = [User]() {
         didSet {
@@ -183,9 +187,15 @@ class DatabaseManager {
                                 self.murals.append(mural)
                             } else if mural.reviewStatus == 0 {
                                 self.unreviewedMurals.append(mural)
+                            } else if mural.reviewStatus == 2 {
+                                self.reportedMurals.append(mural)
                             }
 
                             if mural.reviewStatus == 0 && mural.addedBy == self.currentUser?.id {
+                                self.murals.append(mural)
+                            }
+                            
+                            if mural.reviewStatus == 2 && mural.addedBy == self.currentUser?.id {
                                 self.murals.append(mural)
                             }
                         case .failure(_):
@@ -474,4 +484,63 @@ class DatabaseManager {
             murals.append(acceptedMural)
         }
     }
+    
+    
+    func addNewReport(muralID: String, userID: String, reportType: ReportType, completion: @escaping (Result<String, MMError>) -> Void) {
+        let newReportRef = db.collection(CollectionName.reports.rawValue).document()
+        var data = [String : Any]()
+        data["muralID"] = muralID
+        data["userID"] = userID
+        data["reporID"] = newReportRef.documentID
+        data["reportType"] = reportType.rawValue
+        newReportRef.setData(data) { error in
+            guard error == nil else {
+                completion(.failure(.failedToAddNewReport))
+                return
+            }
+
+            completion(.success(newReportRef.documentID))
+        }
+    }
+    
+    
+    func addAdditionalMessageFor(reportID: String, message: String) {
+        let reportRef = db.collection(CollectionName.reports.rawValue).document(reportID)
+        reportRef.updateData([
+            "message": message
+        ])
+    }
+    
+
+    func changeMuralReviewStatus(muralID: String, newStatus: Int, completion: @escaping (Result<Bool, MMError>) -> Void) {
+        let muralRef = db.collection(CollectionName.murals.rawValue).document(muralID)
+        muralRef.updateData([
+            "reviewStatus": newStatus
+        ]) { error in
+            guard error == nil else {
+                completion(.failure(MMError.failedToChangeMuralReviewStatus))
+                return
+            }
+            
+            if let index = self.murals.firstIndex(where: { $0.docRef == muralID }) {
+                print("🟡 Item was in murals.")
+                var mural = self.murals[index]
+                mural.reviewStatus = newStatus
+                self.murals.remove(at: index)
+                if !self.reportedMurals.contains(where: { $0.docRef == muralID}) && newStatus == 2 {
+                    self.reportedMurals.append(mural)
+                }
+            } else if let index = self.reportedMurals.firstIndex(where: { $0.docRef == muralID }) {
+                print("🟡 Item was in reportedMurals.")
+                let mural = self.reportedMurals[index]
+                self.reportedMurals.remove(at: index)
+                if !self.murals.contains(where: { $0.docRef == muralID }) && newStatus == 1 {
+                    self.murals.append(mural)
+                }
+            }
+            
+            completion(.success(true))
+        }
+    }
+    
 }
