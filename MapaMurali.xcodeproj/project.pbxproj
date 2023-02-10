@@ -20,6 +20,9 @@
 		426E4A0128931180009C8E99 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426E4A0028931180009C8E99 /* SceneDelegate.swift */; };
 		426E4A0328931180009C8E99 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426E4A0228931180009C8E99 /* MapViewController.swift */; };
 		426E4A0828931184009C8E99 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 426E4A0728931184009C8E99 /* Assets.xcassets */; };
+		427874B129964D500031DD93 /* UnreviewedMuralsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427874B029964D500031DD93 /* UnreviewedMuralsVC.swift */; };
+		427874B329964D800031DD93 /* ReportsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427874B229964D800031DD93 /* ReportsVC.swift */; };
+		427874B5299659550031DD93 /* MMReportCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427874B4299659550031DD93 /* MMReportCell.swift */; };
 		427BD5AA28EB6063005F686A /* MMAnnotationClusterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BD5A928EB6063005F686A /* MMAnnotationClusterView.swift */; };
 		427C1A642910E899000E5619 /* MMFavoritesMuralCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427C1A632910E899000E5619 /* MMFavoritesMuralCollectionCell.swift */; };
 		427CAB5528E60D3200DA7247 /* AddNewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427CAB5428E60D3200DA7247 /* AddNewViewModel.swift */; };
@@ -121,6 +124,9 @@
 		426E4A0228931180009C8E99 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		426E4A0728931184009C8E99 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		426E4A0C28931184009C8E99 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		427874B029964D500031DD93 /* UnreviewedMuralsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnreviewedMuralsVC.swift; sourceTree = "<group>"; };
+		427874B229964D800031DD93 /* ReportsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportsVC.swift; sourceTree = "<group>"; };
+		427874B4299659550031DD93 /* MMReportCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMReportCell.swift; sourceTree = "<group>"; };
 		427BD5A928EB6063005F686A /* MMAnnotationClusterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMAnnotationClusterView.swift; sourceTree = "<group>"; };
 		427C1A632910E899000E5619 /* MMFavoritesMuralCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMFavoritesMuralCollectionCell.swift; sourceTree = "<group>"; };
 		427CAB5428E60D3200DA7247 /* AddNewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewViewModel.swift; sourceTree = "<group>"; };
@@ -263,6 +269,16 @@
 			path = Authorizations;
 			sourceTree = "<group>";
 		};
+		427874AF29964BEF0031DD93 /* AdminPanel */ = {
+			isa = PBXGroup;
+			children = (
+				42201079299289D7003389DC /* AdminPanelViewController.swift */,
+				427874B029964D500031DD93 /* UnreviewedMuralsVC.swift */,
+				427874B229964D800031DD93 /* ReportsVC.swift */,
+			);
+			path = AdminPanel;
+			sourceTree = "<group>";
+		};
 		427CAB5328E60CFC00DA7247 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -307,7 +323,7 @@
 				42867B68289590BD00E5159F /* UserAccountViewController.swift */,
 				42E61C2128F1AE0600D38205 /* MuralDetailsViewController.swift */,
 				42D9EA202922CD8D00A7A9DC /* ManageUserAddedMuralsVC.swift */,
-				42201079299289D7003389DC /* AdminPanelViewController.swift */,
+				427874AF29964BEF0031DD93 /* AdminPanel */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -445,6 +461,7 @@
 				42618DD729165A0D0052DB76 /* MMMostActivUsersCell.swift */,
 				42618DDD2917BC590052DB76 /* MMPopularCityTableViewCell.swift */,
 				42D9EA222922D1EA00A7A9DC /* MMUserAddedMuralTableViewCell.swift */,
+				427874B4299659550031DD93 /* MMReportCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -554,6 +571,7 @@
 				42D9EA2E292ED5F600A7A9DC /* MostMuralCitiesVC.swift in Sources */,
 				427CAB5828E9A83400DA7247 /* MMAnnotationView.swift in Sources */,
 				428BD66728DE3FDC000B8D69 /* MMError.swift in Sources */,
+				427874B129964D500031DD93 /* UnreviewedMuralsVC.swift in Sources */,
 				42824F02295C64C000C33AA5 /* VerificationEmailSendViewController.swift in Sources */,
 				42E18CB928DB98EA0068414E /* UIImage+Ext.swift in Sources */,
 				4283A700293CA7D600EDFEB5 /* LegalTerms.swift in Sources */,
@@ -574,11 +592,13 @@
 				42E61C2828F1CF3500D38205 /* ImagesManager.swift in Sources */,
 				42E61C3B28FAC0C500D38205 /* User.swift in Sources */,
 				42A5C70D2977E51500B3893C /* MMAnimableViewController.swift in Sources */,
+				427874B5299659550031DD93 /* MMReportCell.swift in Sources */,
 				42E61C3528F31DD800D38205 /* MuralCell.swift in Sources */,
 				429A021B28CFCC7100CD6862 /* MMPlainButton.swift in Sources */,
 				42824F0629645E6200C33AA5 /* Message.swift in Sources */,
 				427C1A642910E899000E5619 /* MMFavoritesMuralCollectionCell.swift in Sources */,
 				428BD65E28DE30B0000B8D69 /* MMTitleLabel.swift in Sources */,
+				427874B329964D800031DD93 /* ReportsVC.swift in Sources */,
 				42ECF0732973E6840097C843 /* Animator.swift in Sources */,
 				42618DDE2917BC590052DB76 /* MMPopularCityTableViewCell.swift in Sources */,
 				426E4A0328931180009C8E99 /* MapViewController.swift in Sources */,

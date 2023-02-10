@@ -325,11 +325,6 @@ class MuralDetailsViewController: UIViewController {
             editOrReportMuralButton.heightAnchor.constraint(equalToConstant: 20),
             editOrReportMuralButton.widthAnchor.constraint(equalToConstant: 200),
             
-//            statusLabel.bottomAnchor.constraint(equalTo: editOrReportMuralButton.bottomAnchor),
-//            statusLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -horizontalPadding),
-//            statusLabel.heightAnchor.constraint(equalToConstant: 15),
-//            statusLabel.leadingAnchor.constraint(equalTo: editOrReportMuralButton.leadingAnchor, constant: horizontalPadding)
-            
             statusLabel.centerYAnchor.constraint(equalTo: editOrReportMuralButton.centerYAnchor),
             statusLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             statusLabel.heightAnchor.constraint(equalToConstant: 15),
@@ -443,6 +438,7 @@ class MuralDetailsViewController: UIViewController {
         
     }
     
+    
     private func createMuralReport(reportType: ReportType) {
         print("Report type: \(reportType.rawValue)")
         
@@ -482,6 +478,7 @@ class MuralDetailsViewController: UIViewController {
         }
     }
     
+    
     private func showAddMoreDetailsForReport(reportType: ReportType, title: String, message: String, reportID: String) {
         let alert = UIAlertController(title: title,
                                       message: message,
@@ -489,18 +486,23 @@ class MuralDetailsViewController: UIViewController {
         
         alert.addTextField { field in
             field.placeholder = "Wpisz tutaj..."
+            field.autocapitalizationType = .sentences
+            field.autocorrectionType = .yes
             field.clearButtonMode = .unlessEditing
             field.returnKeyType = .continue
             field.textContentType = .oneTimeCode
         }
         
         alert.addAction(UIAlertAction(title: "Anuluj", style: .cancel) { _ in
+            let message = "Brak"
+            self.databaseManager.addAdditionalMessageFor(reportID: reportID, message: message)
             if reportType == .controversialContent {
                 self.dismissVC()
             }
         })
+        
         alert.addAction(UIAlertAction(title: "Wyślij", style: .default) { _ in
-            let message = alert.textFields![0].text ?? ""
+            let message = alert.textFields![0].text ?? "Brak"
             self.databaseManager.addAdditionalMessageFor(reportID: reportID, message: message)
             if reportType == .controversialContent {
                 self.dismissVC()
@@ -510,7 +512,6 @@ class MuralDetailsViewController: UIViewController {
         
         present(alert, animated: true)
     }
-    
     
     
     @objc private func deleteMuralButtonTapped() {

@@ -37,7 +37,6 @@ class DatabaseManager {
     private let storageRef = Storage.storage().reference()
     private let db = Firestore.firestore()
     
-    var muralItems = BehaviorSubject<[Mural]>(value: [])
     var lastDeletedMuralID = BehaviorSubject<String>(value: "")
     var lastEditedMuralID = PublishSubject<Mural>()
     var lastReportedMuralID = PublishSubject<String>()
@@ -45,36 +44,33 @@ class DatabaseManager {
     var mapPinButtonTappedOnMural = PublishSubject<Mural>()
     var currentUserPublisher = PublishSubject<User>()
     
+    var muralItems = BehaviorSubject<[Mural]>(value: [])
     var murals = [Mural]() {
         didSet { muralItems.onNext(murals) }
     }
     
+    var unreviewedMuralsPublisher = BehaviorSubject<[Mural]>(value: [])
     var unreviewedMurals = [Mural]() {
         didSet { unreviewedMuralsPublisher.onNext(unreviewedMurals) }
     }
     
-    var unreviewedMuralsPublisher = BehaviorSubject<[Mural]>(value: [])
-    
+    var reportedMuralsPublisher = BehaviorSubject<[Mural]>(value: [])
     var reportedMurals = [Mural]() {
         didSet { reportedMuralsPublisher.onNext(reportedMurals) }
     }
     
-    var reportedMuralsPublisher = BehaviorSubject<[Mural]>(value: [])
-    
+    var reportsPublisher = BehaviorSubject<[Report]>(value: [])
     var reports = [Report]() {
         didSet { reportsPublisher.onNext(reports) }
     }
     
-    var reportsPublisher = BehaviorSubject<[Report]>(value: [])
-    
+    var observableUsersItem = BehaviorSubject<[User]>(value: [])
     var users = [User]() {
         didSet {
             let sortedUsers = users.sorted { $0.muralsAdded > $1.muralsAdded }
             observableUsersItem.onNext(sortedUsers)
         }
     }
-    
-    var observableUsersItem = BehaviorSubject<[User]>(value: [])
     
     var currentUser: User? {
         didSet {
@@ -132,14 +128,6 @@ class DatabaseManager {
                 newItemRef.updateData(["docRef" : newItemRef.documentID])
                 self.addImageToStorage(docRef: newItemRef, imageData: thumbnailData, imageType: .thumbnail) { _ in
                     self.addImageToStorage(docRef: newItemRef, imageData: fullSizeImageData, imageType: .fullSize) { _ in
-//                        if let user = self.currentUser {
-//                            self.changeNumberOfMuralsAddedBy(user: user.id, by: 1)
-//                        }
-//
-//                        if let index = self.users.firstIndex(where: { $0.id == self.currentUser?.id }) {
-//                            self.users[index].muralsAdded += 1
-//                        }
-                        
                         self.delegate?.successToAddNewItem(muralID: newItemRef.documentID)
                     }
                 }
@@ -391,12 +379,6 @@ class DatabaseManager {
             } else { 
                 self.removeImageFromStorage(imageType: .fullSize, docRef: id) { _ in
                     self.removeImageFromStorage(imageType: .thumbnail, docRef: id) { _ in
-//                        self.changeNumberOfMuralsAddedByUser(by: -1)
-//
-//                        if let index = self.users.firstIndex(where: { $0.id == self.currentUser?.id }) {
-//                            self.users[index].muralsAdded -= 1
-//                        }
-                        
                         completion(true)
                     }
                 }
@@ -511,6 +493,7 @@ class DatabaseManager {
         data["userID"] = userID
         data["reportID"] = newReportRef.documentID
         data["reportType"] = reportType.rawValue
+        data["reportDate"] = Date.now
         newReportRef.setData(data) { error in
             guard error == nil else {
                 completion(.failure(.failedToAddNewReport))
@@ -582,5 +565,18 @@ class DatabaseManager {
                 }
             }
         }
+    }
+    
+    
+    func removeReport(for id: String, completion: @escaping (Bool) -> Void) {
+        let reportRef = db.collection(CollectionName.reports.rawValue).document(id)
+        
+        reportRef.delete(completion: { error in
+            if error != nil {
+                completion(false)
+            } else {
+                completion(true)
+            }
+        })
     }
 }

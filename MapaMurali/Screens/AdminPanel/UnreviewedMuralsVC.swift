@@ -1,19 +1,18 @@
 //
-//  AdminPanelViewController.swift
+//  UnreviewedMuralsVC.swift
 //  MapaMurali
 //
-//  Created by Jakub Zajda on 07/02/2023.
+//  Created by Jakub Zajda on 10/02/2023.
 //
 
 import UIKit
 import RxSwift
-import RxRelay
 
-class AdminPanelViewController: MMDataLoadingVC {
-    
+class UnreviewedMuralsVC: MMDataLoadingVC {
+
     // MARK: - Properties
-    private let databaseManager: DatabaseManager
     private var muralsTableView: UITableView!
+    private let databaseManager: DatabaseManager
     private var disposeBag = DisposeBag()
     
     
@@ -36,10 +35,9 @@ class AdminPanelViewController: MMDataLoadingVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        navigationController?.navigationBar.tintColor = MMColors.primary
-        
         configureMuralTableView()
-        bindTableView()
+        bindMuralTableView()
+        addDatabaseMuralsObserver()
     }
     
     
@@ -51,10 +49,10 @@ class AdminPanelViewController: MMDataLoadingVC {
         muralsTableView.backgroundColor = .systemBackground
         muralsTableView.register(MMUserAddedMuralTableViewCell.self, forCellReuseIdentifier: MMUserAddedMuralTableViewCell.identifire)
     }
-    
+
     
     //MARK: - Biding
-    private func bindTableView() {
+    private func bindMuralTableView() {
         databaseManager.unreviewedMuralsPublisher
             .bind(to: muralsTableView.rx.items(cellIdentifier: MMUserAddedMuralTableViewCell.identifire, cellType: MMUserAddedMuralTableViewCell.self)) { (row, mural, cell) in
                 cell.set(from: mural)
@@ -88,7 +86,7 @@ class AdminPanelViewController: MMDataLoadingVC {
 
 
 //MARK: - Extensions
-extension AdminPanelViewController: UITableViewDelegate {
+extension UnreviewedMuralsVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }

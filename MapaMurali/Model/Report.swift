@@ -12,4 +12,6 @@ struct Report: Decodable {
     let userID: String
     let reportID: String
     let reportType: String
+    let reportDate: Date
+    let message: String
 }
