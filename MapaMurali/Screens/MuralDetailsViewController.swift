@@ -123,7 +123,7 @@ class MuralDetailsViewController: UIViewController {
         
         dateLabelDescription.text = "Data dodania"
         dateLabel.text = muralItem.addedDate.convertToDayMonthYearFormat()
-        dateLabel.textColor = .white
+        dateLabel.textColor = UIColor.label
         dateLabel.contentMode = .top
         
         userLabelDescription.text = "Dodano przez"
@@ -213,14 +213,21 @@ class MuralDetailsViewController: UIViewController {
         if databaseManager.currentUser?.id == muralItem.addedBy {
             switch muralItem.reviewStatus {
             case 0:
-                let text = "Czeka na akceptację"
+                let text = "W poczekalni"
                 statusLabel.createAttributedString(text: text, imageSystemName: "eye", imagePointSize: 10, color: .systemYellow)
             case 1:
                 let text = "Zaakceptowano"
                 statusLabel.createAttributedString(text: text, imageSystemName: "checkmark", imagePointSize: 10, color: .systemGreen)
+            case 2:
+                let text = "Zgłoszono"
+                statusLabel.createAttributedString(text: text, imageSystemName: "exclamationmark.triangle", imagePointSize: 10, color: .systemRed)
             default:
                 break
             }
+            
+            let tap = UITapGestureRecognizer(target: self, action: #selector(showStatusLegend))
+            statusLabel.isUserInteractionEnabled = true
+            statusLabel.addGestureRecognizer(tap)
         } else {
             statusLabel.alpha = 0.0
         }
@@ -233,15 +240,6 @@ class MuralDetailsViewController: UIViewController {
         
         let horizontalPadding: CGFloat = 30
         let verticalPadding: CGFloat = 20
-        
-        print("🔵 Is iphone SE: \(DeviceTypes.isiPhoneSE)")
-        print("🔵 Is iphone 8standard: \(DeviceTypes.isiPhone8Standard)")
-        print("🔵 Is iphone 8zoomed: \(DeviceTypes.isiPhone8Zoomed)")
-        print("🔵 Is iphone 8plusstandard: \(DeviceTypes.isiPhone8PlusStandard)")
-        print("🔵 Is iphone 8plusZoomed: \(DeviceTypes.isiPhone8PlusZoomed)")
-        print("🔵 Is iphone X: \(DeviceTypes.isiPhoneX)")
-        print("🔵 Is iphone xMaxAndXr: \(DeviceTypes.isiPhoneXsMaxAndXr)")
-        print("🔵 Is ipad: \(DeviceTypes.isiPad)")
         
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -259,20 +257,15 @@ class MuralDetailsViewController: UIViewController {
             closeButton.heightAnchor.constraint(equalToConstant: 40),
             closeButton.widthAnchor.constraint(equalToConstant: 40),
             
-            deleteMuralButton.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: -40),
-            deleteMuralButton.leadingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: 20),
-            deleteMuralButton.heightAnchor.constraint(equalToConstant: 44),
-            deleteMuralButton.widthAnchor.constraint(equalToConstant: 44),
-            
             containerView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor),
             containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             containerView.heightAnchor.constraint(equalToConstant: 310),
             
-//            containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-//            containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-//            containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-//            containerView.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: -20),
+            deleteMuralButton.bottomAnchor.constraint(equalTo: containerView.topAnchor, constant: -20),
+            deleteMuralButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
+            deleteMuralButton.heightAnchor.constraint(equalToConstant: 44),
+            deleteMuralButton.widthAnchor.constraint(equalToConstant: 44),
             
             mapPinButton.centerYAnchor.constraint(equalTo: containerView.topAnchor),
             mapPinButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -50),
@@ -410,6 +403,14 @@ class MuralDetailsViewController: UIViewController {
                 return
             }
         self.dismissVC()
+    }
+    
+    
+    @objc func showStatusLegend() {
+        let destVC = ReviewStatusLegendVC()
+        destVC.modalPresentationStyle = .formSheet
+        self.present(destVC, animated: true)
+        
     }
     
     

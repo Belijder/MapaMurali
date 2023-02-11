@@ -23,6 +23,7 @@
 		427874B129964D500031DD93 /* UnreviewedMuralsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427874B029964D500031DD93 /* UnreviewedMuralsVC.swift */; };
 		427874B329964D800031DD93 /* ReportsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427874B229964D800031DD93 /* ReportsVC.swift */; };
 		427874B5299659550031DD93 /* MMReportCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427874B4299659550031DD93 /* MMReportCell.swift */; };
+		427874B92997BD240031DD93 /* ReviewStatusLegendVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427874B82997BD240031DD93 /* ReviewStatusLegendVC.swift */; };
 		427BD5AA28EB6063005F686A /* MMAnnotationClusterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BD5A928EB6063005F686A /* MMAnnotationClusterView.swift */; };
 		427C1A642910E899000E5619 /* MMFavoritesMuralCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427C1A632910E899000E5619 /* MMFavoritesMuralCollectionCell.swift */; };
 		427CAB5528E60D3200DA7247 /* AddNewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427CAB5428E60D3200DA7247 /* AddNewViewModel.swift */; };
@@ -127,6 +128,7 @@
 		427874B029964D500031DD93 /* UnreviewedMuralsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnreviewedMuralsVC.swift; sourceTree = "<group>"; };
 		427874B229964D800031DD93 /* ReportsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportsVC.swift; sourceTree = "<group>"; };
 		427874B4299659550031DD93 /* MMReportCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMReportCell.swift; sourceTree = "<group>"; };
+		427874B82997BD240031DD93 /* ReviewStatusLegendVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewStatusLegendVC.swift; sourceTree = "<group>"; };
 		427BD5A928EB6063005F686A /* MMAnnotationClusterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMAnnotationClusterView.swift; sourceTree = "<group>"; };
 		427C1A632910E899000E5619 /* MMFavoritesMuralCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMFavoritesMuralCollectionCell.swift; sourceTree = "<group>"; };
 		427CAB5428E60D3200DA7247 /* AddNewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewViewModel.swift; sourceTree = "<group>"; };
@@ -448,6 +450,7 @@
 				42E18CB628D7A8FE0068414E /* MMDataLoadingVC.swift */,
 				428BD66228DE353B000B8D69 /* MMAlertVC.swift */,
 				42A5C70C2977E51500B3893C /* MMAnimableViewController.swift */,
+				427874B82997BD240031DD93 /* ReviewStatusLegendVC.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -610,6 +613,7 @@
 				42D9EA1F2921581C00A7A9DC /* MMFilledButton.swift in Sources */,
 				429A021928CFB52B00CD6862 /* MMTintedButton.swift in Sources */,
 				427BD5AA28EB6063005F686A /* MMAnnotationClusterView.swift in Sources */,
+				427874B92997BD240031DD93 /* ReviewStatusLegendVC.swift in Sources */,
 				42E61C2A28F2DC7800D38205 /* Date+Ext.swift in Sources */,
 				42E61C3F29053F0400D38205 /* MuralDetailsViewModel.swift in Sources */,
 				42E61C2628F1CE1D00D38205 /* MMFullSizeImageView.swift in Sources */,
