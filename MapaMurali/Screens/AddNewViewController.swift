@@ -123,10 +123,11 @@ class AddNewItemViewController: MMDataLoadingVC {
         let verticalPadding: CGFloat = 15
         let height: CGFloat = 45
         
-        selectedImageViewWidthConstraint = selectedImageView.widthAnchor.constraint(equalToConstant: 300)
+        selectedImageViewWidthConstraint = DeviceTypes.isiPhone8Standard ? selectedImageView.widthAnchor.constraint(equalToConstant: 200) :                   selectedImageView.widthAnchor.constraint(equalToConstant: 300)
+        
         selectedImageViewWidthConstraint.isActive = true
         
-        selectedImageViewHeightConstraint = selectedImageView.heightAnchor.constraint(equalToConstant: 400)
+        selectedImageViewHeightConstraint = DeviceTypes.isiPhone8Standard ? selectedImageView.heightAnchor.constraint(equalToConstant: 280) : selectedImageView.heightAnchor.constraint(equalToConstant: 400)
         selectedImageViewHeightConstraint.isActive = true
         
         removeImageButtonWidthConstraint = removeImageButton.heightAnchor.constraint(equalToConstant: 40)
@@ -311,8 +312,8 @@ class AddNewItemViewController: MMDataLoadingVC {
         let duration = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey]! as AnyObject).doubleValue
         
         if keyboardIsShowing {
-            self.selectedImageViewWidthConstraint.constant = 180
-            self.selectedImageViewHeightConstraint.constant = 245
+            self.selectedImageViewWidthConstraint.constant = DeviceTypes.isiPhone8Standard ? 150 : 180
+            self.selectedImageViewHeightConstraint.constant = DeviceTypes.isiPhone8Standard ? 200 : 245
             
             self.removeImageButtonWidthConstraint.constant = 22
             self.removeImageButtonHeightConstraint.constant = 22
@@ -325,8 +326,8 @@ class AddNewItemViewController: MMDataLoadingVC {
             self.selectedImageView.placeholderView.cameraImage.preferredSymbolConfiguration = cameraImageConfig
             
         } else {
-            self.selectedImageViewWidthConstraint.constant = 300
-            self.selectedImageViewHeightConstraint.constant = 400
+            self.selectedImageViewWidthConstraint.constant = DeviceTypes.isiPhone8Standard ? 200 : 300
+            self.selectedImageViewHeightConstraint.constant = DeviceTypes.isiPhone8Standard ? 280 : 400
             
             self.removeImageButtonWidthConstraint.constant = 44
             self.removeImageButtonHeightConstraint.constant = 44

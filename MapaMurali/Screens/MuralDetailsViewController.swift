@@ -234,6 +234,15 @@ class MuralDetailsViewController: UIViewController {
         let horizontalPadding: CGFloat = 30
         let verticalPadding: CGFloat = 20
         
+        print("🔵 Is iphone SE: \(DeviceTypes.isiPhoneSE)")
+        print("🔵 Is iphone 8standard: \(DeviceTypes.isiPhone8Standard)")
+        print("🔵 Is iphone 8zoomed: \(DeviceTypes.isiPhone8Zoomed)")
+        print("🔵 Is iphone 8plusstandard: \(DeviceTypes.isiPhone8PlusStandard)")
+        print("🔵 Is iphone 8plusZoomed: \(DeviceTypes.isiPhone8PlusZoomed)")
+        print("🔵 Is iphone X: \(DeviceTypes.isiPhoneX)")
+        print("🔵 Is iphone xMaxAndXr: \(DeviceTypes.isiPhoneXsMaxAndXr)")
+        print("🔵 Is ipad: \(DeviceTypes.isiPad)")
+        
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: view.topAnchor),
             imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -255,10 +264,15 @@ class MuralDetailsViewController: UIViewController {
             deleteMuralButton.heightAnchor.constraint(equalToConstant: 44),
             deleteMuralButton.widthAnchor.constraint(equalToConstant: 44),
             
-            containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            containerView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor),
             containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            containerView.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: -20),
+            containerView.heightAnchor.constraint(equalToConstant: 310),
+            
+//            containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+//            containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+//            containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+//            containerView.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: -20),
             
             mapPinButton.centerYAnchor.constraint(equalTo: containerView.topAnchor),
             mapPinButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -50),
