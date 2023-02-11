@@ -103,7 +103,7 @@ class MuralDetailsViewController: UIViewController {
         sendEmailWithAuthorButton.isUserInteractionEnabled = true
         sendEmailWithAuthorButton.addGestureRecognizer(tap)
     }
-    
+
     
     private func configureUIElements() {
         if imageView.image == nil {
@@ -111,6 +111,10 @@ class MuralDetailsViewController: UIViewController {
         }
         
         imageView.contentMode = .scaleAspectFill
+        let tap = UITapGestureRecognizer(target: self, action: #selector(openFullSizeImage))
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(tap)
+        
         
         mapPinButton.configuration?.baseBackgroundColor = MMColors.primary
         mapPinButton.addTarget(self, action: #selector(mapPinButtonTapped), for: .touchUpInside)
@@ -385,6 +389,14 @@ class MuralDetailsViewController: UIViewController {
     }
     
     
+    @objc private func openFullSizeImage() {
+        guard let image = imageView.image else { return }
+        let destVC = FullScreenImageVC(image: image)
+        destVC.modalPresentationStyle = .fullScreen
+        self.present(destVC, animated: true)
+    }
+    
+    
     @objc private func userViewTapped() {
         guard let title = vm.presentingVCTitle,
               let username = userView.username.text,
@@ -406,11 +418,10 @@ class MuralDetailsViewController: UIViewController {
     }
     
     
-    @objc func showStatusLegend() {
+    @objc private func showStatusLegend() {
         let destVC = ReviewStatusLegendVC()
         destVC.modalPresentationStyle = .formSheet
         self.present(destVC, animated: true)
-        
     }
     
     
