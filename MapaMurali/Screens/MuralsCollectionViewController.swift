@@ -17,7 +17,7 @@ class MuralsCollectionViewController: MMAnimableViewController {
     //MARK: - Properties
     private var collectionView: UICollectionView!
     private var dataSource: UICollectionViewDiffableDataSource<Section, Mural>!
-    private let searchController = UISearchController()
+    let searchController = UISearchController()
     
     private let databaseManager: DatabaseManager
     private var disposeBag = DisposeBag()

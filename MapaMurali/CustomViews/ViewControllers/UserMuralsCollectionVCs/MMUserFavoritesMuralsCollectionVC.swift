@@ -50,6 +50,9 @@ class MMUserFavoritesMuralsCollectionVC: MMUserMuralsCollectionsVC {
         let destVC = MuralsCollectionViewController(databaseManager: databaseManager)
         destVC.murals = murals
         destVC.title = "Ulubione murale"
+        if murals.isEmpty {
+            destVC.searchController.searchBar.isHidden = true
+        }
         
         let navControler = UINavigationController(rootViewController: destVC)
         navControler.modalPresentationStyle = .fullScreen
