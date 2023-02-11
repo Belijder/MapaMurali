@@ -47,14 +47,14 @@ class UnreviewedMuralsVC: MMDataLoadingVC {
         view.addSubview(muralsTableView)
         muralsTableView.delegate = self
         muralsTableView.backgroundColor = .systemBackground
-        muralsTableView.register(MMUserAddedMuralTableViewCell.self, forCellReuseIdentifier: MMUserAddedMuralTableViewCell.identifire)
+        muralsTableView.register(MMUserAddedMuralTableViewCell.self, forCellReuseIdentifier: MMUserAddedMuralTableViewCell.identifier)
     }
 
     
     //MARK: - Biding
     private func bindMuralTableView() {
         databaseManager.unreviewedMuralsPublisher
-            .bind(to: muralsTableView.rx.items(cellIdentifier: MMUserAddedMuralTableViewCell.identifire, cellType: MMUserAddedMuralTableViewCell.self)) { (row, mural, cell) in
+            .bind(to: muralsTableView.rx.items(cellIdentifier: MMUserAddedMuralTableViewCell.identifier, cellType: MMUserAddedMuralTableViewCell.self)) { (row, mural, cell) in
                 cell.set(from: mural)
                 cell.muralImageView.layer.cornerRadius = 10
             }

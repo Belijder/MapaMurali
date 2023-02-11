@@ -47,14 +47,14 @@ class ReportsVC: MMDataLoadingVC {
         view.addSubview(reportsTableView)
         reportsTableView.delegate = self
         reportsTableView.backgroundColor = .systemBackground
-        reportsTableView.register(MMReportCell.self, forCellReuseIdentifier: MMReportCell.identifire)
+        reportsTableView.register(MMReportCell.self, forCellReuseIdentifier: MMReportCell.identifier)
     }
 
     
     //MARK: - Biding
     private func bindReportTableView() {
         databaseManager.reportsPublisher
-            .bind(to: reportsTableView.rx.items(cellIdentifier: MMReportCell.identifire, cellType: MMReportCell.self)) { (row, report, cell) in
+            .bind(to: reportsTableView.rx.items(cellIdentifier: MMReportCell.identifier, cellType: MMReportCell.self)) { (row, report, cell) in
                 let mural = self.databaseManager.murals.first(where: { $0.docRef == report.muralID })
                 cell.set(from: report, thumbnailURL: mural?.thumbnailURL ?? "")
                 cell.muralImageView.layer.cornerRadius = 10

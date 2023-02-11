@@ -10,7 +10,7 @@ import UIKit
 class MMReportCell: UITableViewCell {
     
     // MARK: - Properties
-    static let identifire = "MMReportCell"
+    static let identifier = "MMReportCell"
     let muralImageView = MMSquareImageView(frame: .zero)
     private let muralIDLabel = MMBodyLabel(textAlignment: .left)
     private let userIDLabel = MMBodyLabel(textAlignment: .left)

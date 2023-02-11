@@ -9,7 +9,7 @@ import UIKit
 
 class MMUserAddedMuralTableViewCell: UITableViewCell {
     
-    static let identifire = "MMUserAddedMuralTableViewCell"
+    static let identifier = "MMUserAddedMuralTableViewCell"
     let muralImageView = MMSquareImageView(frame: .zero)
     private let addressLabel = MMTitleLabel(textAlignment: .left, fontSize: 15)
     private let dateLabel = MMBodyLabel(textAlignment: .left)
