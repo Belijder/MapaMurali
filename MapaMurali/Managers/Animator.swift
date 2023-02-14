@@ -108,7 +108,7 @@ final class Animator: NSObject, UIViewControllerAnimatedTransitioning {
         let muralInfoRect = secondViewController.containerView.convert(secondViewController.containerView.bounds, to: window)
         let deleteButtonRect = secondViewController.deleteMuralButton.convert(secondViewController.deleteMuralButton.bounds, to: window)
         
-        let muralInfoHidedRect = muralInfoRect.offsetBy(dx: 0, dy: muralInfoRect.size.height)
+        let muralInfoHidedRect = muralInfoRect.offsetBy(dx: 0, dy: muralInfoRect.size.height + 50)
         
         
         [selectedCellImageViewSnapshot, controllerImageSnapshot].forEach { snapShot in
