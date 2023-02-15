@@ -57,7 +57,7 @@ class MMEmptyStateView: UIView {
         
         NSLayoutConstraint.activate([
             signetImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            signetImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 100),
+            signetImageView.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 50),
             signetImageView.widthAnchor.constraint(equalToConstant: 195),
             signetImageView.heightAnchor.constraint(equalToConstant: 210)
         ])

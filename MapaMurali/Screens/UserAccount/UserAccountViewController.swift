@@ -31,6 +31,7 @@ class UserAccountViewController: MMDataLoadingVC {
     private let userAddedMuralsCollectionView = UIView()
     private let userFavoriteMuralsCollectionView = UIView()
     
+    private let blockedUsersButton = MMFilledButton(foregroundColor: MMColors.secondary, backgroundColor: .secondarySystemBackground, title: "Zablokowani użytkownicy")
     private let rateAppButton = MMFilledButton(foregroundColor: MMColors.secondary, backgroundColor: .secondarySystemBackground, title: "Oceń aplikację!")
     private let sendMessageButton = MMFilledButton(foregroundColor: MMColors.secondary, backgroundColor: .secondarySystemBackground, title: "Napisz do nas!")
     private let showTermOfUseButton = MMFilledButton(foregroundColor: MMColors.secondary, backgroundColor: .secondarySystemBackground, title: "Regulamin")
@@ -138,6 +139,7 @@ class UserAccountViewController: MMDataLoadingVC {
         openAdminPanelButton.isUserInteractionEnabled = true
         openAdminPanelButton.addGestureRecognizer(tap)
         
+        blockedUsersButton.addTarget(self, action: #selector(blockedUsersButtonTapped), for: .touchUpInside)
         showTermOfUseButton.addTarget(self, action: #selector(showTermOfUse), for: .touchUpInside)
         showPrivacyPolicyButton.addTarget(self, action: #selector(showPrivacyPolicy), for: .touchUpInside)
         rateAppButton.addTarget(self, action: #selector(rateAppButtonTapped), for: .touchUpInside)
@@ -148,12 +150,12 @@ class UserAccountViewController: MMDataLoadingVC {
     }
     
     func layoutUI() {
-        contentView.addSubviews(usernameAndAvatar, userAddedMuralsCollectionView, openAdminPanelButton, userFavoriteMuralsCollectionView, rateAppButton, sendMessageButton, showTermOfUseButton, showPrivacyPolicyButton, logOutButton, deleteAccountAndDataButton)
+        contentView.addSubviews(usernameAndAvatar, userAddedMuralsCollectionView, openAdminPanelButton, userFavoriteMuralsCollectionView, blockedUsersButton, rateAppButton, sendMessageButton, showTermOfUseButton, showPrivacyPolicyButton, logOutButton, deleteAccountAndDataButton)
         
         userAddedMuralsCollectionView.translatesAutoresizingMaskIntoConstraints = false
         userFavoriteMuralsCollectionView.translatesAutoresizingMaskIntoConstraints = false
         
-        let allbuttons = [rateAppButton, sendMessageButton, showTermOfUseButton, showPrivacyPolicyButton, logOutButton, deleteAccountAndDataButton]
+        let allbuttons = [blockedUsersButton, rateAppButton, sendMessageButton, showTermOfUseButton, showPrivacyPolicyButton, logOutButton, deleteAccountAndDataButton]
 
         let padding: CGFloat = 20
         let betweenButtonPadding: CGFloat = 10
@@ -188,7 +190,8 @@ class UserAccountViewController: MMDataLoadingVC {
             userFavoriteMuralsCollectionView.topAnchor.constraint(equalTo: userAddedMuralsCollectionView.bottomAnchor, constant: 25),
             userFavoriteMuralsCollectionView.heightAnchor.constraint(equalToConstant: 170),
             
-            rateAppButton.topAnchor.constraint(equalTo: userFavoriteMuralsCollectionView.bottomAnchor, constant: sectionPadding),
+            blockedUsersButton.topAnchor.constraint(equalTo: userFavoriteMuralsCollectionView.bottomAnchor, constant: sectionPadding),
+            rateAppButton.topAnchor.constraint(equalTo: blockedUsersButton.bottomAnchor, constant: sectionPadding),
             sendMessageButton.topAnchor.constraint(equalTo: rateAppButton.bottomAnchor, constant: betweenButtonPadding),
             showTermOfUseButton.topAnchor.constraint(equalTo: sendMessageButton.bottomAnchor, constant: sectionPadding),
             showPrivacyPolicyButton.topAnchor.constraint(equalTo: showTermOfUseButton.bottomAnchor, constant: betweenButtonPadding),
@@ -271,6 +274,15 @@ class UserAccountViewController: MMDataLoadingVC {
                                                    loginManager: loginManager)
         self.navigationController?.pushViewController(destVC, animated: true)
     }
+    
+    
+    @objc private func blockedUsersButtonTapped() {
+        print("🟡 blockedUsersButton Tapped")
+        let destVC = BlockedUsersVC(databaseManager: databaseManager)
+        destVC.title = "Zablokowani użytkownicy"
+        self.navigationController?.pushViewController(destVC, animated: true)
+    }
+    
     
     @objc private func rateAppButtonTapped() {
         guard let writeReviewURL = URL(string: "https://apps.apple.com/app/id1659498483?action=write-review")

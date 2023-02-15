@@ -192,6 +192,7 @@ class CompleteUserDetailsViewController: MMDataLoadingVC {
         userData["isAdmin"] = false
         userData["muralsAdded"] = 0
         userData["favoritesMurals"] = [String]()
+        userData["blockedUsers"] = [String]()
         
         self.databaseManager.addNewUserToDatabase(id: userID, userData: userData, avatarImageData: avatarData) { success in
             if success {

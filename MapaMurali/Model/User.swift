@@ -15,4 +15,5 @@ struct User: Codable {
     var displayName: String
     var favoritesMurals: [String]
     var muralsAdded: Int
+    var blockedUsers: [String]
 }

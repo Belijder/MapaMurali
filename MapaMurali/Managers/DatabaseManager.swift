@@ -72,10 +72,13 @@ class DatabaseManager {
         }
     }
     
+    var blockedUsersPublisher = BehaviorSubject<[String]>(value: [])
+    
     var currentUser: User? {
         didSet {
             if let user = currentUser {
                 currentUserPublisher.onNext(user)
+                blockedUsersPublisher.onNext(user.blockedUsers)
                 if murals.isEmpty { fetchMuralItemsFromDatabase() }
                 if users.isEmpty { fetchMostActivUsers() }
                 if user.isAdmin {
@@ -176,26 +179,30 @@ class DatabaseManager {
             if error != nil {
                 return
             } else {
+                guard let user = self.currentUser else { return }
                 self.murals = []
+                
                 for document in querySnapshot!.documents {
                     let docRef = self.db.collection(CollectionName.murals.rawValue).document(document.documentID)
                     docRef.getDocument(as: Mural.self) { result in
                         switch result {
                         case .success(let mural):
-                            if mural.reviewStatus == 1 {
-                                self.murals.append(mural)
-                            } else if mural.reviewStatus == 0 {
-                                self.unreviewedMurals.append(mural)
-                            } else if mural.reviewStatus == 2 {
-                                self.reportedMurals.append(mural)
-                            }
+                            if !user.blockedUsers.contains(where: { $0 == mural.addedBy }) {
+                                if mural.reviewStatus == 1 {
+                                    self.murals.append(mural)
+                                } else if mural.reviewStatus == 0 {
+                                    self.unreviewedMurals.append(mural)
+                                } else if mural.reviewStatus == 2 {
+                                    self.reportedMurals.append(mural)
+                                }
 
-                            if mural.reviewStatus == 0 && mural.addedBy == self.currentUser?.id {
-                                self.murals.append(mural)
-                            }
-                            
-                            if mural.reviewStatus == 2 && mural.addedBy == self.currentUser?.id {
-                                self.murals.append(mural)
+                                if mural.reviewStatus == 0 && mural.addedBy == self.currentUser?.id {
+                                    self.murals.append(mural)
+                                }
+                                
+                                if mural.reviewStatus == 2 && mural.addedBy == self.currentUser?.id {
+                                    self.murals.append(mural)
+                                }
                             }
                         case .failure(_):
                             break
@@ -233,6 +240,8 @@ class DatabaseManager {
     
     
     func fetchMostActivUsers() {
+        guard let currentUser = currentUser else { return }
+        
         db.collection(CollectionName.users.rawValue).order(by: "muralsAdded").limit(to: 10).getDocuments { querySnapshot, error in
             if error != nil {
                 return
@@ -242,7 +251,7 @@ class DatabaseManager {
                     docRef.getDocument(as: User.self) { result in
                         switch result {
                         case .success(let user):
-                            if user.muralsAdded > 0 {
+                            if !currentUser.blockedUsers.contains(where: { $0 == user.id }) && user.muralsAdded > 0 {
                                 self.users.append(user)
                             }
                         case .failure(_):
@@ -578,5 +587,94 @@ class DatabaseManager {
                 completion(true)
             }
         })
+    }
+    
+    
+    func blockUserContent(userID: String, completion: @escaping (Bool) -> Void) {
+        guard let user = currentUser else {
+            completion(false)
+            return
+        }
+        
+        var blockedUsers = user.blockedUsers
+        blockedUsers.append(userID)
+        
+        let userRef = db.collection(CollectionName.users.rawValue).document(user.id)
+        
+        userRef.updateData([
+            "blockedUsers": blockedUsers
+        ]) { error in
+            if error != nil {
+                completion(false)
+            } else {
+                self.currentUser?.blockedUsers = blockedUsers
+                
+                var deletedMuralsIDs = [String]()
+                for mural in self.murals {
+                    if mural.addedBy == userID {
+                        deletedMuralsIDs.append(mural.docRef)
+                    }
+                }
+
+                self.murals.removeAll { $0.addedBy == userID }
+                
+                for id in deletedMuralsIDs {
+                    self.lastDeletedMuralID.onNext(id)
+                }
+                
+                if self.users.contains(where: { $0.id == userID }) {
+                    self.users.removeAll(where: { $0.id == userID })
+                }
+                
+                completion(true)
+            }
+        }
+    }
+    
+    func unblockUserContent(userID: String, completion: @escaping (Bool) -> Void) {
+        guard let user = currentUser else {
+            completion(false)
+            return
+        }
+        
+        let userRef = db.collection(CollectionName.users.rawValue).document(user.id)
+        
+        var blockedUsers = user.blockedUsers
+        blockedUsers.removeAll(where: { $0 == userID })
+        
+        userRef.updateData([
+            "blockedUsers": blockedUsers
+        ]) { error in
+            if error != nil {
+                completion(false)
+            } else {
+                self.currentUser?.blockedUsers = blockedUsers
+                
+                self.db.collection(CollectionName.murals.rawValue).whereField("addedBy", isEqualTo: userID).whereField("reviewStatus", isEqualTo: 1)
+                    .getDocuments { querySnapshot, error in
+                        if error != nil {
+                            return
+                        } else {
+                            for document in querySnapshot!.documents {
+                                let docRef = self.db.collection(CollectionName.murals.rawValue).document(document.documentID)
+                                docRef.getDocument(as: Mural.self) { result in
+                                    switch result {
+                                    case .success(let mural):
+                                        if !self.murals.contains(where: { $0.docRef == mural.docRef }) {
+                                            self.murals.append(mural)
+                                        }
+                                    case .failure(_):
+                                        break
+                                    }
+                                }
+                            }
+                        }
+                    }
+                
+                self.users = []
+                self.fetchMostActivUsers()
+                completion(true)
+            }
+        }
     }
 }

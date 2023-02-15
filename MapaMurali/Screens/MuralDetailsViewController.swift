@@ -449,16 +449,30 @@ class MuralDetailsViewController: UIViewController {
     
     @objc private func reportMural() {
         let actionSheet = UIAlertController(title: "Co chcesz zgłosić?", message: nil, preferredStyle: .actionSheet)
+        
         actionSheet.addAction(UIAlertAction(title: ReportType.controversialContent.rawValue, style: .destructive) { _ in
             self.createMuralReport(reportType: .controversialContent) })
+        
         actionSheet.addAction(UIAlertAction(title: ReportType.wrongAddress.rawValue, style: .default) { _ in
             self.createMuralReport(reportType: .wrongAddress)})
+        
         actionSheet.addAction(UIAlertAction(title: ReportType.wrongAuthor.rawValue, style: .default) { _ in
             self.createMuralReport(reportType: .wrongAuthor)})
+        
         actionSheet.addAction(UIAlertAction(title: ReportType.muralNoLongerExist.rawValue, style: .default) { _ in
             self.createMuralReport(reportType: .muralNoLongerExist)})
+        
         actionSheet.addAction(UIAlertAction(title: ReportType.otherReport.rawValue, style: .default) { _ in
             self.createMuralReport(reportType: ReportType.otherReport)})
+        
+        actionSheet.addAction(UIAlertAction(title: "Zablokuj użytkownika", style: .destructive) { _ in
+            self.databaseManager.blockUserContent(userID: self.muralItem.addedBy) { success in
+                if success {
+                    self.presentMMAlert(title: "Gotowe!", message: "Użytkownik został zablokowany. Od teraz nie będziesz widział treści dodawanych przez tego użytkownika.", buttonTitle: "Ok")
+                }
+            }
+        })
+        
         actionSheet.addAction(UIAlertAction(title: "Anuluj", style: .cancel))
         present(actionSheet, animated: true)
         
