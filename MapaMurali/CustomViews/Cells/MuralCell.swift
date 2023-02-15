@@ -34,4 +34,23 @@ class MuralCell: UICollectionViewCell, AnimatorCellProtocol {
     final func set(imageURL: String, imageType: ImageType, docRef: String, uiImageViewSize: CGSize) {
         muralImageView.downloadImage(fromURL: imageURL, imageType: imageType, docRef: docRef, uiImageViewSize: uiImageViewSize)
     }
+    
+    
+    final func addStatusOverlay(frame: CGRect) {
+        let overlayView = UIView(frame: frame)
+        overlayView.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.4)
+        
+        var configuration = UIImage.SymbolConfiguration(font: UIFont.systemFont(ofSize: 30))
+        configuration = configuration.applying(UIImage.SymbolConfiguration(paletteColors: [.secondarySystemBackground]))
+        guard let eyeImage = UIImage(systemName: "eye")?.withConfiguration(configuration) else { return }
+        let eyeImageView = UIImageView(frame: CGRect(x: overlayView.bounds.midX - (eyeImage.size.width / 2),
+                                                     y: overlayView.bounds.midY - (eyeImage.size.height / 2),
+                                                     width: eyeImage.size.width,
+                                                     height: eyeImage.size.height))
+        
+        eyeImageView.image = eyeImage
+        overlayView.addSubview(eyeImageView)
+        
+        self.muralImageView.addSubview(overlayView)
+    }
 }
