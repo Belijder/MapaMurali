@@ -96,7 +96,6 @@ extension UnreviewedMuralsVC: UITableViewDelegate {
         let muralID = self.databaseManager.unreviewedMurals[indexPath.row].docRef
         
         let acceptAction = UIContextualAction(style: .normal, title: "Zaakceptuj") { _, _, completed in
-            print("🟢 Mural zaakceptowano.")
             let userID = self.databaseManager.unreviewedMurals[indexPath.row].addedBy
             self.databaseManager.changeNumberOfMuralsAddedBy(user: userID, by: 1)
             self.databaseManager.acceptMural(muralID: muralID)
@@ -105,8 +104,6 @@ extension UnreviewedMuralsVC: UITableViewDelegate {
         }
         
         let rejectAction = UIContextualAction(style: .destructive, title: "Usuń") { _, _, completed in
-            print("🔴 Mural odrzucono.")
-            
             self.databaseManager.removeMural(for: muralID) { success in
                 if success == true {
                     self.databaseManager.lastDeletedMuralID.onNext(muralID)

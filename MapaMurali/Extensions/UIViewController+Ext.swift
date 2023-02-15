@@ -10,8 +10,8 @@ import UIKit
 import SafariServices
 
 extension UIViewController {
-    func presentMMAlert(title: String, message: String, buttonTitle: String) {
-        let alertVC = MMAlertVC(title: title, message: message, buttonTitle: buttonTitle)
+    func presentMMAlert(title: String, message: String, buttonTitle: String, actionForDismiss: (() -> Void)? = nil) {
+        let alertVC = MMAlertVC(title: title, message: message, buttonTitle: buttonTitle, actionForDismiss: actionForDismiss)
         alertVC.modalPresentationStyle = .overFullScreen
         alertVC.modalTransitionStyle = .crossDissolve
         present(alertVC, animated: true)

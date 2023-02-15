@@ -468,7 +468,9 @@ class MuralDetailsViewController: UIViewController {
         actionSheet.addAction(UIAlertAction(title: "Zablokuj użytkownika", style: .destructive) { _ in
             self.databaseManager.blockUserContent(userID: self.muralItem.addedBy) { success in
                 if success {
-                    self.presentMMAlert(title: "Gotowe!", message: "Użytkownik został zablokowany. Od teraz nie będziesz widział treści dodawanych przez tego użytkownika.", buttonTitle: "Ok")
+                    self.presentMMAlert(title: "Gotowe!", message: "Użytkownik został zablokowany. Od teraz nie będziesz widział treści dodawanych przez tego użytkownika.", buttonTitle: "Ok") {
+                        self.view.window?.rootViewController?.dismiss(animated: false)
+                    }
                 }
             }
         })
@@ -480,8 +482,6 @@ class MuralDetailsViewController: UIViewController {
     
     
     private func createMuralReport(reportType: ReportType) {
-        print("Report type: \(reportType.rawValue)")
-        
         guard let userID = databaseManager.currentUser?.id else {
             presentMMAlert(title: "Coś poszło nie tak!", message: "Nie udało się wysłać zgłoszenia. Sprawdź połączenie z internetem i spróbuj ponownie.", buttonTitle: "Ok")
             return

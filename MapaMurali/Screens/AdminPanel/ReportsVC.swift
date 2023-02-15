@@ -99,7 +99,6 @@ extension ReportsVC: UITableViewDelegate {
             let muralID = databaseManager.reports[indexPath.row].muralID
             
             let confirmAction = UIContextualAction(style: .normal, title: "Potwierdż") { _, _, completed in
-                print("🟢 Mural potwierdzono jako niestosowny.")
                 let userID = self.databaseManager.reports[indexPath.row].userID
                 
                 self.databaseManager.removeMural(for: muralID) { _ in
@@ -113,7 +112,6 @@ extension ReportsVC: UITableViewDelegate {
             }
             
             let rejectAction = UIContextualAction(style: .normal, title: "Odrzuć") { _, _, completed in
-                print("🔴 Odrzucono zgłoszenie.")
                 self.databaseManager.changeMuralReviewStatus(muralID: muralID, newStatus: 1) { _ in }
                 
                 self.databaseManager.removeReport(for: self.databaseManager.reports[indexPath.row].reportID) { _ in
@@ -134,7 +132,6 @@ extension ReportsVC: UITableViewDelegate {
             
             let reportID = self.databaseManager.reports[indexPath.row].reportID
             let deleteReport = UIContextualAction(style: .normal, title: "Usuń") { _, _, completed in
-                print("🟢 Usunięto zgłoszenie")
                 
                 self.databaseManager.removeReport(for: reportID) { _ in
                     self.databaseManager.reports.remove(at: indexPath.row)

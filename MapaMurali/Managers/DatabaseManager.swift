@@ -533,7 +533,6 @@ class DatabaseManager {
             }
             
             if let index = self.murals.firstIndex(where: { $0.docRef == muralID }) {
-                print("🟡 Item was in murals.")
                 var mural = self.murals[index]
                 mural.reviewStatus = newStatus
                 self.murals.remove(at: index)
@@ -541,7 +540,6 @@ class DatabaseManager {
                     self.reportedMurals.append(mural)
                 }
             } else if let index = self.reportedMurals.firstIndex(where: { $0.docRef == muralID }) {
-                print("🟡 Item was in reportedMurals.")
                 let mural = self.reportedMurals[index]
                 self.reportedMurals.remove(at: index)
                 if !self.murals.contains(where: { $0.docRef == muralID }) && newStatus == 1 {
@@ -566,7 +564,6 @@ class DatabaseManager {
                         switch result {
                         case .success(let report):
                             self.reports.append(report)
-                            print("🔵 Reports count: \(self.reports.count)")
                         case .failure(_):
                             break
                         }

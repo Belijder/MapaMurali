@@ -277,7 +277,6 @@ class UserAccountViewController: MMDataLoadingVC {
     
     
     @objc private func blockedUsersButtonTapped() {
-        print("🟡 blockedUsersButton Tapped")
         let destVC = BlockedUsersVC(databaseManager: databaseManager)
         destVC.title = "Zablokowani użytkownicy"
         self.navigationController?.pushViewController(destVC, animated: true)

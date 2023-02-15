@@ -18,13 +18,15 @@ class MMAlertVC: UIViewController {
     private var alertTitle: String?
     private var alertMessage: String?
     private var buttonTitle: String?
+    private var actionForDismiss: (() -> Void)?
     
     //MARK: - Initialization
-    init(title: String, message: String, buttonTitle: String) {
+    init(title: String, message: String, buttonTitle: String, actionForDismiss: (() -> Void)? = nil) {
         super.init(nibName: nil, bundle: nil)
         self.alertTitle = title
         self.alertMessage = message
         self.buttonTitle = buttonTitle
+        self.actionForDismiss = actionForDismiss
     }
     
     required init?(coder: NSCoder) {
@@ -84,6 +86,11 @@ class MMAlertVC: UIViewController {
     
     //MARK: - Actions
     @objc func dismissVC() {
-        self.dismiss(animated: true)
+        guard let dismissAction = actionForDismiss  else {
+            self.dismiss(animated: true)
+            return
+        }
+        
+        dismissAction()
     }
 }
