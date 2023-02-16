@@ -357,6 +357,11 @@ class MuralDetailsViewController: UIViewController {
     
     
     private func deleteMural() {
+        guard NetworkMonitor.shared.isConnected == true else {
+            presentMMAlert(title: "Brak połączenia", message: MMError.noConnectionDefaultMessage.rawValue, buttonTitle: "Ok")
+            return
+        }
+        
         self.databaseManager.removeMural(for: muralItem.docRef) { success in
             if success == true {
                 self.databaseManager.lastDeletedMuralID.onNext(self.muralItem.docRef)
@@ -379,6 +384,11 @@ class MuralDetailsViewController: UIViewController {
     
     
     @objc private func favoriteButtonTapped() {
+        guard NetworkMonitor.shared.isConnected == true else {
+            presentMMAlert(title: "Brak połączenia", message: MMError.noConnectionDefaultMessage.rawValue, buttonTitle: "Ok")
+            return
+        }
+        
         vm.favoriteButtonTapped()
     }
     
@@ -482,6 +492,11 @@ class MuralDetailsViewController: UIViewController {
     
     
     private func createMuralReport(reportType: ReportType) {
+        guard NetworkMonitor.shared.isConnected == true else {
+            presentMMAlert(title: "Brak połączenia", message: MMError.noConnectionDefaultMessage.rawValue, buttonTitle: "Ok")
+            return
+        }
+        
         guard let userID = databaseManager.currentUser?.id else {
             presentMMAlert(title: "Coś poszło nie tak!", message: "Nie udało się wysłać zgłoszenia. Sprawdź połączenie z internetem i spróbuj ponownie.", buttonTitle: "Ok")
             return

@@ -97,7 +97,7 @@ class UserAccountViewController: MMDataLoadingVC {
         
         NSLayoutConstraint.activate([
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            contentView.heightAnchor.constraint(equalToConstant: 940)
+            contentView.heightAnchor.constraint(equalToConstant: 1000)
         ])
     }
     
@@ -204,6 +204,7 @@ class UserAccountViewController: MMDataLoadingVC {
     @objc private func logOut() {
         loginManager.signOut()
         databaseManager.currentUser = nil
+        databaseManager.murals = []
         presentLoginScreen()
     }
     
@@ -217,6 +218,11 @@ class UserAccountViewController: MMDataLoadingVC {
     
     
     private func deleteAcountAndData(password: String) {
+        guard NetworkMonitor.shared.isConnected == true else {
+            presentMMAlert(title: "Brak połączenia", message: MMError.noConnectionDefaultMessage.rawValue, buttonTitle: "Ok")
+            return
+        }
+        
         showLoadingView(message: "Trwa usuwanie konta")
 
         loginManager.deleteAccount(password: password) { result in
@@ -336,6 +342,11 @@ class UserAccountViewController: MMDataLoadingVC {
     
 
     @objc private func deleteAcconutButtonTapped() {
+        guard NetworkMonitor.shared.isConnected == true else {
+            presentMMAlert(title: "Brak połączenia", message: MMError.noConnectionDefaultMessage.rawValue, buttonTitle: "Ok")
+            return
+        }
+        
         let alert = UIAlertController(title: "Usuń konto!",
                                       message: "Aby potwierdzić usunięcie konta oraz wszystkich związanych z nim danych, podaj hasło używane do zalogowania się do aplikacji. Pamiętej, że tej operacji nie będzie można cofnąć.",
                                       preferredStyle: .alert)

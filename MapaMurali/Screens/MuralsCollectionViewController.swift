@@ -18,6 +18,7 @@ class MuralsCollectionViewController: MMAnimableViewController {
     private var collectionView: UICollectionView!
     private var dataSource: UICollectionViewDiffableDataSource<Section, Mural>!
     let searchController = UISearchController()
+    var deviceisConnetedToInternet = false
     
     private let databaseManager: DatabaseManager
     private var disposeBag = DisposeBag()
@@ -51,6 +52,7 @@ class MuralsCollectionViewController: MMAnimableViewController {
         configureDataSource()
         configureSearchController()
         addMuralsObserver()
+        bindConnectionStatus()
         
         if murals.isEmpty && self.title == "Przeglądaj" { murals = databaseManager.murals }
         
@@ -64,6 +66,20 @@ class MuralsCollectionViewController: MMAnimableViewController {
             }
         }
         updateData(on: murals)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if deviceisConnetedToInternet == false {
+            if !NetworkMonitor.shared.isConnected {
+                if iTShoudShowNoConnentivityAlert() {
+                    presentMMAlert(title: "Brak połączenia", message: "Wygląda na to, że nie masz aktualnie połączenia z internetem. Aby w pełni korzystać z aplikacji musisz mieć aktywne połączenie.", buttonTitle: "Ok")
+                    NetworkMonitor.shared.lastTimeWhenNoConnentivityAlertWasShown = Date.now
+                }
+            } else {
+                deviceisConnetedToInternet = true
+            }
+        }
     }
     
     
@@ -81,12 +97,8 @@ class MuralsCollectionViewController: MMAnimableViewController {
         dataSource = UICollectionViewDiffableDataSource<Section, Mural>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, mural) -> UICollectionViewCell? in
             
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MuralCell.reuseID, for: indexPath) as! MuralCell
-            cell.set(imageURL: mural.thumbnailURL, imageType: .thumbnail, docRef: mural.docRef, uiImageViewSize: cell.bounds.size)
-            
-            if mural.reviewStatus == 0 {
-                cell.addStatusOverlay(frame: cell.bounds)
-            }
-            
+            cell.set(imageURL: mural.thumbnailURL, imageType: .thumbnail, docRef: mural.docRef, uiImageViewSize: cell.bounds.size, reviewStatus: mural.reviewStatus)
+
             ImagesManager.shared.downloadImage(from: mural.imageURL, imageType: .fullSize, name: mural.docRef) { _ in }
             
             return cell
@@ -114,6 +126,25 @@ class MuralsCollectionViewController: MMAnimableViewController {
     }
     
     
+    private func iTShoudShowNoConnentivityAlert() -> Bool {
+        guard let lastDate = NetworkMonitor.shared.lastTimeWhenNoConnentivityAlertWasShown else {
+            NetworkMonitor.shared.lastTimeWhenNoConnentivityAlertWasShown = Date.now
+            return true
+        }
+        
+        let currentDate = Date.now
+        let components = DateComponents(second: 40)
+        guard let dateToCompare = Calendar.current.date(byAdding: components, to: lastDate) else { return false }
+        
+        if currentDate.compare(dateToCompare) == .orderedDescending {
+            NetworkMonitor.shared.lastTimeWhenNoConnentivityAlertWasShown = Date.now
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    
     //MARK: - Actions
     @objc private func dismissVC() {
         navigationController?.dismiss(animated: true)
@@ -131,6 +162,23 @@ class MuralsCollectionViewController: MMAnimableViewController {
                 })
                 .disposed(by: disposeBag)
         }
+    }
+    
+    
+    private func bindConnectionStatus() {
+        NetworkMonitor.shared.connectionPublisher
+            .subscribe(onNext: { isConnected in
+                if !isConnected && self.deviceisConnetedToInternet == true {
+                    DispatchQueue.main.async {
+                        self.deviceisConnetedToInternet = false
+                        NetworkMonitor.shared.lastTimeWhenNoConnentivityAlertWasShown = Date.now
+                        self.presentMMAlert(title: "Brak połączenia", message: "Wygląda na to, że nie masz aktualnie połączenia z internetem. Aby w pełni korzystać z aplikacji musisz mieć aktywne połączenie.", buttonTitle: "Ok")
+                    }
+                } else if isConnected && self.deviceisConnetedToInternet == false {
+                    self.deviceisConnetedToInternet = true
+                }
+            })
+            .disposed(by: disposeBag)
     }
 }
 

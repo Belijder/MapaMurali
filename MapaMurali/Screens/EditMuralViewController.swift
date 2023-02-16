@@ -70,6 +70,11 @@ class EditMuralViewController: AddNewItemViewController {
     
     //MARK: - Actions
     override func callToActionButtonTapped() {
+        guard NetworkMonitor.shared.isConnected == true else {
+            presentMMAlert(title: "Brak połączenia", message: MMError.noConnectionDefaultMessage.rawValue, buttonTitle: "Ok")
+            return
+        }
+        
         self.showLoadingView(message: "Zapisywanie zmian...")
         
         vm.address = addressTextField.text

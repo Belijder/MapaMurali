@@ -123,6 +123,12 @@ extension ManageUserAddedMuralsVC: UITableViewDelegate {
         }
 
         let deleteAction = UIContextualAction(style: .destructive, title: "Usuń") { _, _, completed in
+            guard NetworkMonitor.shared.isConnected == true else {
+                self.presentMMAlert(title: "Brak połączenia", message: MMError.noConnectionDefaultMessage.rawValue, buttonTitle: "Ok")
+                completed(false)
+                return
+            }
+            
             let muralReviewStatus = self.userAddedMurals[indexPath.row].reviewStatus
             
             self.databaseManager.removeMural(for: muralID) { success in

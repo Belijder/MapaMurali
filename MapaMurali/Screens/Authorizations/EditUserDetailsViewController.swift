@@ -39,6 +39,11 @@ class EditUserDetailsViewController: CompleteUserDetailsViewController {
     
     //MARK: - Actions
     override func callToActionButtonTapped() {
+        guard NetworkMonitor.shared.isConnected == true else {
+            presentMMAlert(title: "Brak połączenia", message: MMError.noConnectionDefaultMessage.rawValue, buttonTitle: "Ok")
+            return
+        }
+        
         showLoadingView(message: "Uakualnianie informacji")
         
         guard let avatarData = avatarImage else {

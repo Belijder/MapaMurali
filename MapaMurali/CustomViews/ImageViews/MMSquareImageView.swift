@@ -36,15 +36,25 @@ class MMSquareImageView: UIImageView {
         do {
             try ImagesManager.shared.fetchDownsampledImageFromDirectory(from: url, imageType: imageType, name: docRef, uiImageSize: uiImageViewSize, completed: { [weak self] image in
                 guard let self = self else { return }
-                guard let image = image else { return }
+                guard let image = image else {
+                    guard let unknownErrorImage = MMImages.placeholderUnknownError else { return }
+                    self.image = unknownErrorImage
+                    return
+                }
                 let squareImage = image.cropImageToSquare()
                 
-                self.image = squareImage
+                DispatchQueue.main.async {
+                    self.image = squareImage
+                }
             })
         } catch {
             ImagesManager.shared.downloadImage(from: url, imageType: imageType, name: docRef) { [weak self] image in
                 guard let self = self else { return }
-                guard let image = image else { return }
+                guard let image = image else {
+                    guard let noConnectionErrorImage = MMImages.placeholderNoConnection else { return }
+                    self.image = noConnectionErrorImage
+                    return
+                }
                 let squareImage = image.cropImageToSquare()
                 
                 DispatchQueue.main.async {

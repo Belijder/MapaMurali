@@ -44,7 +44,7 @@ class DatabaseManager {
     var mapPinButtonTappedOnMural = PublishSubject<Mural>()
     var currentUserPublisher = PublishSubject<User>()
     
-    var muralItems = BehaviorSubject<[Mural]>(value: [])
+    var muralItems = PublishSubject<[Mural]>()
     var murals = [Mural]() {
         didSet { muralItems.onNext(murals) }
     }
@@ -418,6 +418,7 @@ class DatabaseManager {
                     switch result {
                     case .success(_):
                         self.currentUser = nil
+                        self.murals = []
                         completion(.success(true))
                     case .failure(let error):
                         completion(.failure(error))

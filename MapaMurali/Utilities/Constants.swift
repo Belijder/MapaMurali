@@ -23,6 +23,8 @@ enum MMImages {
     static let violetLogo = UIImage(named: "LogoViolet")
     static let addNewButton = UIImage(named: "addNewButton")
     static let placeholderImage = UIImage(named: "placeholder")
+    static let placeholderUnknownError = UIImage(named: "PlaceholderUnknownError")
+    static let placeholderNoConnection = UIImage(named: "PlaceholderNoConnection")
 }
 
 

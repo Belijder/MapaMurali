@@ -29,4 +29,6 @@ enum MMError: String, Error {
     
     case failedToAddNewReport
     case failedToChangeMuralReviewStatus
+    
+    case noConnectionDefaultMessage = "Wygląda na to, że nie masz aktualnie połączenia z internetem. Aby skorzystać z tej funkcji musisz mieć aktywne połączenie z internetem."
 }

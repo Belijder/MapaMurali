@@ -245,6 +245,11 @@ class AddNewItemViewController: MMDataLoadingVC {
     
     
     @objc private func localizationButtonTapped() {
+        guard NetworkMonitor.shared.isConnected == true else {
+            presentMMAlert(title: "Brak połączenia", message: MMError.noConnectionDefaultMessage.rawValue, buttonTitle: "Ok")
+            return
+        }
+        
         let status = locationManager.authorizationStatus
 
         switch status {
@@ -262,6 +267,11 @@ class AddNewItemViewController: MMDataLoadingVC {
     
     
     @objc func callToActionButtonTapped() {
+        guard NetworkMonitor.shared.isConnected == true else {
+            presentMMAlert(title: "Brak połączenia", message: "Wygląda na to, że nie masz aktualnie połączenia z internetem. Aby dodać mural do bazy danych musisz mieć aktywne połączenie z intenetem.", buttonTitle: "Ok")
+            return
+        }
+        
         guard let fullSizeImageData = self.vm.fullSizeImageData, let thumbnailImageData = self.vm.thumbnailImageData else {
             self.presentMMAlert(title: "Brak zdjęcia", message: "Wybierz lub zrób inne zdjęcie i spróbuj ponownie.", buttonTitle: "Ok")
             return
