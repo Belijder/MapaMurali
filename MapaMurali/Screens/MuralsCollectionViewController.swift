@@ -16,9 +16,10 @@ class MuralsCollectionViewController: MMAnimableViewController {
     
     //MARK: - Properties
     private var collectionView: UICollectionView!
+    private let noConncectionImageView = UIImageView()
     private var dataSource: UICollectionViewDiffableDataSource<Section, Mural>!
     let searchController = UISearchController()
-    var deviceisConnetedToInternet = false
+    var deviceIsConnetedToInternet = false
     
     private let databaseManager: DatabaseManager
     private var disposeBag = DisposeBag()
@@ -53,6 +54,7 @@ class MuralsCollectionViewController: MMAnimableViewController {
         configureSearchController()
         addMuralsObserver()
         bindConnectionStatus()
+        configureNoConnectionImage()
         
         if murals.isEmpty && self.title == "Przeglądaj" { murals = databaseManager.murals }
         
@@ -70,14 +72,16 @@ class MuralsCollectionViewController: MMAnimableViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if deviceisConnetedToInternet == false {
+        if deviceIsConnetedToInternet == false {
             if !NetworkMonitor.shared.isConnected {
+                noConncectionImageView.isHidden = false
                 if iTShoudShowNoConnentivityAlert() {
                     presentMMAlert(title: "Brak połączenia", message: "Wygląda na to, że nie masz aktualnie połączenia z internetem. Aby w pełni korzystać z aplikacji musisz mieć aktywne połączenie.", buttonTitle: "Ok")
                     NetworkMonitor.shared.lastTimeWhenNoConnentivityAlertWasShown = Date.now
                 }
             } else {
-                deviceisConnetedToInternet = true
+                deviceIsConnetedToInternet = true
+                noConncectionImageView.isHidden = true
             }
         }
     }
@@ -93,6 +97,26 @@ class MuralsCollectionViewController: MMAnimableViewController {
     }
     
     
+    private func configureNoConnectionImage() {
+        let config = UIImage.SymbolConfiguration(paletteColors: [.secondaryLabel])
+        let image = UIImage(systemName: "wifi.exclamationmark")?.withConfiguration(config)
+        noConncectionImageView.image = image
+        noConncectionImageView.contentMode = .scaleAspectFit
+        
+        noConncectionImageView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(noConncectionImageView)
+        
+        NSLayoutConstraint.activate([
+            noConncectionImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 58),
+            noConncectionImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            noConncectionImageView.widthAnchor.constraint(equalToConstant: 25),
+            noConncectionImageView.heightAnchor.constraint(equalToConstant: 21),
+        ])
+
+        noConncectionImageView.isHidden = true
+    }
+
+
     private func configureDataSource() {
         dataSource = UICollectionViewDiffableDataSource<Section, Mural>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, mural) -> UICollectionViewCell? in
             
@@ -168,14 +192,16 @@ class MuralsCollectionViewController: MMAnimableViewController {
     private func bindConnectionStatus() {
         NetworkMonitor.shared.connectionPublisher
             .subscribe(onNext: { isConnected in
-                if !isConnected && self.deviceisConnetedToInternet == true {
+                if !isConnected && self.deviceIsConnetedToInternet == true {
                     DispatchQueue.main.async {
-                        self.deviceisConnetedToInternet = false
+                        self.deviceIsConnetedToInternet = false
+                        self.noConncectionImageView.isHidden = false
                         NetworkMonitor.shared.lastTimeWhenNoConnentivityAlertWasShown = Date.now
                         self.presentMMAlert(title: "Brak połączenia", message: "Wygląda na to, że nie masz aktualnie połączenia z internetem. Aby w pełni korzystać z aplikacji musisz mieć aktywne połączenie.", buttonTitle: "Ok")
                     }
-                } else if isConnected && self.deviceisConnetedToInternet == false {
-                    self.deviceisConnetedToInternet = true
+                } else if isConnected && self.deviceIsConnetedToInternet == false {
+                    self.deviceIsConnetedToInternet = true
+                    self.noConncectionImageView.isHidden = true
                 }
             })
             .disposed(by: disposeBag)
