@@ -35,6 +35,8 @@ class BlockedUsersVC: MMDataLoadingVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        let backButton = UIBarButtonItem(image: UIImage(systemName: "arrow.backward"), style: .plain, target: self, action: #selector(self.dismissVC))
+        navigationItem.leftBarButtonItem = backButton
         configureBlockedUsersTableView()
         bindBlockedUsersTableView()
         addBlockedUsersObserver()
@@ -48,6 +50,12 @@ class BlockedUsersVC: MMDataLoadingVC {
         muralsTableView.delegate = self
         muralsTableView.backgroundColor = .systemBackground
         muralsTableView.register(MMBlockedUserTableViewCell.self, forCellReuseIdentifier: MMBlockedUserTableViewCell.identifier)
+    }
+    
+    
+    // MARK: - Actions
+    @objc private func dismissVC() {
+        self.navigationController?.popToRootViewController(animated: true)
     }
     
     
