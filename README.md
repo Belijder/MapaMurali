@@ -13,7 +13,7 @@ Mapa Murali is a mobile application designed for iPhone users that allows users 
 
 ## Screenshots
 
-![Mapa Murali screenshot](https://drive.google.com/file/d/1f95JVtCeYOV0hKtyaNPUOf34onkwKGfO/view?usp=share_link)
+![Mapa Murali screenshot](https://github.com/Belijder/MapaMurali/blob/master/MapaMuraliScreenshots.jpg)
 
 ## Contribution
 
