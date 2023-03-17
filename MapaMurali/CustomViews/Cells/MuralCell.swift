@@ -33,7 +33,7 @@ class MuralCell: UICollectionViewCell, AnimatorCellProtocol {
     
     final func set(imageURL: String, imageType: ImageType, docRef: String, uiImageViewSize: CGSize, reviewStatus: Int) {
         muralImageView.downloadImage(fromURL: imageURL, imageType: imageType, docRef: docRef, uiImageViewSize: uiImageViewSize)
-        if reviewStatus == 0 {
+        if reviewStatus == 0 && muralImageView.subviews.count == 0 {
             addStatusOverlay(frame: CGRect(x: 0, y: 0, width: uiImageViewSize.width, height: uiImageViewSize.height))
         }
     }
@@ -60,6 +60,6 @@ class MuralCell: UICollectionViewCell, AnimatorCellProtocol {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        muralImageView = MMSquareImageView(frame: .zero)
+        muralImageView.subviews.forEach { $0.removeFromSuperview() }
     }
 }

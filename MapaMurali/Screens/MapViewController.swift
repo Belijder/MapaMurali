@@ -280,6 +280,7 @@ extension MapViewController: MKMapViewDelegate {
                 ?? MMAnnotationView(annotation: item, reuseIdentifier: MMAnnotationView.reuseIdentifier) as MMAnnotationView
             
             annotationView.clusteringIdentifier = "muralItemClustered"
+            annotationView.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
             annotationView.setImage(thumbnailURL: thumbnailURL!, docRef: docRef!)
             
             return annotationView

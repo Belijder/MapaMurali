@@ -12,7 +12,7 @@ final class MMAnnotationView: MKAnnotationView, AnimatorCellProtocol {
     
     //MARK: - Properties
     static let reuseIdentifier = "MMAnnotationReuseID"
-    var muralImageView = MMSquareImageView(frame: .zero)
+    var muralImageView = MMSquareImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
 
     
     //MARK: - Initialization
@@ -36,15 +36,25 @@ final class MMAnnotationView: MKAnnotationView, AnimatorCellProtocol {
     
     private func setupUI() {
         backgroundColor = .clear
+        
         addSubview(muralImageView)
-        muralImageView.frame = bounds
+        NSLayoutConstraint.activate([
+            muralImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            muralImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            muralImageView.heightAnchor.constraint(equalToConstant: 40),
+            muralImageView.widthAnchor.constraint(equalToConstant: 40)
+        ])
     }
     
     
     func setImage(thumbnailURL: String, docRef: String) {
-        frame = CGRect(x: 0, y: 0, width: 50, height: 50)
         canShowCallout = false
-
-        muralImageView.downloadImageAndCropItToCircle(fromURL: thumbnailURL, imageType: .thumbnail, docRef: docRef, uiImageViewSize: CGSize(width: 50, height: 50))
+        
+        muralImageView.downloadImage(fromURL: thumbnailURL, imageType: .thumbnail, docRef: docRef, uiImageViewSize: CGSize(width: 40, height: 40))
+        
+        self.layer.cornerRadius = RadiusValue.mapPinRadiusValue
+        self.layer.borderWidth = 2
+        self.layer.borderColor = MMColors.primary.cgColor
+        self.clipsToBounds = true
     }
 }
