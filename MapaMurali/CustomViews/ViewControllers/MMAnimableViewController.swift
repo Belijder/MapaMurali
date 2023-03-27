@@ -39,7 +39,8 @@ class MMAnimableViewController: MMDataLoadingVC {
                 self.present(destVC, animated: true)
             })
         } catch {
-            ImagesManager.shared.downloadImage(from: mural.imageURL, imageType: .fullSize, name: mural.docRef) { image in
+            ImagesManager.shared.downloadImage(from: mural.imageURL, imageType: .fullSize, name: mural.docRef) { [weak self] image in
+                guard let self = self else { return }
                 DispatchQueue.main.async {
                     destVC.imageView.image = image
                     self.dismissLoadingView()
