@@ -32,6 +32,7 @@
 		427C1A642910E899000E5619 /* MMFavoritesMuralCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427C1A632910E899000E5619 /* MMFavoritesMuralCollectionCell.swift */; };
 		427CAB5528E60D3200DA7247 /* AddNewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427CAB5428E60D3200DA7247 /* AddNewViewModel.swift */; };
 		427CAB5828E9A83400DA7247 /* MMAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427CAB5728E9A83300DA7247 /* MMAnnotationView.swift */; };
+		427E374D29D1995200967DB8 /* ValidateAuthProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427E374C29D1995200967DB8 /* ValidateAuthProtocol.swift */; };
 		42824F02295C64C000C33AA5 /* VerificationEmailSendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42824F01295C64C000C33AA5 /* VerificationEmailSendViewController.swift */; };
 		42824F042964378200C33AA5 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42824F032964378100C33AA5 /* Utilities.swift */; };
 		42824F0629645E6200C33AA5 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42824F0529645E6200C33AA5 /* Message.swift */; };
@@ -141,6 +142,7 @@
 		427C1A632910E899000E5619 /* MMFavoritesMuralCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMFavoritesMuralCollectionCell.swift; sourceTree = "<group>"; };
 		427CAB5428E60D3200DA7247 /* AddNewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewViewModel.swift; sourceTree = "<group>"; };
 		427CAB5728E9A83300DA7247 /* MMAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMAnnotationView.swift; sourceTree = "<group>"; };
+		427E374C29D1995200967DB8 /* ValidateAuthProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidateAuthProtocol.swift; sourceTree = "<group>"; };
 		42824F01295C64C000C33AA5 /* VerificationEmailSendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationEmailSendViewController.swift; sourceTree = "<group>"; };
 		42824F032964378100C33AA5 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		42824F0529645E6200C33AA5 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
@@ -253,6 +255,7 @@
 				42EA93AA294A4D49006F3EF0 /* MapaMurali.entitlements */,
 				426E49FE28931180009C8E99 /* AppDelegate.swift */,
 				426E4A0028931180009C8E99 /* SceneDelegate.swift */,
+				427E374B29D198F300967DB8 /* Protocols */,
 				4289AEC628E2169F00C3FFF5 /* Model */,
 				429A021628CFAF5C00CD6862 /* Utilities */,
 				429A021328CFAD7100CD6862 /* Extensions */,
@@ -316,6 +319,14 @@
 				427BD5A928EB6063005F686A /* MMAnnotationClusterView.swift */,
 			);
 			path = AnnotationsViews;
+			sourceTree = "<group>";
+		};
+		427E374B29D198F300967DB8 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				427E374C29D1995200967DB8 /* ValidateAuthProtocol.swift */,
+			);
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 		4283BAAE28D5E20800A54F0F /* ImageViews */ = {
@@ -609,6 +620,7 @@
 				42618DD42914312D0052DB76 /* StatisticsViewModel.swift in Sources */,
 				42867B6428958F5B00E5159F /* MainTabBarViewController.swift in Sources */,
 				42D9EA232922D1EA00A7A9DC /* MMUserAddedMuralTableViewCell.swift in Sources */,
+				427E374D29D1995200967DB8 /* ValidateAuthProtocol.swift in Sources */,
 				42618DD6291655720052DB76 /* MMUsersTableViewInTableViewCell.swift in Sources */,
 				42E61C3928FAC03C00D38205 /* MMUsernameWithAvatarView.swift in Sources */,
 				4283BAB428D606B100A54F0F /* MMCircleButton.swift in Sources */,

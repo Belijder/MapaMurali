@@ -10,11 +10,11 @@ import FirebaseAuth
 import RxSwift
 import CoreLocation
 
-class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
+final class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate, ValidateAuthProtocol {
     
     //MARK: - Properties
-    private let loginManager: LoginManager
-    private let databaseManager: DatabaseManager
+    let loginManager: LoginManager
+    let databaseManager: DatabaseManager
     private var disposeBag = DisposeBag()
 
     
@@ -39,6 +39,21 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
         super.viewDidLoad()
         self.delegate = self
         
+        setupViewControllers()
+        setupMiddleButton()
+        
+        addMapPinButtonTappedObserver()
+        addUserLoginObserver()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        validateAuth()
+    }
+    
+
+    // MARK: - Set up
+    private final func setupViewControllers() {
         let addNewVC = AddNewItemViewController(databaseManager: databaseManager)
 
         let mapNC = UINavigationController(rootViewController: MapViewController(databaseManager: databaseManager))
@@ -75,76 +90,10 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
         tabBar.tintColor = MMColors.primary
         
         setViewControllers([mapNC, collectionNC, addNC, statisticsNC, accountNC], animated: true)
-        
-        setupMiddleButton()
-        
-        addMapPinButtonTappedObserver()
-        addUserLoginObserver()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        validateAuth()
-    }
-    
-    //MARK: - Logic
-    private func validateAuth() {
-        guard databaseManager.currentUser == nil else {
-            if databaseManager.currentUser!.displayName.isEmpty {
-                let destVC = CompleteUserDetailsViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
-                destVC.modalPresentationStyle = .fullScreen
-                self.present(destVC, animated: false)
-            }
-            return
-        }
-        
-        if FirebaseAuth.Auth.auth().currentUser == nil {
-            let destVC = SingInViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
-            destVC.modalPresentationStyle = .fullScreen
-            destVC.navigationController?.navigationBar.tintColor = MMColors.primary
-            destVC.navigationController?.navigationBar.backItem?.title = "Zaloguj się"
-            present(destVC, animated: false)
-        } else {
-            if FirebaseAuth.Auth.auth().currentUser?.isEmailVerified == false {
-                loginManager.reloadUserStatus { success in
-                    if success {
-                        if self.databaseManager.currentUser == nil {
-                            let destVC = CompleteUserDetailsViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
-                            destVC.modalPresentationStyle = .fullScreen
-                            self.present(destVC, animated: false)
-                        } else {
-                            return
-                        }
-                    } else {
-                        let destVC = VerificationEmailSendViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
-                        destVC.modalPresentationStyle = .fullScreen
-                        self.present(destVC, animated: false)
-                    }
-                }
-            } else {
-                if databaseManager.currentUser == nil {
-                    do {
-                        try databaseManager.fetchCurrenUserData() { success in
-                            if success {
-                                self.validateAuth()
-                            } else {
-                                let destVC = CompleteUserDetailsViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
-                                destVC.modalPresentationStyle = .fullScreen
-                                self.present(destVC, animated: false)
-                            }
-                        }
-                    } catch {
-                        let destVC = SingInViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
-                        destVC.modalPresentationStyle = .fullScreen
-                        self.present(destVC, animated: false)
-                    }
-                }
-            }
-        }
     }
     
     
-    private func setupMiddleButton() {
+    private final func setupMiddleButton() {
         let middleButton = UIButton(frame: CGRect(x: self.tabBar.frame.midX - 30, y: -10, width: 60, height: 60))
         
         middleButton.setBackgroundImage(MMImages.addNewButton, for: .normal)
@@ -159,13 +108,14 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
     }
     
     
+    // MARK: - Actions
     @objc func addNewItemButtonAction() {
         self.selectedIndex = 2
     }
     
     
     //MARK: - Biding
-    func addMapPinButtonTappedObserver() {
+    private final func addMapPinButtonTappedObserver() {
         databaseManager.mapPinButtonTappedOnMural
             .subscribe(onNext: { [weak self] _ in
                 guard let self = self else { return }
@@ -175,7 +125,7 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
     }
     
     
-    func addUserLoginObserver() {
+    private final func addUserLoginObserver() {
         loginManager.userIsLoggedIn
             .subscribe(onNext: { [weak self] value in
                 guard let self = self else { return }
