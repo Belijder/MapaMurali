@@ -19,9 +19,10 @@ class MMBodyLabel: UILabel {
         fatalError("init(coder:) has not been implemented")
     }
     
-    convenience init(textAlignment: NSTextAlignment) {
+    convenience init(textAlignment: NSTextAlignment, text: String? = nil) {
         self.init(frame: .zero)
         self.textAlignment = textAlignment
+        self.text = text
     }
     
     

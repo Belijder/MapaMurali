@@ -30,6 +30,7 @@ enum MMImages {
 
 enum MMMessages {
     static let noPermissionsMessage = (title: "Brak uprawnień", message: "Aby wyświetlić swoją lokalizację na mapie musisz wyrazić zgodę na używanie Twojej lokalizacji. Przejdź do Ustawienia > MapaMurali i wyraź zgodę.")
+    static let cannotSendMail = (title: "Nie można wysłać maila", message: "Sprawdź czy masz skonfugurowanego klienta pocztowego i spróbuj ponownie.")
 }
 
 
