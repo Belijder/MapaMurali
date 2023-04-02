@@ -11,15 +11,17 @@ import CoreLocation
 import RxSwift
 import QuartzCore
 
-final class MapViewController: MMAnimableViewController {
-    
+final class MapViewController: MMAnimableViewController, MapViewPresenting, LocationUpdating {
+
     //MARK: - Properties
     let databaseManager: DatabaseManager
+    private let mapDelegate: MapViewDelegate
+    private let locationManagerDelegate: MapViewLocationDelegate
     
-    let map = MKMapView()
-    let locationManager = CLLocationManager()
+    private let map = MKMapView()
+    private let locationManager = CLLocationManager()
 
-    var clusteredMurals = [Mural]() {
+    private var clusteredMurals = [Mural]() {
         didSet {
             clusteredMuralsPublisher.onNext(clusteredMurals)
         }
@@ -47,6 +49,8 @@ final class MapViewController: MMAnimableViewController {
     //MARK: - Initialization
     init(databaseManager: DatabaseManager) {
         self.databaseManager = databaseManager
+        mapDelegate = MapViewDelegate(databaseManager: databaseManager)
+        locationManagerDelegate = MapViewLocationDelegate(databaseManager: databaseManager)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -79,12 +83,15 @@ final class MapViewController: MMAnimableViewController {
     
     //MARK: - Set up
     private func configureLocationManager() {
-        locationManager.delegate = self
+        locationManager.delegate = locationManagerDelegate
+        locationManagerDelegate.parentController = self
     }
     
     
     private func configureMapView() {
-        map.delegate = self
+        map.delegate = mapDelegate
+        mapDelegate.parentController = self
+        
         map.showsUserLocation = true
         map.pointOfInterestFilter = .excludingAll
         map.userTrackingMode = .none
@@ -129,6 +136,57 @@ final class MapViewController: MMAnimableViewController {
                                                                        longitude: coordinate.longitude),
                                                                        span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
         map.setRegion(region, animated: true)
+    }
+    
+    func presentDetailVC(muralItem: Mural, cell: MKAnnotationView) {
+        self.selectedCell = cell as? MMAnnotationView
+        self.cellShape = .circle(radius: RadiusValue.mapPinRadiusValue)
+        self.clusteredCollectionView.alpha = 0.0
+        self.setSnapshotsForAnimation()
+        
+        self.showLoadingView(message: nil)
+        let destVC = MuralDetailsViewController(muralItem: muralItem, databaseManager: databaseManager, presentingVCTitle: self.title)
+        destVC.modalPresentationStyle = .fullScreen
+        destVC.transitioningDelegate = self
+        
+        ImagesManager.shared.downloadImage(from: muralItem.imageURL, imageType: .fullSize, name: muralItem.docRef) { image in
+            DispatchQueue.main.async {
+                destVC.imageView.image = image
+                self.dismissLoadingView()
+                self.present(destVC, animated: true)
+            }
+        }
+    }
+    
+    
+    func didSelectClusteredAnnotation(clusterAnnotation: MKClusterAnnotation) {
+        UIView.animate(withDuration: 0.1) { self.clusteredCollectionView.alpha = 1.0 }
+        var murals = [Mural]()
+        for annotation in clusterAnnotation.memberAnnotations {
+            if let mural = databaseManager.murals.first(where: { $0.docRef == annotation.title }) {
+                murals.append(mural)
+            }
+        }
+        clusteredMurals = murals
+    }
+    
+    
+    func hideClusteredMuralsCollection() {
+        clusteredMurals = []
+        self.clusteredCollectionView.alpha = 0
+    }
+    
+    
+    func presentNoPermissionsMessage() {
+        self.presentMMAlert(title: MMMessages.noPermissionsMessage.title, message: MMMessages.noPermissionsMessage.message, buttonTitle: "Ok")
+        if map.userTrackingMode != .none {
+            map.userTrackingMode = .none
+        }
+    }
+    
+    
+    func dismissToRootVC() {
+        self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
     }
 
     

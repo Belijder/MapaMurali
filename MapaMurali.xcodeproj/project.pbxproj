@@ -33,9 +33,10 @@
 		427CAB5528E60D3200DA7247 /* AddNewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427CAB5428E60D3200DA7247 /* AddNewViewModel.swift */; };
 		427CAB5828E9A83400DA7247 /* MMAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427CAB5728E9A83300DA7247 /* MMAnnotationView.swift */; };
 		427E374D29D1995200967DB8 /* ValidateAuthProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427E374C29D1995200967DB8 /* ValidateAuthProtocol.swift */; };
-		427E374F29D1B49100967DB8 /* MapViewController+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427E374E29D1B49100967DB8 /* MapViewController+Ext.swift */; };
 		427E375129D2E6F200967DB8 /* MuralInformationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427E375029D2E6F200967DB8 /* MuralInformationVC.swift */; };
 		427E375329D2FE6600967DB8 /* ReportMuralProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427E375229D2FE6600967DB8 /* ReportMuralProtocol.swift */; };
+		427E379229D6E97400967DB8 /* MapViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427E379129D6E97400967DB8 /* MapViewDelegate.swift */; };
+		427E379429D9D04700967DB8 /* MapViewLocationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427E379329D9D04700967DB8 /* MapViewLocationDelegate.swift */; };
 		42824F02295C64C000C33AA5 /* VerificationEmailSendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42824F01295C64C000C33AA5 /* VerificationEmailSendViewController.swift */; };
 		42824F042964378200C33AA5 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42824F032964378100C33AA5 /* Utilities.swift */; };
 		42824F0629645E6200C33AA5 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42824F0529645E6200C33AA5 /* Message.swift */; };
@@ -146,9 +147,10 @@
 		427CAB5428E60D3200DA7247 /* AddNewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewViewModel.swift; sourceTree = "<group>"; };
 		427CAB5728E9A83300DA7247 /* MMAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMAnnotationView.swift; sourceTree = "<group>"; };
 		427E374C29D1995200967DB8 /* ValidateAuthProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidateAuthProtocol.swift; sourceTree = "<group>"; };
-		427E374E29D1B49100967DB8 /* MapViewController+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapViewController+Ext.swift"; sourceTree = "<group>"; };
 		427E375029D2E6F200967DB8 /* MuralInformationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuralInformationVC.swift; sourceTree = "<group>"; };
 		427E375229D2FE6600967DB8 /* ReportMuralProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportMuralProtocol.swift; sourceTree = "<group>"; };
+		427E379129D6E97400967DB8 /* MapViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewDelegate.swift; sourceTree = "<group>"; };
+		427E379329D9D04700967DB8 /* MapViewLocationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewLocationDelegate.swift; sourceTree = "<group>"; };
 		42824F01295C64C000C33AA5 /* VerificationEmailSendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationEmailSendViewController.swift; sourceTree = "<group>"; };
 		42824F032964378100C33AA5 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		42824F0529645E6200C33AA5 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
@@ -363,7 +365,8 @@
 				4275EB8E295ADAA4004946ED /* Authorizations */,
 				42867B6328958F5B00E5159F /* MainTabBarViewController.swift */,
 				426E4A0228931180009C8E99 /* MapViewController.swift */,
-				427E374E29D1B49100967DB8 /* MapViewController+Ext.swift */,
+				427E379129D6E97400967DB8 /* MapViewDelegate.swift */,
+				427E379329D9D04700967DB8 /* MapViewLocationDelegate.swift */,
 				42E61C2F28F3143100D38205 /* MuralsCollectionViewController.swift */,
 				42867B662895901000E5159F /* AddNewViewController.swift */,
 				42D9EA2429260E0000A7A9DC /* EditMuralViewController.swift */,
@@ -652,6 +655,7 @@
 				429A021B28CFCC7100CD6862 /* MMPlainButton.swift in Sources */,
 				42824F0629645E6200C33AA5 /* Message.swift in Sources */,
 				427C1A642910E899000E5619 /* MMFavoritesMuralCollectionCell.swift in Sources */,
+				427E379229D6E97400967DB8 /* MapViewDelegate.swift in Sources */,
 				428BD65E28DE30B0000B8D69 /* MMTitleLabel.swift in Sources */,
 				4275A282299BBF7B00BD48A1 /* MMBlockedUserTableViewCell.swift in Sources */,
 				427874B329964D800031DD93 /* ReportsVC.swift in Sources */,
@@ -669,7 +673,6 @@
 				427874B92997BD240031DD93 /* ReviewStatusLegendVC.swift in Sources */,
 				425E108B299D0E1D000F9F70 /* NetworkMonitor.swift in Sources */,
 				42E61C2A28F2DC7800D38205 /* Date+Ext.swift in Sources */,
-				427E374F29D1B49100967DB8 /* MapViewController+Ext.swift in Sources */,
 				42E61C3F29053F0400D38205 /* MuralDetailsViewModel.swift in Sources */,
 				42E61C2628F1CE1D00D38205 /* MMFullSizeImageView.swift in Sources */,
 				428BD66128DE322A000B8D69 /* MMAlertContainerView.swift in Sources */,
@@ -689,6 +692,7 @@
 				42D9EA2529260E0000A7A9DC /* EditMuralViewController.swift in Sources */,
 				428CEADA29214070006BC964 /* MMUserFavoritesMuralsCollectionVC.swift in Sources */,
 				427E375329D2FE6600967DB8 /* ReportMuralProtocol.swift in Sources */,
+				427E379429D9D04700967DB8 /* MapViewLocationDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
