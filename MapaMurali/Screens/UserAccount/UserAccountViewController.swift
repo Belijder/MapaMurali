@@ -210,7 +210,7 @@ class UserAccountViewController: MMDataLoadingVC {
     
     
     private func presentLoginScreen() {
-        let destVC = SingInViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
+        let destVC = SignInViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
         destVC.modalPresentationStyle = .fullScreen
         destVC.navigationController?.navigationBar.tintColor = MMColors.primary
         present(destVC, animated: false)
@@ -248,7 +248,7 @@ class UserAccountViewController: MMDataLoadingVC {
     
     private func validateAuth() {
         if FirebaseAuth.Auth.auth().currentUser == nil {
-            let destVC = SingInViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
+            let destVC = SignInViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
             destVC.modalPresentationStyle = .fullScreen
             destVC.navigationController?.navigationBar.tintColor = MMColors.primary
             destVC.navigationController?.navigationBar.backItem?.title = "Zaloguj się"

@@ -1,5 +1,5 @@
 //
-//  SingUpViewController.swift
+//  SignUpViewController.swift
 //  MapaMurali
 //
 //  Created by Jakub Zajda on 04/08/2022.
@@ -9,7 +9,7 @@ import UIKit
 import FirebaseAuth
 import RxSwift
 
-class SingUpViewController: UIViewController {
+class SignUpViewController: UIViewController {
     
     //MARK: - Properties
     private let loginManager: LoginManager
@@ -20,7 +20,7 @@ class SingUpViewController: UIViewController {
     private let emailTextField = MMTextField(placeholder: "email", type: .email)
     private let passwordTextField = MMTextField(placeholder: "hasło", type: .password)
     private let confirmPasswordTextField = MMTextField(placeholder: "powtórz hasło", type: .password)
-    private let singUpButton = MMFilledButton(foregroundColor: .white, backgroundColor: MMColors.violetDark, title: "Zarejestruj się!")
+    private let signUpButton = MMFilledButton(foregroundColor: .white, backgroundColor: MMColors.violetDark, title: "Zarejestruj się!")
     
     private let acceptTermOfUseLabel = MMBodyLabel(textAlignment: .left)
     private let acceptTermOfUseToggle = UISwitch()
@@ -51,7 +51,7 @@ class SingUpViewController: UIViewController {
         configureViewController()
         configureUIElements()
         layoutUI()
-        addSingInObserver()
+        addSignInObserver()
         createDissmisKeyboardTapGesture()
     }
     
@@ -93,9 +93,9 @@ class SingUpViewController: UIViewController {
         
         setUpLegalTermsSwitches()
         
-        singUpButton.addTarget(self, action: #selector(singUpButtonTapped), for: .touchUpInside)
+        signUpButton.addTarget(self, action: #selector(signUpButtonTapped), for: .touchUpInside)
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(returnToSingInView))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(returnToSignInView))
         returnToLogInButton.isUserInteractionEnabled = true
         returnToLogInButton.addGestureRecognizer(tap)
         
@@ -125,7 +125,7 @@ class SingUpViewController: UIViewController {
     
     
     private func layoutUI() {
-        view.addSubviews(titleLabel, emailTextField, passwordTextField, confirmPasswordTextField, acceptTermOfUseLabel, acceptTermOfUseToggle, acceptPrivacyPolicyLabel, acceptPrivacyPolicyToggle, singUpButton, returnToLogInButton)
+        view.addSubviews(titleLabel, emailTextField, passwordTextField, confirmPasswordTextField, acceptTermOfUseLabel, acceptTermOfUseToggle, acceptPrivacyPolicyLabel, acceptPrivacyPolicyToggle, signUpButton, returnToLogInButton)
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         acceptPrivacyPolicyToggle.translatesAutoresizingMaskIntoConstraints = false
@@ -133,14 +133,14 @@ class SingUpViewController: UIViewController {
         
         let padding: CGFloat = 20
         
-        [titleLabel, emailTextField, passwordTextField, confirmPasswordTextField, acceptTermOfUseLabel, acceptPrivacyPolicyLabel, singUpButton, returnToLogInButton].forEach { element in
+        [titleLabel, emailTextField, passwordTextField, confirmPasswordTextField, acceptTermOfUseLabel, acceptPrivacyPolicyLabel, signUpButton, returnToLogInButton].forEach { element in
             NSLayoutConstraint.activate([
                 element.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
                 element.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding)
             ])
         }
         
-        [emailTextField, passwordTextField, confirmPasswordTextField, singUpButton].forEach {
+        [emailTextField, passwordTextField, confirmPasswordTextField, signUpButton].forEach {
                 $0.heightAnchor.constraint(equalToConstant: 50).isActive = true
         }
         
@@ -162,7 +162,7 @@ class SingUpViewController: UIViewController {
             acceptPrivacyPolicyToggle.centerYAnchor.constraint(equalTo: acceptPrivacyPolicyLabel.centerYAnchor),
             acceptPrivacyPolicyToggle.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
             
-            singUpButton.topAnchor.constraint(equalTo: acceptPrivacyPolicyToggle.bottomAnchor, constant: padding),
+            signUpButton.topAnchor.constraint(equalTo: acceptPrivacyPolicyToggle.bottomAnchor, constant: padding),
             returnToLogInButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -padding),
             returnToLogInButton.heightAnchor.constraint(equalToConstant: 20)
         ])
@@ -208,7 +208,7 @@ class SingUpViewController: UIViewController {
     
     
     //MARK: - Actions
-    @objc private func singUpButtonTapped() {
+    @objc private func signUpButtonTapped() {
         let errorMessage = validateFields()
         if errorMessage != nil {
             presentMMAlert(message: errorMessage!)
@@ -229,7 +229,7 @@ class SingUpViewController: UIViewController {
                 return
             }
             
-            self.loginManager.singUp(email: cleanedEmail, password: cleanedPassword) { uid in
+            self.loginManager.signUp(email: cleanedEmail, password: cleanedPassword) { uid in
                 let destVC = VerificationEmailSendViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
                 destVC.modalPresentationStyle = .fullScreen
                 self.present(destVC, animated: true)
@@ -270,13 +270,13 @@ class SingUpViewController: UIViewController {
     }
     
     
-    @objc private func returnToSingInView() {
+    @objc private func returnToSignInView() {
         self.dismiss(animated: true)
     }
     
     
     //MARK: - Binding
-    private func addSingInObserver() {
+    private func addSignInObserver() {
         loginManager.userIsLoggedIn
             .subscribe(onNext: { [weak self] value in
                 guard let self = self else { return }
@@ -290,7 +290,7 @@ class SingUpViewController: UIViewController {
 
 
 //MARK: - Extensions
-extension SingUpViewController: UITextFieldDelegate {
+extension SignUpViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if let nextField = textField.superview?.viewWithTag(textField.tag + 1) as? UITextField {
             nextField.becomeFirstResponder()

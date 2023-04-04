@@ -1,5 +1,5 @@
 //
-//  LoginViewController.swift
+//  SignInViewController.swift
 //  MapaMurali
 //
 //  Created by Jakub Zajda on 30/07/2022.
@@ -10,7 +10,7 @@ import RxSwift
 import RxCocoa
 
 
-class SingInViewController: UIViewController {
+class SignInViewController: UIViewController {
     
     //MARK: - Properties
     private var loginManager: LoginManager
@@ -22,7 +22,7 @@ class SingInViewController: UIViewController {
     
     private let emailTextField = MMTextField(placeholder: "e-mail", type: .email)
     private let passwordTextField = MMTextField(placeholder: "hasło", type: .password)
-    private let singInButton = MMFilledButton(foregroundColor: .white, backgroundColor: MMColors.violetDark, title: "Zaloguj się")
+    private let signInButton = MMFilledButton(foregroundColor: .white, backgroundColor: MMColors.violetDark, title: "Zaloguj się")
     
     private let registerButton = MMBodyLabel(textAlignment: .center)
     private let resetPasswordButton = MMBodyLabel(textAlignment: .center)
@@ -50,7 +50,7 @@ class SingInViewController: UIViewController {
         
         configureUIElements()
         layoutUI()
-        addSingInObserver()
+        addSignInObserver()
         createDissmisKeyboardTapGesture()
     }
     
@@ -85,11 +85,11 @@ class SingInViewController: UIViewController {
         passwordTextField.attributedPlaceholder = NSAttributedString(string: "hasło",
                                                                   attributes: [NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.5)])
         
-        singInButton.addTarget(self, action: #selector(tryToSingIn), for: .touchUpInside)
+        signInButton.addTarget(self, action: #selector(tryToSignIn), for: .touchUpInside)
         
         registerButton.textColor = MMColors.violetLight
         registerButton.createStringWithUnderlinedTextForRegistracionForm(plainText: "Nie masz konta?", textToUnderline: "Zarejestruj się")
-        let registerTap = UITapGestureRecognizer(target: self, action: #selector(singUpButtonPressed))
+        let registerTap = UITapGestureRecognizer(target: self, action: #selector(signUpButtonPressed))
         registerButton.isUserInteractionEnabled = true
         registerButton.addGestureRecognizer(registerTap)
         
@@ -101,17 +101,17 @@ class SingInViewController: UIViewController {
     
     
     private func layoutUI() {
-        view.addSubviews(logoImage, titleLabel, emailTextField, passwordTextField, singInButton, registerButton, resetPasswordButton)
+        view.addSubviews(logoImage, titleLabel, emailTextField, passwordTextField, signInButton, registerButton, resetPasswordButton)
         logoImage.translatesAutoresizingMaskIntoConstraints = false
         
         let padding: CGFloat = 20
 
-        [titleLabel, emailTextField, passwordTextField, singInButton, registerButton, resetPasswordButton].forEach { element in
+        [titleLabel, emailTextField, passwordTextField, signInButton, registerButton, resetPasswordButton].forEach { element in
             element.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding).isActive = true
             element.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding).isActive = true
         }
         
-        [emailTextField, passwordTextField, singInButton].forEach { $0.heightAnchor.constraint(equalToConstant: 50).isActive = true }
+        [emailTextField, passwordTextField, signInButton].forEach { $0.heightAnchor.constraint(equalToConstant: 50).isActive = true }
         
         NSLayoutConstraint.activate([
             logoImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
@@ -124,9 +124,9 @@ class SingInViewController: UIViewController {
             
             emailTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
             passwordTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: padding),
-            singInButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: padding),
+            signInButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: padding),
             
-            registerButton.topAnchor.constraint(equalTo: singInButton.bottomAnchor, constant: 30),
+            registerButton.topAnchor.constraint(equalTo: signInButton.bottomAnchor, constant: 30),
             registerButton.heightAnchor.constraint(equalToConstant: 20),
             
             resetPasswordButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -padding),
@@ -157,7 +157,7 @@ class SingInViewController: UIViewController {
     }
     
     //MARK: - Actions
-    @objc private func tryToSingIn(sender: UIButton!) {
+    @objc private func tryToSignIn(sender: UIButton!) {
         let faildMessage = validateFields()
         if faildMessage != nil {
             presentMMAlert(message: faildMessage!)
@@ -167,20 +167,20 @@ class SingInViewController: UIViewController {
         let cleanedEmail = emailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         let cleanedPassword = passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         
-        loginManager.singIn(email: cleanedEmail, password: cleanedPassword) { message in
+        loginManager.signIn(email: cleanedEmail, password: cleanedPassword) { message in
             if message != nil {
                 self.presentMMAlert(message: message!)
             }
         }
     }
     
-    @objc private func singUpButtonPressed(sender: UIButton!) {
-        let singUpVC = SingUpViewController(loginManager: loginManager, databaseManager: databaseManager)
-        singUpVC.modalPresentationStyle = .fullScreen
-        singUpVC.navigationController?.isNavigationBarHidden = false
+    @objc private func signUpButtonPressed(sender: UIButton!) {
+        let signUpVC = SignUpViewController(loginManager: loginManager, databaseManager: databaseManager)
+        signUpVC.modalPresentationStyle = .fullScreen
+        signUpVC.navigationController?.isNavigationBarHidden = false
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "Powrót do logowania", style: .plain, target: nil, action: nil)
         
-        self.present(singUpVC, animated: true)
+        self.present(signUpVC, animated: true)
     }
     
     @objc private func resetPasswordButtonTapped() {
@@ -215,7 +215,7 @@ class SingInViewController: UIViewController {
     
     
     //MARK: - Binding
-    private func addSingInObserver() {
+    private func addSignInObserver() {
         loginManager.userIsLoggedIn
             .subscribe(onNext: { [weak self] value in
                 guard let self = self else { return }
@@ -228,7 +228,7 @@ class SingInViewController: UIViewController {
 }
 
 //MARK: - Extensions
-extension SingInViewController: UITextFieldDelegate {
+extension SignInViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if let nextField = textField.superview?.viewWithTag(textField.tag + 1) as? UITextField {
             nextField.becomeFirstResponder()

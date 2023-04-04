@@ -48,7 +48,7 @@
 		42867B6428958F5B00E5159F /* MainTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42867B6328958F5B00E5159F /* MainTabBarViewController.swift */; };
 		42867B672895901000E5159F /* AddNewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42867B662895901000E5159F /* AddNewViewController.swift */; };
 		42867B69289590BD00E5159F /* UserAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42867B68289590BD00E5159F /* UserAccountViewController.swift */; };
-		42867B6B28959CE400E5159F /* SingInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42867B6A28959CE400E5159F /* SingInViewController.swift */; };
+		42867B6B28959CE400E5159F /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42867B6A28959CE400E5159F /* SignInViewController.swift */; };
 		42867B702896FC8100E5159F /* LoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42867B6F2896FC8100E5159F /* LoginManager.swift */; };
 		42867B7228998A3200E5159F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 42867B7128998A3200E5159F /* GoogleService-Info.plist */; };
 		42867B7528998CD800E5159F /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 42867B7428998CD800E5159F /* FirebaseAuth */; };
@@ -56,7 +56,7 @@
 		42867B7928998CD800E5159F /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 42867B7828998CD800E5159F /* FirebaseStorage */; };
 		42867B7C2899C42900E5159F /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 42867B7B2899C42900E5159F /* RxCocoa */; };
 		42867B7E2899C42900E5159F /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 42867B7D2899C42900E5159F /* RxSwift */; };
-		42867B80289C4CC600E5159F /* SingUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42867B7F289C4CC600E5159F /* SingUpViewController.swift */; };
+		42867B80289C4CC600E5159F /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42867B7F289C4CC600E5159F /* SignUpViewController.swift */; };
 		4289AEC028E2110500C3FFF5 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4289AEBF28E2110500C3FFF5 /* DatabaseManager.swift */; };
 		4289AEC328E211B200C3FFF5 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 4289AEC228E211B200C3FFF5 /* FirebaseFirestore */; };
 		4289AEC528E211B200C3FFF5 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4289AEC428E211B200C3FFF5 /* FirebaseFirestoreSwift */; };
@@ -162,10 +162,10 @@
 		42867B6328958F5B00E5159F /* MainTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarViewController.swift; sourceTree = "<group>"; };
 		42867B662895901000E5159F /* AddNewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewViewController.swift; sourceTree = "<group>"; };
 		42867B68289590BD00E5159F /* UserAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAccountViewController.swift; sourceTree = "<group>"; };
-		42867B6A28959CE400E5159F /* SingInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingInViewController.swift; sourceTree = "<group>"; };
+		42867B6A28959CE400E5159F /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		42867B6F2896FC8100E5159F /* LoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginManager.swift; sourceTree = "<group>"; };
 		42867B7128998A3200E5159F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		42867B7F289C4CC600E5159F /* SingUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingUpViewController.swift; sourceTree = "<group>"; };
+		42867B7F289C4CC600E5159F /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		4289AEBF28E2110500C3FFF5 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		4289AEC728E216C200C3FFF5 /* Mural.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mural.swift; sourceTree = "<group>"; };
 		428A42E5298A8C27005D6EFD /* EditUserDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserDetailsViewController.swift; sourceTree = "<group>"; };
@@ -291,8 +291,8 @@
 		4275EB8E295ADAA4004946ED /* Authorizations */ = {
 			isa = PBXGroup;
 			children = (
-				42867B6A28959CE400E5159F /* SingInViewController.swift */,
-				42867B7F289C4CC600E5159F /* SingUpViewController.swift */,
+				42867B6A28959CE400E5159F /* SignInViewController.swift */,
+				42867B7F289C4CC600E5159F /* SignUpViewController.swift */,
 				42824F01295C64C000C33AA5 /* VerificationEmailSendViewController.swift */,
 				42EA93AB294DA8AB006F3EF0 /* CompleteUserDetailsViewController.swift */,
 				428A42E5298A8C27005D6EFD /* EditUserDetailsViewController.swift */,
@@ -626,8 +626,8 @@
 				4289AEC828E216C200C3FFF5 /* Mural.swift in Sources */,
 				427874BB2997D5B40031DD93 /* FullScreenImageVC.swift in Sources */,
 				4289AEC028E2110500C3FFF5 /* DatabaseManager.swift in Sources */,
-				42867B6B28959CE400E5159F /* SingInViewController.swift in Sources */,
-				42867B80289C4CC600E5159F /* SingUpViewController.swift in Sources */,
+				42867B6B28959CE400E5159F /* SignInViewController.swift in Sources */,
+				42867B80289C4CC600E5159F /* SignUpViewController.swift in Sources */,
 				4275A280299BBBD400BD48A1 /* BlockedUsersVC.swift in Sources */,
 				42867B702896FC8100E5159F /* LoginManager.swift in Sources */,
 				429A022028CFD0E000CD6862 /* MMBodyLabel.swift in Sources */,

@@ -20,7 +20,7 @@ class LoginManager {
     
     
     //MARK: - Sign in
-    func singIn(email: String, password: String, completion: @escaping (MessageTuple?) -> Void) {
+    func signIn(email: String, password: String, completion: @escaping (MessageTuple?) -> Void) {
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
             if let error = error {
                 let nsError = error as NSError
@@ -52,7 +52,7 @@ class LoginManager {
     func resetPasswordFor(email: String, completion: @escaping (Result<Bool, MMError>) -> Void) {
         checkIfEmailIsNOTAlreadyRegistered(email: email) { mailIsNotRegistered, error in
             guard error == nil else {
-                completion(.failure(MMError.failedToFetchSingInMethods))
+                completion(.failure(MMError.failedToFetchSignInMethods))
                 return
             }
             
@@ -73,7 +73,7 @@ class LoginManager {
     
     
     //MARK: - Sign up
-    func singUp(email: String, password: String, completion: @escaping (String) -> Void) {
+    func signUp(email: String, password: String, completion: @escaping (String) -> Void) {
         Auth.auth().createUser(withEmail: email, password: password) { result, error in
             guard let result = result else { return }
             guard let userEmail = result.user.email else {
@@ -137,7 +137,7 @@ class LoginManager {
     func checkIfEmailIsNOTAlreadyRegistered(email: String, completion: @escaping (Bool, MMError?) -> Void) {
         Auth.auth().fetchSignInMethods(forEmail: email) { providers, error in
             if error != nil {
-                completion(false, MMError.failedToFetchSingInMethods)
+                completion(false, MMError.failedToFetchSignInMethods)
             }
             
             if providers == nil {

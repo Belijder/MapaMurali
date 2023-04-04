@@ -46,7 +46,7 @@ class CompleteUserDetailsViewController: MMDataLoadingVC {
         configureViewController()
         configureUIElements()
         layoutUI()
-        addSingInObserver()
+        addSignInObserver()
     }
     
     
@@ -206,7 +206,7 @@ class CompleteUserDetailsViewController: MMDataLoadingVC {
     
     
     //MARK: - Bindings
-    private func addSingInObserver() {
+    private func addSignInObserver() {
         loginManager.userIsLoggedIn
             .subscribe(onNext: { [weak self] value in
                 guard let self = self else { return }

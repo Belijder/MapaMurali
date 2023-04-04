@@ -43,7 +43,7 @@ extension ValidateAuthProtocol {
         }
         
         if FirebaseAuth.Auth.auth().currentUser == nil {
-            let destVC = SingInViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
+            let destVC = SignInViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
             destVC.modalPresentationStyle = .fullScreen
             destVC.navigationController?.navigationBar.tintColor = MMColors.primary
             destVC.navigationController?.navigationBar.backItem?.title = "Zaloguj się"
@@ -78,7 +78,7 @@ extension ValidateAuthProtocol {
                             }
                         }
                     } catch {
-                        let destVC = SingInViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
+                        let destVC = SignInViewController(loginManager: self.loginManager, databaseManager: self.databaseManager)
                         destVC.modalPresentationStyle = .fullScreen
                         self.present(destVC, animated: false)
                     }

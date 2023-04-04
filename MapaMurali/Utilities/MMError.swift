@@ -18,7 +18,7 @@ enum MMError: String, Error {
     case failedToGetLegalTerms = "Nie udało się pobrać regulaminu. Sprawdź połączenie z interentem i spróbuj ponownie."
     case failedToGetPolicyPrivacy = "Nie udało się pobrać polityki prywatności. Sprawdź połączenie z interentem i spróbuj ponownie."
     
-    case failedToFetchSingInMethods = "Wystąpił błąd przy próbie weryfikacji maila. Sprawdź połączenie z internetem i spróbuj ponownie."
+    case failedToFetchSignInMethods = "Wystąpił błąd przy próbie weryfikacji maila. Sprawdź połączenie z internetem i spróbuj ponownie."
     
     case accountNotExist = "Konto o podanym mailu nie istnieje. Załóż konto."
     case failedToSendPasswordResset = "Nie udało się wysłać prośby o zresetowanie hasła. Sprawdź połączenie z internetem i spróbuj ponownie"
