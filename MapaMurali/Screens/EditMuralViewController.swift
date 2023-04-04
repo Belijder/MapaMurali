@@ -71,7 +71,7 @@ class EditMuralViewController: AddNewItemViewController {
     //MARK: - Actions
     override func callToActionButtonTapped() {
         guard NetworkMonitor.shared.isConnected == true else {
-            presentMMAlert(title: "Brak połączenia", message: MMError.noConnectionDefaultMessage.rawValue, buttonTitle: "Ok")
+            presentMMAlert(title: "Brak połączenia", message: MMError.noConnectionDefaultMessage.rawValue)
             return
         }
         
@@ -81,7 +81,7 @@ class EditMuralViewController: AddNewItemViewController {
         vm.city = cityTextField.text
         
         guard let address = vm.address, let city = vm.city else {
-            self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: MMError.invalidAddress.rawValue, buttonTitle: "Ok")
+            self.presentMMAlert(title: MMMessages.customErrorTitle, message: MMError.invalidAddress.rawValue)
             return
         }
         
@@ -89,7 +89,7 @@ class EditMuralViewController: AddNewItemViewController {
         
         vm.getCoordinate(addressString: addressString) { location, error in
             if error != nil {
-                self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: MMError.invalidAddress.rawValue, buttonTitle: "Ok")
+                self.presentMMAlert(title: MMMessages.customErrorTitle, message: MMError.invalidAddress.rawValue)
                 return
             }
             

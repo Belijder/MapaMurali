@@ -40,7 +40,7 @@ class EditUserDetailsViewController: CompleteUserDetailsViewController {
     //MARK: - Actions
     override func callToActionButtonTapped() {
         guard NetworkMonitor.shared.isConnected == true else {
-            presentMMAlert(title: "Brak połączenia", message: MMError.noConnectionDefaultMessage.rawValue, buttonTitle: "Ok")
+            presentMMAlert(title: "Brak połączenia", message: MMError.noConnectionDefaultMessage.rawValue)
             return
         }
         
@@ -48,20 +48,20 @@ class EditUserDetailsViewController: CompleteUserDetailsViewController {
         
         guard let avatarData = avatarImage else {
             dismissLoadingView()
-            presentMMAlert(title: "Dodaj avatar", message: "Dodaj avatar do swojego konta.", buttonTitle: "Ok")
+            presentMMAlert(message: MMMessages.addAvatar)
             return
         }
         
         guard let nickname = nickNameTextField.text,
               nickname.count > 2 else {
             dismissLoadingView()
-            presentMMAlert(title: "Zbyt krótko!", message: "Nazwa użytkownika musi posiadać minimum trzy znaki.", buttonTitle: "Ok")
+            presentMMAlert(message: MMMessages.usernameToShort)
             return
         }
         
         guard let userID = databaseManager.currentUser?.id else {
             dismissLoadingView()
-            presentMMAlert(title: "Ups", message: "Coś poszło nie tak. Nie udało się edytować informacji. Spróbuj ponownie za chwilę.", buttonTitle: "Ok")
+            presentMMAlert(message: MMMessages.unableToEditAccountInfo)
             return
         }
         
@@ -86,7 +86,7 @@ class EditUserDetailsViewController: CompleteUserDetailsViewController {
                 self.dismissLoadingView()
                 self.navigationController?.popViewController(animated: true)
             } else {
-                self.presentMMAlert(title: "Ups", message: "Coś poszło nie tak. Nie udało się edytować informacji. Spróbuj ponownie za chwilę.", buttonTitle: "Ok")
+                self.presentMMAlert(message: MMMessages.unableToEditAccountInfo)
             }
         }
     }

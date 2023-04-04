@@ -219,7 +219,7 @@ class UserAccountViewController: MMDataLoadingVC {
     
     private func deleteAcountAndData(password: String) {
         guard NetworkMonitor.shared.isConnected == true else {
-            presentMMAlert(title: "Brak połączenia", message: MMError.noConnectionDefaultMessage.rawValue, buttonTitle: "Ok")
+            presentMMAlert(title: "Brak połączenia", message: MMError.noConnectionDefaultMessage.rawValue)
             return
         }
         
@@ -240,7 +240,7 @@ class UserAccountViewController: MMDataLoadingVC {
                 }
                 PersistenceManager.instance.deleteFolderWithMuralImages()
             case .failure(let error):
-                self.presentMMAlert(title: "Ups!", message: error.rawValue, buttonTitle: "Ok")
+                self.presentMMAlert(title: "Ups!", message: error.rawValue)
             }
         }
     }
@@ -304,7 +304,7 @@ class UserAccountViewController: MMDataLoadingVC {
             mail.setMessageBody("<p>W czym możemy pomóc? :)</p>", isHTML: true)
             present(mail, animated: true)
         } else {
-            presentMMAlert(title: "Nie można wysłać maila", message: "Sprawdź czy masz skonfugurowanego klienta pocztowego i spróbuj ponownie. ", buttonTitle: "Ok")
+            presentMMAlert(message: MMMessages.cannotSendMail)
         }
     }
     
@@ -314,12 +314,12 @@ class UserAccountViewController: MMDataLoadingVC {
             switch result {
             case.success(let terms):
                 guard let url = URL(string: terms.termOfUse) else {
-                    self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: MMError.failedToGetLegalTerms.rawValue, buttonTitle: "Ok")
+                    self.presentMMAlert(title: MMMessages.customErrorTitle, message: MMError.failedToGetLegalTerms.rawValue)
                     return
                 }
                 self.presentSafariVC(with: url)
             case .failure(let error):
-                self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: error.rawValue, buttonTitle: "Ok")
+                self.presentMMAlert(title: MMMessages.customErrorTitle, message: error.rawValue)
             }
         }
     }
@@ -330,12 +330,12 @@ class UserAccountViewController: MMDataLoadingVC {
             switch result {
             case.success(let terms):
                 guard let url = URL(string: terms.privacyPolicy) else {
-                    self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: MMError.failedToGetPolicyPrivacy.rawValue, buttonTitle: "Ok")
+                    self.presentMMAlert(title: MMMessages.customErrorTitle, message: MMError.failedToGetPolicyPrivacy.rawValue)
                     return
                 }
                 self.presentSafariVC(with: url)
             case .failure(let error):
-                self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: error.rawValue, buttonTitle: "Ok")
+                self.presentMMAlert(title: MMMessages.customErrorTitle, message: error.rawValue)
             }
         }
     }
@@ -343,12 +343,12 @@ class UserAccountViewController: MMDataLoadingVC {
 
     @objc private func deleteAcconutButtonTapped() {
         guard NetworkMonitor.shared.isConnected == true else {
-            presentMMAlert(title: "Brak połączenia", message: MMError.noConnectionDefaultMessage.rawValue, buttonTitle: "Ok")
+            presentMMAlert(title: "Brak połączenia", message: MMError.noConnectionDefaultMessage.rawValue)
             return
         }
         
-        let alert = UIAlertController(title: "Usuń konto!",
-                                      message: "Aby potwierdzić usunięcie konta oraz wszystkich związanych z nim danych, podaj hasło używane do zalogowania się do aplikacji. Pamiętej, że tej operacji nie będzie można cofnąć.",
+        let alert = UIAlertController(title: MMMessages.deletingAccount.title,
+                                      message: MMMessages.deletingAccount.message,
                                       preferredStyle: .alert)
         
         alert.addTextField { field in

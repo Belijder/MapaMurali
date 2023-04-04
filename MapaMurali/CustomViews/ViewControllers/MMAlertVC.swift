@@ -15,18 +15,18 @@ class MMAlertVC: UIViewController {
     private let messageLabel = MMBodyLabel(textAlignment: .center)
     private let actionButton = MMTintedButton(color: MMColors.primary, title: "Ok")
     
-    private var alertTitle: String?
-    private var alertMessage: String?
-    private var buttonTitle: String?
+    private var alertTitle: String
+    private var alertMessage: String
+    private var buttonTitle: String
     private var actionForDismiss: (() -> Void)?
     
     //MARK: - Initialization
     init(title: String, message: String, buttonTitle: String, actionForDismiss: (() -> Void)? = nil) {
-        super.init(nibName: nil, bundle: nil)
         self.alertTitle = title
         self.alertMessage = message
         self.buttonTitle = buttonTitle
         self.actionForDismiss = actionForDismiss
+        super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {
@@ -47,12 +47,12 @@ class MMAlertVC: UIViewController {
     
     //MARK: - Set up
     private func configure() {
-        titleLabel.text = alertTitle ?? "Coś poszło nie tak."
+        titleLabel.text = alertTitle
         
-        messageLabel.text = alertMessage ?? "Nie mogliśmy ukończyć tego żądania"
+        messageLabel.text = alertMessage
         messageLabel.numberOfLines = 5
         
-        actionButton.setTitle(buttonTitle ?? "Ok", for: .normal)
+        actionButton.setTitle(buttonTitle, for: .normal)
         actionButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
     }
     
@@ -86,7 +86,7 @@ class MMAlertVC: UIViewController {
     
     //MARK: - Actions
     @objc func dismissVC() {
-        guard let dismissAction = actionForDismiss  else {
+        guard let dismissAction = actionForDismiss else {
             self.dismiss(animated: true)
             return
         }

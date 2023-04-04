@@ -36,7 +36,7 @@ extension ReportMuralProtocol {
         actionSheet.addAction(UIAlertAction(title: "Zablokuj użytkownika", style: .destructive) { _ in
             self.databaseManager.blockUserContent(userID: self.muralItem.addedBy) { success in
                 if success {
-                    self.presentMMAlert(title: "Gotowe!", message: "Użytkownik został zablokowany. Od teraz nie będziesz widział treści dodawanych przez tego użytkownika.", buttonTitle: "Ok") {
+                    self.presentMMAlert(message: MMMessages.userHasBeenBlocked) {
                         self.view.window?.rootViewController?.dismiss(animated: false)
                     }
                 }
@@ -51,12 +51,12 @@ extension ReportMuralProtocol {
     
     private func createMuralReport(reportType: ReportType) {
         guard NetworkMonitor.shared.isConnected == true else {
-            presentMMAlert(title: "Brak połączenia", message: MMError.noConnectionDefaultMessage.rawValue, buttonTitle: "Ok")
+            presentMMAlert(title: "Brak połączenia", message: MMError.noConnectionDefaultMessage.rawValue)
             return
         }
         
         guard let userID = databaseManager.currentUser?.id else {
-            presentMMAlert(title: "Coś poszło nie tak!", message: "Nie udało się wysłać zgłoszenia. Sprawdź połączenie z internetem i spróbuj ponownie.", buttonTitle: "Ok")
+            presentMMAlert(message: MMMessages.unableToSentReport)
             return
         }
         
@@ -70,9 +70,9 @@ extension ReportMuralProtocol {
                         switch result {
                         case .success(_):
                             self.databaseManager.lastReportedMuralID.onNext(self.muralItem.docRef)
-                            self.showAddMoreDetailsForReport(reportType: .controversialContent, title: "Zgłoszenie przyjęte!", message: "Mural został tymczasowo ukryty do czasu przeanalizowania Twojego zgłoszenia przez administratorów. Dokładamy wszelkich starań, aby nasza aplikacja była wolna od kontrowersyjnych treści. Czy chciałbyś dodać więcej szczegółów odnośnie zgłoszenia?", reportID: reportID)
+                            self.showAddMoreDetailsForReport(reportType: .controversialContent, title: MMMessages.reportAccepted.title, message: MMMessages.reportAccepted.message, reportID: reportID)
                         case .failure(_):
-                            self.presentMMAlert(title: "Coś poszło nie tak!", message: "Nie udało się wysłać zgłoszenia. Sprawdź połączenie z internetem i spróbuj ponownie.", buttonTitle: "Ok")
+                            self.presentMMAlert(message: MMMessages.unableToSentReport)
                         }
                     }
                 case .wrongAddress:
@@ -86,7 +86,7 @@ extension ReportMuralProtocol {
                 }
                 
             case .failure(_):
-                self.presentMMAlert(title: "Coś poszło nie tak!", message: "Nie udało się wysłać zgłoszenia. Sprawdź połączenie z internetem i spróbuj ponownie.", buttonTitle: "Ok")
+                self.presentMMAlert(message: MMMessages.unableToSentReport)
             }
         }
     }

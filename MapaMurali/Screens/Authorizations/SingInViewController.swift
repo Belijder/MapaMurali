@@ -141,16 +141,16 @@ class SingInViewController: UIViewController {
     }
     
     //MARK: - Logic
-    private func validateFields() -> Message? {
+    private func validateFields() -> MessageTuple? {
         if emailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" ||
             passwordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
-            return Message(title: "Uzupełnij pola", body: "Aby się zalogować musisz wypełnić pola z adresem email i hasłem.")
+            return MMMessages.signIncompleteTheFields
         }
         
         let cleanedEmail = emailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         
         if Utilities.isEmailValid(cleanedEmail) == false {
-            return Message(title: "Nieprawidłowy email", body: "Ten email nie wygląda na prawidłowy. Popraw adres i spróbuj ponownie.")
+            return MMMessages.invalidEmail
         }
         
         return nil
@@ -160,7 +160,7 @@ class SingInViewController: UIViewController {
     @objc private func tryToSingIn(sender: UIButton!) {
         let faildMessage = validateFields()
         if faildMessage != nil {
-            presentMMAlert(title: faildMessage!.title, message: faildMessage!.body, buttonTitle: "Ok")
+            presentMMAlert(message: faildMessage!)
             return
         }
         
@@ -169,7 +169,7 @@ class SingInViewController: UIViewController {
         
         loginManager.singIn(email: cleanedEmail, password: cleanedPassword) { message in
             if message != nil {
-                self.presentMMAlert(title: message!.title, message: message!.body, buttonTitle: "Ok")
+                self.presentMMAlert(message: message!)
             }
         }
     }
@@ -184,8 +184,8 @@ class SingInViewController: UIViewController {
     }
     
     @objc private func resetPasswordButtonTapped() {
-        let alert = UIAlertController(title: "Zresetuj hasło",
-                                      message: "Aby zresetować hasło podaj adres mailowy, którego został użyto podczas zakładania konta.",
+        let alert = UIAlertController(title: MMMessages.resetPassword.title,
+                                      message: MMMessages.resetPassword.message,
                                       preferredStyle: .alert)
         
         alert.addTextField { field in
@@ -203,9 +203,9 @@ class SingInViewController: UIViewController {
             self.loginManager.resetPasswordFor(email: email) { result in
                 switch result {
                 case .success(_):
-                    self.presentMMAlert(title: "Gotowe", message: "Na podany adres mailowy został wysłany link pozwalający na zmianę hasła. Sprawdź pocztę.", buttonTitle: "Ok")
+                    self.presentMMAlert(message: MMMessages.passwordHasBeenReset)
                 case .failure(let error):
-                    self.presentMMAlert(title: "Ups coś poszło nie tak.", message: error.rawValue, buttonTitle: "Ok")
+                    self.presentMMAlert(title: "Ups coś poszło nie tak.", message: error.rawValue)
                 }
             }
         })

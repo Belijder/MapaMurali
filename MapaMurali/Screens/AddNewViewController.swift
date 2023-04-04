@@ -202,7 +202,7 @@ class AddNewItemViewController: MMDataLoadingVC {
             imagePickerController.showsCameraControls = true
             self.present(imagePickerController, animated: true, completion: dismissLoadingView)
         case .denied, .restricted:
-            presentMMAlert(title: "Brak dostępu", message: "Aby zrobić zdjęcie musisz wyrazić zgodę na używanie aparatu. Przejdź do Ustawienia > Mapa Murali i wyraź zgodę na używanie aparatu.", buttonTitle: "Ok")
+            presentMMAlert(message: MMMessages.noPermissionToAccessCamera)
         case .notDetermined:
             AVCaptureDevice.requestAccess(for: .video) { granted in
                 if granted {
@@ -216,7 +216,7 @@ class AddNewItemViewController: MMDataLoadingVC {
                     }
                 } else {
                     DispatchQueue.main.async {
-                        self.presentMMAlert(title: "Brak dostępu", message: "Aby zrobić zdjęcie musisz wyrazić zgodę na używanie aparatu. Przejdź do Ustawienia > Mapa Murali i wyraź zgodę na używanie aparatu.", buttonTitle: "Ok")
+                        self.presentMMAlert(message: MMMessages.noPermissionToAccessCamera)
                     }
                 }
             }
@@ -246,7 +246,7 @@ class AddNewItemViewController: MMDataLoadingVC {
     
     @objc private func localizationButtonTapped() {
         guard NetworkMonitor.shared.isConnected == true else {
-            presentMMAlert(title: "Brak połączenia", message: MMError.noConnectionDefaultMessage.rawValue, buttonTitle: "Ok")
+            presentMMAlert(title: "Brak połączenia", message: MMError.noConnectionDefaultMessage.rawValue)
             return
         }
         
@@ -256,7 +256,7 @@ class AddNewItemViewController: MMDataLoadingVC {
         case .notDetermined:
             locationManager.requestWhenInUseAuthorization()
         case .restricted, .denied:
-            self.presentMMAlert(title: "Brak uprawnień", message: "Aby ustalić adres musisz wyrazić zgodę na używanie Twojej lokalizacji. Przejdź do: Ustawienia > MapaMurali i wyraź zgodę.", buttonTitle: "Ok")
+            self.presentMMAlert(message: MMMessages.noPermissionToGetCurrentLocation)
         case .authorizedAlways, .authorizedWhenInUse, .authorized:
             locationManager.requestLocation()
             showLoadingView(message: "Pobieranie lokalizacji...")
@@ -268,12 +268,12 @@ class AddNewItemViewController: MMDataLoadingVC {
     
     @objc func callToActionButtonTapped() {
         guard NetworkMonitor.shared.isConnected == true else {
-            presentMMAlert(title: "Brak połączenia", message: "Wygląda na to, że nie masz aktualnie połączenia z internetem. Aby dodać mural do bazy danych musisz mieć aktywne połączenie z intenetem.", buttonTitle: "Ok")
+            presentMMAlert(message: MMMessages.noInternetConnection)
             return
         }
         
         guard let fullSizeImageData = self.vm.fullSizeImageData, let thumbnailImageData = self.vm.thumbnailImageData else {
-            self.presentMMAlert(title: "Brak zdjęcia", message: "Wybierz lub zrób inne zdjęcie i spróbuj ponownie.", buttonTitle: "Ok")
+            self.presentMMAlert(message: MMMessages.noPhotoSelected)
             return
         }
         
@@ -281,7 +281,7 @@ class AddNewItemViewController: MMDataLoadingVC {
         vm.city = cityTextField.text
         
         guard let address = vm.address, let city = vm.city else {
-            self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: MMError.invalidAddress.rawValue, buttonTitle: "Ok")
+            self.presentMMAlert(title: MMMessages.customErrorTitle, message: MMError.invalidAddress.rawValue)
             return
         }
         
@@ -289,7 +289,7 @@ class AddNewItemViewController: MMDataLoadingVC {
         
         vm.getCoordinate(addressString: addressString) { location, error in
             if error != nil {
-                self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: MMError.invalidAddress.rawValue, buttonTitle: "Ok")
+                self.presentMMAlert(title: MMMessages.customErrorTitle, message: MMError.invalidAddress.rawValue)
                 return
             }
             
@@ -298,7 +298,7 @@ class AddNewItemViewController: MMDataLoadingVC {
                 self.showLoadingView(message: "Dodawanie muralu...")
                 self.databaseManager.addNewItemToDatabase(itemData: data, fullSizeImageData: fullSizeImageData, thumbnailData: thumbnailImageData)
             } catch let error {
-                self.presentMMAlert(title: "Mural nie został dodany", message: error.localizedDescription, buttonTitle: "Ok")
+                self.presentMMAlert(title: "Mural nie został dodany", message: error.localizedDescription)
             }
         }
     }
@@ -406,14 +406,14 @@ extension AddNewItemViewController: UITextFieldDelegate {
 extension AddNewItemViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let lastLocation = locations.last?.coordinate else {
-            self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: MMError.locationRetrivalFaild.rawValue, buttonTitle: "Ok")
+            self.presentMMAlert(title: MMMessages.customErrorTitle, message: MMError.locationRetrivalFaild.rawValue)
             return
         }
         
         self.vm.currentLocation = CLLocation(latitude: lastLocation.latitude, longitude: lastLocation.longitude)
         
         guard let location = vm.currentLocation else {
-            self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: MMError.locationRetrivalFaild.rawValue, buttonTitle: "Ok")
+            self.presentMMAlert(title: MMMessages.customErrorTitle, message: MMError.locationRetrivalFaild.rawValue)
             return
         }
         
@@ -423,7 +423,7 @@ extension AddNewItemViewController: CLLocationManagerDelegate {
                   let streetNumber = placeMark.subThoroughfare,
                   let cityName = placeMark.locality else {
                 self.dismissLoadingView()
-                self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: MMError.locationRetrivalFaild.rawValue, buttonTitle: "Ok")
+                self.presentMMAlert(title: MMMessages.customErrorTitle, message: MMError.locationRetrivalFaild.rawValue)
                 return
             }
             
@@ -450,7 +450,7 @@ extension AddNewItemViewController: CLLocationManagerDelegate {
                 manager.requestWhenInUseAuthorization()
             }
         case .denied:
-            self.presentMMAlert(title: "Brak uprawnień", message: "Aby wyświetlić murale na mapie musisz wyrazić zgodę na używanie Twojej lokalizacji. Przejdź do Ustawienia > MapaMurali i wyraź zgodę.", buttonTitle: "Ok")
+            self.presentMMAlert(message: MMMessages.noPermissionToGetCurrentLocation)
         case .authorizedAlways, .authorizedWhenInUse, .authorized:
             if title != "Edytuj mural" {
                 locationManager.requestLocation()
@@ -467,7 +467,7 @@ extension AddNewItemViewController: CLLocationManagerDelegate {
 extension AddNewItemViewController: DatabaseManagerDelegate {
     func failedToEditMuralData(errorMessage: String) {
         dismissLoadingView()
-        self.presentMMAlert(title: "Nie udało się zaktualizować danych.", message: errorMessage, buttonTitle: "Ok")
+        self.presentMMAlert(title: "Nie udało się zaktualizować danych.", message: errorMessage)
     }
     
     
@@ -492,13 +492,13 @@ extension AddNewItemViewController: DatabaseManagerDelegate {
     func successToAddNewItem(muralID: String) {
         dismissLoadingView()
         self.databaseManager.fetchMuralfromDatabase(with: muralID)
-        self.presentMMAlert(title: "Udało się!", message: "Twój mural został wysłany do akceptacji! Dzięki za pomoc w tworzeniu naszej mapy!", buttonTitle: "Ok")
+        self.presentMMAlert(message: MMMessages.muralAddedToDatabase)
         self.cleanUpFields()
     }
     
     
     func failedToAddNewItem(errortitle: String, errorMessage: String) {
         dismissLoadingView()
-        self.presentMMAlert(title: errortitle, message: errorMessage, buttonTitle: "Ok")
+        self.presentMMAlert(title: errortitle, message: errorMessage)
     }
 }

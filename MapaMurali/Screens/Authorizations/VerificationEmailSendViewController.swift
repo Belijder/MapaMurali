@@ -127,14 +127,14 @@ class VerificationEmailSendViewController: UIViewController {
             if UIApplication.shared.canOpenURL(url) {
                 UIApplication.shared.open(url)
             } else {
-                presentMMAlert(title: "Nie można otworzyć poczty.", message: "Sprawdź czy masz poprawnie skonfigurowanego klienta pocztowego i spóbuj ponownie, lub sprawdź pocztę ręcznie.", buttonTitle: "Ok")
+                presentMMAlert(message: MMMessages.couldNotOpenMail)
             }
         }
     }
     
     @objc private func resendVerificationMail() {
         guard let user = Auth.auth().currentUser else {
-            presentMMAlert(title: "Ups.", message: "Coś poszło nie tak. Sprawdź połączenie z internetem i spróbuj ponownie.", buttonTitle: "OK")
+            presentMMAlert(message: MMMessages.defaultMessage)
             return
         }
         loginManager.sendVerificationMailTo(email: user.email!)

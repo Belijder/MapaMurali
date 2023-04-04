@@ -176,11 +176,11 @@ class SingUpViewController: UIViewController {
     }
     
     
-    private func validateFields() -> Message? {
+    private func validateFields() -> MessageTuple? {
         if emailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" ||
             passwordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" ||
             confirmPasswordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
-            return Message(title: "Uzupełnij wymagane pola", body: "Aby założy konto musisz uzupełnić wszystkie wymagane pola")
+            return MMMessages.signUpcompleteTheFields
         }
         
         let email = emailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -188,19 +188,19 @@ class SingUpViewController: UIViewController {
         let confirmedPassword = confirmPasswordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         
         guard password == confirmedPassword else {
-            return Message(title: "Niezgodne hasła", body: MMError.incompatiblePasswords.rawValue)
+            return MMMessages.incompatiblePasswords
         }
         
         if Utilities.isEmailValid(email) == false {
-            return Message(title: "Nieprawidłowy email", body: "Ten email nie wygląda na prawidłowy. Popraw adres i spróbuj ponownie.")
+            return MMMessages.invalidEmail
         }
         
         if Utilities.isPasswordValid(password) == false {
-            return Message(title: "Hasło zbyt słabe", body: "Upewnij się, że hasło ma minimum 8 znaków oraz zawiera co najmniej jeden znak specjalny i cyfrę.")
+            return MMMessages.passwordToWeek
         }
         
         if !acceptTermOfUseToggle.isOn || !acceptPrivacyPolicyToggle.isOn {
-            return Message(title: "Zaznacz zgody", body: "Aby aktywować konto musisz potwierdzić, że zapoznałeś się i akceptujesz warunki użytkowania oraz politykę prywatności naszej aplikacji.")
+            return MMMessages.tickConsents
         }
         
         return nil
@@ -211,7 +211,7 @@ class SingUpViewController: UIViewController {
     @objc private func singUpButtonTapped() {
         let errorMessage = validateFields()
         if errorMessage != nil {
-            presentMMAlert(title: errorMessage!.title, message: errorMessage!.body, buttonTitle: "Ok")
+            presentMMAlert(message: errorMessage!)
             return
         }
         
@@ -220,12 +220,12 @@ class SingUpViewController: UIViewController {
 
         loginManager.checkIfEmailIsNOTAlreadyRegistered(email: cleanedEmail) { success, error in
             if let error = error {
-                self.presentMMAlert(title: "Ups...", message: error.rawValue, buttonTitle: "Ok")
+                self.presentMMAlert(title: "Ups...", message: error.rawValue)
                 return
             }
             
             guard success else {
-                self.presentMMAlert(title: "Konto już istnieje", message: "Ten mail jest już zarejestrowany w naszej bazie. Spróbuj się zalogować.", buttonTitle: "Ok")
+                self.presentMMAlert(message: MMMessages.accountAlreadyExists)
                 return
             }
             
@@ -243,12 +243,12 @@ class SingUpViewController: UIViewController {
             switch result {
             case.success(let terms):
                 guard let url = URL(string: terms.termOfUse) else {
-                    self.presentMMAlert(title: "Ups! Coś poszło nie tak. ", message: MMError.failedToGetLegalTerms.rawValue, buttonTitle: "Ok")
+                    self.presentMMAlert(title: MMMessages.customErrorTitle, message: MMError.failedToGetLegalTerms.rawValue)
                     return
                 }
                 self.presentSafariVC(with: url)
             case .failure(let error):
-                self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: error.rawValue, buttonTitle: "Ok")
+                self.presentMMAlert(title: MMMessages.customErrorTitle, message: error.rawValue)
             }
         }
     }
@@ -259,12 +259,12 @@ class SingUpViewController: UIViewController {
             switch result {
             case.success(let terms):
                 guard let url = URL(string: terms.privacyPolicy) else {
-                    self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: MMError.failedToGetLegalTerms.rawValue, buttonTitle: "Ok")
+                    self.presentMMAlert(title: MMMessages.customErrorTitle, message: MMError.failedToGetLegalTerms.rawValue)
                     return
                 }
                 self.presentSafariVC(with: url)
             case .failure(let error):
-                self.presentMMAlert(title: "Ups! Coś poszło nie tak.", message: error.rawValue, buttonTitle: "Ok")
+                self.presentMMAlert(title: MMMessages.customErrorTitle, message: error.rawValue)
             }
         }
     }

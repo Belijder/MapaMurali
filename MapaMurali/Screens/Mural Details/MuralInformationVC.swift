@@ -276,7 +276,7 @@ class MuralInformationVC: UIViewController, ReportMuralProtocol {
             mail.setMessageBody("<p>Znam autora tego muralu. Autorem jest: </p>", isHTML: true)
             present(mail, animated: true)
         } else {
-            presentMMAlert(title: MMMessages.cannotSendMail.title, message: MMMessages.cannotSendMail.message, buttonTitle: "Ok")
+            presentMMAlert(title: MMMessages.cannotSendMail.title, message: MMMessages.cannotSendMail.message)
         }
     }
     

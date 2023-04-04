@@ -28,6 +28,7 @@
 		427874B5299659550031DD93 /* MMReportCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427874B4299659550031DD93 /* MMReportCell.swift */; };
 		427874B92997BD240031DD93 /* ReviewStatusLegendVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427874B82997BD240031DD93 /* ReviewStatusLegendVC.swift */; };
 		427874BB2997D5B40031DD93 /* FullScreenImageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427874BA2997D5B40031DD93 /* FullScreenImageVC.swift */; };
+		4278775A29DC509800657A18 /* MMMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4278775929DC509800657A18 /* MMMessages.swift */; };
 		427BD5AA28EB6063005F686A /* MMAnnotationClusterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BD5A928EB6063005F686A /* MMAnnotationClusterView.swift */; };
 		427C1A642910E899000E5619 /* MMFavoritesMuralCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427C1A632910E899000E5619 /* MMFavoritesMuralCollectionCell.swift */; };
 		427CAB5528E60D3200DA7247 /* AddNewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427CAB5428E60D3200DA7247 /* AddNewViewModel.swift */; };
@@ -39,7 +40,6 @@
 		427E379429D9D04700967DB8 /* MapViewLocationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427E379329D9D04700967DB8 /* MapViewLocationDelegate.swift */; };
 		42824F02295C64C000C33AA5 /* VerificationEmailSendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42824F01295C64C000C33AA5 /* VerificationEmailSendViewController.swift */; };
 		42824F042964378200C33AA5 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42824F032964378100C33AA5 /* Utilities.swift */; };
-		42824F0629645E6200C33AA5 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42824F0529645E6200C33AA5 /* Message.swift */; };
 		42824F082966FA1300C33AA5 /* MMEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42824F072966FA1300C33AA5 /* MMEmptyStateView.swift */; };
 		4283A700293CA7D600EDFEB5 /* LegalTerms.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4283A6FF293CA7D600EDFEB5 /* LegalTerms.swift */; };
 		4283BAB028D5E24A00A54F0F /* MMMuralImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4283BAAF28D5E24A00A54F0F /* MMMuralImageView.swift */; };
@@ -142,6 +142,7 @@
 		427874B4299659550031DD93 /* MMReportCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMReportCell.swift; sourceTree = "<group>"; };
 		427874B82997BD240031DD93 /* ReviewStatusLegendVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewStatusLegendVC.swift; sourceTree = "<group>"; };
 		427874BA2997D5B40031DD93 /* FullScreenImageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenImageVC.swift; sourceTree = "<group>"; };
+		4278775929DC509800657A18 /* MMMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMMessages.swift; sourceTree = "<group>"; };
 		427BD5A928EB6063005F686A /* MMAnnotationClusterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMAnnotationClusterView.swift; sourceTree = "<group>"; };
 		427C1A632910E899000E5619 /* MMFavoritesMuralCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMFavoritesMuralCollectionCell.swift; sourceTree = "<group>"; };
 		427CAB5428E60D3200DA7247 /* AddNewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewViewModel.swift; sourceTree = "<group>"; };
@@ -153,7 +154,6 @@
 		427E379329D9D04700967DB8 /* MapViewLocationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewLocationDelegate.swift; sourceTree = "<group>"; };
 		42824F01295C64C000C33AA5 /* VerificationEmailSendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationEmailSendViewController.swift; sourceTree = "<group>"; };
 		42824F032964378100C33AA5 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
-		42824F0529645E6200C33AA5 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		42824F072966FA1300C33AA5 /* MMEmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMEmptyStateView.swift; sourceTree = "<group>"; };
 		4283A6FF293CA7D600EDFEB5 /* LegalTerms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegalTerms.swift; sourceTree = "<group>"; };
 		4283BAAF28D5E24A00A54F0F /* MMMuralImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMMuralImageView.swift; sourceTree = "<group>"; };
@@ -347,6 +347,16 @@
 			path = "Mural Details";
 			sourceTree = "<group>";
 		};
+		427E379529D9D8DE00967DB8 /* MapViewController */ = {
+			isa = PBXGroup;
+			children = (
+				426E4A0228931180009C8E99 /* MapViewController.swift */,
+				427E379129D6E97400967DB8 /* MapViewDelegate.swift */,
+				427E379329D9D04700967DB8 /* MapViewLocationDelegate.swift */,
+			);
+			path = MapViewController;
+			sourceTree = "<group>";
+		};
 		4283BAAE28D5E20800A54F0F /* ImageViews */ = {
 			isa = PBXGroup;
 			children = (
@@ -364,9 +374,7 @@
 			children = (
 				4275EB8E295ADAA4004946ED /* Authorizations */,
 				42867B6328958F5B00E5159F /* MainTabBarViewController.swift */,
-				426E4A0228931180009C8E99 /* MapViewController.swift */,
-				427E379129D6E97400967DB8 /* MapViewDelegate.swift */,
-				427E379329D9D04700967DB8 /* MapViewLocationDelegate.swift */,
+				427E379529D9D8DE00967DB8 /* MapViewController */,
 				42E61C2F28F3143100D38205 /* MuralsCollectionViewController.swift */,
 				42867B662895901000E5159F /* AddNewViewController.swift */,
 				42D9EA2429260E0000A7A9DC /* EditMuralViewController.swift */,
@@ -397,7 +405,6 @@
 				42E61C3A28FAC0C500D38205 /* User.swift */,
 				42618DDB2917BB7C0052DB76 /* PopularCity.swift */,
 				4283A6FF293CA7D600EDFEB5 /* LegalTerms.swift */,
-				42824F0529645E6200C33AA5 /* Message.swift */,
 				4220107B2995611E003389DC /* Report.swift */,
 			);
 			path = Model;
@@ -454,6 +461,7 @@
 				42E61C3128F3191A00D38205 /* UIHelper.swift */,
 				428BD66628DE3FDC000B8D69 /* MMError.swift */,
 				42E61C2D28F2ED6400D38205 /* Constants.swift */,
+				4278775929DC509800657A18 /* MMMessages.swift */,
 				42EA93A82948FB87006F3EF0 /* InfoPlistParser.swift */,
 				42824F032964378100C33AA5 /* Utilities.swift */,
 				425E108A299D0E1D000F9F70 /* NetworkMonitor.swift */,
@@ -638,6 +646,7 @@
 				429A021D28CFCF4600CD6862 /* UIView+Ext.swift in Sources */,
 				42D9EA212922CD8D00A7A9DC /* ManageUserAddedMuralsVC.swift in Sources */,
 				42618DD42914312D0052DB76 /* StatisticsViewModel.swift in Sources */,
+				4278775A29DC509800657A18 /* MMMessages.swift in Sources */,
 				42867B6428958F5B00E5159F /* MainTabBarViewController.swift in Sources */,
 				42D9EA232922D1EA00A7A9DC /* MMUserAddedMuralTableViewCell.swift in Sources */,
 				427E374D29D1995200967DB8 /* ValidateAuthProtocol.swift in Sources */,
@@ -653,7 +662,6 @@
 				427874B5299659550031DD93 /* MMReportCell.swift in Sources */,
 				42E61C3528F31DD800D38205 /* MuralCell.swift in Sources */,
 				429A021B28CFCC7100CD6862 /* MMPlainButton.swift in Sources */,
-				42824F0629645E6200C33AA5 /* Message.swift in Sources */,
 				427C1A642910E899000E5619 /* MMFavoritesMuralCollectionCell.swift in Sources */,
 				427E379229D6E97400967DB8 /* MapViewDelegate.swift in Sources */,
 				428BD65E28DE30B0000B8D69 /* MMTitleLabel.swift in Sources */,

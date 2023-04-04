@@ -178,7 +178,7 @@ final class MapViewController: MMAnimableViewController, MapViewPresenting, Loca
     
     
     func presentNoPermissionsMessage() {
-        self.presentMMAlert(title: MMMessages.noPermissionsMessage.title, message: MMMessages.noPermissionsMessage.message, buttonTitle: "Ok")
+        self.presentMMAlert(message: MMMessages.noLocalizationPermission)
         if map.userTrackingMode != .none {
             map.userTrackingMode = .none
         }

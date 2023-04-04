@@ -125,7 +125,7 @@ class CompleteUserDetailsViewController: MMDataLoadingVC {
             imagePickerController.showsCameraControls = true
             self.present(imagePickerController, animated: true, completion: self.dismissLoadingView)
         case .denied, .restricted:
-            presentMMAlert(title: "Brak dostępu", message: "Aby zrobić zdjęcie musisz wyrazić zgodę na używanie aparatu. Przejdź do Ustawienia > Mapa Murali i wyraź zgodę na używanie aparatu.", buttonTitle: "Ok")
+            self.presentMMAlert(message: MMMessages.noPermissionToAccessCamera)
         case .notDetermined:
             AVCaptureDevice.requestAccess(for: .video) { granted in
                 if granted {
@@ -139,7 +139,7 @@ class CompleteUserDetailsViewController: MMDataLoadingVC {
                     }
                 } else {
                     DispatchQueue.main.async {
-                        self.presentMMAlert(title: "Brak dostępu", message: "Aby zrobić zdjęcie musisz wyrazić zgodę na używanie aparatu. Przejdź do Ustawienia > Mapa Murali i wyraź zgodę na używanie aparatu.", buttonTitle: "Ok")
+                        self.presentMMAlert(message: MMMessages.noPermissionToAccessCamera)
                     }
                 }
             }
@@ -168,20 +168,20 @@ class CompleteUserDetailsViewController: MMDataLoadingVC {
         
         guard let avatarData = avatarImage else {
             dismissLoadingView()
-            presentMMAlert(title: "Dodaj avatar", message: "Dodaj avatar do swojego konta.", buttonTitle: "Ok")
+            presentMMAlert(message: MMMessages.addAvatar)
             return
         }
         
         guard let nickname = nickNameTextField.text,
               nickname.count > 2 else {
             dismissLoadingView()
-            presentMMAlert(title: "Zbyt krótko!", message: "Nazwa użytkownika musi posiadać minimum trzy znaki.", buttonTitle: "Ok")
+            presentMMAlert(message: MMMessages.usernameToShort)
             return
         }
         
         guard let userID = loginManager.currentUserID else {
             dismissLoadingView()
-            presentMMAlert(title: "Ups", message: "Coś poszło nie tak. Nie udało się utworzyć konta. Spróbuj ponownie za chwilę.", buttonTitle: "Ok")
+            presentMMAlert(message: MMMessages.unableToCreateAccount)
             return
         }
         

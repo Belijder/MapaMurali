@@ -76,7 +76,7 @@ class MuralsCollectionViewController: MMAnimableViewController {
             if !NetworkMonitor.shared.isConnected {
                 noConncectionImageView.isHidden = false
                 if iTShoudShowNoConnentivityAlert() {
-                    presentMMAlert(title: "Brak połączenia", message: "Wygląda na to, że nie masz aktualnie połączenia z internetem. Aby w pełni korzystać z aplikacji musisz mieć aktywne połączenie.", buttonTitle: "Ok")
+                    presentMMAlert(message: MMMessages.noInternetConnection)
                     NetworkMonitor.shared.lastTimeWhenNoConnentivityAlertWasShown = Date.now
                 }
             } else {
@@ -197,7 +197,7 @@ class MuralsCollectionViewController: MMAnimableViewController {
                         self.deviceIsConnetedToInternet = false
                         self.noConncectionImageView.isHidden = false
                         NetworkMonitor.shared.lastTimeWhenNoConnentivityAlertWasShown = Date.now
-                        self.presentMMAlert(title: "Brak połączenia", message: "Wygląda na to, że nie masz aktualnie połączenia z internetem. Aby w pełni korzystać z aplikacji musisz mieć aktywne połączenie.", buttonTitle: "Ok")
+                        self.presentMMAlert(message: MMMessages.noInternetConnection)
                     }
                 } else if isConnected && self.deviceIsConnetedToInternet == false {
                     self.deviceIsConnetedToInternet = true

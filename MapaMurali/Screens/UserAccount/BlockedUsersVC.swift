@@ -103,7 +103,7 @@ extension BlockedUsersVC: MMBlockedUserCellDelegate {
     func unblockButtonTappedFor(userID: String) {
         databaseManager.unblockUserContent(userID: userID) { success in
             if success {
-                self.presentMMAlert(title: "Udało się!", message: "Użytkownik został odblokowany. Znów możesz przeglądać treści dodane przez tego użytkownika.", buttonTitle: "OK")
+                self.presentMMAlert(message: MMMessages.userHasBeenUnblocked)
             }
         }
     }

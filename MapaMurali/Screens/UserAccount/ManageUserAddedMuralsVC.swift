@@ -124,7 +124,7 @@ extension ManageUserAddedMuralsVC: UITableViewDelegate {
 
         let deleteAction = UIContextualAction(style: .destructive, title: "Usuń") { _, _, completed in
             guard NetworkMonitor.shared.isConnected == true else {
-                self.presentMMAlert(title: "Brak połączenia", message: MMError.noConnectionDefaultMessage.rawValue, buttonTitle: "Ok")
+                self.presentMMAlert(title: "Brak połączenia", message: MMError.noConnectionDefaultMessage.rawValue)
                 completed(false)
                 return
             }

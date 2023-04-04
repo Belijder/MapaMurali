@@ -20,7 +20,7 @@ class LoginManager {
     
     
     //MARK: - Sign in
-    func singIn(email: String, password: String, completion: @escaping (Message?) -> Void) {
+    func singIn(email: String, password: String, completion: @escaping (MessageTuple?) -> Void) {
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
             if let error = error {
                 let nsError = error as NSError
@@ -35,16 +35,16 @@ class LoginManager {
     }
     
     
-    func handleFirebaseError(_ error: NSError) -> Message {
+    func handleFirebaseError(_ error: NSError) -> MessageTuple {
         switch error.code {
         case 17011:
-            return Message(title: "Konto nie istnieje.", body: "Ten adres email nie jest przypisany do żadnego konta w naszej bazie. Musisz się zarejestrować.")
+            return MMMessages.accountNotExist
         case 17010:
-            return Message(title: "Konto tymczasowo zablokowane.", body: "Dostęp do tego konta został tymczasowo zablokowany z powodu wielu nieudanych prób logowania. Możesz je natychmiast przywrócić, resetując hasło lub spróbować ponownie później.")
+            return MMMessages.accountTemporarilyBlocked
         case 17009:
-            return Message(title: "Nieprawidłowe hasło", body: "Upewnij się, że wpisałeś dobre hasło. Jeśli nie pamiętasz swojego hasła, może je zresetować.")
+            return MMMessages.wrongPassword
         default:
-            return Message(title: "Ups! Coś poszło nie tak.", body: error.localizedDescription)
+            return (title: MMMessages.customErrorTitle, message: error.localizedDescription)
         }
     }
     
